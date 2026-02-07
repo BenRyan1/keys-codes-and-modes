@@ -405,9 +405,7 @@
             userApps.forEach(app => {
                 const appCard = document.createElement('a');
                 appCard.className = 'app-card';
-                appCard.href = `https://keyscodesandmodes.com/apps/${app.file}`;
-                appCard.target = '_blank';
-                appCard.rel = 'noopener noreferrer';
+                appCard.href = `apps/${app.file}`;
                 
                 appCard.innerHTML = `
                     <span class="app-icon">${app.icon}</span>
