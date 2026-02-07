@@ -10,7 +10,7 @@
   gtag('config', 'G-6EGC5ZNZPF');
 </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#008080">
     <title>Choose Your Free Apps | Keys, Codes & Modes</title>
     <meta name="description" content="Select any 3 interactive music theory applications to start your journey.">
@@ -216,82 +216,80 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
         
         .continue-section {
             text-align: center;
-            padding: 2rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            border: 2px solid rgba(0, 128, 128, 0.3);
+            margin: 3rem 0;
         }
         
         .continue-btn {
-            display: inline-block;
-            padding: 1.5rem 4rem;
-            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
-            color: var(--dark-bg);
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple));
+            color: white;
             border: none;
-            border-radius: 50px;
+            padding: 1.5rem 3rem;
             font-size: 1.3rem;
             font-weight: 700;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
         }
         
-        .continue-btn:hover {
+        .continue-btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+            box-shadow: 0 15px 40px rgba(0, 128, 128, 0.5);
         }
         
         .continue-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
         
         .upgrade-teaser {
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(139, 107, 163, 0.1);
+            background: linear-gradient(135deg, rgba(139, 107, 163, 0.2), rgba(207, 122, 90, 0.2));
             border: 2px solid var(--primary-purple);
-            border-radius: 15px;
+            border-radius: 20px;
+            padding: 3rem;
             text-align: center;
+            margin-top: 4rem;
         }
         
         .upgrade-teaser h3 {
-            color: var(--primary-purple);
             font-family: var(--font-display);
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
+            color: var(--primary-gold);
         }
         
         .upgrade-teaser p {
+            font-size: 1.1rem;
             color: #ccc;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
         
         .upgrade-link {
             display: inline-block;
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid var(--primary-purple);
-            color: var(--primary-purple);
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-coral));
+            color: var(--dark-bg);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(244, 208, 63, 0.3);
         }
         
         .upgrade-link:hover {
-            background: var(--primary-purple);
-            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(244, 208, 63, 0.5);
         }
         
         @media (max-width: 768px) {
@@ -304,8 +302,8 @@
             }
             
             .continue-btn {
-                width: 100%;
-                padding: 1.25rem 2rem;
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -315,9 +313,9 @@
     
     <div class="container">
         <div class="header">
-            <h1>Welcome to Keys, Codes & Modes!</h1>
-            <p class="welcome-name" id="welcomeName">Welcome, Friend! 👋</p>
-            <p>Choose ANY 3 of our premium interactive applications below. Each one is a complete professional-grade music theory learning tool.</p>
+            <div class="welcome-name" id="welcomeName">Welcome! 👋</div>
+            <h1>Choose Your 3 Free Apps</h1>
+            <p>Select any 3 music theory tools to unlock for free. These will be yours forever, no credit card required!</p>
         </div>
         
         <div class="selection-status">
@@ -519,8 +517,8 @@
             
             localStorage.setItem('freeAppFiles', JSON.stringify(selectedAppFiles));
             
-            // Redirect to dashboard
-            window.location.href = 'file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/welcome-free.html';
+            // Redirect to welcome-free.html (FIXED - was pointing to wrong file!)
+            window.location.href = 'welcome-free.html';
         }
         
         // Initialize

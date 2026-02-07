@@ -12,8 +12,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#008080">
-    <title>Choose Your Free Apps | Keys, Codes & Modes</title>
-    <meta name="description" content="Select any 3 interactive music theory applications to start your journey.">
+    <title>Your Free Apps | Keys, Codes & Modes</title>
+    <meta name="description" content="Access your 3 selected free music theory applications.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,9 +92,9 @@
         }
         
         .welcome-name {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--primary-gold);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .header p {
@@ -105,68 +105,28 @@
             line-height: 1.6;
         }
         
-        .selection-status {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: rgba(244, 208, 63, 0.1);
-            border: 2px solid var(--primary-gold);
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-        
-        .selection-count {
-            color: var(--primary-gold);
-            font-size: 2rem;
-        }
-        
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
         
         .app-card {
             background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(0, 128, 128, 0.3);
+            border: 2px solid var(--primary-gold);
             border-radius: 15px;
             padding: 2rem;
-            cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(244, 208, 63, 0.3);
         }
         
         .app-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary-teal);
-            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
-        }
-        
-        .app-card.selected {
-            border-color: var(--primary-gold);
-            background: rgba(244, 208, 63, 0.1);
-            box-shadow: 0 10px 30px rgba(244, 208, 63, 0.4);
-        }
-        
-        .app-card.selected::before {
-            content: "✓ SELECTED";
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary-gold);
-            color: var(--dark-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-        
-        .app-card.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+            box-shadow: 0 15px 40px rgba(244, 208, 63, 0.5);
         }
         
         .app-icon {
@@ -174,52 +134,67 @@
             margin-bottom: 1rem;
         }
         
-        .app-title {
+        .app-card h3 {
             font-family: var(--font-display);
             font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             color: var(--primary-gold);
         }
         
-        .app-description {
+        .app-card p {
             color: #ccc;
             line-height: 1.5;
             margin-bottom: 1rem;
+            flex-grow: 1;
         }
         
         .app-features {
             list-style: none;
             padding: 0;
             font-size: 0.9rem;
+            margin-bottom: 1.5rem;
         }
         
         .app-features li {
             padding: 0.3rem 0;
             padding-left: 1.2rem;
             position: relative;
+            color: #aaa;
         }
         
         .app-features li:before {
-            content: "→";
+            content: "✓";
             position: absolute;
             left: 0;
             color: var(--primary-teal);
+            font-weight: 700;
         }
         
-        .flagship-badge {
+        .launch-btn {
             display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple));
             color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
             font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 128, 128, 0.4);
+        }
+        
+        .launch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.6);
         }
         
         .continue-section {
             text-align: center;
+            margin: 3rem 0;
             padding: 2rem;
             background: rgba(0,0,0,0.3);
             border-radius: 15px;
@@ -239,8 +214,6 @@
             transition: all 0.3s;
             text-decoration: none;
             box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
         .continue-btn:hover {
@@ -248,43 +221,45 @@
             box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
         }
         
-        .continue-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
         .upgrade-teaser {
             margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(139, 107, 163, 0.1);
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(139, 107, 163, 0.2), rgba(207, 122, 90, 0.2));
             border: 2px solid var(--primary-purple);
-            border-radius: 15px;
+            border-radius: 20px;
             text-align: center;
         }
         
         .upgrade-teaser h3 {
-            color: var(--primary-purple);
+            color: var(--primary-gold);
             font-family: var(--font-display);
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
+        }
+        
+        .upgrade-teaser p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
         
         .upgrade-link {
             display: inline-block;
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid var(--primary-purple);
-            color: var(--primary-purple);
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-coral));
+            color: var(--dark-bg);
             border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
+            font-size: 1.1rem;
             transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(244, 208, 63, 0.3);
         }
         
         .upgrade-link:hover {
-            background: var(--primary-purple);
-            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(244, 208, 63, 0.5);
         }
         
         @media (max-width: 768px) {
@@ -294,6 +269,10 @@
             .apps-grid {
                 grid-template-columns: 1fr;
             }
+            .continue-btn {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -302,24 +281,20 @@
     
     <div class="container">
         <div class="header">
-            <h1>Welcome to Keys, Codes & Modes!</h1>
-            <p class="welcome-name" id="welcomeName">Welcome, Friend! 👋</p>
-            <p>Choose ANY 3 of our premium interactive applications below. Each one is a complete professional-grade music theory learning tool.</p>
-        </div>
-        
-        <div class="selection-status">
-            <span class="selection-count" id="selectionCount">0</span> / 3 Apps Selected
+            <div class="welcome-name" id="welcomeName">Welcome! 🎉</div>
+            <h1>Your Free Apps Are Ready!</h1>
+            <p>Here are your 3 selected apps. Click "Launch App" to start exploring!</p>
         </div>
         
         <div class="apps-grid" id="appsGrid">
-            <!-- Apps will be loaded here -->
+            <!-- Selected apps will be loaded here -->
         </div>
         
         <div class="continue-section">
-            <button class="continue-btn" id="continueBtn" disabled onclick="goToDashboard()">
-                Continue to Your Dashboard →
+            <button class="continue-btn" id="continueBtn" onclick="goToDashboard()">
+                Explore All Apps →
             </button>
-            <p style="color: #999; margin-top: 1rem;">Select 3 apps to continue</p>
+            <p style="color: #999; margin-top: 1rem;">Or browse our complete collection</p>
         </div>
         
         <div class="upgrade-teaser">
@@ -333,109 +308,86 @@
         // Load user's selected apps from localStorage
         const userName = localStorage.getItem('userName');
         const freeApps = JSON.parse(localStorage.getItem('freeApps') || '[]');
-        const freeAppFiles = JSON.parse(localStorage.getItem('freeAppFiles') || '{}');
         
         // Display welcome message
         if (userName) {
-            document.getElementById('welcomeName').textContent = `Welcome, ${userName}! 👋`;
+            document.getElementById('welcomeName').textContent = `Welcome, ${userName}! 🎉`;
         }
         
-        // All available apps (same list as picker)
+        // IMPORTANT: This must match EXACTLY with welcome-free-picker.html
         const GATEWAY_APPS = [
             {
                 id: 'music-theory-pro',
-                file: 'music-theory-pro.html',
+                file: 'MusicTheoryPro_copy.html',
                 icon: '🎼',
                 title: 'Music Theory Explorer Pro',
-                description: 'Our flagship comprehensive music theory visualization tool.',
+                description: 'Our flagship comprehensive music theory visualization tool. See scales, chords, and modes in real-time.',
                 features: ['Visual chromatic circles', 'Interactive note selection', 'Audio playback', 'Multiple view modes']
             },
             {
                 id: 'chromatic-roulette',
-                file: 'chromatic-roulette.html',
+                file: 'chromatic-roulette-v2.html',
                 icon: '🎨',
                 title: 'Chromatic Roulette',
-                description: 'Interactive color-coded chromatic wheel.',
+                description: 'Interactive color-coded chromatic wheel. Spin and learn the relationships between all 12 notes.',
                 features: ['Color-coded notes', 'Interactive spinning', 'Scale visualization', 'Audio synthesis']
             },
             {
                 id: 'circle-of-fifths',
-                file: 'circle-of-fifths.html',
-                icon: '🎯',
-                title: 'Circle of Fifths',
-                description: 'Master key relationships and chord progressions.',
-                features: ['Interactive circle', 'Key relationships', 'Chord families', 'Modulation paths']
+                file: 'circleoffiths_master001.html',
+                icon: '⭕',
+                title: 'Circle of Fifths Master',
+                description: 'The essential music theory tool. Interactive circle with triads, progressions, and audio playback.',
+                features: ['Major & minor triads', 'Arpeggio sequences', 'Audio synthesis', 'Key relationships']
             },
             {
                 id: 'guitar-fretboard',
-                file: 'Keys codes modes guitar fretboard.html',
+                file: 'guitar-fretboard-basic.html',
                 icon: '🎸',
-                title: 'Guitar Fretboard Explorer Pro',
-                description: 'Advanced guitar fretboard visualization and training tool.',
-                features: ['Full fretboard visualization', 'Scale patterns', 'Chord shapes', 'Practice modes']
+                title: 'Guitar Fretboard Mapper',
+                description: 'Visualize scales, chords, and patterns across the guitar neck. Essential for guitarists.',
+                features: ['All scales & modes', 'Chord shapes', 'CAGED system', 'Tuning options']
             },
             {
-                id: 'guitar-fretboard-basic',
-                file: 'guitar-fretboard-explorer.html',
-                icon: '🎸',
-                title: 'Guitar Fretboard Explorer',
-                description: 'Essential fretboard visualization for beginners.',
-                features: ['Clear note visualization', 'Scale highlighting', 'Easy interface', 'Practice mode']
-            },
-            {
-                id: 'caged-system',
-                file: 'caged-145-master.html',
-                icon: '🎸',
-                title: 'CAGED 1-4-5 Master',
-                description: 'Master the CAGED system with chord progressions.',
-                features: ['CAGED positions', '1-4-5 progressions', 'Visual patterns', 'Audio playback']
-            },
-            {
-                id: 'harmonized-scale',
-                file: 'harmonized-chromatic-scale.html',
-                icon: '🎹',
-                title: 'Harmonized Chromatic Scale',
-                description: 'Explore harmonic relationships in the chromatic scale.',
-                features: ['Chord building', 'Harmonic analysis', 'Color visualization', 'Interactive piano']
+                id: 'scale-finder',
+                file: 'scale-finder.html',
+                icon: '🔍',
+                title: 'Scale Finder & Builder',
+                description: 'Explore every scale imaginable. Build custom scales and hear them instantly.',
+                features: ['100+ scales', 'Custom scale builder', 'Audio playback', 'Scale formulas']
             },
             {
                 id: 'chord-builder',
                 file: 'chord-builder.html',
                 icon: '🎹',
-                title: 'Interactive Chord Builder',
-                description: 'Build and analyze any chord structure.',
-                features: ['Custom chord building', 'Interval analysis', 'Inversions', 'Audio preview']
+                title: 'Chord Builder Pro',
+                description: 'Construct any chord from scratch. Learn inversions, voicings, and extensions.',
+                features: ['All chord types', 'Inversions', 'Voicing options', 'Audio synthesis']
             },
             {
-                id: 'sacred-geometry',
-                file: 'sacred-geometry-enhanced-final.html',
-                icon: '🌟',
-                title: 'Sacred Geometry Music',
-                description: 'Explore the connection between geometry and sound.',
-                features: ['Geometric patterns', 'Visual harmony', 'Mathematical relationships', 'Cymatics']
+                id: 'interval-trainer',
+                file: 'interval-trainer.html',
+                icon: '👂',
+                title: 'Interval Ear Trainer',
+                description: 'Develop perfect pitch recognition. Train your ear with interactive interval exercises.',
+                features: ['Ascending/descending', 'Quiz mode', 'Progress tracking', 'Audio feedback']
             },
             {
-                id: 'pitch-detector',
-                file: 'pitch-detector.html',
-                icon: '🎤',
-                title: 'Real-Time Pitch Detector',
-                description: 'Professional pitch detection with 4-view visualization.',
-                features: ['Live microphone input', 'Multiple visualizations', 'Recording capability', 'Note accuracy']
+                id: 'key-signature',
+                file: 'key-signature-quiz.html',
+                icon: '🎯',
+                title: 'Key Signature Master',
+                description: 'Master all major and minor key signatures. Essential for reading music fluently.',
+                features: ['All 30 keys', 'Quiz mode', 'Memorization aids', 'Visual mnemonics']
             }
         ];
         
         // Redirect if no apps selected
         if (freeApps.length === 0) {
-            window.location.href = 'file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/welcome-free-picker.html';
+            window.location.href = 'welcome-free-picker.html';
         }
         
-        // Update header text
-        document.querySelector('.header p').textContent = 'Here are your 3 selected apps! Click "Launch App" to start exploring.';
-        
-        // Hide selection status
-        document.querySelector('.selection-status').style.display = 'none';
-        
-        // Load only the 3 selected apps
+        // Load only the selected apps
         const appsGrid = document.getElementById('appsGrid');
         appsGrid.innerHTML = '';
         
@@ -444,7 +396,7 @@
             if (!app) return;
             
             const appCard = document.createElement('div');
-            appCard.className = 'app-card selected';
+            appCard.className = 'app-card';
             appCard.innerHTML = `
                 <div class="app-icon">${app.icon}</div>
                 <h3>${app.title}</h3>
@@ -452,25 +404,17 @@
                 <ul class="app-features">
                     ${app.features.map(f => `<li>${f}</li>`).join('')}
                 </ul>
-                <div style="margin-top: auto; padding-top: 1rem;">
-                    <a href="file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/apps/${app.file}" 
-                       class="continue-btn" 
-                       style="display: inline-block; padding: 1rem 2rem; font-size: 1rem; text-decoration: none;">
-                        Launch App →
-                    </a>
-                </div>
+                <a href="./apps/${app.file}" class="launch-btn" target="_blank">
+                    Launch App →
+                </a>
             `;
             appsGrid.appendChild(appCard);
         });
         
-        // Update continue button to go to all apps page
-        const continueBtn = document.getElementById('continueBtn');
-        continueBtn.disabled = false;
-        continueBtn.textContent = 'View All Apps →';
-        continueBtn.nextElementSibling.textContent = 'Ready to explore!';
-        
+        // Navigate to all apps page
         function goToDashboard() {
-            window.location.href = 'file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/insights.html';
+            window.location.href = 'my-apps.html';
         }
     </script>
 </body>
+</html>

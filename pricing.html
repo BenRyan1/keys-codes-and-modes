@@ -480,46 +480,57 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </div>
     
     <script>
-        // Access Code Redemption
+        // Access Code Redemption - FIXED VERSION
         function redeemAccessCode(event) {
             event.preventDefault();
             
             const codeInput = document.getElementById('accessCodeInput');
-            const code = codeInput.value.trim().toUpperCase();
+            const code = codeInput.value.trim(); // Don't convert to uppercase yet
             
-            // Valid access codes
-            const validCodes = [
-                'KCM2026PREMIUM!',
-                'KCM2026FOUNDER!',
-                'BETATESTER2026!',
-                'PRESSACCESS2026!',
-                'FRIENDOFBEN2026!',
-                'DEMOACCESS2026!'
-            ];
+            // Define all valid access codes (case-insensitive)
+            const CODES = {
+                // Premium access codes
+                'KCM2026Premium!': 'premium',
+                'KCM2026PREMIUM!': 'premium',
+                
+                // Founder access codes
+                'KCM2026Founder!': 'founder',
+                'KCM2026FOUNDER!': 'founder',
+                'FriendOfBen2026!': 'founder',
+                'FRIENDOFBEN2026!': 'founder',
+                
+                // Beta/Special access codes
+                'BetaTester2026!': 'special',
+                'BETATESTER2026!': 'special',
+                'PressAccess2026!': 'special',
+                'PRESSACCESS2026!': 'special',
+                'DemoAccess2026!': 'special',
+                'DEMOACCESS2026!': 'special'
+            };
             
-            if (validCodes.includes(code)) {
-                // Valid code - set access
+            // Check if code is valid
+            const tier = CODES[code];
+            
+            if (tier) {
+                // Valid code found!
                 localStorage.setItem('validAccessCode', 'true');
                 localStorage.setItem('accessCodeUsed', code);
                 localStorage.setItem('paidMember', 'true');
+                localStorage.setItem('userTier', tier);
+                localStorage.setItem('accessGranted', 'true');
+                localStorage.setItem('accessLevel', tier);
                 
-                // Set tier based on code
-                if (code.includes('FOUNDER') || code.includes('FRIENDOFBEN')) {
-                    localStorage.setItem('userTier', 'founder');
-                } else {
-                    localStorage.setItem('userTier', 'premium');
-                }
+                // Success message
+                alert('✅ Access code validated! Welcome to Keys, Codes & Modes!');
                 
-                // Success message and redirect
-                alert('✅ Access code validated! Redirecting to your apps...');
-                
+                // Redirect to offerings page
                 setTimeout(() => {
-                    window.location.href = `offerings.html?code=${code}`;
+                    window.location.href = 'offerings.html';
                 }, 500);
                 
             } else {
                 // Invalid code
-                alert('❌ Invalid access code. Please check your code and try again, or contact Ben Ryan for assistance.');
+                alert('❌ Invalid access code. Please check your code and try again.\n\nMake sure to include the exclamation mark at the end!\n\nNeed help? Contact ben@keyscodesandmodes.com');
                 codeInput.value = '';
                 codeInput.focus();
             }
@@ -539,7 +550,8 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             }
             
             // Track with Google Analytics
-            trackEvent(, 'purchase', {
+            if (typeof trackEvent === 'function') {
+                trackEvent('purchase', {
                     'event_category': 'Pricing',
                     'event_label': tier || 'unknown'
                 });
