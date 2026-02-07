@@ -382,9 +382,10 @@
             }
         ];
         
-        // Redirect if no apps selected
+        // If no apps selected, use default flagship apps
         if (freeApps.length === 0) {
-            window.location.href = 'welcome-free-picker.html';
+            freeApps = ['music-theory-pro', 'chromatic-roulette', 'circle-of-fifths'];
+            localStorage.setItem('selectedFreeApps', JSON.stringify(freeApps));
         }
         
         // Load only the selected apps
