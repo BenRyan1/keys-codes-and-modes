@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 KEYS, CODES AND MODES - CAGED Stencil Fretboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 10px;
+            user-select: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.6em;
+            margin-bottom: 3px;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 12px;
+            font-size: 0.85em;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        /* LEFT PANEL */
+        .stencil-panel {
+            width: 180px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        .panel-title {
+            font-size: 0.85em;
+            color: #ffd700;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .shape-section {
+            margin-bottom: 10px;
+        }
+
+        .shape-section-title {
+            font-size: 0.7em;
+            color: #888;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stencil-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .stencil-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 0.65em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stencil-btn:hover {
+            background: rgba(255,215,0,0.3);
+            border-color: #ffd700;
+            transform: scale(1.05);
+        }
+
+        .chord-type-selector {
+            margin-bottom: 10px;
+        }
+
+        .chord-type-selector select {
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.8em;
+        }
+
+        /* CENTER - Fretboard */
+        .fretboard-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fretboard-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.75em;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,215,0,0.3);
+        }
+
+        .control-btn.active {
+            background: rgba(255,215,0,0.5);
+            border-color: #ffd700;
+        }
+
+        .fretboard-wrapper {
+            position: relative;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px 50px 20px 55px;
+        }
+
+        /* VERTICAL FRETBOARD */
+        .fretboard {
+            position: relative;
+            background: linear-gradient(90deg, #4a3728 0%, #3d2d22 50%, #2d1f18 100%);
+            border-radius: 8px;
+            border: 3px solid #1a1a1a;
+            width: 220px;
+            cursor: default;
+        }
+
+        .fretboard.frets-3 { height: 180px; }
+        .fretboard.frets-5 { height: 300px; }
+        .fretboard.frets-15 { height: 780px; }
+
+        /* Nut */
+        .nut {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 14px;
+            background: linear-gradient(180deg, #f5f5dc, #fff8dc, #f5f5dc);
+            border-bottom: 2px solid #333;
+            border-radius: 3px 3px 0 0;
+            z-index: 5;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 8px;
+        }
+
+        .nut-label {
+            font-size: 0.5em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        .fret-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #c0c0c0, #808080, #c0c0c0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .string-line {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(255,255,255,0.1), 
+                rgba(192,192,192,0.8) 10%, 
+                rgba(192,192,192,0.8) 90%, 
+                rgba(255,255,255,0.1));
+            z-index: 2;
+        }
+
+        .string-line:nth-child(1) { width: 4px; }
+        .string-line:nth-child(2) { width: 3px; }
+        .string-line:nth-child(3) { width: 3px; }
+        .string-line:nth-child(4) { width: 2px; }
+        .string-line:nth-child(5) { width: 2px; }
+        .string-line:nth-child(6) { width: 1px; }
+
+        .fret-numbers {
+            position: absolute;
+            right: -35px;
+            top: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fret-number {
+            font-size: 0.7em;
+            color: #888;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* CAGED zones on left */
+        .caged-zones {
+            position: absolute;
+            left: -45px;
+            top: 14px;
+            width: 35px;
+        }
+
+        .caged-zone {
+            position: absolute;
+            left: 0;
+            width: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65em;
+            font-weight: bold;
+            color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .caged-zone.active {
+            color: #ffd700;
+            background: rgba(255,215,0,0.2);
+            border-color: rgba(255,215,0,0.5);
+        }
+
+        /* Fret markers */
+        .fret-marker {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #f0f0f0, #c0c0c0);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            z-index: 1;
+        }
+
+        .fret-marker.double-left { left: 30%; }
+        .fret-marker.double-right { left: 70%; }
+
+        /* Note dots */
+        .note-dot {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6em;
+            font-weight: bold;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 2px solid rgba(0,0,0,0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .note-dot:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+
+        .note-dot.dimmed {
+            opacity: 0.15;
+        }
+
+        .note-dot.caged-hint {
+            opacity: 0.35;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+
+        .note-dot.active-chord {
+            cursor: grab;
+            z-index: 20;
+        }
+
+        .note-dot.active-chord:active {
+            cursor: grabbing;
+        }
+
+        .note-dot.playing {
+            animation: pulse 0.3s ease-out;
+            box-shadow: 0 0 20px rgba(255,255,255,0.8);
+        }
+
+        .note-dot.root {
+            border: 3px solid #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .note-dot.barre {
+            border: 3px dashed #fff;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
+            100% { transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        /* Drag handle overlay */
+        .chord-drag-handle {
+            position: absolute;
+            pointer-events: auto;
+            cursor: ns-resize;
+            z-index: 25;
+            border: 2px solid rgba(255,215,0,0.6);
+            border-radius: 8px;
+            background: rgba(255,215,0,0.1);
+            transition: background 0.2s;
+        }
+
+        .chord-drag-handle:hover {
+            background: rgba(255,215,0,0.2);
+        }
+
+        .chord-drag-handle.dragging {
+            background: rgba(255,215,0,0.3);
+            border-color: #ffd700;
+        }
+
+        .chord-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: #ffd700;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* RIGHT PANEL */
+        .control-panel {
+            width: 170px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        .position-controls {
+            margin-bottom: 12px;
+        }
+
+        .position-slider {
+            width: 100%;
+            margin: 6px 0;
+        }
+
+        .active-stencils-list {
+            margin-top: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .active-stencil-item {
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin-bottom: 4px;
+        }
+
+        .stencil-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 6px;
+        }
+
+        .stencil-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .stencil-position {
+            color: #888;
+            font-size: 0.75em;
+        }
+
+        .stencil-controls {
+            display: flex;
+            gap: 3px;
+        }
+
+        .stencil-control-btn {
+            flex: 1;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.75em;
+        }
+
+        .stencil-control-btn:hover {
+            background: rgba(255,215,0,0.5);
+        }
+
+        .stencil-control-btn.remove {
+            background: rgba(255,68,68,0.5);
+            flex: 0.5;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 10px;
+        }
+
+        .audio-btn {
+            flex: 1;
+            padding: 10px 4px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.75em;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .audio-btn.play {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: #fff;
+        }
+
+        .audio-btn.strum {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #000;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.75em;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 36px;
+            height: 18px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 9px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: rgba(255,215,0,0.5);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.active::after {
+            left: 20px;
+        }
+
+        /* Note colors */
+        .note-C { background: #FFFF00; color: #000; }
+        .note-Cs { background: #FFC400; color: #000; }
+        .note-D { background: #FF8000; color: #000; }
+        .note-Ds { background: #FF4000; color: #fff; }
+        .note-E { background: #FF0000; color: #fff; }
+        .note-F { background: #C4007F; color: #fff; }
+        .note-Fs { background: #8000FF; color: #fff; }
+        .note-G { background: #4000FF; color: #fff; }
+        .note-Gs { background: #0000FF; color: #fff; }
+        .note-A { background: #007FFF; color: #fff; }
+        .note-As { background: #00FF80; color: #000; }
+        .note-B { background: #80FF00; color: #000; }
+
+        .instructions {
+            text-align: center;
+            color: #888;
+            font-size: 0.7em;
+            margin-top: 8px;
+            padding: 6px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+        }
+
+        .drag-instruction {
+            text-align: center;
+            color: #ffd700;
+            font-size: 0.7em;
+            margin-top: 10px;
+            padding: 6px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 5px;
+            border: 1px dashed rgba(255,215,0,0.3);
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            .stencil-panel, .control-panel {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 KEYS, CODES AND MODES</h1>
+        <p class="subtitle">CAGED Stencil Fretboard System</p>
+
+        <div class="main-layout">
+            <!-- LEFT PANEL -->
+            <div class="stencil-panel">
+                <div class="panel-title">CHORD STENCILS</div>
+                
+                <div class="chord-type-selector">
+                    <select id="chordType">
+                        <option value="major">Major</option>
+                        <option value="minor">Minor</option>
+                        <option value="dom7">Dominant 7</option>
+                        <option value="maj7">Major 7</option>
+                        <option value="min7">Minor 7</option>
+                        <option value="sus2">Sus2</option>
+                        <option value="sus4">Sus4</option>
+                        <option value="aug">Augmented</option>
+                        <option value="dim">Diminished</option>
+                    </select>
+                </div>
+
+                <div class="shape-section">
+                    <div class="shape-section-title">CAGED Shapes</div>
+                    <div class="stencil-buttons" id="cagedButtons">
+                        <button class="stencil-btn" data-shape="C">C</button>
+                        <button class="stencil-btn" data-shape="A">A</button>
+                        <button class="stencil-btn" data-shape="G">G</button>
+                        <button class="stencil-btn" data-shape="E">E</button>
+                        <button class="stencil-btn" data-shape="D">D</button>
+                    </div>
+                </div>
+
+                <div class="shape-section">
+                    <div class="shape-section-title">Quick Chords</div>
+                    <div class="stencil-buttons" id="quickChords"></div>
+                </div>
+
+                <div class="instructions">
+                    Click a shape to place it on the fretboard
+                </div>
+            </div>
+
+            <!-- CENTER - Fretboard -->
+            <div class="fretboard-section">
+                <div class="fretboard-controls">
+                    <button class="control-btn" data-frets="3">3 Frets</button>
+                    <button class="control-btn active" data-frets="5">5 Frets</button>
+                    <button class="control-btn" data-frets="15">15 Frets</button>
+                    <button class="control-btn" id="clearAll">Clear</button>
+                    <button class="control-btn" id="audioInit">🔊 Audio</button>
+                </div>
+
+                <div class="fretboard-wrapper" id="fretboardWrapper">
+                    <div class="caged-zones" id="cagedZones"></div>
+                    <div class="fretboard frets-5" id="fretboard">
+                        <div class="nut">
+                            <span class="nut-label">6-E</span>
+                            <span class="nut-label">5-A</span>
+                            <span class="nut-label">4-D</span>
+                            <span class="nut-label">3-G</span>
+                            <span class="nut-label">2-B</span>
+                            <span class="nut-label">1-E</span>
+                        </div>
+                        <div id="fretLines"></div>
+                        <div id="strings"></div>
+                        <div id="fretMarkers"></div>
+                        <div id="noteDots"></div>
+                        <div id="chordHandle"></div>
+                    </div>
+                    <div class="fret-numbers" id="fretNumbers"></div>
+                </div>
+
+                <div class="drag-instruction" id="dragInstruction" style="display: none;">
+                    ↕ Drag chord up/down to change position
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="control-panel">
+                <div class="panel-title">ACTIVE CHORD</div>
+                <div class="active-stencils-list" id="activeStencilsList">
+                    <div style="color: #666; font-size: 0.7em; text-align: center;">No chord selected</div>
+                </div>
+
+                <div class="toggle-row">
+                    <div class="toggle-switch" id="barreToggle"></div>
+                    <span>Add Barre</span>
+                </div>
+
+                <div class="toggle-row">
+                    <div class="toggle-switch active" id="showCagedToggle"></div>
+                    <span>Show CAGED</span>
+                </div>
+
+                <div class="audio-controls">
+                    <button class="audio-btn play" id="playChord">▶ Play</button>
+                    <button class="audio-btn strum" id="strumChord">🎸 Strum</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONSTANTS ====================
+        const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const NOTE_CLASSES = ['C', 'Cs', 'D', 'Ds', 'E', 'F', 'Fs', 'G', 'Gs', 'A', 'As', 'B'];
+        const STANDARD_TUNING = [4, 9, 2, 7, 11, 4]; // E A D G B E (semitones from C)
+        const CAGED_SEQUENCE = ['C', 'A', 'G', 'E', 'D'];
+
+        const CAGED_SHAPES = {
+            major: {
+                C: { frets: [-1, 3, 2, 0, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 2, 2, 0], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 2, 0, 0, 0, 3], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 2, 1, 0, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 2, 3, 2], rootString: 4, rootFret: 0, span: 3 }
+            },
+            minor: {
+                C: { frets: [-1, 3, 1, 0, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 2, 1, 0], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 1, 0, 0, 0, 3], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 2, 0, 0, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 2, 3, 1], rootString: 4, rootFret: 0, span: 3 }
+            },
+            dom7: {
+                C: { frets: [-1, 3, 2, 3, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 0, 2, 0], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 2, 0, 0, 0, 1], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 0, 1, 0, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 2, 1, 2], rootString: 4, rootFret: 0, span: 2 }
+            },
+            maj7: {
+                C: { frets: [-1, 3, 2, 0, 0, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 1, 2, 0], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 2, 0, 0, 0, 2], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 1, 1, 0, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 2, 2, 2], rootString: 4, rootFret: 0, span: 2 }
+            },
+            min7: {
+                C: { frets: [-1, 3, 1, 3, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 0, 1, 0], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 1, 0, 0, 0, 1], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 0, 0, 0, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 2, 1, 1], rootString: 4, rootFret: 0, span: 2 }
+            },
+            sus2: {
+                C: { frets: [-1, 3, 0, 0, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 2, 0, 0], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 0, 0, 0, 3, 3], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 4, 4, 0, 0], rootString: 6, rootFret: 0, span: 4 },
+                D: { frets: [-1, -1, 0, 2, 3, 0], rootString: 4, rootFret: 0, span: 3 }
+            },
+            sus4: {
+                C: { frets: [-1, 3, 3, 0, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 2, 2, 3, 0], rootString: 5, rootFret: 0, span: 3 },
+                G: { frets: [3, 3, 0, 0, 1, 3], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 2, 2, 2, 0, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 2, 3, 3], rootString: 4, rootFret: 0, span: 3 }
+            },
+            aug: {
+                C: { frets: [-1, 3, 2, 1, 1, 0], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 3, 2, 2, 1], rootString: 5, rootFret: 0, span: 3 },
+                G: { frets: [3, 2, 1, 0, 0, 3], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 3, 2, 1, 1, 0], rootString: 6, rootFret: 0, span: 3 },
+                D: { frets: [-1, -1, 0, 3, 3, 2], rootString: 4, rootFret: 0, span: 3 }
+            },
+            dim: {
+                C: { frets: [-1, 3, 4, 2, 4, 2], rootString: 5, rootFret: 3, span: 3 },
+                A: { frets: [-1, 0, 1, 2, 1, 2], rootString: 5, rootFret: 0, span: 2 },
+                G: { frets: [3, 4, 5, 3, 5, 3], rootString: 6, rootFret: 3, span: 3 },
+                E: { frets: [0, 1, 2, 0, 2, 0], rootString: 6, rootFret: 0, span: 2 },
+                D: { frets: [-1, -1, 0, 1, 0, 1], rootString: 4, rootFret: 0, span: 1 }
+            }
+        };
+
+        const CAGED_POSITIONS = { 'C': 0, 'A': 3, 'G': 5, 'E': 8, 'D': 10 };
+
+        const QUICK_CHORDS = [
+            { name: 'C', shape: 'C', type: 'major', position: 0 },
+            { name: 'G', shape: 'G', type: 'major', position: 0 },
+            { name: 'D', shape: 'D', type: 'major', position: 0 },
+            { name: 'Am', shape: 'A', type: 'minor', position: 0 },
+            { name: 'Em', shape: 'E', type: 'minor', position: 0 },
+            { name: 'F', shape: 'E', type: 'major', position: 1 },
+            { name: 'Bm', shape: 'A', type: 'minor', position: 2 },
+            { name: 'A7', shape: 'A', type: 'dom7', position: 0 },
+            { name: 'E7', shape: 'E', type: 'dom7', position: 0 },
+            { name: 'D7', shape: 'D', type: 'dom7', position: 0 }
+        ];
+
+        // ==================== STATE ====================
+        let currentFrets = 5;
+        let activeStencil = null;
+        let barreEnabled = false;
+        let showCaged = true;
+        let isDragging = false;
+        let dragStartY = 0;
+        let dragStartPosition = 0;
+
+        // ==================== AUDIO ====================
+        let audioContext = null;
+        let lastPlayedPosition = -1;
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            const btn = document.getElementById('audioInit');
+            if (btn) {
+                btn.textContent = '🔊 Ready';
+                btn.classList.add('active');
+            }
+            return audioContext;
+        }
+
+        function playNote(frequency, duration) {
+            const ctx = initAudio();
+            if (!ctx) return;
+            
+            try {
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                // Set gain directly - loud and clear
+                gainNode.gain.value = 0.4;
+                
+                // Connect
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                // Start immediately
+                const now = ctx.currentTime;
+                oscillator.start(now);
+                oscillator.stop(now + duration);
+                
+                // Fade out at end to prevent click
+                gainNode.gain.setValueAtTime(0.4, now + duration - 0.05);
+                gainNode.gain.linearRampToValueAtTime(0.001, now + duration);
+                
+            } catch (e) {
+                console.error('Audio error:', e);
+            }
+        }
+
+        function getNoteFrequency(stringIndex, fret) {
+            const openMidi = [40, 45, 50, 55, 59, 64];
+            const midi = openMidi[stringIndex] + fret;
+            return 440 * Math.pow(2, (midi - 69) / 12);
+        }
+
+        function playSingleNote(stringIndex, fret) {
+            const freq = getNoteFrequency(stringIndex, fret);
+            playNote(freq, 1.0);
+        }
+
+        // Play root note of current chord position (used while dragging)
+        function playRootNote() {
+            if (!activeStencil) return;
+            
+            const shape = CAGED_SHAPES[activeStencil.type]?.[activeStencil.shape];
+            if (!shape) return;
+            
+            const rootStringIdx = 6 - shape.rootString;
+            const rootFret = shape.rootFret + activeStencil.position;
+            const freq = getNoteFrequency(rootStringIdx, rootFret);
+            playNote(freq, 0.3); // Short note while dragging
+        }
+
+        // Play chord with position change detection (for dragging)
+        function playChordAtPosition() {
+            if (!activeStencil) return;
+            if (activeStencil.position === lastPlayedPosition) return; // Don't repeat same position
+            
+            lastPlayedPosition = activeStencil.position;
+            playRootNote();
+        }
+
+        function playChord(strum) {
+            if (!activeStencil) {
+                alert('Click a chord button first (C, Am, G, etc.)');
+                return;
+            }
+            
+            const notes = getStencilNotes();
+            if (notes.length === 0) return;
+            
+            notes.sort((a, b) => a.string - b.string);
+            
+            if (strum) {
+                // Strum - play notes with delay
+                notes.forEach((note, i) => {
+                    setTimeout(() => {
+                        const freq = getNoteFrequency(note.string, note.fret);
+                        playNote(freq, 2.0);
+                    }, i * 80);
+                });
+            } else {
+                // Play all at once
+                notes.forEach((note) => {
+                    const freq = getNoteFrequency(note.string, note.fret);
+                    playNote(freq, 2.0);
+                });
+            }
+        }
+
+        // ==================== HELPERS ====================
+        function getChordName() {
+            if (!activeStencil) return '';
+            const shape = CAGED_SHAPES[activeStencil.type]?.[activeStencil.shape];
+            if (!shape) return '?';
+            
+            const rootStringIdx = 6 - shape.rootString;
+            const rootFret = shape.rootFret + activeStencil.position;
+            const rootNote = NOTE_NAMES[(STANDARD_TUNING[rootStringIdx] + rootFret) % 12];
+            
+            const typeNames = {
+                major: '', minor: 'm', dom7: '7', maj7: 'maj7',
+                min7: 'm7', sus2: 'sus2', sus4: 'sus4', aug: 'aug', dim: 'dim'
+            };
+            
+            return rootNote + typeNames[activeStencil.type];
+        }
+
+        function getStencilNotes() {
+            if (!activeStencil) return [];
+            const shape = CAGED_SHAPES[activeStencil.type]?.[activeStencil.shape];
+            if (!shape) return [];
+            
+            const notes = [];
+            shape.frets.forEach((fret, stringIdx) => {
+                if (fret >= 0) {
+                    notes.push({ string: stringIdx, fret: fret + activeStencil.position });
+                } else if (activeStencil.barre && activeStencil.position > 0) {
+                    notes.push({ string: stringIdx, fret: activeStencil.position });
+                }
+            });
+            return notes;
+        }
+
+        function getCAGEDPositions(rootNote, chordType) {
+            const positions = [];
+            CAGED_SEQUENCE.forEach((shapeName) => {
+                const shape = CAGED_SHAPES[chordType]?.[shapeName];
+                if (!shape) return;
+                let position = (CAGED_POSITIONS[shapeName] + rootNote) % 12;
+                if (position < 0) position += 12;
+                positions.push({ shape: shapeName, position, span: shape.span });
+            });
+            return positions.sort((a, b) => a.position - b.position);
+        }
+
+        function getFretboardMetrics() {
+            const fretboard = document.getElementById('fretboard');
+            const nutHeight = 14;
+            const fretboardHeight = fretboard.offsetHeight - nutHeight;
+            const fretHeight = fretboardHeight / currentFrets;
+            return { nutHeight, fretboardHeight, fretHeight };
+        }
+
+        // ==================== RENDERING ====================
+        function renderFretboard() {
+            const fretboard = document.getElementById('fretboard');
+            fretboard.className = `fretboard frets-${currentFrets}`;
+
+            const fretLines = document.getElementById('fretLines');
+            const strings = document.getElementById('strings');
+            const fretMarkers = document.getElementById('fretMarkers');
+            const fretNumbers = document.getElementById('fretNumbers');
+
+            fretLines.innerHTML = '';
+            strings.innerHTML = '';
+            fretMarkers.innerHTML = '';
+            fretNumbers.innerHTML = '';
+
+            const { nutHeight, fretHeight } = getFretboardMetrics();
+
+            // Fret lines
+            for (let i = 1; i <= currentFrets; i++) {
+                const line = document.createElement('div');
+                line.className = 'fret-line';
+                line.style.top = `${nutHeight + i * fretHeight - 1.5}px`;
+                fretLines.appendChild(line);
+            }
+
+            // Strings
+            [10, 26, 42, 58, 74, 90].forEach(pos => {
+                const string = document.createElement('div');
+                string.className = 'string-line';
+                string.style.left = `${pos}%`;
+                strings.appendChild(string);
+            });
+
+            // Fret markers
+            [3, 5, 7, 9, 12, 15].forEach(fret => {
+                if (fret <= currentFrets) {
+                    if (fret === 12) {
+                        ['double-left', 'double-right'].forEach(cls => {
+                            const marker = document.createElement('div');
+                            marker.className = `fret-marker ${cls}`;
+                            marker.style.top = `${nutHeight + (fret - 0.5) * fretHeight}px`;
+                            fretMarkers.appendChild(marker);
+                        });
+                    } else {
+                        const marker = document.createElement('div');
+                        marker.className = 'fret-marker';
+                        marker.style.top = `${nutHeight + (fret - 0.5) * fretHeight}px`;
+                        fretMarkers.appendChild(marker);
+                    }
+                }
+            });
+
+            // Fret numbers
+            const num0 = document.createElement('div');
+            num0.className = 'fret-number';
+            num0.style.height = `${nutHeight}px`;
+            num0.style.lineHeight = `${nutHeight}px`;
+            num0.textContent = '0';
+            fretNumbers.appendChild(num0);
+
+            for (let i = 1; i <= currentFrets; i++) {
+                const num = document.createElement('div');
+                num.className = 'fret-number';
+                num.style.height = `${fretHeight}px`;
+                num.style.lineHeight = `${fretHeight}px`;
+                num.textContent = i;
+                fretNumbers.appendChild(num);
+            }
+
+            renderCAGEDZones();
+            renderNoteDots();
+            renderChordHandle();
+        }
+
+        function renderCAGEDZones() {
+            const container = document.getElementById('cagedZones');
+            container.innerHTML = '';
+
+            if (currentFrets < 5 || !showCaged || !activeStencil) return;
+
+            const { nutHeight, fretHeight, fretboardHeight } = getFretboardMetrics();
+            const shape = CAGED_SHAPES[activeStencil.type]?.[activeStencil.shape];
+            if (!shape) return;
+
+            const rootStringIdx = 6 - shape.rootString;
+            const rootFret = shape.rootFret + activeStencil.position;
+            const rootNote = (STANDARD_TUNING[rootStringIdx] + rootFret) % 12;
+
+            const cagedPositions = getCAGEDPositions(rootNote, activeStencil.type);
+
+            cagedPositions.forEach(pos => {
+                if (pos.position <= currentFrets) {
+                    const zone = document.createElement('div');
+                    zone.className = 'caged-zone';
+                    if (pos.shape === activeStencil.shape) zone.classList.add('active');
+
+                    const top = nutHeight + pos.position * fretHeight;
+                    const height = Math.min(pos.span * fretHeight, fretboardHeight - pos.position * fretHeight);
+
+                    zone.style.top = `${top}px`;
+                    zone.style.height = `${height}px`;
+                    zone.textContent = pos.shape;
+                    zone.title = `${pos.shape} shape @ fret ${pos.position}`;
+
+                    container.appendChild(zone);
+                }
+            });
+        }
+
+        function renderNoteDots() {
+            const noteDots = document.getElementById('noteDots');
+            noteDots.innerHTML = '';
+
+            const { nutHeight, fretHeight } = getFretboardMetrics();
+            const stringPositions = [10, 26, 42, 58, 74, 90];
+
+            // Active notes
+            const activeNotes = new Map();
+            const cagedHints = new Map();
+
+            if (activeStencil) {
+                const shape = CAGED_SHAPES[activeStencil.type]?.[activeStencil.shape];
+                if (shape) {
+                    shape.frets.forEach((fret, sIdx) => {
+                        if (fret >= 0) {
+                            const actual = fret + activeStencil.position;
+                            if (actual <= currentFrets) {
+                                const isRoot = (sIdx === 6 - shape.rootString) && (fret === shape.rootFret);
+                                activeNotes.set(`${sIdx}-${actual}`, { isRoot, isBarre: false });
+                            }
+                        }
+                    });
+
+                    if (activeStencil.barre && activeStencil.position > 0) {
+                        for (let s = 0; s < 6; s++) {
+                            const key = `${s}-${activeStencil.position}`;
+                            if (!activeNotes.has(key)) {
+                                activeNotes.set(key, { isRoot: false, isBarre: true });
+                            }
+                        }
+                    }
+
+                    // CAGED hints
+                    if (showCaged && currentFrets >= 5) {
+                        const rootStringIdx = 6 - shape.rootString;
+                        const rootFret = shape.rootFret + activeStencil.position;
+                        const rootNote = (STANDARD_TUNING[rootStringIdx] + rootFret) % 12;
+                        const positions = getCAGEDPositions(rootNote, activeStencil.type);
+
+                        positions.forEach(pos => {
+                            if (pos.shape !== activeStencil.shape) {
+                                const otherShape = CAGED_SHAPES[activeStencil.type]?.[pos.shape];
+                                if (otherShape) {
+                                    otherShape.frets.forEach((f, sIdx) => {
+                                        if (f >= 0) {
+                                            const actual = f + pos.position;
+                                            if (actual <= currentFrets && actual >= 0) {
+                                                const key = `${sIdx}-${actual}`;
+                                                if (!activeNotes.has(key)) cagedHints.set(key, true);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            // Render dots
+            for (let sIdx = 0; sIdx < 6; sIdx++) {
+                for (let fret = 0; fret <= currentFrets; fret++) {
+                    const noteIndex = (STANDARD_TUNING[sIdx] + fret) % 12;
+                    const dot = document.createElement('div');
+                    dot.className = `note-dot note-${NOTE_CLASSES[noteIndex]}`;
+
+                    const key = `${sIdx}-${fret}`;
+                    const info = activeNotes.get(key);
+                    const isHint = cagedHints.has(key);
+
+                    if (info) {
+                        dot.classList.add('active-chord');
+                        if (info.isRoot) dot.classList.add('root');
+                        if (info.isBarre) dot.classList.add('barre');
+                    } else if (isHint) {
+                        dot.classList.add('caged-hint');
+                    } else if (activeStencil) {
+                        dot.classList.add('dimmed');
+                    }
+
+                    const y = fret === 0 ? nutHeight / 2 : nutHeight + (fret - 0.5) * fretHeight;
+                    dot.style.left = `${stringPositions[sIdx]}%`;
+                    dot.style.top = `${y}px`;
+                    dot.textContent = NOTE_NAMES[noteIndex];
+
+                    dot.addEventListener('click', (e) => {
+                        if (isDragging) return;
+                        playSingleNote(sIdx, fret);
+                        dot.classList.add('playing');
+                        setTimeout(() => dot.classList.remove('playing'), 300);
+                    });
+
+                    noteDots.appendChild(dot);
+                }
+            }
+        }
+
+        function renderChordHandle() {
+            const handleContainer = document.getElementById('chordHandle');
+            handleContainer.innerHTML = '';
+
+            if (!activeStencil) {
+                document.getElementById('dragInstruction').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('dragInstruction').style.display = 'block';
+
+            const shape = CAGED_SHAPES[activeStencil.type]?.[activeStencil.shape];
+            if (!shape) return;
+
+            const { nutHeight, fretHeight } = getFretboardMetrics();
+
+            // Find bounds of the chord
+            let minFret = Infinity, maxFret = -Infinity;
+            shape.frets.forEach(f => {
+                if (f >= 0) {
+                    const actual = f + activeStencil.position;
+                    minFret = Math.min(minFret, actual);
+                    maxFret = Math.max(maxFret, actual);
+                }
+            });
+
+            if (minFret === Infinity) return;
+
+            const handle = document.createElement('div');
+            handle.className = 'chord-drag-handle';
+
+            const top = minFret === 0 ? 0 : nutHeight + (minFret - 0.5) * fretHeight - 5;
+            const bottom = nutHeight + (maxFret + 0.5) * fretHeight + 5;
+
+            handle.style.left = '5%';
+            handle.style.right = '5%';
+            handle.style.top = `${top}px`;
+            handle.style.height = `${bottom - top}px`;
+
+            // Label
+            const label = document.createElement('div');
+            label.className = 'chord-label';
+            label.textContent = getChordName();
+            handle.appendChild(label);
+
+            // Drag events
+            handle.addEventListener('mousedown', startDrag);
+            handle.addEventListener('touchstart', startDrag, { passive: false });
+
+            handleContainer.appendChild(handle);
+        }
+
+        function updateUI() {
+            renderCAGEDZones();
+            renderNoteDots();
+            renderChordHandle();
+            updateStencilInfo();
+        }
+
+        function updateStencilInfo() {
+            const list = document.getElementById('activeStencilsList');
+
+            if (!activeStencil) {
+                list.innerHTML = '<div style="color: #666; font-size: 0.7em; text-align: center;">No chord selected</div>';
+                return;
+            }
+
+            const chordName = getChordName();
+            list.innerHTML = `
+                <div class="active-stencil-item">
+                    <div class="stencil-info">
+                        <span class="stencil-name">${chordName}</span>
+                        <span class="stencil-position">${activeStencil.shape} shape @ fret ${activeStencil.position}</span>
+                    </div>
+                    <div class="stencil-controls">
+                        <button class="stencil-control-btn" id="moveUp">▲ Up</button>
+                        <button class="stencil-control-btn" id="moveDown">▼ Down</button>
+                        <button class="stencil-control-btn remove" id="removeChord">✕</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('moveUp').addEventListener('click', () => moveChord(-1));
+            document.getElementById('moveDown').addEventListener('click', () => moveChord(1));
+            document.getElementById('removeChord').addEventListener('click', clearChord);
+        }
+
+        // ==================== STENCIL ACTIONS ====================
+        function setStencil(shape, type, position = 0) {
+            activeStencil = {
+                shape,
+                type,
+                position,
+                barre: barreEnabled && position > 0
+            };
+            lastPlayedPosition = -1; // Reset so it plays
+            updateUI();
+            // Play chord when first placed
+            playChordAtPosition();
+        }
+
+        function moveChord(delta) {
+            if (!activeStencil) return;
+            const newPos = activeStencil.position + delta;
+            if (newPos >= 0 && newPos <= 12) {
+                activeStencil.position = newPos;
+                activeStencil.barre = barreEnabled && newPos > 0;
+                updateUI();
+                // Play root note at new position
+                playChordAtPosition();
+            }
+        }
+
+        function clearChord() {
+            activeStencil = null;
+            updateUI();
+        }
+
+        // ==================== DRAG HANDLING ====================
+        function startDrag(e) {
+            if (!activeStencil) return;
+            e.preventDefault();
+
+            isDragging = true;
+            dragStartY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            dragStartPosition = activeStencil.position;
+
+            const handle = document.querySelector('.chord-drag-handle');
+            if (handle) handle.classList.add('dragging');
+
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchmove', onDrag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function onDrag(e) {
+            if (!isDragging || !activeStencil) return;
+            e.preventDefault();
+
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            const { fretHeight } = getFretboardMetrics();
+
+            const deltaY = clientY - dragStartY;
+            const deltaFrets = Math.round(deltaY / fretHeight);
+            const newPosition = Math.max(0, Math.min(12, dragStartPosition + deltaFrets));
+
+            if (newPosition !== activeStencil.position) {
+                activeStencil.position = newPosition;
+                activeStencil.barre = barreEnabled && newPosition > 0;
+                updateUI();
+                // Play root note as chord moves - audio feedback
+                playChordAtPosition();
+            }
+        }
+
+        function endDrag() {
+            isDragging = false;
+
+            const handle = document.querySelector('.chord-drag-handle');
+            if (handle) handle.classList.remove('dragging');
+
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchmove', onDrag);
+            document.removeEventListener('touchend', endDrag);
+        }
+
+        // ==================== QUICK CHORDS ====================
+        function renderQuickChords() {
+            const container = document.getElementById('quickChords');
+            container.innerHTML = QUICK_CHORDS.map(c => `
+                <button class="stencil-btn" data-shape="${c.shape}" data-type="${c.type}" data-position="${c.position}">
+                    ${c.name}
+                </button>
+            `).join('');
+
+            container.querySelectorAll('.stencil-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setStencil(btn.dataset.shape, btn.dataset.type, parseInt(btn.dataset.position) || 0);
+                });
+            });
+        }
+
+        // ==================== EVENT SETUP ====================
+        function setupEventListeners() {
+            // Fret buttons
+            document.querySelectorAll('[data-frets]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('[data-frets]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFrets = parseInt(btn.dataset.frets);
+                    renderFretboard();
+                });
+            });
+
+            // CAGED buttons
+            document.querySelectorAll('#cagedButtons .stencil-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setStencil(btn.dataset.shape, document.getElementById('chordType').value, 0);
+                });
+            });
+
+            // Clear
+            document.getElementById('clearAll').addEventListener('click', clearChord);
+
+            // Audio - click to initialize and test
+            document.getElementById('audioInit').addEventListener('click', () => {
+                initAudio();
+                // Play test tone A440
+                playNote(440, 0.5);
+            });
+            document.getElementById('playChord').addEventListener('click', () => playChord(false));
+            document.getElementById('strumChord').addEventListener('click', () => playChord(true));
+
+            // Toggles
+            document.getElementById('barreToggle').addEventListener('click', function() {
+                barreEnabled = !barreEnabled;
+                this.classList.toggle('active', barreEnabled);
+                if (activeStencil) {
+                    activeStencil.barre = barreEnabled && activeStencil.position > 0;
+                    updateUI();
+                }
+            });
+
+            document.getElementById('showCagedToggle').addEventListener('click', function() {
+                showCaged = !showCaged;
+                this.classList.toggle('active', showCaged);
+                updateUI();
+            });
+        }
+
+        // ==================== INIT ====================
+        function init() {
+            renderFretboard();
+            renderQuickChords();
+            setupEventListeners();
+            updateStencilInfo();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

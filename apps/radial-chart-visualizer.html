@@ -1,0 +1,443 @@
+Radial chart visualization in HTML
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Circle of Modes — 7 Wedges × 7 Rings</title>
+<style>
+  :root{
+    --bg: #0f1115;
+    --grid: #202633;
+    --text: #eaeef7;
+    --muted: #b7c0d8;
+    --accent: #8ac6ff;
+    --ring-highlight: rgba(255,255,255,0.08);
+    --wedge-highlight: rgba(255,255,255,0.12);
+  }
+  html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  header { padding: 20px 24px; display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--grid); }
+  header h1 { font-size: 20px; margin: 0; letter-spacing: 0.2px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  main { display: grid; grid-template-columns: 1.25fr 0.85fr; gap: 24px; padding: 20px; }
+  .panel {
+    background: #12161f; border: 1px solid var(--grid); border-radius: 12px; overflow: hidden;
+  }
+  .panel h2 { margin: 0; padding: 14px 16px; font-size: 15px; border-bottom: 1px solid var(--grid); color: var(--muted); letter-spacing: 0.2px; }
+  .viz { position: relative; }
+  .viz svg { width: 100%; height: 100%; display: block; background: radial-gradient(1200px circle at 40% 45%, #0f1115 0%, #0e121a 50%, #0c1018 100%); }
+  .center-title {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    display: grid; place-items: center; pointer-events: none;
+  }
+  .center-title .big {
+    font-weight: 700; font-size: 18px; letter-spacing: 2px;
+  }
+  .center-title .small {
+    margin-top: 6px; font-size: 12px; color: var(--muted); letter-spacing: 1px;
+  }
+  .legend { padding: 12px; display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+  .chip {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; background: #0f141c; border: 1px solid var(--grid);
+    cursor: pointer;
+  }
+  .chip .swatch { width: 14px; height: 14px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset; }
+  .chip .label { font-size: 13px; color: var(--text); }
+  .chip:hover { border-color: #30405a; }
+  .controls { padding: 10px 12px; display: grid; gap: 10px; border-top: 1px solid var(--grid); }
+  .controls button {
+    all: unset; background: #172133; color: var(--text); padding: 10px 12px; text-align: center; border-radius: 10px; border: 1px solid #2a3a55; cursor: pointer; font-size: 13px;
+  }
+  .controls button:hover { background: #1b2740; }
+  .details { padding: 12px 14px; display: grid; gap: 8px; }
+  .kv { display: grid; grid-template-columns: 120px 1fr; gap: 8px; font-size: 13px; }
+  .kv .k { color: var(--muted); }
+  .kv .v { color: var(--text); }
+  .note { padding: 10px 12px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--grid); }
+  .ring-labels {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .ring-labels .ring-text {
+    position: absolute; left: 50%; top: 50%; transform-origin: center; transform: translate(-50%, -50%) rotate(0deg);
+    font-size: 11px; color: var(--muted);
+  }
+  /* hover highlights set via inline opacity in JS */
+</style>
+</head>
+<body>
+<header>
+  <h1>CIRCLE OF MODES</h1>
+  <div class="sub">7 wedges × 7 rings • Color, text, note, name, sound</div>
+</header>
+
+<main>
+  <section class="panel viz" id="vizPanel">
+    <h2>Radial chart</h2>
+    <div class="center-title">
+      <div class="big">CIRCLE OF MODES</div>
+      <div class="small">Ionian → Dorian → Phrygian → Lydian → Mixolydian → Aeolian → Locrian (clockwise)</div>
+    </div>
+    <svg id="chart" viewBox="0 0 800 800" aria-label="Circle of modes radial chart"></svg>
+    <div class="ring-labels" id="ringLabels"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Selection details</h2>
+    <div class="details" id="details">
+      <!-- Populated dynamically -->
+    </div>
+    <div class="controls">
+      <button id="playScale">Play scale</button>
+      <button id="stopAudio">Stop audio</button>
+      <button id="resetView">Reset view</button>
+    </div>
+    <div class="legend" id="legend">
+      <!-- Mode chips injected -->
+    </div>
+    <div class="note">Tip: click a wedge to highlight a mode. Hover rings to compare layers across all modes. Use “Play scale” to hear the selected mode built on its root.</div>
+  </section>
+</main>
+
+<script>
+/* -------- Data model: 7 modes × 7 rings -------- */
+const modes = [
+  { name: "Ionian", quality: "Major", mood: "Bright, stable",
+    intervals: "W-W-H-W-W-W-H",
+    notes: ["C","D","E","F","G","A","B"],
+    chords: ["C","Dm","Em","F","G","Am","Bdim"],
+    genre: ["Pop","Classical"], song: "Let It Be — The Beatles",
+    color: "#5db8ff" },
+  { name: "Dorian", quality: "Minor (raised 6th)", mood: "Hopeful, soulful",
+    intervals: "W-H-W-W-W-H-W",
+    notes: ["D","E","F","G","A","B","C"],
+    chords: ["Dm","Em","F","G","Am","Bdim","C"],
+    genre: ["Jazz","Folk"], song: "Scarborough Fair — Simon & Garfunkel",
+    color: "#6ec28b" },
+  { name: "Phrygian", quality: "Minor (flat 2nd)", mood: "Dark, exotic",
+    intervals: "H-W-W-W-H-W-W",
+    notes: ["E","F","G","A","B","C","D"],
+    chords: ["Em","F","G","Am","Bdim","C","Dm"],
+    genre: ["Flamenco","Metal"], song: "Wherever I May Roam — Metallica",
+    color: "#c0b27a" },
+  { name: "Lydian", quality: "Major (raised 4th)", mood: "Dreamy, soaring",
+    intervals: "W-W-W-H-W-W-H",
+    notes: ["F","G","A","B","C","D","E"],
+    chords: ["F","G","Am","Bdim","C","Dm","Em"],
+    genre: ["Film scores","Prog Rock"], song: "Dreams — Fleetwood Mac",
+    color: "#ffd46b" },
+  { name: "Mixolydian", quality: "Major (flat 7th)", mood: "Bluesy, earthy",
+    intervals: "W-W-H-W-W-H-W",
+    notes: ["G","A","B","C","D","E","F"],
+    chords: ["G","Am","Bdim","C","Dm","Em","F"],
+    genre: ["Rock","Blues"], song: "Sweet Home Alabama — Lynyrd Skynyrd",
+    color: "#ff9c6b" },
+  { name: "Aeolian", quality: "Minor", mood: "Sad, melancholic",
+    intervals: "W-H-W-W-H-W-W",
+    notes: ["A","B","C","D","E","F","G"],
+    chords: ["Am","Bdim","C","Dm","Em","F","G"],
+    genre: ["Folk","Ballads"], song: "House of the Rising Sun — The Animals",
+    color: "#ff6b80" },
+  { name: "Locrian", quality: "Diminished", mood: "Dissonant, unstable",
+    intervals: "H-W-W-H-W-W-W",
+    notes: ["B","C","D","E","F","G","A"],
+    chords: ["Bdim","C","Dm","Em","F","G","Am"],
+    genre: ["Experimental","Jazz"], song: "Rare/avant-garde usage",
+    color: "#ff6bb3" },
+];
+
+const layers = [
+  { name: "Ring 1 — Root note", key: "root" },
+  { name: "Ring 2 — Scale degrees", key: "notes" },
+  { name: "Ring 3 — Interval pattern", key: "intervals" },
+  { name: "Ring 4 — Tonal quality", key: "quality" },
+  { name: "Ring 5 — Emotional mood", key: "mood" },
+  { name: "Ring 6 — Common chords", key: "chords" },
+  { name: "Ring 7 — Genre / song", key: "song" },
+];
+
+/* derive root from notes[0] for each mode */
+modes.forEach(m=> m.root = m.notes[0]);
+
+/* -------- SVG chart drawing -------- */
+const svg = document.getElementById("chart");
+const width = 800, height = 800;
+const cx = width/2, cy = height/2;
+const outerRadius = 340;
+const innerRadius = 60; // hole for center title
+const ringCount = 7;
+const wedgeCount = modes.length;
+const tau = Math.PI * 2;
+
+const ringWidth = (outerRadius - innerRadius) / ringCount;
+const wedgeAngle = tau / wedgeCount;
+
+/* radial grid background */
+const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+svg.appendChild(defs);
+
+function polarToXY(r, a){ return [cx + r*Math.cos(a), cy + r*Math.sin(a)]; }
+
+function arcPath(r1, r2, a0, a1){
+  const largeArc = (a1 - a0) > Math.PI ? 1 : 0;
+  const [x0,y0] = polarToXY(r1, a0);
+  const [x1,y1] = polarToXY(r1, a1);
+  const [x2,y2] = polarToXY(r2, a1);
+  const [x3,y3] = polarToXY(r2, a0);
+  return [
+    `M ${x0} ${y0}`,
+    `A ${r1} ${r1} 0 ${largeArc} 1 ${x1} ${y1}`,
+    `L ${x2} ${y2}`,
+    `A ${r2} ${r2} 0 ${largeArc} 0 ${x3} ${y3}`,
+    `Z`
+  ].join(" ");
+}
+
+/* container group */
+const gChart = document.createElementNS("http://www.w3.org/2000/svg","g");
+gChart.setAttribute("transform", "translate(0,0)");
+svg.appendChild(gChart);
+
+/* rings hover overlay (to compare layers) */
+const ringOverlays = [];
+for(let r=0; r<ringCount; r++){
+  const rInner = innerRadius + r*ringWidth;
+  const rOuter = rInner + ringWidth;
+  const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+  path.setAttribute("d", arcPath(rInner, rOuter, 0, tau));
+  path.setAttribute("fill", "transparent");
+  path.setAttribute("stroke", "none");
+  path.setAttribute("data-ring", r);
+  path.style.cursor = "pointer";
+  path.addEventListener("mouseenter", () => highlightRing(r, true));
+  path.addEventListener("mouseleave", () => highlightRing(r, false));
+  svg.appendChild(path);
+  ringOverlays.push(path);
+}
+
+/* draw wedges × rings cells */
+const cellGroups = []; // for interaction highlighting
+
+for(let w=0; w<wedgeCount; w++){
+  const a0 = -Math.PI/2 + w*wedgeAngle; // start from top (12 o'clock)
+  const a1 = a0 + wedgeAngle;
+
+  const mode = modes[w];
+
+  // Outer label arc background and divider
+  const divider = document.createElementNS("http://www.w3.org/2000/svg","path");
+  divider.setAttribute("d", arcPath(outerRadius, outerRadius-1, a0, a1));
+  divider.setAttribute("fill", "none");
+  divider.setAttribute("stroke", "rgba(255,255,255,0.06)");
+  divider.setAttribute("stroke-width", "2");
+  svg.appendChild(divider);
+
+  for(let r=0; r<ringCount; r++){
+    const rInner = innerRadius + r*ringWidth;
+    const rOuter = rInner + ringWidth;
+    const cell = document.createElementNS("http://www.w3.org/2000/svg","path");
+    cell.setAttribute("d", arcPath(rInner, rOuter, a0, a1));
+    // base color by mode, shade by ring depth
+    const base = mode.color;
+    const shade = 0.10 + (r * 0.045);
+    cell.setAttribute("fill", shadeColor(base, -shade));
+    cell.setAttribute("stroke", "rgba(255,255,255,0.06)");
+    cell.setAttribute("stroke-width", "1");
+    cell.setAttribute("data-wedge", w);
+    cell.setAttribute("data-ring", r);
+    cell.style.cursor = "pointer";
+    cell.addEventListener("click", () => selectWedge(w));
+    cell.addEventListener("mouseenter", () => hoverCell(w, r, true));
+    cell.addEventListener("mouseleave", () => hoverCell(w, r, false));
+    svg.appendChild(cell);
+
+    // keep reference
+    cellGroups.push({wedge:w, ring:r, el:cell});
+  }
+
+  // Mode label (outer wedge): name + interval pattern
+  const labelAngle = (a0 + a1)/2;
+  const [lx, ly] = polarToXY(outerRadius - 18, labelAngle);
+  const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+  text.setAttribute("x", lx);
+  text.setAttribute("y", ly);
+  text.setAttribute("fill", "#eaeef7");
+  text.setAttribute("font-size", "12");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("dominant-baseline", "central");
+  text.style.pointerEvents = "none";
+  text.textContent = `${mode.name} • ${mode.intervals}`;
+  svg.appendChild(text);
+}
+
+/* ring labels on right side for quick reference */
+const ringLabelsDiv = document.getElementById("ringLabels");
+for(let r=0; r<ringCount; r++){
+  const label = document.createElement("div");
+  label.className = "ring-text";
+  // place slightly right of center along horizontal axis, at each ring radius
+  const radius = innerRadius + r*ringWidth + ringWidth/2;
+  label.style.left = "65%";
+  label.style.top = (50 + (radius/outerRadius)*35) + "%";
+  label.textContent = layers[r].name;
+  ringLabelsDiv.appendChild(label);
+}
+
+/* -------- Legend & details -------- */
+const legend = document.getElementById("legend");
+modes.forEach((m, i) => {
+  const chip = document.createElement("div");
+  chip.className = "chip";
+  chip.addEventListener("click", () => selectWedge(i));
+  const swatch = document.createElement("div");
+  swatch.className = "swatch";
+  swatch.style.background = m.color;
+  const label = document.createElement("div");
+  label.className = "label";
+  label.textContent = `${i+1}. ${m.name}`;
+  chip.appendChild(swatch);
+  chip.appendChild(label);
+  legend.appendChild(chip);
+});
+
+const details = document.getElementById("details");
+function renderDetails(idx){
+  const m = modes[idx];
+  details.innerHTML = `
+    <div class="kv"><div class="k">Mode</div><div class="v">${m.name}</div></div>
+    <div class="kv"><div class="k">Root note</div><div class="v">${m.root}</div></div>
+    <div class="kv"><div class="k">Scale degrees</div><div class="v">${m.notes.join("–")}</div></div>
+    <div class="kv"><div class="k">Interval pattern</div><div class="v">${m.intervals}</div></div>
+    <div class="kv"><div class="k">Tonal quality</div><div class="v">${m.quality}</div></div>
+    <div class="kv"><div class="k">Emotional mood</div><div class="v">${m.mood}</div></div>
+    <div class="kv"><div class="k">Common chords</div><div class="v">${m.chords.join(", ")}</div></div>
+    <div class="kv"><div class="k">Genre / song</div><div class="v">${m.genre.join(", ")} • ${m.song}</div></div>
+  `;
+}
+
+/* -------- Interaction state -------- */
+let selectedWedge = 0;
+renderDetails(selectedWedge);
+selectWedge(selectedWedge);
+
+function selectWedge(w){
+  selectedWedge = w;
+  // dim all cells slightly, then highlight selected wedge cells
+  cellGroups.forEach(c=>{
+    c.el.style.opacity = (c.wedge === w) ? "1.0" : "0.35";
+  });
+  renderDetails(w);
+}
+
+function highlightRing(r, on){
+  cellGroups.forEach(c=>{
+    if(c.ring === r){
+      c.el.style.opacity = on ? "1.0" : (c.wedge === selectedWedge ? "1.0" : "0.35");
+      c.el.style.filter = on ? "brightness(1.15)" : "none";
+    } else {
+      if(on){
+        c.el.style.opacity = (c.wedge === selectedWedge) ? "0.55" : "0.25";
+      } else {
+        c.el.style.opacity = (c.wedge === selectedWedge) ? "1.0" : "0.35";
+      }
+      c.el.style.filter = "none";
+    }
+  });
+}
+
+function hoverCell(w, r, on){
+  cellGroups.forEach(c=>{
+    if(c.wedge === w && c.ring === r){
+      c.el.style.filter = on ? "brightness(1.25) saturate(1.1)" : "none";
+    }
+  });
+}
+
+/* -------- WebAudio: play selected mode scale -------- */
+let audioCtx = null;
+let playing = false;
+
+function freq(note){
+  // simple mapping (A4=440), compute with equal temperament
+  const map = { "C":0, "C#":1, "Db":1, "D":2, "D#":3, "Eb":3, "E":4, "F":5, "F#":6, "Gb":6,
+                "G":7, "G#":8, "Ab":8, "A":9, "A#":10, "Bb":10, "B":11 };
+  const n = map[note];
+  const a4 = 440;
+  const c4Index = 9 - 0 + 3; // offset baseline (not exact; we’ll anchor C4)
+  // Define C4 = 261.63 Hz
+  const c4 = 261.63;
+  // Compute semitone offset from C4
+  const semitone = n;
+  return c4 * Math.pow(2, semitone/12);
+}
+
+function playScale(){
+  if(playing) return;
+  playing = true;
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  const m = modes[selectedWedge];
+  const notes = m.notes; // 7 notes
+  const now = audioCtx.currentTime;
+  const dur = 0.3;
+
+  for(let i=0;i<notes.length;i++){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sine";
+    const f = freq(notes[i]);
+    osc.frequency.value = f;
+    gain.gain.setValueAtTime(0.0001, now + i*dur);
+    gain.gain.exponentialRampToValueAtTime(0.15, now + i*dur + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + i*dur + dur - 0.05);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(now + i*dur);
+    osc.stop(now + i*dur + dur);
+  }
+
+  // mark done after sequence
+  setTimeout(()=> playing = false, (notes.length+1)*dur*1000);
+}
+
+function stopAudio(){
+  if(audioCtx){
+    audioCtx.close();
+    audioCtx = null;
+  }
+  playing = false;
+}
+
+/* -------- UI controls -------- */
+document.getElementById("playScale").addEventListener("click", playScale);
+document.getElementById("stopAudio").addEventListener("click", stopAudio);
+document.getElementById("resetView").addEventListener("click", ()=>{
+  cellGroups.forEach(c=>{
+    c.el.style.opacity = "1.0";
+    c.el.style.filter = "none";
+  });
+  renderDetails(selectedWedge);
+});
+
+/* -------- Helpers -------- */
+function shadeColor(hex, amt){
+  // hex to RGB, apply darkening
+  const c = hex.replace('#','');
+  const r = parseInt(c.substring(0,2),16);
+  const g = parseInt(c.substring(2,4),16);
+  const b = parseInt(c.substring(4,6),16);
+  function clamp(v){ return Math.max(0, Math.min(255, v)); }
+  const rr = clamp(Math.round(r*(1-amt)));
+  const gg = clamp(Math.round(g*(1-amt)));
+  const bb = clamp(Math.round(b*(1-amt)));
+  return `rgb(${rr}, ${gg}, ${bb})`;
+}
+</script>
+</body>

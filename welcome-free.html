@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+    <title>Choose Your Free Apps | Keys, Codes & Modes</title>
+    <meta name="description" content="Select any 3 interactive music theory applications to start your journey.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 20s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .welcome-name {
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .selection-status {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(244, 208, 63, 0.1);
+            border: 2px solid var(--primary-gold);
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        .selection-count {
+            color: var(--primary-gold);
+            font-size: 2rem;
+        }
+        
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-teal);
+            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
+        }
+        
+        .app-card.selected {
+            border-color: var(--primary-gold);
+            background: rgba(244, 208, 63, 0.1);
+            box-shadow: 0 10px 30px rgba(244, 208, 63, 0.4);
+        }
+        
+        .app-card.selected::before {
+            content: "✓ SELECTED";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        
+        .app-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .app-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-gold);
+        }
+        
+        .app-description {
+            color: #ccc;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .app-features {
+            list-style: none;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .app-features li {
+            padding: 0.3rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        
+        .app-features li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-teal);
+        }
+        
+        .flagship-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .continue-section {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        .continue-btn {
+            display: inline-block;
+            padding: 1.5rem 4rem;
+            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+        }
+        
+        .continue-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .upgrade-teaser {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(139, 107, 163, 0.1);
+            border: 2px solid var(--primary-purple);
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .upgrade-teaser h3 {
+            color: var(--primary-purple);
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .upgrade-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .upgrade-link:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Keys, Codes & Modes!</h1>
+            <p class="welcome-name" id="welcomeName">Welcome, Friend! 👋</p>
+            <p>Choose ANY 3 of our premium interactive applications below. Each one is a complete professional-grade music theory learning tool.</p>
+        </div>
+        
+        <div class="selection-status">
+            <span class="selection-count" id="selectionCount">0</span> / 3 Apps Selected
+        </div>
+        
+        <div class="apps-grid" id="appsGrid">
+            <!-- Apps will be loaded here -->
+        </div>
+        
+        <div class="continue-section">
+            <button class="continue-btn" id="continueBtn" disabled onclick="goToDashboard()">
+                Continue to Your Dashboard →
+            </button>
+            <p style="color: #999; margin-top: 1rem;">Select 3 apps to continue</p>
+        </div>
+        
+        <div class="upgrade-teaser">
+            <h3>Want ALL 20+ Apps?</h3>
+            <p>Upgrade to Premium and unlock our complete suite of music theory tools, plus exclusive features and priority support.</p>
+            <a href="pricing.html" class="upgrade-link">View Pricing Plans</a>
+        </div>
+    </div>
+    
+    <script>
+        // Load user's selected apps from localStorage
+        const userName = localStorage.getItem('userName');
+        const freeApps = JSON.parse(localStorage.getItem('freeApps') || '[]');
+        const freeAppFiles = JSON.parse(localStorage.getItem('freeAppFiles') || '{}');
+        
+        // Display welcome message
+        if (userName) {
+            document.getElementById('welcomeName').textContent = `Welcome, ${userName}! 👋`;
+        }
+        
+        // All available apps (same list as picker)
+        const GATEWAY_APPS = [
+            {
+                id: 'music-theory-pro',
+                file: 'music-theory-pro.html',
+                icon: '🎼',
+                title: 'Music Theory Explorer Pro',
+                description: 'Our flagship comprehensive music theory visualization tool.',
+                features: ['Visual chromatic circles', 'Interactive note selection', 'Audio playback', 'Multiple view modes']
+            },
+            {
+                id: 'chromatic-roulette',
+                file: 'chromatic-roulette.html',
+                icon: '🎨',
+                title: 'Chromatic Roulette',
+                description: 'Interactive color-coded chromatic wheel.',
+                features: ['Color-coded notes', 'Interactive spinning', 'Scale visualization', 'Audio synthesis']
+            },
+            {
+                id: 'circle-of-fifths',
+                file: 'circle-of-fifths.html',
+                icon: '🎯',
+                title: 'Circle of Fifths',
+                description: 'Master key relationships and chord progressions.',
+                features: ['Interactive circle', 'Key relationships', 'Chord families', 'Modulation paths']
+            },
+            {
+                id: 'guitar-fretboard',
+                file: 'Keys codes modes guitar fretboard.html',
+                icon: '🎸',
+                title: 'Guitar Fretboard Explorer Pro',
+                description: 'Advanced guitar fretboard visualization and training tool.',
+                features: ['Full fretboard visualization', 'Scale patterns', 'Chord shapes', 'Practice modes']
+            },
+            {
+                id: 'guitar-fretboard-basic',
+                file: 'guitar-fretboard-explorer.html',
+                icon: '🎸',
+                title: 'Guitar Fretboard Explorer',
+                description: 'Essential fretboard visualization for beginners.',
+                features: ['Clear note visualization', 'Scale highlighting', 'Easy interface', 'Practice mode']
+            },
+            {
+                id: 'caged-system',
+                file: 'caged-145-master.html',
+                icon: '🎸',
+                title: 'CAGED 1-4-5 Master',
+                description: 'Master the CAGED system with chord progressions.',
+                features: ['CAGED positions', '1-4-5 progressions', 'Visual patterns', 'Audio playback']
+            },
+            {
+                id: 'harmonized-scale',
+                file: 'harmonized-chromatic-scale.html',
+                icon: '🎹',
+                title: 'Harmonized Chromatic Scale',
+                description: 'Explore harmonic relationships in the chromatic scale.',
+                features: ['Chord building', 'Harmonic analysis', 'Color visualization', 'Interactive piano']
+            },
+            {
+                id: 'chord-builder',
+                file: 'chord-builder.html',
+                icon: '🎹',
+                title: 'Interactive Chord Builder',
+                description: 'Build and analyze any chord structure.',
+                features: ['Custom chord building', 'Interval analysis', 'Inversions', 'Audio preview']
+            },
+            {
+                id: 'sacred-geometry',
+                file: 'sacred-geometry-enhanced-final.html',
+                icon: '🌟',
+                title: 'Sacred Geometry Music',
+                description: 'Explore the connection between geometry and sound.',
+                features: ['Geometric patterns', 'Visual harmony', 'Mathematical relationships', 'Cymatics']
+            },
+            {
+                id: 'pitch-detector',
+                file: 'pitch-detector.html',
+                icon: '🎤',
+                title: 'Real-Time Pitch Detector',
+                description: 'Professional pitch detection with 4-view visualization.',
+                features: ['Live microphone input', 'Multiple visualizations', 'Recording capability', 'Note accuracy']
+            }
+        ];
+        
+        // Redirect if no apps selected
+        if (freeApps.length === 0) {
+            window.location.href = 'file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/welcome-free-picker.html';
+        }
+        
+        // Update header text
+        document.querySelector('.header p').textContent = 'Here are your 3 selected apps! Click "Launch App" to start exploring.';
+        
+        // Hide selection status
+        document.querySelector('.selection-status').style.display = 'none';
+        
+        // Load only the 3 selected apps
+        const appsGrid = document.getElementById('appsGrid');
+        appsGrid.innerHTML = '';
+        
+        freeApps.forEach(appId => {
+            const app = GATEWAY_APPS.find(a => a.id === appId);
+            if (!app) return;
+            
+            const appCard = document.createElement('div');
+            appCard.className = 'app-card selected';
+            appCard.innerHTML = `
+                <div class="app-icon">${app.icon}</div>
+                <h3>${app.title}</h3>
+                <p>${app.description}</p>
+                <ul class="app-features">
+                    ${app.features.map(f => `<li>${f}</li>`).join('')}
+                </ul>
+                <div style="margin-top: auto; padding-top: 1rem;">
+                    <a href="file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/apps/${app.file}" 
+                       class="continue-btn" 
+                       style="display: inline-block; padding: 1rem 2rem; font-size: 1rem; text-decoration: none;">
+                        Launch App →
+                    </a>
+                </div>
+            `;
+            appsGrid.appendChild(appCard);
+        });
+        
+        // Update continue button to go to all apps page
+        const continueBtn = document.getElementById('continueBtn');
+        continueBtn.disabled = false;
+        continueBtn.textContent = 'View All Apps →';
+        continueBtn.nextElementSibling.textContent = 'Ready to explore!';
+        
+        function goToDashboard() {
+            window.location.href = 'file:///Users/benjaminryan/Desktop/__________KCM_001_Master/Keyscodesandmodes.com/insights.html';
+        }
+    </script>
+</body>

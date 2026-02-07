@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Mandala | Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #0a0a1f 0%, #000000 100%);
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .hero-logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            color: #FFD700;
+            font-style: italic;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 120px);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .mandala-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #mandalaCanvas {
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+            cursor: crosshair;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .controls-panel {
+            width: 350px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            overflow-y: auto;
+            max-height: 100%;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .control-section h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .button-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .symmetry-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.5);
+        }
+
+        .control-item {
+            margin-bottom: 15px;
+        }
+
+        .control-item label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            cursor: pointer;
+            border: none;
+        }
+
+        .value-display {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-family: monospace;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 4px solid #FFD700;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .info-box h4 {
+            color: #FFD700;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #c0c0c0;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+
+        .active-notes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .note-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .controls-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .rotating {
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .pulsing {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hero-logo">CHROMATIC MANDALA</div>
+        <div class="tagline">Kaleidoscopic Music & Sacred Geometry Generator</div>
+    </div>
+
+    <div class="main-container">
+        <div class="mandala-container">
+            <canvas id="mandalaCanvas" width="800" height="800"></canvas>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-section">
+                <h3>🎨 Symmetry</h3>
+                <p style="color: #888; font-size: 0.85em; margin-bottom: 10px;">Creates mirror copies of your notes</p>
+                <div class="symmetry-grid">
+                    <button onclick="setSymmetry(1)" id="sym-1">1x<br><small>No Mirror</small></button>
+                    <button onclick="setSymmetry(3)" class="active" id="sym-3">3x<br><small>Triangle</small></button>
+                    <button onclick="setSymmetry(6)" id="sym-6">6x<br><small>Flower</small></button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🎵 Click Mode</h3>
+                <p style="color: #888; font-size: 0.85em; margin-bottom: 10px;">How clicking adds notes</p>
+                <div class="button-grid">
+                    <button onclick="setMode('paint')" class="active" id="mode-paint">Add/Remove Notes</button>
+                    <button onclick="setMode('clear')" id="mode-clear">Clear Then Add</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🎼 Load Pattern</h3>
+                <p style="color: #888; font-size: 0.85em; margin-bottom: 10px;">Quick start with common patterns</p>
+                <div class="button-grid">
+                    <button onclick="loadPattern('major-triad')">Major Chord (3)</button>
+                    <button onclick="loadPattern('minor-triad')">Minor Chord (3)</button>
+                    <button onclick="loadPattern('major-scale')">Major Scale (7)</button>
+                    <button onclick="loadPattern('pentatonic')">Pentatonic (5)</button>
+                    <button onclick="loadPattern('circle-fifths')">Circle of 5ths (12)</button>
+                    <button onclick="loadPattern('chromatic')">All 12 Notes</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>⚙️ Visual Settings</h3>
+                <p style="color: #888; font-size: 0.85em; margin-bottom: 10px;">Adjust appearance</p>
+                
+                <div class="control-item">
+                    <label>Note Size <span class="value-display" id="brushValue">30</span></label>
+                    <input type="range" id="brush" min="20" max="60" value="30" oninput="updateSettings()">
+                </div>
+
+                <div class="control-item">
+                    <label>Glow <span class="value-display" id="glowValue">20</span></label>
+                    <input type="range" id="glow" min="0" max="40" value="20" oninput="updateSettings()">
+                </div>
+
+                <div class="control-item">
+                    <label>Spin Speed <span class="value-display" id="rotateValue">0</span></label>
+                    <input type="range" id="rotate" min="0" max="5" step="0.5" value="0" oninput="updateSettings()">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🎹 Play Music</h3>
+                <div class="button-grid">
+                    <button onclick="playMandala()" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); font-size: 1.1em; padding: 16px;">
+                        ▶️ Play Once
+                    </button>
+                    <button onclick="toggleArpeggio()" id="arp-toggle" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.1em; padding: 16px;">
+                        🔄 Loop Notes
+                    </button>
+                    <button onclick="clearMandala()" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); font-size: 1.1em; padding: 16px;">
+                        🗑️ Clear All
+                    </button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>📊 Active Notes</h3>
+                <div class="active-notes" id="activeNotes">
+                    <span style="color: #888; font-size: 0.9em;">Click the mandala to add notes...</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>Quick Guide</h4>
+                <p>
+                    • <strong>Click the circle</strong> to add/remove notes<br>
+                    • <strong>Symmetry</strong> = how many copies (3x = triangle, 6x = flower)<br>
+                    • <strong>Play Once</strong> = hear all notes as chord<br>
+                    • <strong>Loop Notes</strong> = hear notes one by one, repeating<br>
+                    • Outer rings = higher octaves
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Keys, Codes & Modes Chromatic Color System
+        const chromaticColors = {
+            'C': '#FFFF00',   'C#': '#FFC400',  'D': '#FF8000',   'D#': '#FF4000',
+            'E': '#FF0000',   'F': '#C4007F',   'F#': '#8000FF',  'G': '#4000FF',
+            'G#': '#0000FF',  'A': '#007FFF',   'A#': '#00FF80',  'B': '#80FF00'
+        };
+
+        const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        
+        // Canvas and context
+        const canvas = document.getElementById('mandalaCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const maxRadius = Math.min(centerX, centerY) - 20;
+
+        // State
+        let activeNotes = new Set();
+        let symmetryFold = 3;
+        let currentMode = 'paint';
+        let numRings = 4;
+        let brushSize = 30;
+        let glowIntensity = 20;
+        let rotationSpeed = 0;
+        let rotationAngle = 0;
+        let isArpeggioPlaying = false;
+        let arpeggioInterval = null;
+        let audioContext;
+        let hoveredNote = null;
+
+        // Initialize
+        drawMandalaBase();
+        setupEventListeners();
+
+        function setupEventListeners() {
+            canvas.addEventListener('click', handleCanvasClick);
+            canvas.addEventListener('mousemove', handleMouseMove);
+            
+            // Initialize audio on first interaction
+            document.addEventListener('click', () => {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }, { once: true });
+        }
+
+        function drawMandalaBase() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Save context
+            ctx.save();
+            
+            // Apply rotation
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotationAngle);
+            ctx.translate(-centerX, -centerY);
+
+            // Draw concentric rings for octaves
+            for (let ring = 0; ring <= numRings; ring++) {
+                const radius = (maxRadius / numRings) * ring;
+                
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 215, 0, ${0.2 - ring * 0.03})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Draw 12 chromatic sections (rotated -15° so C is at 12 o'clock)
+            for (let i = 0; i < 12; i++) {
+                const angle1 = (i * 30 - 90 - 15) * Math.PI / 180;
+                const angle2 = ((i + 1) * 30 - 90 - 15) * Math.PI / 180;
+                
+                // Draw radial line
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                const endX = centerX + maxRadius * Math.cos(angle1);
+                const endY = centerY + maxRadius * Math.sin(angle1);
+                ctx.lineTo(endX, endY);
+                ctx.strokeStyle = 'rgba(255, 215, 0, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Draw note label (rotated -15° so C is at top)
+                const labelRadius = maxRadius + 15;
+                const labelAngle = (i * 30 - 90 + 15 - 15) * Math.PI / 180;
+                const labelX = centerX + labelRadius * Math.cos(labelAngle);
+                const labelY = centerY + labelRadius * Math.sin(labelAngle);
+                
+                ctx.fillStyle = chromaticColors[noteNames[i]];
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = chromaticColors[noteNames[i]];
+                ctx.shadowBlur = 10;
+                ctx.fillText(noteNames[i], labelX, labelY);
+                ctx.shadowBlur = 0;
+            }
+
+            // Restore context
+            ctx.restore();
+
+            // Draw active notes
+            drawActiveNotes();
+            
+            // Draw Circle of Fifths connections if that pattern is loaded
+            drawCircleOfFifthsConnections();
+            
+            // Draw hover preview
+            if (hoveredNote) {
+                drawHoverPreview();
+            }
+        }
+
+        function drawCircleOfFifthsConnections() {
+            // Only draw if we have the Circle of Fifths pattern (7 notes)
+            const notesArray = Array.from(activeNotes);
+            if (notesArray.length !== 7) return;
+            
+            // Circle of Fifths sequence: C, G, D, A, E, B, F#
+            const fifthsSequence = [0, 7, 2, 9, 4, 11, 6];
+            
+            // Check if all these notes are present
+            const hasAllFifths = fifthsSequence.every(noteIndex => 
+                notesArray.some(noteKey => noteKey.startsWith(noteNames[noteIndex]))
+            );
+            
+            if (!hasAllFifths) return;
+            
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotationAngle);
+            
+            // Draw connecting lines in Circle of Fifths order
+            for (let i = 0; i < fifthsSequence.length; i++) {
+                const currentNoteIndex = fifthsSequence[i];
+                const nextNoteIndex = fifthsSequence[(i + 1) % fifthsSequence.length];
+                
+                const currentAngle = (currentNoteIndex * 30 + 15 - 90 - 15) * Math.PI / 180;
+                const nextAngle = (nextNoteIndex * 30 + 15 - 90 - 15) * Math.PI / 180;
+                
+                const radius = (maxRadius / numRings) * 1 + (maxRadius / numRings) / 2;
+                
+                const x1 = radius * Math.cos(currentAngle);
+                const y1 = radius * Math.sin(currentAngle);
+                const x2 = radius * Math.cos(nextAngle);
+                const y2 = radius * Math.sin(nextAngle);
+                
+                // Create gradient for the line
+                const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+                gradient.addColorStop(0, chromaticColors[noteNames[currentNoteIndex]]);
+                gradient.addColorStop(1, chromaticColors[noteNames[nextNoteIndex]]);
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 4;
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 15;
+                ctx.globalAlpha = 0.7;
+                ctx.stroke();
+            }
+            
+            ctx.restore();
+        }
+
+        function drawHoverPreview() {
+            if (!hoveredNote) return;
+            
+            const note = hoveredNote.note;
+            const octave = hoveredNote.octave;
+            const noteIndex = hoveredNote.noteIndex;
+            
+            // Calculate base position
+            const baseAngle = (noteIndex * 30 + 15 - 90 - 15) * Math.PI / 180;
+            const ring = octave - 3;
+            const radius = (maxRadius / numRings) * ring + (maxRadius / numRings) / 2;
+
+            // Draw preview with symmetry
+            for (let sym = 0; sym < symmetryFold; sym++) {
+                const symAngle = baseAngle + (sym * 2 * Math.PI / symmetryFold);
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(rotationAngle);
+                
+                const x = radius * Math.cos(symAngle);
+                const y = radius * Math.sin(symAngle);
+
+                // Draw semi-transparent preview
+                ctx.strokeStyle = chromaticColors[note];
+                ctx.lineWidth = 3;
+                ctx.shadowColor = chromaticColors[note];
+                ctx.shadowBlur = 15;
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                ctx.arc(x, y, brushSize, 0, Math.PI * 2);
+                ctx.stroke();
+
+                ctx.restore();
+            }
+        }
+
+        function handleCanvasClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const noteData = getNoteFromPosition(x, y);
+            if (noteData) {
+                toggleNote(noteData);
+                playNote(noteData.note);
+            }
+        }
+
+        function handleMouseMove(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const noteData = getNoteFromPosition(x, y);
+            canvas.style.cursor = noteData ? 'pointer' : 'crosshair';
+            
+            // Update hover preview
+            if (noteData) {
+                hoveredNote = noteData;
+                drawMandalaBase();
+            } else if (hoveredNote) {
+                hoveredNote = null;
+                drawMandalaBase();
+            }
+        }
+
+        function getNoteFromPosition(x, y) {
+            // Adjust for rotation
+            const dx = x - centerX;
+            const dy = y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > maxRadius || distance < 10) return null;
+
+            // Calculate angle (accounting for rotation and -15° offset so C is at top)
+            let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90 + 15;
+            angle -= rotationAngle * 180 / Math.PI;
+            if (angle < 0) angle += 360;
+            if (angle >= 360) angle -= 360;
+
+            // Determine note (0-11)
+            const noteIndex = Math.floor(angle / 30);
+            
+            // Determine octave ring
+            const ring = Math.floor((distance / maxRadius) * numRings);
+            const octave = Math.floor(ring) + 3; // Start from octave 3
+
+            return {
+                note: noteNames[noteIndex],
+                octave: octave,
+                angle: angle,
+                distance: distance,
+                noteIndex: noteIndex
+            };
+        }
+
+        function toggleNote(noteData) {
+            const key = `${noteData.note}${noteData.octave}`;
+            
+            if (currentMode === 'paint') {
+                if (activeNotes.has(key)) {
+                    activeNotes.delete(key);
+                } else {
+                    activeNotes.add(key);
+                }
+            } else if (currentMode === 'chord') {
+                activeNotes.add(key);
+            } else if (currentMode === 'scale') {
+                activeNotes.add(key);
+            }
+
+            updateActiveNotesDisplay();
+            drawMandalaBase();
+        }
+
+        function drawActiveNotes() {
+            activeNotes.forEach(noteKey => {
+                // Parse note name and octave correctly
+                let note, octave;
+                if (noteKey.length === 3) {
+                    // Sharp note like "C#4"
+                    note = noteKey.substring(0, 2);
+                    octave = parseInt(noteKey.substring(2));
+                } else {
+                    // Natural note like "C4"
+                    note = noteKey.substring(0, 1);
+                    octave = parseInt(noteKey.substring(1));
+                }
+                
+                const noteIndex = noteNames.indexOf(note);
+                if (noteIndex === -1) return; // Skip if note not found
+                
+                // Calculate base position (rotated -15° so C is at top)
+                const baseAngle = (noteIndex * 30 + 15 - 90 - 15) * Math.PI / 180;
+                const ring = octave - 3;
+                const radius = (maxRadius / numRings) * ring + (maxRadius / numRings) / 2;
+
+                // Draw with symmetry
+                for (let sym = 0; sym < symmetryFold; sym++) {
+                    const symAngle = baseAngle + (sym * 2 * Math.PI / symmetryFold);
+                    
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.rotate(rotationAngle);
+                    
+                    const x = radius * Math.cos(symAngle);
+                    const y = radius * Math.sin(symAngle);
+
+                    const color = chromaticColors[note];
+                    if (!color) {
+                        ctx.restore();
+                        return; // Skip if color not found
+                    }
+
+                    // Draw glow
+                    if (glowIntensity > 0) {
+                        const gradient = ctx.createRadialGradient(x, y, 0, x, y, brushSize);
+                        gradient.addColorStop(0, color + 'AA');
+                        gradient.addColorStop(0.5, color + '44');
+                        gradient.addColorStop(1, color + '00');
+                        
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(x, y, brushSize + glowIntensity, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Draw main circle
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 15;
+                    ctx.beginPath();
+                    ctx.arc(x, y, brushSize, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw note label
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = '#000';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(note, x, y);
+
+                    ctx.restore();
+                }
+            });
+        }
+
+        function setSymmetry(fold) {
+            symmetryFold = fold;
+            
+            // Update button states
+            document.querySelectorAll('.symmetry-grid button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`sym-${fold}`).classList.add('active');
+            
+            drawMandalaBase();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('[id^="mode-"]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`mode-${mode}`).classList.add('active');
+        }
+
+        function loadPattern(pattern) {
+            clearMandala(); // Always clear first
+            
+            const patterns = {
+                'major-triad': [0, 4, 7], // C, E, G
+                'minor-triad': [0, 3, 7], // C, Eb, G
+                'major-scale': [0, 2, 4, 5, 7, 9, 11], // C major scale
+                'pentatonic': [0, 2, 4, 7, 9], // C major pentatonic
+                'chromatic': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // All 12 notes
+                // Circle of Fifths: C, G, D, A, E, B, F# (7 notes going UP by fifths)
+                'circle-fifths': [0, 7, 2, 9, 4, 11, 6]
+            };
+
+            const intervals = patterns[pattern];
+            const baseOctave = 4;
+
+            intervals.forEach((interval, i) => {
+                const noteIndex = interval;
+                activeNotes.add(`${noteNames[noteIndex]}${baseOctave}`);
+            });
+
+            updateActiveNotesDisplay();
+            drawMandalaBase();
+        }
+
+        function playMandala() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const notesArray = Array.from(activeNotes);
+            
+            if (currentMode === 'arpeggio') {
+                // Play as arpeggio
+                notesArray.forEach((noteKey, i) => {
+                    setTimeout(() => {
+                        playNoteKey(noteKey);
+                        highlightNote(noteKey);
+                    }, i * 150);
+                });
+            } else {
+                // Play as chord
+                notesArray.forEach(noteKey => {
+                    playNoteKey(noteKey);
+                });
+            }
+        }
+
+        function toggleArpeggio() {
+            isArpeggioPlaying = !isArpeggioPlaying;
+            const btn = document.getElementById('arp-toggle');
+            
+            if (isArpeggioPlaying) {
+                btn.classList.add('active');
+                startArpeggio();
+            } else {
+                btn.classList.remove('active');
+                stopArpeggio();
+            }
+        }
+
+        function startArpeggio() {
+            if (activeNotes.size === 0) {
+                isArpeggioPlaying = false;
+                document.getElementById('arp-toggle').classList.remove('active');
+                return;
+            }
+
+            const notesArray = Array.from(activeNotes);
+            let index = 0;
+
+            arpeggioInterval = setInterval(() => {
+                const noteKey = notesArray[index];
+                playNoteKey(noteKey);
+                highlightNote(noteKey);
+                
+                index = (index + 1) % notesArray.length;
+            }, 200);
+        }
+
+        function stopArpeggio() {
+            if (arpeggioInterval) {
+                clearInterval(arpeggioInterval);
+                arpeggioInterval = null;
+            }
+        }
+
+        function playNote(note) {
+            playNoteKey(`${note}4`);
+        }
+
+        function playNoteKey(noteKey) {
+            if (!audioContext) return;
+
+            // Parse note name and octave correctly
+            let note, octave;
+            if (noteKey.length === 3) {
+                note = noteKey.substring(0, 2);
+                octave = parseInt(noteKey.substring(2));
+            } else {
+                note = noteKey.substring(0, 1);
+                octave = parseInt(noteKey.substring(1));
+            }
+            
+            const noteIndex = noteNames.indexOf(note);
+            if (noteIndex === -1) return;
+            
+            // Calculate frequency: A4 = 440Hz
+            const semitonesFromA4 = noteIndex - 9 + (octave - 4) * 12;
+            const frequency = 440 * Math.pow(2, semitonesFromA4 / 12);
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.8);
+        }
+
+        function highlightNote(noteKey) {
+            // Parse note name and octave correctly
+            let note, octave;
+            if (noteKey.length === 3) {
+                note = noteKey.substring(0, 2);
+                octave = parseInt(noteKey.substring(2));
+            } else {
+                note = noteKey.substring(0, 1);
+                octave = parseInt(noteKey.substring(1));
+            }
+            
+            const noteIndex = noteNames.indexOf(note);
+            if (noteIndex === -1) return;
+            
+            const color = chromaticColors[note];
+            if (!color) return;
+            
+            // Calculate base position
+            const baseAngle = (noteIndex * 30 + 15 - 90 - 15) * Math.PI / 180;
+            const ring = octave - 3;
+            const radius = (maxRadius / numRings) * ring + (maxRadius / numRings) / 2;
+
+            // Draw highlight flash with symmetry
+            for (let sym = 0; sym < symmetryFold; sym++) {
+                const symAngle = baseAngle + (sym * 2 * Math.PI / symmetryFold);
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(rotationAngle);
+                
+                const x = radius * Math.cos(symAngle);
+                const y = radius * Math.sin(symAngle);
+
+                // Draw bright flash
+                ctx.fillStyle = color;
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 30;
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.arc(x, y, brushSize + 15, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.restore();
+            }
+
+            // Redraw after flash
+            setTimeout(() => {
+                drawMandalaBase();
+            }, 100);
+        }
+
+        function clearMandala() {
+            activeNotes.clear();
+            stopArpeggio();
+            isArpeggioPlaying = false;
+            document.getElementById('arp-toggle').classList.remove('active');
+            updateActiveNotesDisplay();
+            drawMandalaBase();
+        }
+
+        function updateSettings() {
+            numRings = parseInt(document.getElementById('rings').value);
+            brushSize = parseInt(document.getElementById('brush').value);
+            glowIntensity = parseInt(document.getElementById('glow').value);
+            rotationSpeed = parseFloat(document.getElementById('rotate').value);
+
+            document.getElementById('ringsValue').textContent = numRings;
+            document.getElementById('brushValue').textContent = brushSize;
+            document.getElementById('glowValue').textContent = glowIntensity;
+            document.getElementById('rotateValue').textContent = rotationSpeed;
+
+            drawMandalaBase();
+        }
+
+        function updateActiveNotesDisplay() {
+            const container = document.getElementById('activeNotes');
+            container.innerHTML = '';
+
+            if (activeNotes.size === 0) {
+                container.innerHTML = '<span style="color: #888; font-size: 0.9em;">Click the mandala to add notes...</span>';
+                return;
+            }
+
+            const sortedNotes = Array.from(activeNotes).sort();
+            sortedNotes.forEach(noteKey => {
+                // Parse note name correctly
+                let note;
+                if (noteKey.length === 3) {
+                    note = noteKey.substring(0, 2);
+                } else {
+                    note = noteKey.substring(0, 1);
+                }
+                
+                const color = chromaticColors[note];
+                if (!color) return; // Skip if color not found
+                
+                const badge = document.createElement('span');
+                badge.className = 'note-badge';
+                badge.textContent = noteKey;
+                badge.style.backgroundColor = color;
+                badge.style.color = isLightColor(color) ? '#000' : '#fff';
+                container.appendChild(badge);
+            });
+        }
+
+        function isLightColor(hexColor) {
+            const hex = hexColor.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness > 128;
+        }
+
+        // Animation loop for rotation
+        function animate() {
+            if (rotationSpeed > 0) {
+                rotationAngle += rotationSpeed * 0.01;
+                drawMandalaBase();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferris Wheel - Keys, Codes, and Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #0a0a15 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .logo .keys {
+            color: #FFFF00;
+            text-shadow: 0 0 30px rgba(255, 255, 0, 0.8), 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo .codes {
+            color: #FF8C00;
+            text-shadow: 0 0 30px rgba(255, 140, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+
+        .logo .modes {
+            color: #0000FF;
+            text-shadow: 0 0 30px rgba(0, 0, 255, 0.8), 0 0 10px rgba(0, 0, 255, 0.5);
+        }
+
+        .logo .comma {
+            color: #00FF00;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .logo .and {
+            color: #FF00FF;
+            font-style: normal;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+            margin: 0 10px;
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            color: #c0c0ff;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, #FFFF00 0%, #FF8C00 25%, #FF0000 50%, #0000FF 75%, #00FF00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1400px;
+        }
+
+        .wheel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #baseWheel {
+            z-index: 1;
+        }
+
+        #overlayWheel {
+            z-index: 2;
+            cursor: grab;
+        }
+
+        #overlayWheel:active {
+            cursor: grabbing;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .chord-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 500px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rotation-btn {
+            background: linear-gradient(135deg, #0000FF 0%, #9400D3 100%);
+            color: white;
+            font-size: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 0;
+            box-shadow: 0 0 15px rgba(0, 0, 255, 0.4);
+        }
+
+        .rotation-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 0, 255, 0.8);
+        }
+
+        .rotation-btn:active {
+            transform: scale(0.95);
+        }
+
+        .chord-btn {
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            color: white;
+            min-width: 100px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+        }
+
+        .chord-btn:hover {
+            background: linear-gradient(135deg, #FF8C00 0%, #FFFF00 100%);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 200, 0, 0.6);
+            border-color: #FFFF00;
+        }
+
+        .chord-btn.active {
+            background: linear-gradient(135deg, #00FF00 0%, #00FFFF 100%);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+            border-color: #00FF00;
+        }
+
+        .current-chord {
+            margin-top: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFFF00 0%, #00FF00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .info {
+            margin-top: 15px;
+            color: #c0c0ff;
+            font-size: 0.9em;
+        }
+
+        /* Fretboard Section */
+        .fretboard-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(26, 26, 46, 0.5) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
+        }
+
+        .fretboard-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00FF00 0%, #0000FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .fretboard-container {
+            position: relative;
+            width: 240px;
+            height: 700px;
+            background: linear-gradient(to right, #3a2620 0%, #4a3530 50%, #3a2620 100%);
+            border-radius: 10px;
+            border: 3px solid #2a1a15;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            overflow-y: auto;
+        }
+
+        .fretboard-container-mini {
+            position: relative;
+            width: 240px;
+            height: 400px;
+            background: linear-gradient(to right, #3a2620 0%, #4a3530 50%, #3a2620 100%);
+            border-radius: 10px;
+            border: 3px solid #FFFF00;
+            box-shadow: 0 10px 30px rgba(255, 255, 0, 0.4);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .fretboard-hidden {
+            display: none;
+        }
+
+        .string {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, #c0c0c0 0%, #808080 50%, #c0c0c0 100%);
+        }
+
+        .fret {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #d4af37;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .fret-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #f0f0f0 0%, #a0a0a0 100%);
+            border-radius: 50%;
+            border: 1px solid #666;
+        }
+
+        .note-dot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .note-dot:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .note-dot.active {
+            transform: scale(1.4);
+            box-shadow: 0 0 20px currentColor;
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1.4); }
+            50% { transform: scale(1.6); }
+        }
+
+        .fretboard-controls {
+            display: flex;
+            gap: 15px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #00FF00 0%, #00FFFF 100%);
+            color: #000;
+            padding: 15px 30px;
+            font-size: 18px;
+            min-width: 150px;
+            border: 2px solid #00FF00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, #00FFFF 0%, #0000FF 100%);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.6);
+            border-color: #00FFFF;
+        }
+
+        .play-btn:disabled {
+            background: #2a2a3e;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            border-color: #444;
+            box-shadow: none;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(135deg, #FF8C00 0%, #FFFF00 100%);
+            color: #000;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: 2px solid #FFFF00;
+            box-shadow: 0 0 10px rgba(255, 200, 0, 0.3);
+        }
+
+        .toggle-btn:hover {
+            background: linear-gradient(135deg, #FFFF00 0%, #00FF00 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 12px rgba(255, 255, 0, 0.5);
+        }
+
+        .fretboard-info {
+            text-align: center;
+            color: #c0c0ff;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .footer-branding {
+            margin-top: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #FFFF00 0%, #FF8C00 50%, #0000FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Hero Logo Image -->
+        <div style="margin-bottom: 20px;">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width: 180px; height: 180px; filter: drop-shadow(0 0 25px rgba(102, 126, 234, 0.7));">
+                <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="1"/>
+                <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.85"/>
+                <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#2a4d6f" stroke-width="2.5"/>
+                <circle cx="100" cy="100" r="7" fill="#2a4d6f"/>
+                <line x1="40" y1="40" x2="160" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="160" y1="40" x2="40" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="100" y1="20" x2="100" y2="180" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="20" y1="100" x2="180" y2="100" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+        </div>
+        
+        <div class="logo">
+            <span class="keys">KEYS</span><span class="comma">,</span> 
+            <span class="codes">CODES</span> 
+            <span class="and">&</span> 
+            <span class="modes">MODES</span>
+        </div>
+        <div class="tagline">A Visual Approach to Understanding Music</div>
+        <div class="subtitle" id="subtitle">Ferris Wheel - Harmonized Major Scale</div>
+    </div>
+
+    <div class="main-content">
+        <!-- Ferris Wheel Section -->
+        <div class="wheel-section">
+            <div class="wheel-container">
+                <canvas id="baseWheel" width="500" height="500"></canvas>
+                <canvas id="overlayWheel" width="500" height="500"></canvas>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <label style="color: #FFFF00; font-size: 1.2em; font-weight: bold; margin-right: 10px;">Key:</label>
+                <select id="keySelector" style="font-size: 1.1em; padding: 8px 15px; border-radius: 8px; background: linear-gradient(135deg, #2a2a4a 0%, #1a1a2e 100%); color: #FFFF00; border: 2px solid #667eea; cursor: pointer; font-weight: bold;">
+                    <option value="0">C Major</option>
+                    <option value="1">D♭ Major</option>
+                    <option value="2">D Major</option>
+                    <option value="3">E♭ Major</option>
+                    <option value="4">E Major</option>
+                    <option value="5">F Major</option>
+                    <option value="6">G♭ Major</option>
+                    <option value="7">G Major</option>
+                    <option value="8">A♭ Major</option>
+                    <option value="9">A Major</option>
+                    <option value="10">B♭ Major</option>
+                    <option value="11">B Major</option>
+                </select>
+            </div>
+
+            <div class="controls">
+                <button class="rotation-btn" id="ccwBtn" title="Rotate Counter-Clockwise">↶</button>
+                <button class="play-btn" id="playWheelBtn" style="min-width: 120px;">▶ Play Wheel</button>
+                <button class="rotation-btn" id="cwBtn" title="Rotate Clockwise">↷</button>
+            </div>
+
+            <div class="chord-buttons" id="chordButtons"></div>
+
+            <div class="current-chord" id="currentChord">C Major</div>
+            <div class="info" id="chordInfo">Playing: C - E - G</div>
+        </div>
+
+        <!-- Fretboard Section -->
+        <div class="fretboard-section">
+            <!-- Single fretboard area that toggles between 4 and 12 fret views -->
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                    <div style="font-size: 1.2em; color: #FFFF00; font-weight: bold;" id="fretViewTitle">4-Fret View</div>
+                    <button class="toggle-btn" id="toggleViewBtn">Switch to 12</button>
+                </div>
+                
+                <!-- Fretboard view (toggles between 4 and 12 frets) -->
+                <div style="position: relative; width: 240px;">
+                    <div class="fretboard-container-mini" id="fretboardMini"></div>
+                </div>
+            </div>
+            
+            <div class="fretboard-controls">
+                <button class="play-btn" id="ascendBtn">▲ Ascend</button>
+                <button class="play-btn" id="descendBtn">▼ Descend</button>
+                <div class="fretboard-info" id="fretboardInfo">Click notes or use play buttons</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-branding">
+        © Keys, Codes & Modes™ - Interactive Music Theory Platform
+    </div>
+
+    <script>
+        // Note definitions with correct hex colors (C=yellow, D=orange, E=red, F=magenta, G=blue, A=green, B=violet)
+        const notes = [
+            { name: 'C', color: '#FFFF00', enharmonic: null },      // Yellow
+            { name: 'D♭', color: '#FFD700', enharmonic: 'C♯' },     // Gold (between yellow and orange)
+            { name: 'D', color: '#FF8C00', enharmonic: null },      // Orange
+            { name: 'E♭', color: '#FF4500', enharmonic: 'D♯' },     // Red-Orange
+            { name: 'E', color: '#FF0000', enharmonic: null },      // Red
+            { name: 'F', color: '#FF00FF', enharmonic: null },      // Magenta
+            { name: 'G♭', color: '#8B00FF', enharmonic: 'F♯' },     // Purple (between magenta and blue)
+            { name: 'G', color: '#0000FF', enharmonic: null },      // Blue
+            { name: 'A♭', color: '#00BFFF', enharmonic: 'G♯' },     // Light Blue (between blue and green)
+            { name: 'A', color: '#00FF00', enharmonic: null },      // Green
+            { name: 'B♭', color: '#ADFF2F', enharmonic: 'A♯' },     // Yellow-Green
+            { name: 'B', color: '#9400D3', enharmonic: null }       // Violet
+        ];
+
+        // Current key (0-11, where 0=C, 1=C#/Db, 2=D, etc.)
+        let currentKey = 0;
+
+        // Determine correct note spelling based on key signature
+        function getNoteName(noteIndex, keyRoot) {
+            // Keys that use sharps: G(7), D(2), A(9), E(4), B(11), F♯(6), C♯(1)
+            const sharpKeys = [7, 2, 9, 4, 11, 6, 1];
+            // Keys that use flats: F(5), B♭(10), E♭(3), A♭(8), D♭(1), G♭(6)
+            const flatKeys = [5, 10, 3, 8, 1, 6];
+            
+            const note = notes[noteIndex];
+            
+            // If note has no enharmonic, return its name
+            if (!note.enharmonic) {
+                return note.name;
+            }
+            
+            // Use enharmonic (sharp) spelling for sharp keys
+            if (sharpKeys.includes(keyRoot) && note.enharmonic) {
+                return note.enharmonic;
+            }
+            
+            // Use flat spelling for flat keys and C major
+            return note.name;
+        }
+
+        // Generate harmonized major scale chord patterns for any key
+        function generateChordPatterns(keyRoot) {
+            // Major scale intervals: W-W-H-W-W-W-H (2-2-1-2-2-2-1 semitones)
+            const majorScaleIntervals = [0, 2, 4, 5, 7, 9, 11]; // degrees relative to root
+            
+            // Chord types in harmonized major scale: I, ii, iii, IV, V, vi, vii°
+            const chordTypes = ['Major', 'minor', 'minor', 'Major', 'Major', 'minor', 'dim'];
+            const romanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+            
+            const patterns = [];
+            
+            for (let i = 0; i < 7; i++) {
+                const rootNote = (keyRoot + majorScaleIntervals[i]) % 12;
+                const third = (keyRoot + majorScaleIntervals[(i + 2) % 7]) % 12;
+                const fifth = (keyRoot + majorScaleIntervals[(i + 4) % 7]) % 12;
+                
+                patterns.push({
+                    root: rootNote,
+                    name: getNoteName(rootNote, keyRoot), // Use correct enharmonic spelling
+                    type: chordTypes[i],
+                    numeral: romanNumerals[i],
+                    positions: [rootNote, third, fifth]
+                });
+            }
+            
+            return patterns;
+        }
+
+        // Initialize with C major
+        let chordPatterns = generateChordPatterns(currentKey);
+
+        let currentRotation = 0; // User rotation starts at 0, base offset is handled in draw functions
+        let audioContext = null;
+        let activeOscillators = [];
+        let isPlaying = false;
+        let miniFretCount = 4; // Toggle between 4 and 12 frets
+
+        // Initialize audio context
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Convert note index to frequency
+        function noteToFrequency(noteIndex, octave = 4) {
+            const A4 = 440;
+            const semitonesFromA4 = (noteIndex - 9) + (octave - 4) * 12;
+            return A4 * Math.pow(2, semitonesFromA4 / 12);
+        }
+
+        // Play a note
+        function playNote(noteIndex, duration = 0.5, octave = 4) {
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = noteToFrequency(noteIndex, octave);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+            
+            return oscillator;
+        }
+
+        // Play chord
+        function playChord(positions, baseOctave = 4) {
+            initAudio();
+            
+            activeOscillators.forEach(osc => {
+                try { osc.stop(); } catch(e) {}
+            });
+            activeOscillators = [];
+
+            // Calculate correct octaves for each position
+            // If a note position is lower than the root, it should be in the next octave
+            const rootPos = positions[0];
+            
+            positions.forEach((pos, index) => {
+                setTimeout(() => {
+                    let noteOctave = baseOctave;
+                    // If this note's position is less than the root position, it's in the next octave
+                    if (index > 0 && pos < rootPos) {
+                        noteOctave = baseOctave + 1;
+                    }
+                    const osc = playNote(pos, 1.5, noteOctave);
+                    activeOscillators.push(osc);
+                }, index * 50);
+            });
+        }
+
+        // Draw base wheel
+        function drawBaseWheel() {
+            const canvas = document.getElementById('baseWheel');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 200;
+            const angleStep = (Math.PI * 2) / 7;
+            // Rotate COUNTER-clockwise by half a wedge step so root is centered at 12 o'clock
+            const baseRotation = -angleStep / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Generate major scale notes from current key
+            const majorScaleIntervals = [0, 2, 4, 5, 7, 9, 11];
+            const baseNotes = majorScaleIntervals.map(interval => (currentKey + interval) % 12);
+            
+            for (let i = 0; i < 7; i++) {
+                const startAngle = -Math.PI / 2 + (i * angleStep) + baseRotation;
+                const endAngle = startAngle + angleStep;
+                const noteIndex = baseNotes[i];
+                const note = notes[noteIndex];
+
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                
+                ctx.fillStyle = note.color;
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                const labelAngle = startAngle + angleStep / 2;
+                const labelRadius = radius * 0.7;
+                const labelX = centerX + Math.cos(labelAngle) * labelRadius;
+                const labelY = centerY + Math.sin(labelAngle) * labelRadius;
+
+                // Get the correct note name for this key
+                const noteName = getNoteName(noteIndex, currentKey);
+
+                // Draw text with black outline for visibility
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 4;
+                ctx.font = 'bold 24px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.strokeText(noteName, labelX, labelY);
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(noteName, labelX, labelY);
+            }
+
+            drawCenterOrnament(ctx, centerX, centerY);
+        }
+
+        // Draw center ornament
+        function drawCenterOrnament(ctx, x, y) {
+            const radius = 60;
+            
+            // Multi-color gradient matching Keys, Codes & Modes branding
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, 'rgba(255, 255, 0, 0.9)');    // Yellow center
+            gradient.addColorStop(0.33, 'rgba(255, 140, 0, 0.7)'); // Orange
+            gradient.addColorStop(0.66, 'rgba(0, 0, 255, 0.7)');   // Blue
+            gradient.addColorStop(1, 'rgba(0, 255, 0, 0.3)');      // Green edge
+            
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Inner musical note symbol
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('♪', x, y);
+            
+            // Add glow effect
+            ctx.shadowColor = 'rgba(255, 255, 0, 0.8)';
+            ctx.shadowBlur = 20;
+            ctx.fillText('♪', x, y);
+            ctx.shadowBlur = 0;
+        }
+
+        // Draw overlay wheel
+        function drawOverlayWheel(rotation) {
+            const canvas = document.getElementById('overlayWheel');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 200;
+            const angleStep = (Math.PI * 2) / 7;
+            // Match base wheel rotation - COUNTER-clockwise by half wedge step so C is centered at 12 o'clock
+            const baseRotation = -angleStep / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotation + baseRotation); // Apply both user rotation and base offset
+            ctx.translate(-centerX, -centerY);
+
+            const openPositions = [0, 2, 4];
+            
+            for (let i = 0; i < 7; i++) {
+                const startAngle = -Math.PI / 2 + (i * angleStep);
+                const endAngle = startAngle + angleStep;
+
+                if (!openPositions.includes(i)) {
+                    // Branded gradient: Blue to Teal
+                    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                    gradient.addColorStop(0, 'rgba(30, 60, 90, 0.80)');      // Deep blue center
+                    gradient.addColorStop(0.4, 'rgba(52, 94, 124, 0.88)');   // Blue-teal
+                    gradient.addColorStop(0.7, 'rgba(64, 128, 148, 0.92)');  // Teal
+                    gradient.addColorStop(1, 'rgba(48, 104, 124, 0.95)');    // Dark teal edge
+
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                    ctx.closePath();
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(100, 180, 200, 0.5)'; // Light teal border
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+
+            ctx.restore();
+            drawCenterOrnament(ctx, centerX, centerY);
+        }
+
+        // Get current chord
+        function getCurrentChord() {
+            const rotationSteps = Math.round(currentRotation / (Math.PI * 2 / 7)) % 7;
+            const positiveSteps = ((rotationSteps % 7) + 7) % 7;
+            return chordPatterns[positiveSteps];
+        }
+
+        // Update display
+        function updateChordDisplay() {
+            const chord = getCurrentChord();
+            const chordName = `${chord.name} ${chord.type}`;
+            document.getElementById('currentChord').textContent = chordName;
+            
+            const noteNames = chord.positions.map(pos => getNoteName(pos, currentKey)).join(' - ');
+            document.getElementById('chordInfo').textContent = `Playing: ${noteNames}`;
+
+            document.querySelectorAll('.chord-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === ((Math.round(currentRotation / (Math.PI * 2 / 7)) % 7) + 7) % 7);
+            });
+
+            updateFretboardMiniHighlight();
+        }
+
+        // Rotate wheel
+        function rotateWheel(direction) {
+            const angleStep = (Math.PI * 2) / 7;
+            currentRotation += direction * angleStep;
+            drawOverlayWheel(currentRotation);
+            
+            const chord = getCurrentChord();
+            playChord(chord.positions);
+            updateChordDisplay();
+        }
+
+        // Mouse drag
+        let isDragging = false;
+        let lastAngle = 0;
+
+        document.getElementById('overlayWheel').addEventListener('mousedown', (e) => {
+            initAudio();
+            isDragging = true;
+            const rect = e.target.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const x = e.clientX - rect.left - centerX;
+            const y = e.clientY - rect.top - centerY;
+            lastAngle = Math.atan2(y, x);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const rect = document.getElementById('overlayWheel').getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const x = e.clientX - rect.left - centerX;
+            const y = e.clientY - rect.top - centerY;
+            const currentAngle = Math.atan2(y, x);
+            
+            const deltaAngle = currentAngle - lastAngle;
+            currentRotation += deltaAngle;
+            lastAngle = currentAngle;
+            
+            drawOverlayWheel(currentRotation);
+            updateChordDisplay();
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                const angleStep = (Math.PI * 2) / 7;
+                const nearestStep = Math.round(currentRotation / angleStep);
+                currentRotation = nearestStep * angleStep;
+                drawOverlayWheel(currentRotation);
+                
+                const chord = getCurrentChord();
+                playChord(chord.positions);
+                updateChordDisplay();
+            }
+        });
+
+        // Button controls
+        document.getElementById('cwBtn').addEventListener('click', () => rotateWheel(1));
+        document.getElementById('ccwBtn').addEventListener('click', () => rotateWheel(-1));
+
+        // Create chord buttons
+        function createChordButtons() {
+            const container = document.getElementById('chordButtons');
+            container.innerHTML = ''; // Clear existing buttons
+            
+            chordPatterns.forEach((chord, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'chord-btn';
+                btn.textContent = `${chord.name} ${chord.type}`;
+                btn.addEventListener('click', () => {
+                    initAudio();
+                    const targetRotation = index * (Math.PI * 2 / 7);
+                    currentRotation = targetRotation;
+                    drawOverlayWheel(currentRotation);
+                    playChord(chord.positions);
+                    updateChordDisplay();
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        // FRETBOARD SECTION
+        const strings = ['E', 'A', 'D', 'G', 'B', 'E']; // Standard tuning
+        const stringNoteIndices = [4, 9, 2, 7, 11, 4]; // E A D G B E in chromatic index
+
+        function createFretboardMini() {
+            const container = document.getElementById('fretboardMini');
+            const numFrets = miniFretCount; // Use the toggle variable
+            const fretHeight = 30; // Consistent height for both modes
+            const totalHeight = numFrets * fretHeight;
+            const stringSpacing = 240 / 7; // Updated for 3-inch width
+
+            // Clear existing elements
+            container.innerHTML = '';
+
+            // Draw frets
+            for (let i = 0; i <= numFrets; i++) {
+                const fret = document.createElement('div');
+                fret.className = 'fret';
+                fret.style.top = (i * fretHeight) + 'px';
+                container.appendChild(fret);
+
+                // Add fret markers
+                if (miniFretCount === 4 && i === 3) {
+                    const marker = document.createElement('div');
+                    marker.className = 'fret-marker';
+                    marker.style.top = ((i - 0.5) * fretHeight) + 'px';
+                    container.appendChild(marker);
+                } else if (miniFretCount === 12) {
+                    if ([3, 5, 7, 9].includes(i)) {
+                        const marker = document.createElement('div');
+                        marker.className = 'fret-marker';
+                        marker.style.top = ((i - 0.5) * fretHeight) + 'px';
+                        container.appendChild(marker);
+                    }
+                    if (i === 12) {
+                        const marker1 = document.createElement('div');
+                        marker1.className = 'fret-marker';
+                        marker1.style.top = ((i - 0.5) * fretHeight) + 'px';
+                        marker1.style.left = '35%';
+                        container.appendChild(marker1);
+                        
+                        const marker2 = document.createElement('div');
+                        marker2.className = 'fret-marker';
+                        marker2.style.top = ((i - 0.5) * fretHeight) + 'px';
+                        marker2.style.left = '65%';
+                        container.appendChild(marker2);
+                    }
+                }
+            }
+
+            // Draw strings
+            for (let i = 0; i < 6; i++) {
+                const string = document.createElement('div');
+                string.className = 'string';
+                string.style.left = ((i + 1) * stringSpacing) + 'px';
+                string.style.top = '0';
+                string.style.width = '2px';
+                string.style.height = totalHeight + 'px';
+                string.style.background = `linear-gradient(to bottom, #c0c0c0 0%, #${(i * 20).toString(16).padStart(2, '0')}${(i * 20).toString(16).padStart(2, '0')}${(i * 20).toString(16).padStart(2, '0')} 50%, #c0c0c0 100%)`;
+                container.appendChild(string);
+            }
+
+            // Add note dots for current chord
+            updateFretboardMiniHighlight();
+        }
+
+        function createFretboard() {
+            const container = document.getElementById('fretboard');
+            const numFrets = 24; // Extended to 24 frets for full 2-octave range
+            const fretHeight = 30; // Height per fret
+            const totalHeight = numFrets * fretHeight;
+            const stringSpacing = 240 / 7; // Updated for 3-inch width
+
+            // Set container height dynamically
+            container.style.height = totalHeight + 'px';
+
+            // Draw frets
+            for (let i = 0; i <= numFrets; i++) {
+                const fret = document.createElement('div');
+                fret.className = 'fret';
+                fret.style.top = (i * fretHeight) + 'px';
+                container.appendChild(fret);
+
+                // Add fret markers at standard positions
+                const markerPositions = [3, 5, 7, 9, 15, 17, 19, 21];
+                const doubleMarkerPositions = [12, 24];
+
+                if (markerPositions.includes(i)) {
+                    const marker = document.createElement('div');
+                    marker.className = 'fret-marker';
+                    marker.style.top = ((i - 0.5) * fretHeight) + 'px';
+                    container.appendChild(marker);
+                }
+                
+                if (doubleMarkerPositions.includes(i)) {
+                    const marker1 = document.createElement('div');
+                    marker1.className = 'fret-marker';
+                    marker1.style.top = ((i - 0.5) * fretHeight) + 'px';
+                    marker1.style.left = '35%';
+                    container.appendChild(marker1);
+                    
+                    const marker2 = document.createElement('div');
+                    marker2.className = 'fret-marker';
+                    marker2.style.top = ((i - 0.5) * fretHeight) + 'px';
+                    marker2.style.left = '65%';
+                    container.appendChild(marker2);
+                }
+            }
+
+            // Draw strings
+            for (let i = 0; i < 6; i++) {
+                const string = document.createElement('div');
+                string.className = 'string';
+                string.style.left = ((i + 1) * stringSpacing) + 'px';
+                string.style.top = '0';
+                string.style.width = '2px';
+                string.style.height = totalHeight + 'px';
+                string.style.background = `linear-gradient(to bottom, #c0c0c0 0%, #${(i * 20).toString(16).padStart(2, '0')}${(i * 20).toString(16).padStart(2, '0')}${(i * 20).toString(16).padStart(2, '0')} 50%, #c0c0c0 100%)`;
+                container.appendChild(string);
+            }
+
+            // Add note dots for current chord
+            updateFretboardHighlight();
+        }
+
+        function updateFretboardMiniHighlight() {
+            // Clear existing dots in mini view
+            const container = document.getElementById('fretboardMini');
+            container.querySelectorAll('.note-dot').forEach(dot => dot.remove());
+
+            const chord = getCurrentChord();
+            const fretHeight = 30; // Consistent height
+            const stringSpacing = 240 / 7; // Updated for 3-inch width
+            const numFrets = miniFretCount;
+
+            // Place dots for chord notes on mini fretboard - SHOW ALL OCCURRENCES
+            chord.positions.forEach(noteIndex => {
+                for (let stringIdx = 0; stringIdx < 6; stringIdx++) {
+                    const openNote = stringNoteIndices[stringIdx];
+                    
+                    // Check all frets based on current mode and show ALL matches
+                    for (let fret = 0; fret <= numFrets; fret++) {
+                        const fretNote = (openNote + fret) % 12;
+                        
+                        if (fretNote === noteIndex) {
+                            const dot = document.createElement('div');
+                            dot.className = 'note-dot';
+                            dot.style.backgroundColor = notes[noteIndex].color;
+                            dot.style.left = ((stringIdx + 1) * stringSpacing - 12) + 'px';
+                            dot.style.top = ((fret - 0.5) * fretHeight - 12) + 'px';
+                            dot.textContent = getNoteName(noteIndex, currentKey);
+                            
+                            // Calculate proper octave
+                            const baseOctaves = [2, 2, 3, 3, 3, 4];
+                            const semitonesPitch = openNote + fret;
+                            const octaveAdjustment = Math.floor(semitonesPitch / 12);
+                            const actualOctave = baseOctaves[stringIdx] + octaveAdjustment;
+                            
+                            dot.dataset.octave = actualOctave;
+                            dot.dataset.noteIndex = noteIndex;
+                            dot.dataset.fret = fret;
+                            
+                            dot.addEventListener('click', () => {
+                                initAudio();
+                                playNote(noteIndex, 0.8, actualOctave);
+                                dot.classList.add('active');
+                                setTimeout(() => dot.classList.remove('active'), 500);
+                            });
+                            
+                            container.appendChild(dot);
+                            // Don't break - show ALL occurrences on all strings
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateFretboardHighlight() {
+            // Clear existing dots
+            document.querySelectorAll('.note-dot').forEach(dot => dot.remove());
+
+            const chord = getCurrentChord();
+            const container = document.getElementById('fretboard');
+            const fretHeight = 30; // Match the fret height from createFretboard
+            const stringSpacing = 240 / 7; // Updated for 3-inch width
+            const numFrets = 24;
+
+            // Place dots for chord notes on fretboard
+            chord.positions.forEach(noteIndex => {
+                // Find this note on each string within the 24-fret range
+                for (let stringIdx = 0; stringIdx < 6; stringIdx++) {
+                    const openNote = stringNoteIndices[stringIdx];
+                    
+                    // Check all frets 0-24 for this note
+                    for (let fret = 0; fret <= numFrets; fret++) {
+                        const fretNote = (openNote + fret) % 12;
+                        
+                        if (fretNote === noteIndex) {
+                            const dot = document.createElement('div');
+                            dot.className = 'note-dot';
+                            dot.style.backgroundColor = notes[noteIndex].color;
+                            dot.style.left = ((stringIdx + 1) * stringSpacing - 12) + 'px';
+                            dot.style.top = ((fret - 0.5) * fretHeight - 12) + 'px';
+                            dot.textContent = getNoteName(noteIndex, currentKey);
+                            
+                            // Calculate proper octave based on string and fret
+                            const baseOctaves = [2, 2, 3, 3, 3, 4]; // Base octaves for each string
+                            const semitonesPitch = openNote + fret;
+                            const octaveAdjustment = Math.floor(semitonesPitch / 12);
+                            const actualOctave = baseOctaves[stringIdx] + octaveAdjustment;
+                            
+                            dot.dataset.octave = actualOctave;
+                            dot.dataset.noteIndex = noteIndex;
+                            dot.dataset.fret = fret;
+                            
+                            dot.addEventListener('click', () => {
+                                initAudio();
+                                playNote(noteIndex, 0.8, actualOctave);
+                                dot.classList.add('active');
+                                setTimeout(() => dot.classList.remove('active'), 500);
+                            });
+                            
+                            container.appendChild(dot);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Ascend/Descend functions
+        async function playAscend() {
+            if (isPlaying) return;
+            isPlaying = true;
+            document.getElementById('ascendBtn').disabled = true;
+            document.getElementById('descendBtn').disabled = true;
+
+            const chord = getCurrentChord();
+            initAudio();
+
+            // Collect all note dots with their octaves and sort by ACTUAL PITCH
+            const noteDots = Array.from(document.querySelectorAll('.note-dot'));
+            const notesWithOctaves = noteDots.map(dot => ({
+                noteIndex: parseInt(dot.dataset.noteIndex),
+                octave: parseInt(dot.dataset.octave),
+                element: dot,
+                // Calculate absolute pitch for proper sorting
+                absolutePitch: (parseInt(dot.dataset.octave) * 12) + parseInt(dot.dataset.noteIndex)
+            }));
+
+            // Sort by absolute pitch (lowest to highest)
+            notesWithOctaves.sort((a, b) => a.absolutePitch - b.absolutePitch);
+
+            // Remove duplicates (same note + octave)
+            const uniqueNotes = [];
+            const seen = new Set();
+            for (const note of notesWithOctaves) {
+                const key = `${note.noteIndex}-${note.octave}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueNotes.push(note);
+                }
+            }
+
+            // Play from lowest to highest - TRUE ASCENDING
+            for (const note of uniqueNotes) {
+                playNote(note.noteIndex, 0.6, note.octave);
+                note.element.classList.add('active');
+                setTimeout(() => note.element.classList.remove('active'), 400);
+                await sleep(400);
+            }
+
+            isPlaying = false;
+            document.getElementById('ascendBtn').disabled = false;
+            document.getElementById('descendBtn').disabled = false;
+        }
+
+        async function playDescend() {
+            if (isPlaying) return;
+            isPlaying = true;
+            document.getElementById('ascendBtn').disabled = true;
+            document.getElementById('descendBtn').disabled = true;
+
+            const chord = getCurrentChord();
+            initAudio();
+
+            // Collect all note dots with their octaves and sort by ACTUAL PITCH
+            const noteDots = Array.from(document.querySelectorAll('.note-dot'));
+            const notesWithOctaves = noteDots.map(dot => ({
+                noteIndex: parseInt(dot.dataset.noteIndex),
+                octave: parseInt(dot.dataset.octave),
+                element: dot,
+                // Calculate absolute pitch for proper sorting
+                absolutePitch: (parseInt(dot.dataset.octave) * 12) + parseInt(dot.dataset.noteIndex)
+            }));
+
+            // Sort by absolute pitch (lowest to highest)
+            notesWithOctaves.sort((a, b) => a.absolutePitch - b.absolutePitch);
+
+            // Remove duplicates (same note + octave)
+            const uniqueNotes = [];
+            const seen = new Set();
+            for (const note of notesWithOctaves) {
+                const key = `${note.noteIndex}-${note.octave}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueNotes.push(note);
+                }
+            }
+
+            // Play from highest to lowest - TRUE DESCENDING
+            for (let i = uniqueNotes.length - 1; i >= 0; i--) {
+                const note = uniqueNotes[i];
+                playNote(note.noteIndex, 0.6, note.octave);
+                note.element.classList.add('active');
+                setTimeout(() => note.element.classList.remove('active'), 400);
+                await sleep(400);
+            }
+
+            isPlaying = false;
+            document.getElementById('ascendBtn').disabled = false;
+            document.getElementById('descendBtn').disabled = false;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Event listeners
+        document.getElementById('ascendBtn').addEventListener('click', playAscend);
+        document.getElementById('descendBtn').addEventListener('click', playDescend);
+
+        // Toggle between 4-fret and 12-fret views
+        document.getElementById('toggleViewBtn').addEventListener('click', () => {
+            if (miniFretCount === 4) {
+                miniFretCount = 12;
+                document.getElementById('toggleViewBtn').textContent = 'Switch to 4';
+                document.getElementById('fretViewTitle').textContent = '12-Fret View';
+            } else {
+                miniFretCount = 4;
+                document.getElementById('toggleViewBtn').textContent = 'Switch to 12';
+                document.getElementById('fretViewTitle').textContent = '4-Fret View';
+            }
+            createFretboardMini();
+        });
+
+        // Play wheel button - cycles through all 7 chords with proper octave progression and resolution
+        document.getElementById('playWheelBtn').addEventListener('click', async () => {
+            if (isPlaying) return;
+            
+            isPlaying = true;
+            const playBtn = document.getElementById('playWheelBtn');
+            playBtn.disabled = true;
+            playBtn.textContent = '⏸ Playing...';
+            document.getElementById('ascendBtn').disabled = true;
+            document.getElementById('descendBtn').disabled = true;
+
+            initAudio();
+
+            // Calculate smooth ascending octave for each chord based on chromatic position
+            // Start at octave 3, increment when we cross from high to low chromatic positions
+            let currentOctave = 3;
+            let previousRootPosition = chordPatterns[0].root;
+            
+            for (let i = 0; i < 7; i++) {
+                const angleStep = (Math.PI * 2) / 7;
+                currentRotation = i * angleStep;
+                drawOverlayWheel(currentRotation);
+                
+                const chord = getCurrentChord();
+                updateChordDisplay();
+                
+                // If current root position is lower than previous, we've wrapped - move up an octave
+                if (i > 0 && chord.root < previousRootPosition) {
+                    currentOctave++;
+                }
+                
+                // Play chord with calculated octave
+                playChord(chord.positions, currentOctave);
+                
+                previousRootPosition = chord.root;
+                await sleep(1200); // Wait before next chord
+            }
+
+            // RESOLUTION: Resolves to tonic in next octave
+            await sleep(200); // Brief pause before resolution
+            
+            currentRotation = 0;
+            drawOverlayWheel(currentRotation);
+            updateChordDisplay();
+            
+            const resolutionChord = chordPatterns[0]; // Tonic chord
+            const resolutionOctave = currentOctave + 1; // One octave higher than where we ended
+            
+            // Play resolution chord
+            playChord(resolutionChord.positions, resolutionOctave);
+            
+            await sleep(1500);
+
+            isPlaying = false;
+            playBtn.disabled = false;
+            playBtn.textContent = '▶ Play Wheel';
+            document.getElementById('ascendBtn').disabled = false;
+            document.getElementById('descendBtn').disabled = false;
+        });
+
+        // Key selector event listener
+        document.getElementById('keySelector').addEventListener('change', (e) => {
+            currentKey = parseInt(e.target.value);
+            
+            // Regenerate chord patterns for new key
+            chordPatterns = generateChordPatterns(currentKey);
+            
+            // Reset rotation to show first chord
+            currentRotation = 0;
+            
+            // Redraw everything
+            drawBaseWheel();
+            drawOverlayWheel(currentRotation);
+            createChordButtons();
+            updateChordDisplay();
+            updateFretboardMiniHighlight();
+        });
+
+        // Initialize
+        drawBaseWheel();
+        drawOverlayWheel(currentRotation);
+        createChordButtons();
+        createFretboardMini();
+        updateChordDisplay();
+    </script>
+</body>
+</html>

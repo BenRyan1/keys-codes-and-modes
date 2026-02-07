@@ -1,0 +1,535 @@
+<!--
+================================================================================
+COPYRIGHT NOTICE - LEGAL WARNING
+================================================================================
+
+© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved
+
+This website and all content, code, design, applications, and materials are the 
+exclusive intellectual property of Benjamin Ryan and Keys, Codes & Modes™.
+
+STRICTLY PROHIBITED:
+Copying, reproducing, duplicating, distributing, or any unauthorized use of 
+these Works is STRICTLY PROHIBITED without express written permission.
+
+VIOLATORS WILL BE PROSECUTED TO THE FULLEST EXTENT OF THE LAW.
+
+Legal consequences include:
+• Statutory damages up to $150,000 per work infringed
+• Injunctive relief and cease and desist orders
+• Attorneys fees and court costs
+• Criminal prosecution where applicable
+
+Protected by U.S. Copyright Law (17 U.S.C. § 101 et seq.)
+FreeStyle® is a registered trademark. U.S. Patents.
+
+For licensing: ben.ryan@keyscodesandmodes.com
+Santa Barbara, California | All Rights Reserved
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="copyright" content="© 2026 Benjamin Ryan. All rights reserved.">
+    <meta name="author" content="Benjamin Ryan">
+    <meta name="rights" content="© 2026 Keys, Codes & Modes™. Unauthorized use strictly prohibited.">
+    <meta property="og:copyright" content="© 2026 Keys, Codes & Modes™">
+    <title>Keys, Codes & Modes | An Experiment in Perception</title>
+    <meta name="description" content="A new way of seeing sound. Where music, science, art, and invention converge. Early access for those who notice patterns in chaos.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0f0f1e;
+            --darker-bg: #0a0a15;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --font-accent: 'Cormorant Garamond', serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.08;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 25s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 20px) scale(1.05); }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        /* Logo */
+        .logo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 2rem;
+            filter: drop-shadow(0 4px 12px rgba(244, 208, 63, 0.4));
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Brand */
+        .brand {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .brand-name {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-teal) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .brand-tagline {
+            font-family: var(--font-accent);
+            font-size: 1.1rem;
+            color: rgba(232, 232, 232, 0.5);
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        
+        /* Hero */
+        h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--primary-gold);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            line-height: 1.3;
+            letter-spacing: 2px;
+            animation: fadeInUp 1.2s ease;
+        }
+        
+        .intro-text {
+            font-size: 1.3rem;
+            text-align: center;
+            color: rgba(232, 232, 232, 0.8);
+            margin-bottom: 4rem;
+            line-height: 1.8;
+            animation: fadeInUp 1.5s ease;
+        }
+        
+        /* Principles */
+        .principles {
+            margin: 5rem 0;
+        }
+        
+        .principle {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.05) 0%, rgba(139, 107, 163, 0.05) 100%);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 15px;
+            padding: 2.5rem 3rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1.8s ease;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.1);
+        }
+        
+        .principle:last-child {
+            margin-bottom: 0;
+        }
+        
+        .principle-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.2rem;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        
+        .principle-text {
+            font-size: 1.05rem;
+            color: rgba(232, 232, 232, 0.85);
+            line-height: 1.9;
+            text-align: center;
+        }
+        
+        /* Divider */
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-teal), var(--primary-gold));
+            margin: 4rem auto;
+        }
+        
+        /* Form */
+        .form-section {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.05) 0%, rgba(139, 107, 163, 0.05) 100%);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 15px;
+            padding: 3rem 2.5rem;
+            margin: 4rem 0;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 2s ease;
+        }
+        
+        .form-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(15, 15, 30, 0.6);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 8px;
+            color: var(--light-text);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 20px rgba(0, 128, 128, 0.3);
+        }
+        
+        input::placeholder {
+            color: rgba(232, 232, 232, 0.4);
+        }
+        
+        button {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            background: transparent;
+            border: 2px solid var(--primary-teal);
+            border-radius: 8px;
+            color: var(--primary-gold);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        
+        button:hover {
+            background: var(--primary-teal);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.4);
+        }
+        
+        .form-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(232, 232, 232, 0.5);
+            font-style: italic;
+        }
+        
+        /* Closing */
+        .closing {
+            text-align: center;
+            margin: 5rem 0 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(0, 128, 128, 0.2);
+        }
+        
+        .closing-text {
+            font-family: var(--font-accent);
+            font-size: 1.1rem;
+            color: rgba(232, 232, 232, 0.6);
+            line-height: 1.8;
+            font-style: italic;
+        }
+        
+        /* Copyright */
+        .copyright-footer {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.15) 0%, rgba(139, 107, 163, 0.15) 100%);
+            border-top: 2px solid var(--primary-teal);
+            border-bottom: 2px solid var(--primary-gold);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .copyright-footer p:first-child {
+            color: var(--primary-gold);
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 1.2rem;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+        }
+        
+        .copyright-footer p:nth-child(2) {
+            font-size: 0.95rem;
+            margin-bottom: 0.9rem;
+            color: rgba(232,232,232,0.85);
+            line-height: 1.7;
+        }
+        
+        .copyright-footer p:nth-child(3) {
+            font-size: 0.85rem;
+            color: rgba(232,232,232,0.6);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+        
+        .copyright-footer p:last-child {
+            font-size: 0.85rem;
+            color: rgba(232,232,232,0.5);
+            margin-top: 1rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .container {
+                padding: 3rem 1.5rem;
+            }
+            
+            .brand-name {
+                font-size: 1.8rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .intro-text {
+                font-size: 1.2rem;
+            }
+            
+            .principle {
+                padding: 2rem 1.5rem;
+            }
+            
+            .principle-title {
+                font-size: 1.3rem;
+            }
+            
+            .principle-text {
+                font-size: 1rem;
+            }
+            
+            .form-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <!-- Logo -->
+        <svg width="140" height="140" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="logo">
+            <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+            <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+            <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+            <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+            <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+            <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+            <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+            <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+            <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+            <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+            <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+        </svg>
+        
+        <!-- Brand -->
+        <div class="brand">
+            <div class="brand-name">KEYS • CODES • MODES</div>
+            <div class="brand-tagline">an experiment in perception</div>
+        </div>
+        
+        <!-- Hero -->
+        <h1>What if music could be seen?</h1>
+        
+        <p class="intro-text">
+            Not as notation. Not as information.<br>
+            As structure. As pattern. As geometry.
+        </p>
+        
+        <div class="divider"></div>
+        
+        <!-- Principles -->
+        <div class="principles">
+            <div class="principle">
+                <div class="principle-title">YOU'RE EARLY</div>
+                <div class="principle-text">
+                    This is the intersection of music, science, art, education, and invention. Not a course. Not a tutorial. A discovery you're witnessing first. What emerges here exists nowhere else. You're not joining—you're arriving.
+                </div>
+            </div>
+            
+            <div class="principle">
+                <div class="principle-title">A SHIFT IN PERCEPTION</div>
+                <div class="principle-text">
+                    Music already behaves as a visual system—intervals repeat, patterns transpose, structures remain constant as sound moves through space. We made that visible. Twenty interactive experiments reveal relationships beneath complexity. What was opaque becomes transparent.
+                </div>
+            </div>
+            
+            <div class="principle">
+                <div class="principle-title">NOT FOR EVERYONE</div>
+                <div class="principle-text">
+                    You sense order in what appears random. You see systems where others see chaos. You prefer discovery to instruction. You look for patterns others miss. If this resonates, you already belong here. This isn't mass market. It's selective. That's intentional.
+                </div>
+            </div>
+            
+            <div class="principle">
+                <div class="principle-title">MEANINGFUL + PLAYFUL</div>
+                <div class="principle-text">
+                    Where physics meets creativity. Where ancient tuning systems meet modern understanding. Where serious exploration feels like play. You're touching the future of how sound, structure, and cognition converge. And it looks effortlessly cool because it is.
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Form -->
+        <div class="form-section">
+            <div class="form-title">Enter the Experiment</div>
+            
+            <form id="accessForm" onsubmit="handleSubmit(event)">
+                <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Your name" 
+                    required
+                >
+                
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder="Your email" 
+                    required
+                >
+                
+                <button type="submit">Request Access →</button>
+            </form>
+            
+            <p class="form-note">
+                Early access • Beta program • No commitment • You shape what emerges
+            </p>
+        </div>
+        
+        <!-- Closing -->
+        <div class="closing">
+            <p class="closing-text">
+                Some will observe. Some will engage. A few will help shape what emerges.<br>
+                This isn't for everyone. That's intentional.
+            </p>
+        </div>
+        
+        <!-- Copyright -->
+        <div class="copyright-footer">
+            <p>© 2026 Keys, Codes & Modes™ | All Rights Reserved</p>
+            <p>
+                Protected by U.S. Copyright, Patent, and Trademark Law. Unauthorized reproduction, distribution, or use of any materials from this website is <strong style="color: var(--primary-gold);">strictly prohibited</strong> and will be prosecuted to the fullest extent of the law.
+            </p>
+            <p>
+                FreeStyle® is a registered trademark • U.S. Patents • All teaching methods, visual representations, and interactive applications are proprietary and confidential.
+            </p>
+            <p>
+                Created by <strong style="color: var(--primary-gold);">Benjamin Ryan</strong> • Based on "Keys, Codes, and Modes: A Visual Approach to Understanding Music" • Santa Barbara, California
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const name = event.target.name.value;
+            const email = event.target.email.value;
+            
+            // Save to localStorage
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('experimentSignup', 'true');
+            
+            // TODO: Send to ConvertKit or email service
+            console.log('📧 Email captured:', email);
+            // fetch('YOUR_CONVERTKIT_ENDPOINT', { ... })
+            
+            // Redirect to insight page (gateway/preview)
+            window.location.href = 'insight.html';
+        }
+    </script>
+</body>
+</html>

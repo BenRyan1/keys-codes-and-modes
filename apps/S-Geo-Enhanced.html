@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Sacred Geometry Music Visualizer - Complete Edition | Keys, Codes & Modes | FreeStyle®</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFFF00, #FFC400, #FF8000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 255, 0, 0.3);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .freestyle-badge {
+            display: inline-block;
+            font-size: 0.35em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-left: 15px;
+            color: white;
+            vertical-align: middle;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .canvas-container {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        #canvas3d {
+            width: 100%;
+            height: 700px;
+            border-radius: 10px;
+            cursor: grab;
+        }
+
+        #canvas3d:active {
+            cursor: grabbing;
+        }
+
+        #canvas3d.hovering {
+            cursor: pointer;
+        }
+
+        .note-indicator {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 35px;
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #FFFF00;
+            border: 4px solid #FFFF00;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+            display: none;
+            z-index: 100;
+            animation: noteGlow 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes noteGlow {
+            0% { 
+                box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+                transform: scale(1);
+            }
+            100% { 
+                box-shadow: 0 0 40px currentColor, 0 0 60px currentColor, 0 0 80px currentColor;
+                transform: scale(1.08);
+            }
+        }
+
+        .controls-panel {
+            width: 420px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+        }
+
+        .control-section h3 {
+            color: #FFFF00;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            border-bottom: 2px solid rgba(255, 255, 0, 0.3);
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .control-section h3:hover {
+            color: #FFC400;
+            border-bottom-color: rgba(255, 196, 0, 0.5);
+        }
+
+        .control-section h3::after {
+            content: '▼';
+            margin-left: auto;
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .control-section.collapsed h3::after {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+            opacity: 1;
+            margin-top: 0;
+        }
+
+        .control-section.collapsed .category-content {
+            max-height: 0;
+            opacity: 0;
+            margin-top: -10px;
+        }
+
+        .section-icon {
+            font-size: 1.2em;
+        }
+
+        .button-grid {
+            display: grid;
+            gap: 6px;
+            grid-template-columns: 1fr;
+        }
+
+        .button-grid.two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        button {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .control-item {
+            margin-bottom: 15px;
+        }
+
+        .control-item label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e0e0;
+            font-size: 0.9em;
+            cursor: pointer;
+            outline: none;
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        select:hover {
+            border-color: rgba(255, 255, 0, 0.5);
+        }
+
+        select:focus {
+            border-color: #FFFF00;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+        }
+
+        .value-display {
+            display: inline-block;
+            background: rgba(255, 255, 0, 0.1);
+            padding: 2px 10px;
+            border-radius: 4px;
+            color: #FFFF00;
+            font-weight: bold;
+            float: right;
+        }
+
+        .pattern-info {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #FFFF00;
+        }
+
+        .pattern-info h4 {
+            color: #FFFF00;
+            margin-bottom: 10px;
+        }
+
+        .pattern-info p {
+            color: #c0c0c0;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .interval-visual {
+            margin: 15px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .chromatic-circle {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        .clock-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: #FFFF00;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px #FFFF00;
+            z-index: 100;
+        }
+
+        .circle-note {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .circle-note.root {
+            width: 50px;
+            height: 50px;
+            font-size: 1.1em;
+            border: 4px solid white;
+            box-shadow: 0 0 30px currentColor, 0 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            animation: pulseRoot 2s ease-in-out infinite;
+        }
+
+        .circle-note.target {
+            width: 50px;
+            height: 50px;
+            font-size: 1.1em;
+            border: 4px solid white;
+            box-shadow: 0 0 30px currentColor, 0 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            animation: pulseTarget 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseRoot {
+            0%, 100% { transform: scale(1) translate(-50%, -50%); }
+            50% { transform: scale(1.1) translate(-50%, -50%); }
+        }
+
+        @keyframes pulseTarget {
+            0%, 100% { transform: scale(1) translate(-50%, -50%); }
+            50% { transform: scale(1.1) translate(-50%, -50%); }
+        }
+
+        .clock-tick {
+            position: absolute;
+            width: 2px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+        }
+
+        .interval-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, #FFFF00, currentColor);
+            transform-origin: left center;
+            box-shadow: 0 0 10px currentColor;
+            animation: lineGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes lineGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; filter: brightness(1.3); }
+        }
+
+        .interval-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 0, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #FFFF00;
+        }
+
+        .midi-label {
+            position: absolute;
+            font-size: 0.65em;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: monospace;
+        }
+
+        .play-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .play-controls button {
+            flex: 1;
+            text-align: center;
+            font-size: 1em;
+            padding: 15px;
+        }
+
+        #playBtn.playing {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            animation: playingPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes playingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .key-display {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(15px);
+            border: 3px solid #667eea;
+            display: none;
+            z-index: 100;
+        }
+
+        .key-display-title {
+            color: #667eea;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .key-display-value {
+            color: #FFFF00;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .color-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75em;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .controls-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .controls-panel::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hero-logo">
+            Keys, Codes & Modes
+            <span class="freestyle-badge">FreeStyle®</span>
+        </div>
+        <div class="tagline">Complete 3D Sacred Geometry Music Theory Visualizer</div>
+    </div>
+
+    <div class="main-container">
+        <div class="canvas-container">
+            <canvas id="canvas3d"></canvas>
+            <div id="noteIndicator" class="note-indicator">C</div>
+            <div id="keyDisplay" class="key-display">
+                <div class="key-display-title">Current Key</div>
+                <div class="key-display-value">C</div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <!-- BASIC INTERVALS SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎵</span> Basic Intervals</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('minorSecond')">Minor 2nd (Semitone) - m2</button>
+                        <button onclick="setPattern('majorSecond')">Major 2nd (Whole Tone) - M2</button>
+                        <button onclick="setPattern('minorThird')">Minor 3rd - m3</button>
+                        <button onclick="setPattern('majorThird')">Major 3rd - M3</button>
+                        <button onclick="setPattern('perfectFourth')">Perfect 4th - P4</button>
+                        <button onclick="setPattern('tritone')">Tritone - TT (Augmented 4th)</button>
+                        <button onclick="setPattern('perfectFifth')">Perfect 5th - P5</button>
+                        <button onclick="setPattern('minorSixth')">Minor 6th - m6</button>
+                        <button onclick="setPattern('majorSixth')">Major 6th - M6</button>
+                        <button onclick="setPattern('minorSeventh')">Minor 7th - m7</button>
+                        <button onclick="setPattern('majorSeventh')">Major 7th - M7</button>
+                        <button onclick="setPattern('octave')">Octave - P8</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRIADS SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎹</span> Triads</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('majorTriad')">Major Triad (R-M3-P5)</button>
+                        <button onclick="setPattern('minorTriad')">Minor Triad (R-m3-P5)</button>
+                        <button onclick="setPattern('diminishedTriad')">Diminished Triad (R-m3-d5)</button>
+                        <button onclick="setPattern('augmentedTriad')">Augmented Triad (R-M3-A5)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEVENTH CHORDS SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎼</span> Seventh Chords</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('major7th')">Major 7th (Maj7)</button>
+                        <button onclick="setPattern('minor7th')">Minor 7th (m7)</button>
+                        <button onclick="setPattern('dominant7th')">Dominant 7th (7)</button>
+                        <button onclick="setPattern('diminished7th')">Diminished 7th (dim7)</button>
+                        <button onclick="setPattern('halfDiminished7th')">Half-Diminished 7th (ø7)</button>
+                        <button onclick="setPattern('minorMajor7th')">Minor-Major 7th (mMaj7)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAJOR SCALE FAMILY SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎵</span> Major Scale Family</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('majorScale')">Major Scale (Ionian)</button>
+                        <button onclick="setPattern('harmonicMajor')">Harmonic Major</button>
+                        <button onclick="setPattern('melodicMajor')">Melodic Major (ascending)</button>
+                    </div>
+                </div>
+            </div>
+                
+            <!-- MINOR SCALE FAMILY SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎵</span> Minor Scale Family</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('naturalMinor')">Natural Minor (Aeolian)</button>
+                        <button onclick="setPattern('harmonicMinor')">Harmonic Minor</button>
+                        <button onclick="setPattern('melodicMinor')">Melodic Minor (ascending)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENTATONIC SCALES SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎵</span> Pentatonic Scales</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('pentatonicMajor')">Pentatonic Major</button>
+                        <button onclick="setPattern('pentatonicMinor')">Pentatonic Minor</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLUES & JAZZ SCALES SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎵</span> Blues & Jazz Scales</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('bluesScale')">Blues Scale</button>
+                        <button onclick="setPattern('bebopMajor')">Bebop Major</button>
+                        <button onclick="setPattern('bebopDominant')">Bebop Dominant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SYMMETRICAL SCALES SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎵</span> Symmetrical Scales</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('wholeTone')">Whole Tone Scale</button>
+                        <button onclick="setPattern('diminishedScale')">Diminished (Octatonic)</button>
+                        <button onclick="setPattern('chromaticScale')">Chromatic Scale (All 12)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODES SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎭</span> Modes (Ionian Family)</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('ionian')">Ionian (Major) - Mode I</button>
+                        <button onclick="setPattern('dorian')">Dorian - Mode II</button>
+                        <button onclick="setPattern('phrygian')">Phrygian - Mode III</button>
+                        <button onclick="setPattern('lydian')">Lydian - Mode IV</button>
+                        <button onclick="setPattern('mixolydian')">Mixolydian - Mode V</button>
+                        <button onclick="setPattern('aeolian')">Aeolian (Natural Minor) - Mode VI</button>
+                        <button onclick="setPattern('locrian')">Locrian - Mode VII</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SACRED GEOMETRY SECTION -->
+            <div class="control-section collapsed">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">✨</span> Sacred Geometry</h3>
+                <div class="category-content">
+                    <div class="button-grid">
+                        <button onclick="setPattern('triangle')">Triangle (3) - Divine Trinity</button>
+                        <button onclick="setPattern('square')">Square (4) - Earth Elements</button>
+                        <button onclick="setPattern('pentagon')">Pentagon (5) - Golden Ratio</button>
+                        <button onclick="setPattern('hexagon')">Hexagon (6) - Perfect Harmony</button>
+                        <button onclick="setPattern('heptagon')">Heptagon (7) - Mystical Seven</button>
+                        <button onclick="setPattern('octagon')">Octagon (8) - Infinity</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAYBACK CONTROLS -->
+            <div class="control-section">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">⚙️</span> Playback Controls</h3>
+                <div class="category-content">
+                    <div class="play-controls">
+                        <button id="playBtn" onclick="togglePlayback()">▶ Play Pattern</button>
+                        <button id="stopBtn" onclick="stopPlayback()" style="background: linear-gradient(135deg, #f5576c 0%, #c62828 100%);">⏹ STOP</button>
+                    </div>
+                    <div class="play-controls" style="margin-top: 10px;">
+                        <button onclick="clearPattern()" style="background: linear-gradient(135deg, #757575 0%, #424242 100%);">⊗ Clear All</button>
+                    </div>
+                    
+                    <div class="control-item">
+                        <label>Root Key</label>
+                        <select id="keySelect" onchange="updateRootKey()">
+                            <option value="0">C (Yellow)</option>
+                            <option value="1">C# / Db (Yellow-Orange)</option>
+                            <option value="2">D (Orange)</option>
+                            <option value="3">D# / Eb (Red-Orange)</option>
+                            <option value="4">E (Red)</option>
+                            <option value="5">F (Red-Purple)</option>
+                            <option value="6">F# / Gb (Purple)</option>
+                            <option value="7">G (Blue-Purple)</option>
+                            <option value="8">G# / Ab (Blue)</option>
+                            <option value="9">A (Blue-Green)</option>
+                            <option value="10">A# / Bb (Green)</option>
+                            <option value="11">B (Yellow-Green)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-item">
+                        <label>Play Speed <span id="speedValue" class="value-display">600</span>ms</label>
+                        <input type="range" id="playSpeed" min="200" max="2000" value="600" step="50" oninput="updatePlaySpeed()">
+                    </div>
+
+                    <div class="control-item">
+                        <label>Volume <span id="volumeValue" class="value-display">0.4</span></label>
+                        <input type="range" id="volume" min="0" max="1" value="0.4" step="0.05" oninput="updateVolume()">
+                    </div>
+
+                    <div class="control-item">
+                        <label>Note Separation <span id="separationValue" class="value-display">150</span>ms</label>
+                        <input type="range" id="noteSeparation" min="50" max="500" value="150" step="25" oninput="updateNoteSeparation()">
+                    </div>
+
+                    <div class="control-item">
+                        <label>
+                            <input type="checkbox" id="harmonyMode" onchange="toggleHarmony()" checked>
+                            Enhanced Playback (outline → notes → chord)
+                        </label>
+                    </div>
+
+                    <div class="control-item">
+                        <label>
+                            <input type="checkbox" id="sequentialMode" onchange="toggleSequential()">
+                            Auto-Sequence Through All Patterns
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISUAL CONTROLS -->
+            <div class="control-section">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🎨</span> Visual Controls</h3>
+                <div class="category-content">
+                    <div class="control-item">
+                        <label>Layer Spacing <span id="spacingValue" class="value-display">3</span></label>
+                        <input type="range" id="spacing" min="1" max="8" value="3" step="0.5" oninput="updateSpacing()">
+                    </div>
+
+                    <div class="control-item">
+                        <label>Geometry Thickness <span id="thicknessValue" class="value-display">0.15</span></label>
+                        <input type="range" id="thickness" min="0.05" max="0.5" value="0.15" step="0.05" oninput="updateThickness()">
+                    </div>
+
+                    <div class="control-item">
+                        <label>Rotation Speed <span id="rotSpeedValue" class="value-display">1</span></label>
+                        <input type="range" id="rotSpeed" min="0" max="5" value="1" step="0.1" oninput="updateRotSpeed()">
+                    </div>
+
+                    <div class="control-item">
+                        <label>Camera Zoom <span id="zoomValue" class="value-display">40</span></label>
+                        <input type="range" id="zoom" min="20" max="80" value="40" step="2" oninput="updateZoom()">
+                    </div>
+
+                    <div class="control-item">
+                        <button onclick="toggleRotation()">⟳ Toggle Auto-Rotate (ON)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PATTERN INFO -->
+            <div class="pattern-info" id="patternInfo">
+                <h4>Welcome to Sacred Geometry Music Visualizer</h4>
+                <p>Select any interval, triad, chord, scale, mode, or sacred geometry pattern to visualize it in 3D across all 12 chromatic keys. Each layer represents a different root note, creating a complete harmonic stack through all registers.</p>
+                <p style="margin-top: 10px; color: #FFFF00;"><strong>NEW:</strong> Enable "Auto-Sequence" to automatically play through all patterns!</p>
+            </div>
+
+            <!-- COLOR LEGEND -->
+            <div class="control-section">
+                <h3 onclick="toggleCategory(this)"><span class="section-icon">🌈</span> Chromatic Color Map</h3>
+                <div class="category-content">
+                    <div id="colorLegend" class="color-legend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Three.js scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('canvas3d'),
+            antialias: true,
+            alpha: true 
+        });
+        
+        const canvas = document.getElementById('canvas3d');
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+        
+        // Position camera on Z-axis looking down at XY plane
+        camera.position.set(0, 0, 40);
+        camera.lookAt(0, 0, 0);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        
+        const pointLight1 = new THREE.PointLight(0xffffff, 1);
+        pointLight1.position.set(10, 10, 10);
+        scene.add(pointLight1);
+        
+        const pointLight2 = new THREE.PointLight(0x667eea, 0.5);
+        pointLight2.position.set(-10, -10, 5);
+        scene.add(pointLight2);
+
+        // Audio setup with IMPROVED CLARITY
+        let audioContext;
+        let masterGainNode;
+        let compressor;
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create master gain
+                masterGainNode = audioContext.createGain();
+                masterGainNode.gain.value = 1.0;
+                
+                // Add compressor for cleaner sound
+                compressor = audioContext.createDynamicsCompressor();
+                compressor.threshold.value = -20;
+                compressor.knee.value = 10;
+                compressor.ratio.value = 4;
+                compressor.attack.value = 0.003;
+                compressor.release.value = 0.25;
+                
+                masterGainNode.connect(compressor);
+                compressor.connect(audioContext.destination);
+            }
+        }
+
+        // Musical definitions - CORRECT COLOR BRANDING
+        const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        
+        // CORRECT CHROMATIC COLORS - C = YELLOW
+        const chromaticColors = {
+            'C':  '#FFFF00',  // Yellow (MIDI 60)
+            'C#': '#FFC400',  // Yellow-Orange (MIDI 61)
+            'D':  '#FF8000',  // Orange (MIDI 62)
+            'D#': '#FF4000',  // Red-Orange (MIDI 63)
+            'E':  '#FF0000',  // Red (MIDI 64)
+            'F':  '#C4007F',  // Red-Purple (MIDI 65)
+            'F#': '#8000FF',  // Purple (MIDI 66)
+            'G':  '#4000FF',  // Blue-Purple (MIDI 67)
+            'G#': '#0000FF',  // Blue (MIDI 68)
+            'A':  '#007FFF',  // Blue-Green (MIDI 69)
+            'A#': '#00FF80',  // Green (MIDI 70)
+            'B':  '#80FF00'   // Yellow-Green (MIDI 71)
+        };
+
+        // MIDI Note 60 = C4 (Middle C) = 261.63 Hz
+        const C4_FREQUENCY = 261.63;
+        const MIDI_C4 = 60;
+
+        function getNoteFrequency(noteIndex, octaveOffset = 0) {
+            // Calculate MIDI note number
+            const midiNote = MIDI_C4 + noteIndex + (octaveOffset * 12);
+            // Convert MIDI to frequency: f = 440 * 2^((n-69)/12)
+            return 440 * Math.pow(2, (midiNote - 69) / 12);
+        }
+
+        // Comprehensive pattern definitions
+        const patterns = {
+            // INTERVALS
+            minorSecond: { name: 'Minor 2nd (Semitone)', intervals: [0, 1], description: 'The smallest interval in Western music - creates tension and dissonance' },
+            majorSecond: { name: 'Major 2nd (Whole Tone)', intervals: [0, 2], description: 'Foundation of the whole-tone scale - sounds open and modern' },
+            minorThird: { name: 'Minor 3rd', intervals: [0, 3], description: 'Sad, melancholic sound - defines minor tonality' },
+            majorThird: { name: 'Major 3rd', intervals: [0, 4], description: 'Happy, bright sound - defines major tonality' },
+            perfectFourth: { name: 'Perfect 4th', intervals: [0, 5], description: 'Stable consonance - basis of the Circle of Fifths' },
+            tritone: { name: 'Tritone (Augmented 4th)', intervals: [0, 6], description: 'The "Devil\'s Interval" - maximum dissonance and tension' },
+            perfectFifth: { name: 'Perfect 5th', intervals: [0, 7], description: 'Most consonant interval - foundation of harmony' },
+            minorSixth: { name: 'Minor 6th', intervals: [0, 8], description: 'Tender, yearning quality - inversions create depth' },
+            majorSixth: { name: 'Major 6th', intervals: [0, 9], description: 'Bright, open sound - adds color to harmonies' },
+            minorSeventh: { name: 'Minor 7th', intervals: [0, 10], description: 'Jazzy, bluesy character - dominant in blues and jazz' },
+            majorSeventh: { name: 'Major 7th', intervals: [0, 11], description: 'Dreamy, ethereal quality - creates floating sensation' },
+            octave: { name: 'Octave (Perfect 8th)', intervals: [0, 12], description: 'Same note, different register - perfect consonance' },
+
+            // TRIADS
+            majorTriad: { name: 'Major Triad', intervals: [0, 4, 7], description: 'Root + Major 3rd + Perfect 5th - the happy chord' },
+            minorTriad: { name: 'Minor Triad', intervals: [0, 3, 7], description: 'Root + Minor 3rd + Perfect 5th - the sad chord' },
+            diminishedTriad: { name: 'Diminished Triad', intervals: [0, 3, 6], description: 'Root + Minor 3rd + Diminished 5th - tense, unstable' },
+            augmentedTriad: { name: 'Augmented Triad', intervals: [0, 4, 8], description: 'Root + Major 3rd + Augmented 5th - mysterious, whole-tone' },
+
+            // SEVENTH CHORDS
+            major7th: { name: 'Major 7th Chord', intervals: [0, 4, 7, 11], description: 'Major triad + Major 7th - jazzy, sophisticated' },
+            minor7th: { name: 'Minor 7th Chord', intervals: [0, 3, 7, 10], description: 'Minor triad + Minor 7th - smooth, mellow jazz' },
+            dominant7th: { name: 'Dominant 7th Chord', intervals: [0, 4, 7, 10], description: 'Major triad + Minor 7th - blues and resolution' },
+            diminished7th: { name: 'Diminished 7th Chord', intervals: [0, 3, 6, 9], description: 'Symmetrical - divides octave into four equal parts' },
+            halfDiminished7th: { name: 'Half-Diminished 7th', intervals: [0, 3, 6, 10], description: 'Diminished triad + Minor 7th - minor ii chord quality' },
+            minorMajor7th: { name: 'Minor-Major 7th', intervals: [0, 3, 7, 11], description: 'Minor triad + Major 7th - dark yet hopeful' },
+
+            // SCALES
+            majorScale: { name: 'Major Scale (Ionian)', intervals: [0, 2, 4, 5, 7, 9, 11], description: 'W-W-H-W-W-W-H pattern - the foundation of Western music' },
+            naturalMinor: { name: 'Natural Minor (Aeolian)', intervals: [0, 2, 3, 5, 7, 8, 10], description: 'W-H-W-W-H-W-W pattern - relative minor of Major' },
+            harmonicMinor: { name: 'Harmonic Minor', intervals: [0, 2, 3, 5, 7, 8, 11], description: 'Natural Minor with raised 7th - exotic, Middle Eastern flavor' },
+            melodicMinor: { name: 'Melodic Minor (ascending)', intervals: [0, 2, 3, 5, 7, 9, 11], description: 'Natural Minor with raised 6th and 7th - jazz foundation' },
+            harmonicMajor: { name: 'Harmonic Major', intervals: [0, 2, 4, 5, 7, 8, 11], description: 'Major scale with lowered 6th - Spanish/flamenco sound' },
+            melodicMajor: { name: 'Melodic Major (ascending)', intervals: [0, 2, 4, 5, 7, 8, 10], description: 'Major with lowered 6th and 7th descending' },
+            
+            pentatonicMajor: { name: 'Major Pentatonic', intervals: [0, 2, 4, 7, 9], description: 'Five notes - universal, found in many cultures' },
+            pentatonicMinor: { name: 'Minor Pentatonic', intervals: [0, 3, 5, 7, 10], description: 'Rock and blues foundation - versatile and powerful' },
+            
+            bluesScale: { name: 'Blues Scale', intervals: [0, 3, 5, 6, 7, 10], description: 'Minor Pentatonic + Blue Note (♭5) - essential for blues' },
+            bebopMajor: { name: 'Bebop Major', intervals: [0, 2, 4, 5, 7, 8, 9, 11], description: '8-note scale - passing tones for jazz improvisation' },
+            bebopDominant: { name: 'Bebop Dominant', intervals: [0, 2, 4, 5, 7, 9, 10, 11], description: 'Mixolydian + Major 7th passing tone' },
+            
+            wholeTone: { name: 'Whole Tone Scale', intervals: [0, 2, 4, 6, 8, 10], description: 'All whole steps - dreamy, impressionistic (Debussy)' },
+            diminishedScale: { name: 'Diminished (Octatonic)', intervals: [0, 2, 3, 5, 6, 8, 9, 11], description: 'Alternating whole-half steps - symmetrical' },
+            chromaticScale: { name: 'Chromatic Scale', intervals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], description: 'All 12 notes - complete pitch spectrum' },
+
+            // MODES
+            ionian: { name: 'Ionian Mode (Major)', intervals: [0, 2, 4, 5, 7, 9, 11], description: 'Mode I - bright, happy, stable - the Major scale' },
+            dorian: { name: 'Dorian Mode', intervals: [0, 2, 3, 5, 7, 9, 10], description: 'Mode II - minor with raised 6th - jazzy, sophisticated' },
+            phrygian: { name: 'Phrygian Mode', intervals: [0, 1, 3, 5, 7, 8, 10], description: 'Mode III - Spanish/flamenco sound - exotic half-step start' },
+            lydian: { name: 'Lydian Mode', intervals: [0, 2, 4, 6, 7, 9, 11], description: 'Mode IV - major with raised 4th - dreamy, floating' },
+            mixolydian: { name: 'Mixolydian Mode', intervals: [0, 2, 4, 5, 7, 9, 10], description: 'Mode V - dominant sound - rock and folk tradition' },
+            aeolian: { name: 'Aeolian Mode (Natural Minor)', intervals: [0, 2, 3, 5, 7, 8, 10], description: 'Mode VI - pure minor - sad, dark, introspective' },
+            locrian: { name: 'Locrian Mode', intervals: [0, 1, 3, 5, 6, 8, 10], description: 'Mode VII - diminished 5th - most unstable, theoretical' },
+
+            // SACRED GEOMETRY
+            triangle: { name: 'Triangle (3)', intervals: [0, 4, 8], description: 'Divine Trinity - augmented triad divides octave in thirds' },
+            square: { name: 'Square (4)', intervals: [0, 3, 6, 9], description: 'Four Elements - diminished 7th, perfectly symmetrical' },
+            pentagon: { name: 'Pentagon (5)', intervals: [0, 2, 5, 7, 10], description: 'Golden Ratio Φ - pentatonic harmony in sacred proportion' },
+            hexagon: { name: 'Hexagon (6)', intervals: [0, 2, 4, 6, 8, 10], description: 'Perfect Harmony - whole tone scale, six-fold symmetry' },
+            heptagon: { name: 'Heptagon (7)', intervals: [0, 2, 4, 5, 7, 9, 11], description: 'Mystical Seven - major scale, seven notes of perfection' },
+            octagon: { name: 'Octagon (8)', intervals: [0, 2, 3, 5, 6, 8, 9, 11], description: 'Infinity Symbol - diminished scale, eight-fold path' }
+        };
+
+        // Pattern sequence order
+        const patternSequence = [
+            'chromaticScale',
+            'minorSecond', 'majorSecond', 'minorThird', 'majorThird', 
+            'perfectFourth', 'tritone', 'perfectFifth', 'minorSixth', 
+            'majorSixth', 'minorSeventh', 'majorSeventh', 'octave',
+            'majorTriad', 'minorTriad', 'diminishedTriad', 'augmentedTriad',
+            'major7th', 'minor7th', 'dominant7th', 'diminished7th', 'halfDiminished7th', 'minorMajor7th',
+            'majorScale', 'naturalMinor', 'harmonicMinor', 'melodicMinor',
+            'pentatonicMajor', 'pentatonicMinor', 'bluesScale',
+            'wholeTone', 'diminishedScale',
+            'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian',
+            'triangle', 'square', 'pentagon', 'hexagon', 'heptagon', 'octagon'
+        ];
+
+        let currentGeometry = null;
+        let currentPattern = null;
+        let currentPatternKey = null;
+        let isPlaying = false;
+        let playbackInterval = null;
+        let currentPlayIndex = 0;
+        let autoRotate = true;
+        let rotationSpeed = 0.01;
+        let harmonyEnabled = true;
+        let sequentialMode = false;
+        let sequenceIndex = 0;
+        let sequenceTimeout = null;
+        let rootKeyOffset = 0; // Transposition offset
+        let activeOscillators = []; // Track playing notes
+        let noteSeparation = 150; // ms between notes in a group
+
+        function stopPlayback() {
+            // Immediately stop all playback
+            isPlaying = false;
+            
+            // Clear all timeouts
+            if (playbackInterval) {
+                clearTimeout(playbackInterval);
+                playbackInterval = null;
+            }
+            
+            if (sequenceTimeout) {
+                clearTimeout(sequenceTimeout);
+                sequenceTimeout = null;
+            }
+            
+            // Stop all audio
+            stopAllNotes();
+            
+            // Reset UI
+            const playBtn = document.getElementById('playBtn');
+            playBtn.textContent = '▶ Play Pattern';
+            playBtn.classList.remove('playing');
+            
+            // Clear all highlights
+            for (let i = 0; i < 12; i++) {
+                highlightLayer(i, false);
+            }
+            
+            // Hide indicators
+            document.getElementById('noteIndicator').style.display = 'none';
+            
+            // Reset play index
+            currentPlayIndex = 0;
+        }
+
+        function updateNoteSeparation() {
+            noteSeparation = parseInt(document.getElementById('noteSeparation').value);
+            document.getElementById('separationValue').textContent = noteSeparation;
+        }
+
+        function updateRootKey() {
+            rootKeyOffset = parseInt(document.getElementById('keySelect').value);
+            
+            // Stop any currently playing sounds
+            stopAllNotes();
+            
+            // If a pattern is loaded, redraw with new key
+            if (currentPattern && currentPattern.intervals) {
+                updatePatternInfo(currentPattern);
+                
+                // Update the 3D visualization
+                if (currentGeometry) {
+                    scene.remove(currentGeometry);
+                    currentGeometry = createMultiLayerGeometry(currentPattern);
+                    scene.add(currentGeometry);
+                }
+            }
+        }
+
+        function stopAllNotes() {
+            // Stop all active oscillators immediately
+            activeOscillators.forEach(osc => {
+                try {
+                    osc.stop();
+                } catch (e) {
+                    // Oscillator may already be stopped
+                }
+            });
+            activeOscillators = [];
+        }
+
+        function toggleCategory(headerElement) {
+            const section = headerElement.parentElement;
+            section.classList.toggle('collapsed');
+        }
+
+        function setPattern(patternKey) {
+            // Stop any current playback first
+            stopPlayback();
+            
+            // Clear previous
+            if (currentGeometry) {
+                scene.remove(currentGeometry);
+            }
+
+            const patternDef = patterns[patternKey];
+            
+            // Safety check
+            if (!patternDef || !patternDef.intervals) {
+                console.error('Invalid pattern:', patternKey);
+                return;
+            }
+            
+            currentPattern = patternDef;
+            currentPatternKey = patternKey;
+            
+            // Update UI
+            document.querySelectorAll('.control-section button').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Create geometry
+            currentGeometry = createMultiLayerGeometry(patternDef);
+            scene.add(currentGeometry);
+            
+            // Update info
+            updatePatternInfo(patternDef);
+            
+            // Show key display
+            document.getElementById('keyDisplay').style.display = 'block';
+
+            // Auto-play when set
+            setTimeout(() => {
+                togglePlayback();
+            }, 200);
+        }
+
+        function createMultiLayerGeometry(patternDef) {
+            const container = new THREE.Group();
+            const layers = [];
+            const spacing = parseFloat(document.getElementById('spacing').value);
+            const thickness = parseFloat(document.getElementById('thickness').value);
+            
+            // Create 12 layers (one for each chromatic key)
+            for (let keyIndex = 0; keyIndex < 12; keyIndex++) {
+                const layerGroup = new THREE.Group();
+                const yOffset = (keyIndex - 5.5) * spacing;
+                layerGroup.position.y = yOffset;
+                
+                const rootNote = noteNames[keyIndex];
+                const baseColor = chromaticColors[rootNote];
+                
+                // Create geometry for this pattern in this key
+                const geometryObjects = createPatternGeometry(patternDef, keyIndex, baseColor, thickness);
+                geometryObjects.forEach(obj => layerGroup.add(obj));
+                
+                container.add(layerGroup);
+                layers.push({
+                    keyIndex: keyIndex,
+                    rootNote: rootNote,
+                    group: layerGroup,
+                    objects: geometryObjects
+                });
+            }
+            
+            container.userData.layers = layers;
+            container.userData.pattern = patternDef;
+            
+            // Rotate container 90 degrees on X-axis so patterns face the camera
+            // This makes the XZ clock plane visible from the Z-axis camera
+            container.rotation.x = Math.PI / 2;
+            
+            return container;
+        }
+
+        function createPatternGeometry(patternDef, keyIndex, baseColor, thickness) {
+            const objects = [];
+            const numPoints = patternDef.intervals.length;
+            const radius = 4;
+            
+            // Create nodes (spheres) - POSITIONED BY CLOCK LOCATION
+            patternDef.intervals.forEach((interval, idx) => {
+                // Calculate position based on CHROMATIC CLOCK position
+                // interval 0 = 12 o'clock (top), interval 1 = 1 o'clock, etc.
+                // Each semitone = 30 degrees (360/12)
+                const clockAngle = (interval / 12) * Math.PI * 2 - Math.PI / 2; // -90° to start at top
+                const x = Math.cos(clockAngle) * radius;
+                const z = Math.sin(clockAngle) * radius;
+                
+                const noteIndex = (keyIndex + interval) % 12;
+                const noteName = noteNames[noteIndex];
+                const nodeColor = chromaticColors[noteName];
+                
+                const geometry = new THREE.SphereGeometry(thickness * 2, 32, 32);
+                const material = new THREE.MeshPhongMaterial({
+                    color: nodeColor,
+                    emissive: nodeColor,
+                    emissiveIntensity: 0.3,
+                    shininess: 100
+                });
+                
+                const sphere = new THREE.Mesh(geometry, material);
+                sphere.position.set(x, 0, z);
+                sphere.userData.noteIndex = noteIndex;
+                sphere.userData.interval = interval;
+                sphere.userData.keyIndex = keyIndex;
+                sphere.userData.noteName = noteName;
+                sphere.userData.originalEmissive = 0.3;
+                sphere.userData.isClickable = true; // Mark as clickable
+                
+                objects.push(sphere);
+            });
+            
+            // Create connecting lines (tubes) - CONNECT IN ORDER OF INTERVALS
+            for (let i = 0; i < numPoints; i++) {
+                const nextIdx = (i + 1) % numPoints;
+                
+                // Get intervals for current and next note
+                const interval1 = patternDef.intervals[i];
+                const interval2 = patternDef.intervals[nextIdx];
+                
+                // Calculate clock positions
+                const angle1 = (interval1 / 12) * Math.PI * 2 - Math.PI / 2;
+                const angle2 = (interval2 / 12) * Math.PI * 2 - Math.PI / 2;
+                
+                const x1 = Math.cos(angle1) * radius;
+                const z1 = Math.sin(angle1) * radius;
+                const x2 = Math.cos(angle2) * radius;
+                const z2 = Math.sin(angle2) * radius;
+                
+                const curve = new THREE.LineCurve3(
+                    new THREE.Vector3(x1, 0, z1),
+                    new THREE.Vector3(x2, 0, z2)
+                );
+                
+                const tubeGeometry = new THREE.TubeGeometry(curve, 8, thickness * 0.5, 8, false);
+                const tubeMaterial = new THREE.MeshPhongMaterial({
+                    color: baseColor,
+                    emissive: baseColor,
+                    emissiveIntensity: 0.3,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                
+                const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+                tube.userData.originalEmissive = 0.3;
+                objects.push(tube);
+            }
+            
+            return objects;
+        }
+
+        function togglePlayback() {
+            if (!currentPattern) return;
+            
+            const playBtn = document.getElementById('playBtn');
+            isPlaying = !isPlaying;
+            
+            if (isPlaying) {
+                playBtn.textContent = '⏸ Pause';
+                playBtn.classList.add('playing');
+                currentPlayIndex = 0;
+                playPattern();
+            } else {
+                playBtn.textContent = '▶ Play Pattern';
+                playBtn.classList.remove('playing');
+                if (playbackInterval) {
+                    clearTimeout(playbackInterval);
+                }
+                // Reset all highlights
+                for (let i = 0; i < 12; i++) {
+                    highlightLayer(i, false);
+                }
+                document.getElementById('noteIndicator').style.display = 'none';
+            }
+        }
+
+        function playPattern() {
+            if (!isPlaying || !currentPattern || !currentPattern.intervals) return;
+            
+            const speed = parseInt(document.getElementById('playSpeed').value);
+            const volume = parseFloat(document.getElementById('volume').value);
+            
+            // STOP all previous notes before starting new ones
+            stopAllNotes();
+            
+            // Unhighlight previous
+            if (currentPlayIndex > 0) {
+                highlightLayer(currentPlayIndex - 1, false);
+            } else {
+                highlightLayer(11, false);
+            }
+            
+            // Highlight current
+            highlightLayer(currentPlayIndex, true);
+            
+            // Apply key transposition
+            const transposedIndex = (currentPlayIndex + rootKeyOffset) % 12;
+            const rootNote = noteNames[transposedIndex];
+            updateKeyDisplay(rootNote);
+            showNoteIndicator(rootNote);
+            
+            // Define timing variables OUTSIDE the if block
+            const arpeggioGap = noteSeparation; // User-controlled separation
+            const pauseBetweenGroups = 0.3; // 300ms pause
+            
+            if (harmonyEnabled) {
+                // ENHANCED PLAYBACK WITH CLEAR SEPARATION
+                
+                // GROUP 1: Play the shape outline (arpeggio ascending)
+                currentPattern.intervals.forEach((interval, idx) => {
+                    const noteIndex = (transposedIndex + interval) % 12;
+                    const freq = getNoteFrequency(noteIndex, Math.floor((transposedIndex + interval) / 12));
+                    const delay = idx * (arpeggioGap / 1000); // Convert ms to seconds
+                    playHarmonic(freq, volume * 0.5, 'sine', delay);
+                });
+                
+                // PAUSE between groups
+                const group1End = (currentPattern.intervals.length * arpeggioGap) / 1000;
+                
+                // GROUP 2: Play individual notes with visual feedback
+                const group2Start = group1End + pauseBetweenGroups;
+                currentPattern.intervals.forEach((interval, idx) => {
+                    const noteIndex = (transposedIndex + interval) % 12;
+                    const freq = getNoteFrequency(noteIndex, Math.floor((transposedIndex + interval) / 12));
+                    const delay = group2Start + (idx * (arpeggioGap / 1000));
+                    playHarmonic(freq, volume * 0.7, 'sine', delay);
+                    
+                    // Flash the corresponding sphere
+                    setTimeout(() => {
+                        if (isPlaying) { // Only flash if still playing
+                            flashNoteInLayer(currentPlayIndex, interval);
+                        }
+                    }, delay * 1000);
+                });
+                
+                // PAUSE between groups
+                const group2End = group2Start + (currentPattern.intervals.length * arpeggioGap) / 1000;
+                const group3Start = group2End + pauseBetweenGroups;
+                
+                // GROUP 3: Play full chord/harmony
+                setTimeout(() => {
+                    if (isPlaying) { // Only play if still playing
+                        currentPattern.intervals.forEach((interval) => {
+                            const noteIndex = (transposedIndex + interval) % 12;
+                            const freq = getNoteFrequency(noteIndex, Math.floor((transposedIndex + interval) / 12));
+                            playHarmonic(freq, volume / Math.sqrt(currentPattern.intervals.length), 'sine', 0);
+                        });
+                    }
+                }, group3Start * 1000);
+                
+            } else {
+                // Play root note only
+                const freq = getNoteFrequency(transposedIndex);
+                playHarmonic(freq, volume, 'sine', 0);
+            }
+            
+            currentPlayIndex = (currentPlayIndex + 1);
+            
+            // Check if pattern complete
+            if (currentPlayIndex >= 12) {
+                currentPlayIndex = 0;
+                
+                // If sequential mode, move to next pattern
+                if (sequentialMode) {
+                    playbackInterval = setTimeout(() => {
+                        stopPlayback();
+                        advanceToNextPattern();
+                    }, speed * 2);
+                    return;
+                }
+            }
+            
+            // Calculate timing based on all three groups plus pauses
+            const totalGroupTime = harmonyEnabled ? 
+                ((currentPattern.intervals.length * arpeggioGap * 2) / 1000) + (pauseBetweenGroups * 2) + 0.5 : 
+                0.5;
+            const nextDelay = Math.max(speed, totalGroupTime * 1000);
+            
+            playbackInterval = setTimeout(playPattern, nextDelay);
+        }
+
+        function flashNoteInLayer(keyIndex, interval) {
+            if (!currentGeometry || !currentGeometry.userData.layers) return;
+            
+            const layer = currentGeometry.userData.layers[keyIndex];
+            if (!layer) return;
+            
+            // Find the sphere with this interval
+            layer.objects.forEach(obj => {
+                if (obj.userData.interval === interval && obj.geometry && obj.geometry.type === 'SphereGeometry') {
+                    // Flash effect
+                    const originalEmissive = obj.material.emissiveIntensity;
+                    obj.material.emissiveIntensity = 4.0;
+                    
+                    setTimeout(() => {
+                        obj.material.emissiveIntensity = originalEmissive;
+                    }, 200);
+                }
+            });
+        }
+
+        function playHarmonic(freq, volume, waveType, delay = 0) {
+            if (!audioContext) return;
+            
+            const startTime = audioContext.currentTime + delay;
+            const duration = 0.35; // SHORTER duration to prevent overlap
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.type = waveType;
+            osc.frequency.value = freq;
+            
+            osc.connect(gain);
+            gain.connect(masterGainNode);
+            
+            // ADSR envelope for cleaner sound
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(volume, startTime + 0.015); // Quick attack
+            gain.gain.linearRampToValueAtTime(volume * 0.6, startTime + 0.06); // Slight decay
+            gain.gain.setValueAtTime(volume * 0.6, startTime + duration - 0.08); // Sustain
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration); // Release
+            
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+            
+            // Track active oscillator
+            activeOscillators.push(osc);
+            
+            // Remove from tracking when done
+            setTimeout(() => {
+                const idx = activeOscillators.indexOf(osc);
+                if (idx > -1) activeOscillators.splice(idx, 1);
+            }, (startTime - audioContext.currentTime + duration) * 1000);
+        }
+
+        function highlightLayer(keyIndex, highlight) {
+            if (!currentGeometry || !currentGeometry.userData.layers) return;
+            
+            const layer = currentGeometry.userData.layers[keyIndex];
+            if (!layer) return;
+            
+            layer.objects.forEach((obj, idx) => {
+                if (obj.material) {
+                    if (highlight) {
+                        obj.material.emissiveIntensity = 2.0;
+                        
+                        if (obj.geometry && obj.geometry.type === 'SphereGeometry') {
+                            obj.userData.originalScale = obj.scale.clone();
+                            const pulseAnimation = () => {
+                                if (obj.userData.isHighlighted) {
+                                    const scale = 1 + 0.4 * Math.sin(Date.now() * 0.01);
+                                    obj.scale.set(scale, scale, scale);
+                                    requestAnimationFrame(pulseAnimation);
+                                }
+                            };
+                            obj.userData.isHighlighted = true;
+                            pulseAnimation();
+                        }
+                        
+                        if (obj.geometry && obj.geometry.type === 'TubeGeometry') {
+                            obj.userData.originalScale = obj.scale.clone();
+                            const tubeAnimation = () => {
+                                if (obj.userData.isHighlighted) {
+                                    const scale = 1 + 0.2 * Math.sin(Date.now() * 0.008 + idx);
+                                    obj.scale.setY(scale);
+                                    obj.scale.setX(scale);
+                                    requestAnimationFrame(tubeAnimation);
+                                }
+                            };
+                            obj.userData.isHighlighted = true;
+                            tubeAnimation();
+                        }
+                    } else {
+                        obj.material.emissiveIntensity = obj.userData.originalEmissive || 0.3;
+                        obj.userData.isHighlighted = false;
+                        
+                        if (obj.userData.originalScale) {
+                            obj.scale.copy(obj.userData.originalScale);
+                        }
+                    }
+                }
+            });
+        }
+
+        function updatePatternInfo(patternDef) {
+            const infoBox = document.getElementById('patternInfo');
+            
+            // Safety check
+            if (!patternDef || !patternDef.intervals) {
+                infoBox.innerHTML = `
+                    <h4>Welcome to Sacred Geometry Music Visualizer</h4>
+                    <p>Select any interval, triad, chord, scale, mode, or sacred geometry pattern to visualize it in 3D across all 12 chromatic keys.</p>
+                    <p style="margin-top: 10px; color: #FFFF00;"><strong>NEW:</strong> Enable "Auto-Sequence" to automatically play through all patterns!</p>
+                `;
+                return;
+            }
+            
+            // ALWAYS show chromatic clock visualization for ALL patterns
+            const semitones = patternDef.intervals;
+            const rootNote = noteNames[0]; // C
+            const rootColor = chromaticColors[rootNote];
+            
+            // Determine target color based on pattern type
+            let targetColor = rootColor;
+            if (semitones.length === 2) {
+                // Interval - use the second note's color
+                targetColor = chromaticColors[noteNames[semitones[1] % 12]];
+            } else if (semitones.length > 2) {
+                // Multi-note pattern - use the highest note's color
+                const maxInterval = Math.max(...semitones);
+                targetColor = chromaticColors[noteNames[maxInterval % 12]];
+            }
+            
+            const visualHTML = `
+                <div class="interval-visual">
+                    <div class="chromatic-circle" id="chromaticCircle"></div>
+                    <div class="interval-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Pattern Type</div>
+                            <div class="stat-value" style="font-size: 0.9em;">${getPatternType(patternDef)}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Notes</div>
+                            <div class="stat-value">${semitones.length}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Root</div>
+                            <div class="stat-value" style="color: ${rootColor}">C</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            infoBox.innerHTML = `
+                <h4>${patternDef.name}</h4>
+                <p>${patternDef.description}</p>
+                ${visualHTML}
+                <p style="margin-top: 10px; color: #FFFF00;">
+                    <strong>Structure:</strong> ${patternDef.intervals.length} notes × 12 keys = 
+                    ${patternDef.intervals.length * 12} total notes visualized
+                </p>
+                <p style="margin-top: 8px; color: #a0d0ff; font-size: 0.85em;">
+                    Each layer represents the pattern starting from a different root note (C through B), 
+                    creating a complete harmonic stack through all chromatic keys.
+                </p>
+            `;
+            
+            // Draw the chromatic clock with the pattern
+            setTimeout(() => {
+                drawChromaticClockPattern(patternDef.intervals);
+            }, 10);
+        }
+
+        function getPatternType(patternDef) {
+            if (!patternDef || !patternDef.intervals) return 'Pattern';
+            const len = patternDef.intervals.length;
+            if (len === 2) return 'Interval';
+            if (len === 3) return 'Triad';
+            if (len === 4) return 'Seventh';
+            if (len >= 5 && len <= 8) return 'Scale';
+            if (len >= 9) return 'Extended';
+            return 'Pattern';
+        }
+
+        function drawChromaticClockPattern(intervals) {
+            const circle = document.getElementById('chromaticCircle');
+            if (!circle || !intervals || intervals.length === 0) return;
+            
+            // Clear previous content
+            circle.innerHTML = '';
+            
+            const centerX = 140;
+            const centerY = 140;
+            const radius = 110;
+            const polygonRadius = radius - 20; // Polygon drawn inside the note circle
+            
+            // Add center dot
+            const centerDot = document.createElement('div');
+            centerDot.className = 'clock-center';
+            circle.appendChild(centerDot);
+            
+            // Draw clock tick marks for all 12 positions
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+                const tick = document.createElement('div');
+                tick.className = 'clock-tick';
+                const tickRadius = radius + 5;
+                tick.style.transform = `translate(-50%, -50%) translate(${Math.cos(angle) * tickRadius}px, ${Math.sin(angle) * tickRadius}px) rotate(${(i * 30) + 90}deg)`;
+                circle.appendChild(tick);
+            }
+            
+            // Create SVG layer for polygon/lines - BEHIND the notes
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '280px';
+            svg.style.height = '280px';
+            svg.style.pointerEvents = 'none';
+            svg.setAttribute('viewBox', '0 0 280 280');
+            
+            // Create defs for gradients
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            svg.appendChild(defs);
+            
+            // Build polygon points - ALIGNED TO CLOCK POSITIONS with key transposition
+            if (intervals.length >= 2) {
+                const points = [];
+                
+                // Calculate each point position on the clock
+                intervals.forEach(interval => {
+                    // Apply root key offset for transposition
+                    const transposedInterval = (interval + rootKeyOffset) % 12;
+                    const angle = (transposedInterval / 12) * Math.PI * 2 - Math.PI / 2;
+                    const x = centerX + Math.cos(angle) * polygonRadius;
+                    const y = centerY + Math.sin(angle) * polygonRadius;
+                    points.push(`${x},${y}`);
+                });
+                
+                // Draw filled polygon
+                const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                polygon.setAttribute('points', points.join(' '));
+                polygon.setAttribute('fill', 'rgba(255, 255, 0, 0.12)');
+                polygon.setAttribute('stroke', '#FFFF00');
+                polygon.setAttribute('stroke-width', '2.5');
+                polygon.setAttribute('stroke-linejoin', 'round');
+                polygon.style.animation = 'arcGlow 2s ease-in-out infinite';
+                svg.appendChild(polygon);
+                
+                // Draw gradient lines connecting the points
+                for (let i = 0; i < intervals.length; i++) {
+                    const nextIdx = (i + 1) % intervals.length;
+                    const interval1 = (intervals[i] + rootKeyOffset) % 12;
+                    const interval2 = (intervals[nextIdx] + rootKeyOffset) % 12;
+                    
+                    const angle1 = (interval1 / 12) * Math.PI * 2 - Math.PI / 2;
+                    const angle2 = (interval2 / 12) * Math.PI * 2 - Math.PI / 2;
+                    
+                    const x1 = centerX + Math.cos(angle1) * polygonRadius;
+                    const y1 = centerY + Math.sin(angle1) * polygonRadius;
+                    const x2 = centerX + Math.cos(angle2) * polygonRadius;
+                    const y2 = centerY + Math.sin(angle2) * polygonRadius;
+                    
+                    const color1 = chromaticColors[noteNames[interval1 % 12]];
+                    const color2 = chromaticColors[noteNames[interval2 % 12]];
+                    
+                    // Create gradient
+                    const gradientId = `gradient-${interval1}-${interval2}`;
+                    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                    gradient.setAttribute('id', gradientId);
+                    
+                    const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                    stop1.setAttribute('offset', '0%');
+                    stop1.setAttribute('stop-color', color1);
+                    
+                    const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                    stop2.setAttribute('offset', '100%');
+                    stop2.setAttribute('stop-color', color2);
+                    
+                    gradient.appendChild(stop1);
+                    gradient.appendChild(stop2);
+                    defs.appendChild(gradient);
+                    
+                    // Draw line
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', x1);
+                    line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2);
+                    line.setAttribute('y2', y2);
+                    line.setAttribute('stroke', `url(#${gradientId})`);
+                    line.setAttribute('stroke-width', '4');
+                    line.setAttribute('stroke-linecap', 'round');
+                    line.style.filter = 'drop-shadow(0 0 8px rgba(255, 255, 0, 0.6))';
+                    svg.appendChild(line);
+                }
+            }
+            
+            // Add SVG layer FIRST (behind notes)
+            circle.appendChild(svg);
+            
+            // Draw all 12 notes around the circle - Selected root key at 12 o'clock
+            noteNames.forEach((note, idx) => {
+                const angle = (idx / 12) * Math.PI * 2 - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                
+                // Apply transposition to display
+                const displayNoteIndex = (idx + rootKeyOffset) % 12;
+                const displayNote = noteNames[displayNoteIndex];
+                
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'circle-note';
+                noteDiv.style.left = x + 'px';
+                noteDiv.style.top = y + 'px';
+                noteDiv.style.transform = 'translate(-50%, -50%)';
+                noteDiv.style.backgroundColor = chromaticColors[displayNote];
+                
+                const noteText = document.createElement('div');
+                noteText.textContent = displayNote;
+                noteDiv.appendChild(noteText);
+                
+                // Highlight notes that are in the pattern
+                const transposedIntervals = intervals.map(iv => (iv + rootKeyOffset) % 12);
+                if (transposedIntervals.includes(displayNoteIndex)) {
+                    if (displayNoteIndex === rootKeyOffset % 12) {
+                        noteDiv.classList.add('root');
+                    } else {
+                        noteDiv.classList.add('target');
+                    }
+                }
+                
+                circle.appendChild(noteDiv);
+                
+                // MIDI number label (outside the circle)
+                const midiLabel = document.createElement('div');
+                midiLabel.className = 'midi-label';
+                midiLabel.textContent = `${60 + displayNoteIndex}`;
+                const midiX = centerX + Math.cos(angle) * (radius + 30);
+                const midiY = centerY + Math.sin(angle) * (radius + 30);
+                midiLabel.style.left = midiX + 'px';
+                midiLabel.style.top = midiY + 'px';
+                midiLabel.style.transform = 'translate(-50%, -50%)';
+                circle.appendChild(midiLabel);
+            });
+        }
+
+        function toggleRotation() {
+            autoRotate = !autoRotate;
+            event.target.textContent = autoRotate ? '⟳ Toggle Auto-Rotate (ON)' : '⟳ Toggle Auto-Rotate (OFF)';
+        }
+
+        function toggleHarmony() {
+            harmonyEnabled = document.getElementById('harmonyMode').checked;
+        }
+
+        function toggleSequential() {
+            sequentialMode = document.getElementById('sequentialMode').checked;
+            if (sequentialMode) {
+                sequenceIndex = 0;
+                advanceToNextPattern();
+            } else {
+                if (sequenceTimeout) {
+                    clearTimeout(sequenceTimeout);
+                }
+            }
+        }
+
+        function advanceToNextPattern() {
+            if (!sequentialMode) return;
+            
+            sequenceIndex = (sequenceIndex + 1) % patternSequence.length;
+            const nextPattern = patternSequence[sequenceIndex];
+            
+            // Find and click the button
+            const buttons = document.querySelectorAll('.control-section button');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(nextPattern)) {
+                    sequenceTimeout = setTimeout(() => {
+                        btn.click();
+                    }, 500);
+                }
+            });
+        }
+
+        function updateSpacing() {
+            const value = document.getElementById('spacing').value;
+            document.getElementById('spacingValue').textContent = value;
+            if (currentPattern) {
+                const buttons = document.querySelectorAll('.control-section button');
+                let activeButton = null;
+                buttons.forEach(btn => {
+                    if (btn.classList.contains('active')) activeButton = btn;
+                });
+                if (activeButton) activeButton.click();
+            }
+        }
+
+        function updateThickness() {
+            const value = document.getElementById('thickness').value;
+            document.getElementById('thicknessValue').textContent = value;
+            if (currentPattern) {
+                const buttons = document.querySelectorAll('.control-section button');
+                let activeButton = null;
+                buttons.forEach(btn => {
+                    if (btn.classList.contains('active')) activeButton = btn;
+                });
+                if (activeButton) activeButton.click();
+            }
+        }
+
+        function updateRotSpeed() {
+            const value = parseFloat(document.getElementById('rotSpeed').value);
+            document.getElementById('rotSpeedValue').textContent = value;
+            rotationSpeed = value * 0.01;
+        }
+
+        function updateZoom() {
+            const value = parseFloat(document.getElementById('zoom').value);
+            document.getElementById('zoomValue').textContent = value;
+            camera.position.z = value;
+        }
+
+        function updatePlaySpeed() {
+            const value = document.getElementById('playSpeed').value;
+            document.getElementById('speedValue').textContent = value;
+        }
+
+        function updateVolume() {
+            const value = document.getElementById('volume').value;
+            document.getElementById('volumeValue').textContent = value;
+        }
+
+        function updateKeyDisplay(noteName) {
+            document.getElementById('keyDisplay').querySelector('.key-display-value').textContent = noteName;
+            document.getElementById('keyDisplay').style.borderColor = chromaticColors[noteName];
+        }
+
+        function showNoteIndicator(noteName) {
+            const indicator = document.getElementById('noteIndicator');
+            indicator.textContent = noteName;
+            indicator.style.display = 'block';
+            const hexColor = chromaticColors[noteName];
+            indicator.style.color = hexColor;
+            indicator.style.borderColor = hexColor;
+            indicator.style.textShadow = `0 0 20px ${hexColor}, 0 0 30px ${hexColor}`;
+        }
+
+        function clearPattern() {
+            // Use the stop function first
+            stopPlayback();
+            
+            if (currentGeometry) {
+                scene.remove(currentGeometry);
+                currentGeometry = null;
+            }
+            
+            currentPattern = null;
+            
+            document.getElementById('keyDisplay').style.display = 'none';
+            
+            document.querySelectorAll('.control-section button').forEach(btn => btn.classList.remove('active'));
+            
+            const infoBox = document.getElementById('patternInfo');
+            if (infoBox) {
+                infoBox.innerHTML = `
+                    <h4>Welcome to Sacred Geometry Music Visualizer</h4>
+                    <p>Select any interval, triad, chord, scale, mode, or sacred geometry pattern to visualize it in 3D across all 12 chromatic keys.</p>
+                    <p style="margin-top: 10px; color: #FFFF00;"><strong>NEW:</strong> Enable "Auto-Sequence" to automatically play through all patterns!</p>
+                `;
+            }
+        }
+
+        function createColorLegend() {
+            const legend = document.getElementById('colorLegend');
+            noteNames.forEach((note, idx) => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                
+                const colorBox = document.createElement('div');
+                colorBox.className = 'legend-color';
+                colorBox.style.backgroundColor = chromaticColors[note];
+                
+                const label = document.createElement('span');
+                const midiNote = MIDI_C4 + idx;
+                label.textContent = `${note} (${midiNote})`;
+                
+                item.appendChild(colorBox);
+                item.appendChild(label);
+                legend.appendChild(item);
+            });
+        }
+
+        // Mouse interaction
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let mouseDownTime = 0;
+
+        // Raycaster for clicking on 3D objects
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            mouseDownTime = Date.now();
+            autoRotate = false;
+            document.querySelector('button[onclick="toggleRotation()"]').textContent = '⟳ Toggle Auto-Rotate (OFF)';
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging && currentGeometry) {
+                const deltaMove = {
+                    x: e.offsetX - previousMousePosition.x,
+                    y: e.offsetY - previousMousePosition.y
+                };
+                
+                // Horizontal drag rotates around Z-axis (spin the clock)
+                currentGeometry.rotation.z += deltaMove.x * 0.01;
+                // Vertical drag tilts the view (rotate around X-axis)
+                currentGeometry.rotation.x += deltaMove.y * 0.01;
+            } else if (currentGeometry && !isDragging) {
+                // Check if hovering over a clickable sphere
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(currentGeometry.children, true);
+                
+                if (intersects.length > 0 && intersects[0].object.userData.isClickable) {
+                    canvas.classList.add('hovering');
+                } else {
+                    canvas.classList.remove('hovering');
+                }
+            }
+            
+            previousMousePosition = {
+                x: e.offsetX,
+                y: e.offsetY
+            };
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            const clickDuration = Date.now() - mouseDownTime;
+            
+            // If it was a quick click (not a drag), check for object intersection
+            if (clickDuration < 200 && currentGeometry) {
+                // Calculate mouse position in normalized device coordinates
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                
+                // Update the picking ray with the camera and mouse position
+                raycaster.setFromCamera(mouse, camera);
+                
+                // Calculate objects intersecting the picking ray
+                const intersects = raycaster.intersectObjects(currentGeometry.children, true);
+                
+                if (intersects.length > 0) {
+                    const clickedObject = intersects[0].object;
+                    
+                    // Check if it's a clickable sphere
+                    if (clickedObject.userData.isClickable) {
+                        playClickedNote(clickedObject);
+                    }
+                }
+            }
+            
+            isDragging = false;
+        });
+
+        function playClickedNote(sphere) {
+            initAudio();
+            
+            // Stop any lingering notes
+            stopAllNotes();
+            
+            const noteIndex = sphere.userData.noteIndex;
+            const noteName = sphere.userData.noteName;
+            const keyIndex = sphere.userData.keyIndex;
+            
+            // Apply key transposition
+            const transposedNoteIndex = (noteIndex + rootKeyOffset) % 12;
+            const transposedNoteName = noteNames[transposedNoteIndex];
+            
+            // Calculate frequency
+            const freq = getNoteFrequency(transposedNoteIndex);
+            
+            // Play the note (shorter duration)
+            playHarmonic(freq, 0.4, 'sine', 0);
+            
+            // Visual feedback - flash the sphere
+            const originalEmissive = sphere.material.emissiveIntensity;
+            sphere.material.emissiveIntensity = 3.0;
+            
+            setTimeout(() => {
+                sphere.material.emissiveIntensity = originalEmissive;
+            }, 250);
+            
+            // Show note indicator with transposed note
+            showNoteIndicator(transposedNoteName);
+            updateKeyDisplay(noteNames[(keyIndex + rootKeyOffset) % 12]);
+            
+            // Hide after a moment
+            setTimeout(() => {
+                document.getElementById('noteIndicator').style.display = 'none';
+            }, 600);
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (currentGeometry && autoRotate) {
+                // Rotate around Z-axis since camera is viewing from Z-axis
+                currentGeometry.rotation.z += rotationSpeed;
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            const canvas = document.getElementById('canvas3d');
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        }
+
+        window.addEventListener('resize', onWindowResize);
+
+        // Initialize
+        createColorLegend();
+        animate();
+
+        // Initialize audio on first user interaction
+        document.addEventListener('click', () => {
+            initAudio();
+        }, { once: true });
+    </script>
+</body>
+</html>

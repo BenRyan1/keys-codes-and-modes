@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm & Harmony Simple | Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a3d5f 0%, #0a1929 100%);
+            color: #E8E8E8;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 128, 128, 0.1);
+            border-radius: 20px;
+            border: 2px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #F4D03F, #008080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            background: rgba(26, 61, 95, 0.6);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(0, 128, 128, 0.4);
+        }
+        
+        .panel-title {
+            font-size: 1.8em;
+            color: #F4D03F;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .circle-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            margin: 0 auto 30px;
+        }
+        
+        .chromatic-circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(20, 40, 60, 0.8), rgba(10, 20, 30, 1));
+            border: 3px solid rgba(0, 128, 128, 0.5);
+            box-shadow: 0 0 40px rgba(0, 128, 128, 0.3);
+        }
+        
+        .note-circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid rgba(0, 0, 0, 0.5);
+            transform: translate(-50%, -50%);
+            color: rgba(0, 0, 0, 0.75); /* Reduced opacity by 25% (was 1.0, now 0.75) */
+        }
+        
+        .note-circle:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 20px currentColor;
+        }
+        
+        .note-circle.active {
+            transform: translate(-50%, -50%) scale(1.4);
+            box-shadow: 0 0 30px currentColor;
+            border-color: white;
+            border-width: 4px;
+        }
+        
+        .center-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .center-note {
+            font-size: 3em;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+        
+        .center-info {
+            font-size: 1em;
+            opacity: 0.7;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            margin: 5px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+        
+        .btn-play {
+            background: linear-gradient(135deg, #008080, #00a0a0);
+        }
+        
+        .btn-play:hover {
+            background: linear-gradient(135deg, #F4D03F, #FFE55C);
+            color: #1a3d5f;
+            transform: translateY(-2px);
+        }
+        
+        .btn-preset {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .btn-preset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .pattern-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .pattern-name {
+            font-size: 1.3em;
+            color: #F4D03F;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .pattern-formula {
+            font-size: 1.1em;
+            color: #00BFFF;
+        }
+        
+        .explanation {
+            grid-column: 1 / -1;
+            background: rgba(244, 208, 63, 0.1);
+            border: 2px solid rgba(244, 208, 63, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+        }
+        
+        .explanation h2 {
+            color: #F4D03F;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .explanation p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 15px;">
+                <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTgiIGZpbGw9IiM0QTdCQTciIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwMCwxNSAxODUsMTg1IDE1LDE4NSIgZmlsbD0iI0Y0RDAzRiIgb3BhY2l0eT0iMC44NSIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxMDAsMTUgMTUsMTg1IDE1LDU1IiBmaWxsPSIjOEI2QkEzIiBvcGFjaXR5PSIwLjc1Ii8+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwMCwxNSAxODUsNTUgMTg1LDE4NSIgZmlsbD0iIzZGQTVBNSIgb3BhY2l0eT0iMC43NSIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxNSw1NSAxMDAsMTAwIDE1LDE4NSIgZmlsbD0iI0NGN0E1QSIgb3BhY2l0eT0iMC42NSIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxODUsNTUgMTAwLDEwMCAxODUsMTg1IiBmaWxsPSIjOUFBRjdBIiBvcGFjaXR5PSIwLjY1Ii8+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwMCw1NSAxNDUsMTAwIDEwMCwxNDUgNTUsMTAwIiBmaWxsPSIjRThENzdGIiBvcGFjaXR5PSIwLjYiLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNyIgZmlsbD0iIzJhNGQ2ZiIvPgogICAgPGxpbmUgeDE9IjQwIiB5MT0iNDAiIHgyPSIxNjAiIHkyPSIxNjAiIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuNCIvPgogICAgPGxpbmUgeDE9IjE2MCIgeTE9IjQwIiB4Mj0iNDAiIHkyPSIxNjAiIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuNCIvPgogICAgPGxpbmUgeDE9IjEwMCIgeTE9IjIwIiB4Mj0iMTAwIiB5Mj0iMTgwIiBzdHJva2U9IiMyYTRkNmYiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjQiLz4KICAgIDxsaW5lIHgxPSIyMCIgeTE9IjEwMCIgeDI9IjE4MCIgeTI9IjEwMCIgc3Ryb2tlPSIjMmE0ZDZmIiBzdHJva2Utd2lkdGg9IjEuNSIgb3BhY2l0eT0iMC40Ii8+Cjwvc3ZnPg==" 
+                     alt="Keys, Codes & Modes" 
+                     style="width: 70px; height: 70px;">
+                <h1 style="margin: 0;">Rhythm & Harmony</h1>
+            </div>
+            <p class="tagline">See How the Chromatic Circle Becomes Musical Patterns</p>
+        </div>
+        
+        <div class="main-content">
+            <!-- Chromatic Circle -->
+            <div class="panel">
+                <h2 class="panel-title">Chromatic Circle (12 Notes)</h2>
+                <div class="circle-container">
+                    <div class="chromatic-circle" id="chromatic">
+                        <div class="center-display">
+                            <div class="center-note" id="centerNote">C</div>
+                            <div class="center-info" id="centerInfo">Click a note</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Play Button (moved here from right panel) -->
+                <div class="controls" style="margin-top: 20px;">
+                    <button class="btn btn-play" onclick="playPattern()">▶ Play Pattern</button>
+                </div>
+                
+                <div class="pattern-info">
+                    <div class="pattern-name" id="patternName">C Major Scale</div>
+                    <div class="pattern-formula" id="patternFormula">W-W-H-W-W-W-H</div>
+                </div>
+            </div>
+            
+            <!-- Pattern Selection -->
+            <div class="panel">
+                <h2 class="panel-title">Musical Patterns</h2>
+                <div style="margin: 30px 0;">
+                    <p style="text-align: center; margin-bottom: 30px; line-height: 1.8;">
+                        Click a pattern below to see which notes are selected from the 12-note chromatic circle.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <button class="btn btn-preset" onclick="showPattern('major')">
+                            C Major Scale (7 notes)<br>
+                            <small>C-D-E-F-G-A-B</small>
+                        </button>
+                        <button class="btn btn-preset" onclick="showPattern('pentatonic')">
+                            C Pentatonic (5 notes)<br>
+                            <small>C-D-E-G-A</small>
+                        </button>
+                        <button class="btn btn-preset" onclick="showPattern('triad')">
+                            C Major Triad (3 notes)<br>
+                            <small>C-E-G</small>
+                        </button>
+                        <button class="btn btn-preset" onclick="showPattern('chromatic')">
+                            Full Chromatic (12 notes)<br>
+                            <small>All notes</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Explanation -->
+            <div class="explanation">
+                <h2>💡 How It Works</h2>
+                <p>
+                    <strong>The Chromatic Circle</strong> shows all 12 musical notes arranged in a circle, 
+                    with C at the top (12 o'clock position). This represents every possible note in Western music.
+                </p>
+                <p>
+                    <strong>Musical Patterns</strong> are created by selecting specific notes from these 12. 
+                    The pattern of intervals (Whole steps = W, Half steps = H) determines what we hear:
+                </p>
+                <p>
+                    • <strong>Major Scale (7 notes):</strong> W-W-H-W-W-W-H pattern creates the familiar "Do-Re-Mi" sound<br>
+                    • <strong>Pentatonic (5 notes):</strong> Removes the 4th and 7th notes, used in rock, blues, and folk<br>
+                    • <strong>Major Triad (3 notes):</strong> The 1st, 3rd, and 5th notes create a basic chord<br>
+                    • <strong>Chromatic (12 notes):</strong> All notes together, no pattern
+                </p>
+                <p>
+                    <strong>Same circle, different selections = different musical feelings!</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Chromatic notes with colors
+        const chromatic = [
+            { note: 'C', color: '#FFFF00', midi: 60, freq: 261.63 },
+            { note: 'C#', color: '#FFBF00', midi: 61, freq: 277.18 },
+            { note: 'D', color: '#FF8000', midi: 62, freq: 293.66 },
+            { note: 'D#', color: '#FF4000', midi: 63, freq: 311.13 },
+            { note: 'E', color: '#FF0000', midi: 64, freq: 329.63 },
+            { note: 'F', color: '#C4007F', midi: 65, freq: 349.23 },
+            { note: 'F#', color: '#8000FF', midi: 66, freq: 369.99 },
+            { note: 'G', color: '#4000FF', midi: 67, freq: 392.00 },
+            { note: 'G#', color: '#0000FF', midi: 68, freq: 415.30 },
+            { note: 'A', color: '#007FFF', midi: 69, freq: 440.00 },
+            { note: 'A#', color: '#00FF80', midi: 70, freq: 466.16 },
+            { note: 'B', color: '#80FF00', midi: 71, freq: 493.88 }
+        ];
+        
+        // Patterns
+        const patterns = {
+            major: {
+                name: 'C Major Scale',
+                formula: 'W-W-H-W-W-W-H',
+                indices: [0, 2, 4, 5, 7, 9, 11]
+            },
+            pentatonic: {
+                name: 'C Pentatonic Scale',
+                formula: 'Remove 4th & 7th',
+                indices: [0, 2, 4, 7, 9]
+            },
+            triad: {
+                name: 'C Major Triad',
+                formula: '1st, 3rd, 5th',
+                indices: [0, 4, 7]
+            },
+            chromatic: {
+                name: 'Full Chromatic',
+                formula: 'All 12 notes',
+                indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            }
+        };
+        
+        let currentPattern = 'major';
+        let audioContext;
+        
+        // Initialize audio
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        // Play note
+        function playNote(frequency, duration = 0.5) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        // Create chromatic circle
+        function createChromaticCircle() {
+            const container = document.getElementById('chromatic');
+            const centerX = 50; // percentage
+            const centerY = 50; // percentage
+            const radius = 35; // percentage
+            
+            chromatic.forEach((data, index) => {
+                const angle = (index * 30 - 90) * (Math.PI / 180); // Start at top (C)
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'note-circle';
+                noteDiv.style.left = x + '%';
+                noteDiv.style.top = y + '%';
+                noteDiv.style.backgroundColor = data.color;
+                noteDiv.textContent = data.note;
+                noteDiv.dataset.index = index;
+                
+                noteDiv.addEventListener('click', () => {
+                    initAudio();
+                    highlightNote(index);
+                    playNote(data.freq);
+                });
+                
+                container.appendChild(noteDiv);
+            });
+            
+            // Show initial pattern
+            showPattern(currentPattern);
+        }
+        
+        // Highlight note
+        function highlightNote(index) {
+            const allNotes = document.querySelectorAll('.note-circle');
+            allNotes.forEach(note => note.classList.remove('active'));
+            
+            const activeNote = document.querySelector(`.note-circle[data-index="${index}"]`);
+            if (activeNote) {
+                activeNote.classList.add('active');
+            }
+            
+            const data = chromatic[index];
+            document.getElementById('centerNote').textContent = data.note;
+            document.getElementById('centerNote').style.color = data.color;
+            document.getElementById('centerInfo').textContent = `MIDI ${data.midi}`;
+        }
+        
+        // Show pattern
+        function showPattern(patternName) {
+            currentPattern = patternName;
+            const pattern = patterns[patternName];
+            
+            // Update info
+            document.getElementById('patternName').textContent = pattern.name;
+            document.getElementById('patternFormula').textContent = pattern.formula;
+            
+            // Clear all highlights
+            const allNotes = document.querySelectorAll('.note-circle');
+            allNotes.forEach(note => {
+                note.classList.remove('active');
+                note.style.opacity = '0.3';
+            });
+            
+            // Highlight pattern notes
+            pattern.indices.forEach(index => {
+                const note = document.querySelector(`.note-circle[data-index="${index}"]`);
+                if (note) {
+                    note.style.opacity = '1';
+                }
+            });
+            
+            // Highlight first note
+            if (pattern.indices.length > 0) {
+                highlightNote(pattern.indices[0]);
+            }
+        }
+        
+        // Play pattern
+        function playPattern() {
+            initAudio();
+            const pattern = patterns[currentPattern];
+            
+            pattern.indices.forEach((index, i) => {
+                setTimeout(() => {
+                    highlightNote(index);
+                    playNote(chromatic[index].freq);
+                }, i * 500);
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createChromaticCircle();
+        });
+    </script>
+    
+    <!-- Footer -->
+    <div style="text-align: center; padding: 30px; margin-top: 40px; border-top: 2px solid rgba(0, 128, 128, 0.3); opacity: 0.8;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTgiIGZpbGw9IiM0QTdCQTciIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwMCwxNSAxODUsMTg1IDE1LDE4NSIgZmlsbD0iI0Y0RDAzRiIgb3BhY2l0eT0iMC44NSIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxMDAsMTUgMTUsMTg1IDE1LDU1IiBmaWxsPSIjOEI2QkEzIiBvcGFjaXR5PSIwLjc1Ii8+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwMCwxNSAxODUsNTUgMTg1LDE4NSIgZmlsbD0iIzZGQTVBNSIgb3BhY2l0eT0iMC43NSIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxNSw1NSAxMDAsMTAwIDE1LDE4NSIgZmlsbD0iI0NGN0E1QSIgb3BhY2l0eT0iMC42NSIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxODUsNTUgMTAwLDEwMCAxODUsMTg1IiBmaWxsPSIjOUFBRjdBIiBvcGFjaXR5PSIwLjY1Ii8+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwMCw1NSAxNDUsMTAwIDEwMCwxNDUgNTUsMTAwIiBmaWxsPSIjRThENzdGIiBvcGFjaXR5PSIwLjYiLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNyIgZmlsbD0iIzJhNGQ2ZiIvPgogICAgPGxpbmUgeDE9IjQwIiB5MT0iNDAiIHgyPSIxNjAiIHkyPSIxNjAiIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuNCIvPgogICAgPGxpbmUgeDE9IjE2MCIgeTE9IjQwIiB4Mj0iNDAiIHkyPSIxNjAiIHN0cm9rZT0iIzJhNGQ2ZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuNCIvPgogICAgPGxpbmUgeDE9IjEwMCIgeTE9IjIwIiB4Mj0iMTAwIiB5Mj0iMTgwIiBzdHJva2U9IiMyYTRkNmYiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjQiLz4KICAgIDxsaW5lIHgxPSIyMCIgeTE9IjEwMCIgeDI9IjE4MCIgeTI9IjEwMCIgc3Ryb2tlPSIjMmE0ZDZmIiBzdHJva2Utd2lkdGg9IjEuNSIgb3BhY2l0eT0iMC40Ii8+Cjwvc3ZnPg==" 
+             alt="Keys, Codes & Modes" 
+             style="width: 50px; height: 50px; margin-bottom: 15px;">
+        <div style="color: #E8E8E8; font-size: 0.9em;">
+            <strong>Keys, Codes & Modes</strong><br>
+            <span style="font-size: 0.85em; opacity: 0.7;">A Visual Approach to Understanding Music</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.75em; color: rgba(255,255,255,0.5);">
+            © 2025 Keys, Codes & Modes. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

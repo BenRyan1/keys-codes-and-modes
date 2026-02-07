@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octave Wave Visualizer - Z-Plane</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        /* Branded Header */
+        .branded-header {
+            background: linear-gradient(135deg, #1a3d5f 0%, #2a4d6f 100%);
+            border-bottom: 3px solid #008080;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3);
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+        
+        .header-logo-icon {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+        
+        .header-logo-icon:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        .header-logo-text h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F4D03F, #008080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        .header-logo-text p {
+            font-size: 0.85rem;
+            color: #999;
+            font-style: italic;
+            margin: 0;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            background: rgba(0, 128, 128, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .nav-link:hover {
+            background: rgba(0, 128, 128, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #2a4d6f 0%, #1a3d5f 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #008080;
+        }
+        
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 10px 25px rgba(0, 217, 255, 0.5));
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .current-note-badge {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .current-note-badge span:first-child {
+            font-size: 0.9em;
+            color: #0a0a0a;
+            font-weight: bold;
+        }
+        
+        #noteSelector {
+            font-size: 1.3em;
+            color: #0a0a0a;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #0a0a0a;
+            border-radius: 10px;
+            padding: 5px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        #noteSelector:hover {
+            background: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+        }
+        
+        #noteSelector:focus {
+            border-color: #F4D03F;
+            box-shadow: 0 0 20px rgba(244, 208, 63, 0.6);
+        }
+        
+        #noteSelector option {
+            font-size: 0.9em;
+            padding: 10px;
+            background: #fff;
+            color: #0a0a0a;
+        }
+        
+        .wave-canvas-container {
+            background: #0a0a0a;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+            margin-bottom: 30px;
+            border: 2px solid #1a1a2e;
+        }
+        
+        #waveCanvas {
+            width: 100%;
+            height: 250px;
+            display: block;
+            background: #000;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+        }
+        
+        .individual-octaves {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .individual-octaves h3 {
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        
+        .octave-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+        
+        .octave-play-btn {
+            padding: 12px 8px;
+            background: linear-gradient(135deg, #7b2ff7 0%, #5a1fc7 100%);
+            border: 2px solid #7b2ff7;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .octave-play-btn:hover {
+            background: linear-gradient(135deg, #9b4fff 0%, #7b2ff7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(123, 47, 247, 0.4);
+        }
+        
+        .octave-play-btn:active {
+            transform: translateY(0);
+        }
+        
+        .octave-legend {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .octave-legend h3 {
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            justify-items: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .color-box {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #444;
+        }
+        
+        .legend-text {
+            font-size: 0.9em;
+            color: #e0e0e0;
+            white-space: nowrap;
+        }
+        
+        .controls-panel {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(123, 47, 247, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+        }
+        
+        .control-group h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .note-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .note-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            border: 2px solid #444;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .note-btn:hover {
+            background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .note-btn.active {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            border-color: #00d4ff;
+            color: #000;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .audio-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: space-between;
+        }
+        
+        .audio-btn {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #ff006e 0%, #cc0058 100%);
+            border: 2px solid #ff006e;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .audio-btn:hover {
+            background: linear-gradient(135deg, #ff3388 0%, #ff006e 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 110, 0.4);
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Branded Header with Navigation -->
+    <header class="branded-header">
+        <div class="header-content">
+            <a href="index.html" class="logo-section">
+                <svg class="header-logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="3"/>
+                    <polygon points="100,20 180,180 20,180" fill="#F4D03F" opacity="0.8"/>
+                    <polygon points="100,20 20,180 20,60" fill="#8B6BA3" opacity="0.7"/>
+                    <polygon points="100,20 180,60 180,180" fill="#008080" opacity="0.7"/>
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="#2a4d6f" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="5" fill="#2a4d6f"/>
+                </svg>
+                <div class="header-logo-text">
+                    <h2>KEYS, CODES & MODES</h2>
+                    <p>Visual Music Theory</p>
+                </div>
+            </a>
+            <a href="index.html" class="nav-link">← Back to Home</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <header>
+            <!-- Embedded Hero Logo -->
+            <svg class="title-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="1"/>
+                <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.85"/>
+                <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#2a4d6f" stroke-width="2.5"/>
+                <circle cx="100" cy="100" r="7" fill="#2a4d6f"/>
+                <line x1="40" y1="40" x2="160" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="160" y1="40" x2="40" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="100" y1="20" x2="100" y2="180" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="20" y1="100" x2="180" y2="100" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+            
+            <h1>Octave Wave Visualizer - Z-Plane</h1>
+            <p class="subtitle">All Waves Overlapping • 9 Octaves • Independent Frequencies</p>
+            <div class="current-note-badge">
+                <span>Current Note:</span>
+                <select id="noteSelector" onchange="handleNoteChange()">
+                    <option value="C">C</option>
+                    <option value="C#">C#</option>
+                    <option value="D">D</option>
+                    <option value="D#">D#</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="F#">F#</option>
+                    <option value="G">G</option>
+                    <option value="G#">G#</option>
+                    <option value="A">A</option>
+                    <option value="A#">A#</option>
+                    <option value="B">B</option>
+                </select>
+            </div>
+        </header>
+        
+        <div class="wave-canvas-container">
+            <canvas id="waveCanvas"></canvas>
+        </div>
+        
+        <div class="controls-panel">
+            <div class="control-group">
+                <h3>🎵 Audio Controls</h3>
+                <div class="audio-buttons">
+                    <button class="audio-btn" onclick="playCurrentNote()">🎹 Play Current</button>
+                    <button class="audio-btn" onclick="playAllOctaves()">🔊 Play All</button>
+                    <button class="audio-btn" onclick="playOctaveScale()">🎼 Play Scale</button>
+                    <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>🎹 Select Note (Changes All Frequencies)</h3>
+                <div class="note-buttons" id="noteButtons"></div>
+            </div>
+        </div>
+        
+        <!-- Individual Octave Audio Playback -->
+        <div class="individual-octaves">
+            <h3>🎯 Individual Octave Audio</h3>
+            <div class="octave-buttons-grid">
+                <button class="octave-play-btn" onclick="playIndividualOctave(0)">
+                    🎵 Play <span class="octave-label">C0</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(1)">
+                    🎵 Play <span class="octave-label">C1</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(2)">
+                    🎵 Play <span class="octave-label">C2</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(3)">
+                    🎵 Play <span class="octave-label">C3</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(4)">
+                    🎵 Play <span class="octave-label">C4</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(5)">
+                    🎵 Play <span class="octave-label">C5</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(6)">
+                    🎵 Play <span class="octave-label">C6</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(7)">
+                    🎵 Play <span class="octave-label">C7</span>
+                </button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(8)">
+                    🎵 Play <span class="octave-label">C8</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Octave Color Legend - Moved below Select Note -->
+        <div class="octave-legend">
+            <h3>🌈 Octave Colors & Frequencies</h3>
+            <div class="legend-grid" id="legendGrid"></div>
+        </div>
+    </div>
+
+    <!-- Branded Footer -->
+    <footer>
+        <p>&copy; 2025 Keys, Codes & Modes. Created by Ben Ryan. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Get canvas and context
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        function setupCanvas() {
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width - 40;
+            canvas.height = 300; // Increased height to accommodate labels
+            
+            console.log(`✅ Canvas setup: ${canvas.width} x ${canvas.height}`);
+        }
+        
+        setupCanvas();
+        window.addEventListener('resize', setupCanvas);
+        
+        // Music theory
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        let currentNote = 'C';
+        
+        // Calculate frequency
+        function getFrequency(note, octave) {
+            const noteIndex = notes.indexOf(note);
+            const semitonesFromC0 = (octave * 12) + noteIndex;
+            return 16.35 * Math.pow(2, semitonesFromC0 / 12);
+        }
+        
+        // Octave colors
+        const octaveColors = [
+            { name: 'C0', color: '#FFFF00', glow: 'rgba(255, 255, 0, 0.3)' },
+            { name: 'C1', color: '#FF8000', glow: 'rgba(255, 128, 0, 0.3)' },
+            { name: 'C2', color: '#FF0000', glow: 'rgba(255, 0, 0, 0.3)' },
+            { name: 'C3', color: '#FF00FF', glow: 'rgba(255, 0, 255, 0.3)' },
+            { name: 'C4', color: '#8000FF', glow: 'rgba(128, 0, 255, 0.3)' },
+            { name: 'C5', color: '#0080FF', glow: 'rgba(0, 128, 255, 0.3)' },
+            { name: 'C6', color: '#00FFFF', glow: 'rgba(0, 255, 255, 0.3)' },
+            { name: 'C7', color: '#00FF80', glow: 'rgba(0, 255, 128, 0.3)' },
+            { name: 'C8', color: '#80FF00', glow: 'rgba(128, 255, 0, 0.3)' }
+        ];
+        
+        // Animation state
+        let frameCount = 0;
+        let phases = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        
+        // Audio-visual sync state
+        let playingOctaves = [false, false, false, false, false, false, false, false, false];
+        let highlightedOctave = -1; // Currently highlighted octave for "Play All"
+        
+        // Draw waves
+        function drawWaves() {
+            frameCount++;
+            
+            // Clear canvas
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerY = canvas.height / 2;
+            const amplitude = 80; // Increased from 30 for much taller waves!
+            const leftMargin = 75; // Space for Y-axis labels
+            const bottomMargin = 30; // Space for X-axis labels
+            
+            // ★ DRAW LEFT Y-AXIS LABELS (Amplitude/Octave indicators) ★
+            ctx.save();
+            ctx.font = 'bold 11px Arial';
+            ctx.fillStyle = '#00d4ff';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            
+            // Top label
+            ctx.fillText('+Max', leftMargin - 5, 20);
+            // Center label (with current note)
+            ctx.fillStyle = '#FFB81C';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(`${currentNote} Wave`, leftMargin - 5, centerY);
+            // Bottom label
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 11px Arial';
+            ctx.fillText('-Max', leftMargin - 5, canvas.height - bottomMargin - 20);
+            
+            // Draw subtle Y-axis line
+            ctx.strokeStyle = 'rgba(0, 212, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(leftMargin, 10);
+            ctx.lineTo(leftMargin, canvas.height - bottomMargin);
+            ctx.stroke();
+            
+            ctx.restore();
+            
+            // Draw all 9 octaves - NOW BASED ON ACTUAL FREQUENCY!
+            for (let octave = 0; octave <= 8; octave++) {
+                const frequency = getFrequency(currentNote, octave);
+                
+                // ★ WAVELENGTH NOW BASED ON ACTUAL FREQUENCY! ★
+                // Lower frequencies = wider waves (more spread out)
+                // Higher frequencies = tighter waves (more compressed)
+                const baseFrequency = getFrequency('C', 0); // 16.35 Hz
+                const frequencyRatio = frequency / baseFrequency;
+                
+                // Visual wavelength inversely proportional to frequency
+                // Low freq = long wavelength, high freq = short wavelength
+                const baseWavelength = (canvas.width - leftMargin) / 2; // Base for C0
+                const wavelength = baseWavelength / Math.sqrt(frequencyRatio);
+                
+                ctx.beginPath();
+                ctx.strokeStyle = octaveColors[octave].color;
+                
+                // ★ VISUAL HIGHLIGHTING FOR PLAYING OCTAVES ★
+                const isHighlighted = (highlightedOctave === octave);
+                
+                if (isHighlighted) {
+                    // Playing octave: THICK, BRIGHT, STRONG GLOW
+                    ctx.lineWidth = 5;
+                    ctx.shadowBlur = 25;
+                    ctx.globalAlpha = 1.0;
+                } else if (highlightedOctave >= 0) {
+                    // Other octaves when something is playing: DIM
+                    ctx.lineWidth = 1;
+                    ctx.shadowBlur = 5;
+                    ctx.globalAlpha = 0.3;
+                } else {
+                    // Normal state: all octaves visible
+                    ctx.lineWidth = 2;
+                    ctx.shadowBlur = 10;
+                    ctx.globalAlpha = 0.8;
+                }
+                
+                ctx.shadowColor = octaveColors[octave].glow;
+                
+                for (let x = leftMargin; x <= canvas.width; x++) {
+                    const adjustedX = x - leftMargin;
+                    const y = centerY + amplitude * Math.sin((adjustedX / wavelength) * 2 * Math.PI + phases[octave]);
+                    
+                    if (x === leftMargin) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1.0; // Reset alpha
+                
+                // ★ PHASE INCREMENT NOW BASED ON ACTUAL FREQUENCY! ★
+                // Higher frequency = faster animation
+                const phaseSpeed = 0.01 * frequencyRatio / 10; // Scaled for visibility
+                phases[octave] += phaseSpeed;
+            }
+            
+            // ★ DRAW BOTTOM X-AXIS LABELS (Frequency markers) ★
+            ctx.save();
+            ctx.font = 'bold 10px Arial';
+            ctx.fillStyle = '#F4D03F';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            
+            // Draw frequency markers based on current note's octave range
+            const numMarkers = 5;
+            const axisY = canvas.height - bottomMargin + 5;
+            
+            for (let i = 0; i < numMarkers; i++) {
+                const x = leftMargin + (canvas.width - leftMargin) * (i / (numMarkers - 1));
+                const octavePosition = (i / (numMarkers - 1)) * 8; // Map to octave 0-8
+                const markerOctave = Math.round(octavePosition);
+                const freq = getFrequency(currentNote, markerOctave);
+                
+                // Draw tick mark
+                ctx.strokeStyle = 'rgba(244, 208, 63, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x, axisY - 7);
+                ctx.lineTo(x, axisY);
+                ctx.stroke();
+                
+                // Draw note + octave label
+                ctx.fillStyle = octaveColors[markerOctave].color;
+                ctx.fillText(`${currentNote}${markerOctave}`, x, axisY + 2);
+                // Draw frequency label
+                ctx.fillStyle = '#F4D03F';
+                ctx.font = 'bold 9px Arial';
+                ctx.fillText(`${freq.toFixed(0)}Hz`, x, axisY + 14);
+                ctx.font = 'bold 10px Arial';
+            }
+            
+            // Draw X-axis line
+            ctx.strokeStyle = 'rgba(244, 208, 63, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(leftMargin, axisY);
+            ctx.lineTo(canvas.width, axisY);
+            ctx.stroke();
+            
+            ctx.restore();
+            
+            requestAnimationFrame(drawWaves);
+        }
+        
+        // Select note
+        // Handle dropdown change
+        function handleNoteChange() {
+            const dropdown = document.getElementById('noteSelector');
+            const note = dropdown.value;
+            selectNote(note);
+        }
+        
+        function selectNote(note) {
+            currentNote = note;
+            
+            // Update dropdown selector
+            const dropdown = document.getElementById('noteSelector');
+            if (dropdown) {
+                dropdown.value = note;
+            }
+            
+            // Update button styling
+            document.querySelectorAll('.note-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === note);
+            });
+            
+            // Update legend with new frequencies
+            updateLegend();
+            
+            // Update individual octave button labels
+            updateOctaveLabels();
+            
+            // Reset phases for smooth transition
+            phases = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            
+            console.log(`🎵 ═══════════════════════════════════════`);
+            console.log(`🎵 NOTE CHANGED TO: ${note}`);
+            console.log(`🎵 ═══════════════════════════════════════`);
+            console.log('📊 New Frequencies (Hz):');
+            for (let i = 0; i <= 8; i++) {
+                const freq = getFrequency(note, i);
+                console.log(`   ${note}${i}: ${freq.toFixed(2)} Hz`);
+            }
+            console.log(`🌊 Waves now display ${note} frequencies!`);
+            console.log(`   Lower notes = WIDER waves`);
+            console.log(`   Higher notes = TIGHTER waves`);
+            console.log(`🎵 ═══════════════════════════════════════`);
+        }
+        
+        // Initialize note buttons
+        function initNoteButtons() {
+            const container = document.getElementById('noteButtons');
+            notes.forEach(note => {
+                const btn = document.createElement('button');
+                btn.className = 'note-btn';
+                btn.textContent = note;
+                if (note === currentNote) btn.classList.add('active');
+                btn.onclick = () => selectNote(note);
+                container.appendChild(btn);
+            });
+        }
+        
+        // Initialize octave legend
+        function initLegend() {
+            const container = document.getElementById('legendGrid');
+            octaveColors.forEach((octave, i) => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                
+                const colorBox = document.createElement('div');
+                colorBox.className = 'color-box';
+                colorBox.style.background = octave.color;
+                colorBox.style.boxShadow = `0 0 10px ${octave.glow}`;
+                
+                const text = document.createElement('div');
+                text.className = 'legend-text';
+                const freq = getFrequency(currentNote, i);
+                text.textContent = `${currentNote}${i}: ${freq.toFixed(1)} Hz`;
+                text.id = `legend-${i}`;
+                
+                item.appendChild(colorBox);
+                item.appendChild(text);
+                container.appendChild(item);
+            });
+        }
+        
+        // Update legend frequencies when note changes
+        function updateLegend() {
+            octaveColors.forEach((octave, i) => {
+                const text = document.getElementById(`legend-${i}`);
+                if (text) {
+                    const freq = getFrequency(currentNote, i);
+                    text.textContent = `${currentNote}${i}: ${freq.toFixed(1)} Hz`;
+                }
+            });
+        }
+        
+        // Update individual octave button labels
+        function updateOctaveLabels() {
+            const labels = document.querySelectorAll('.octave-label');
+            labels.forEach((label, i) => {
+                label.textContent = `${currentNote}${i}`;
+            });
+        }
+        
+        // Play individual octave
+        function playIndividualOctave(octave) {
+            initAudio();
+            const freq = getFrequency(currentNote, octave);
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+            
+            osc.start();
+            osc.stop(audioContext.currentTime + 1.5);
+            
+            // Visual highlight
+            highlightedOctave = octave;
+            console.log(`🔊 Playing ${currentNote}${octave} at ${freq.toFixed(2)} Hz`);
+            console.log(`🌊 Watch octave ${octave} (${octaveColors[octave].name.replace('C', currentNote)}) light up!`);
+            
+            setTimeout(() => {
+                highlightedOctave = -1;
+            }, 1500);
+        }
+        
+        // Audio functions (basic implementations)
+        let audioContext = null;
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function playCurrentNote() {
+            initAudio();
+            const freq = getFrequency(currentNote, 4);
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+            
+            osc.start();
+            osc.stop(audioContext.currentTime + 1);
+            
+            // ★ VISUAL HIGHLIGHT ★
+            highlightedOctave = 4; // Highlight C4 (middle octave)
+            console.log(`🔊 Playing ${currentNote}4 at ${freq.toFixed(2)} Hz`);
+            console.log(`🌊 Watch octave 4 (purple wave) light up!`);
+            
+            setTimeout(() => {
+                highlightedOctave = -1;
+            }, 1000);
+        }
+        
+        function playAllOctaves() {
+            initAudio();
+            
+            console.log('🎵 ═══════════════════════════════════════');
+            console.log('🔊 PLAYING ALL OCTAVES IN SEQUENCE');
+            console.log('🎨 Watch the waves light up as they play!');
+            console.log('🎵 ═══════════════════════════════════════');
+            
+            for (let i = 0; i <= 8; i++) {
+                const freq = getFrequency(currentNote, i);
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                
+                const startTime = audioContext.currentTime + i * 0.2;
+                const endTime = startTime + 0.5;
+                
+                osc.start(startTime);
+                osc.stop(endTime);
+                
+                // ★ SYNC VISUAL WITH AUDIO ★
+                // Highlight this octave when its sound plays
+                setTimeout(() => {
+                    highlightedOctave = i;
+                    console.log(`🌊 Octave ${i} (${currentNote}${i}: ${freq.toFixed(1)} Hz) NOW PLAYING & HIGHLIGHTED`);
+                }, i * 200); // Convert to milliseconds
+                
+                // Turn off highlight after sound ends
+                setTimeout(() => {
+                    if (highlightedOctave === i) {
+                        highlightedOctave = -1;
+                    }
+                }, (i * 200) + 500); // Duration of note
+            }
+            
+            // Clear highlight after all done
+            setTimeout(() => {
+                highlightedOctave = -1;
+                console.log('✅ All octaves played - visual sync complete');
+            }, (8 * 200) + 600);
+        }
+        
+        function playOctaveScale() {
+            initAudio();
+            
+            // Save the original note to restore later
+            const originalNote = currentNote;
+            
+            // ★ CREATE ASCENDING CHROMATIC SCALE WITH OCTAVE JUMP ★
+            const startIndex = notes.indexOf(currentNote);
+            
+            // Build scale that ascends through octaves
+            // Play 13 notes: starting note through one complete octave
+            const scaleNotes = [];
+            const octaves = [];
+            
+            for (let i = 0; i <= 12; i++) {
+                const noteIndex = (startIndex + i) % 12;
+                const octave = 4 + Math.floor((startIndex + i) / 12);
+                scaleNotes.push(notes[noteIndex]);
+                octaves.push(octave);
+            }
+            
+            console.log('🎵 ═══════════════════════════════════════');
+            console.log(`🎵 PLAYING ASCENDING CHROMATIC SCALE FROM ${currentNote}`);
+            console.log('🌊 Watch waves CHANGE and octaves RISE!');
+            console.log(`📊 Scale: ${scaleNotes.map((n, i) => `${n}${octaves[i]}`).join(' → ')}`);
+            console.log('🎵 ═══════════════════════════════════════');
+            
+            scaleNotes.forEach((note, i) => {
+                const octave = octaves[i];
+                const freq = getFrequency(note, octave);
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.2 + 0.3);
+                
+                osc.start(audioContext.currentTime + i * 0.2);
+                osc.stop(audioContext.currentTime + i * 0.2 + 0.3);
+                
+                // ★ SYNC WAVE PATTERN AND HIGHLIGHT CORRECT OCTAVE ★
+                setTimeout(() => {
+                    currentNote = note;
+                    highlightedOctave = octave; // Highlight the current octave!
+                    
+                    // Update dropdown to show current note
+                    const dropdown = document.getElementById('noteSelector');
+                    if (dropdown) dropdown.value = note;
+                    
+                    // Update note button highlighting
+                    document.querySelectorAll('.note-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.textContent === note);
+                    });
+                    
+                    // Update legend
+                    updateLegend();
+                    
+                    console.log(`🎵 ${note}${octave}: ${freq.toFixed(1)} Hz - WAVE ${octave} HIGHLIGHTED`);
+                }, i * 200);
+            });
+            
+            // Restore original note after scale completes (13 notes now)
+            setTimeout(() => {
+                highlightedOctave = -1;
+                currentNote = originalNote;
+                
+                // Restore dropdown
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = originalNote;
+                
+                // Update button styling
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === originalNote);
+                });
+                
+                // Restore legend
+                updateLegend();
+                
+                console.log(`✅ Scale complete - restored to ${originalNote}`);
+                console.log('🎵 ═══════════════════════════════════════');
+            }, 13 * 200 + 300);
+        }
+        
+        function stopAllAudio() {
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+                highlightedOctave = -1; // Clear any highlights
+                console.log('🔇 Audio stopped - highlights cleared');
+            }
+        }
+        
+        // Initialize
+        console.log('🎵 OCTAVE WAVE VISUALIZER STARTING 🎵');
+        console.log('=======================================');
+        initNoteButtons();
+        console.log('✅ Note buttons initialized');
+        initLegend();
+        console.log('✅ Legend initialized');
+        updateOctaveLabels();
+        console.log('✅ Individual octave buttons initialized');
+        console.log('✅ Canvas ready');
+        console.log('🎨 Starting animation...');
+        console.log('=======================================');
+        
+        drawWaves();
+    </script>
+</body>
+</html>

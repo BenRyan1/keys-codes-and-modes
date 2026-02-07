@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Circle - Major Scale Visualizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5em;
+            text-align: center;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        label {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        select {
+            padding: 12px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            border: 2px solid #00d4ff;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        select:hover {
+            border-color: #7b2cbf;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .play-btn {
+            background: linear-gradient(45deg, #00d4ff, #0096ff);
+            color: #fff;
+        }
+        
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .stop-btn {
+            background: linear-gradient(45deg, #ff006e, #d00000);
+            color: #fff;
+        }
+        
+        .stop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
+        }
+        
+        .canvas-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        canvas {
+            display: block;
+            cursor: pointer;
+        }
+        
+        .legend {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .legend h3 {
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        
+        .legend-symbol {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+        }
+        
+        .info {
+            background: rgba(123, 44, 191, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #7b2cbf;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 Chromatic Circle - Major Scale Visualizer 🎵</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="control-group">
+                <label for="scaleType">Select Scale Type:</label>
+                <select id="scaleType">
+                    <option value="major">Major</option>
+                    <option value="minor">Natural Minor</option>
+                    <option value="harmonic">Harmonic Minor</option>
+                    <option value="melodic">Melodic Minor</option>
+                    <option value="augmented">Augmented</option>
+                    <option value="diminished">Diminished</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="keySelect">Select Root Note:</label>
+                <select id="keySelect">
+                    <option value="0">C</option>
+                    <option value="1">C♯/D♭</option>
+                    <option value="2">D</option>
+                    <option value="3">D♯/E♭</option>
+                    <option value="4">E</option>
+                    <option value="5">F</option>
+                    <option value="6">F♯/G♭</option>
+                    <option value="7">G</option>
+                    <option value="8">G♯/A♭</option>
+                    <option value="9">A</option>
+                    <option value="10">A♯/B♭</option>
+                    <option value="11">B</option>
+                </select>
+            </div>
+            
+            <div class="button-group">
+                <button class="play-btn" id="playScale">▶ Play Scale</button>
+                <button class="stop-btn" id="stopBtn">⬛ Stop</button>
+            </div>
+            
+            <div class="info" id="scaleInfo">
+                <strong>Major Scale Pattern:</strong> Whole-Whole-Half-Whole-Whole-Whole-Half
+                <br><strong>Clock Positions:</strong> 12-2-4-5-7-9-11
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="circleCanvas" width="700" height="700"></canvas>
+        </div>
+        
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: none; border-color: #00d4ff; border-width: 4px;"></div>
+                <span>Scale Notes (connected by colored lines)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: rgba(255, 255, 255, 0.2);"></div>
+                <span>Non-scale Notes (chromatic)</span>
+            </div>
+            <div class="legend-item">
+                <div style="width: 30px; height: 4px; background: linear-gradient(90deg, #00d4ff, #9d4edd, #ff006e, #06ffa5);"></div>
+                <span>Scale Connections (color changes by scale type)</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Music Theory Data
+        const chromaticNotes = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+        const noteColors = [
+            '#FFFF00', '#FFC400', '#FF8000', '#FF4000', '#FF0000', '#C4007F',
+            '#8000FF', '#4000FF', '#0000FF', '#007FFF', '#00FF80', '#80FF00'
+        ];
+        
+        // MIDI note numbers starting from C4 (middle C = 60)
+        const baseMidiNote = 60;
+        
+        // Scale intervals (in semitones from root)
+        const scaleDefinitions = {
+            major: {
+                intervals: [0, 2, 4, 5, 7, 9, 11],
+                pattern: 'Whole-Whole-Half-Whole-Whole-Whole-Half',
+                positions: '12-2-4-5-7-9-11',
+                color: '#00d4ff'
+            },
+            minor: {
+                intervals: [0, 2, 3, 5, 7, 8, 10],
+                pattern: 'Whole-Half-Whole-Whole-Half-Whole-Whole',
+                positions: '12-2-3-5-7-8-10',
+                color: '#9d4edd'
+            },
+            harmonic: {
+                intervals: [0, 2, 3, 5, 7, 8, 11],
+                pattern: 'W-H-W-W-H-Aug2nd-H (raised 7th)',
+                positions: '12-2-3-5-7-8-11',
+                color: '#f72585'
+            },
+            melodic: {
+                intervals: [0, 2, 3, 5, 7, 9, 11],
+                pattern: 'W-H-W-W-W-W-H (raised 6th & 7th)',
+                positions: '12-2-3-5-7-9-11',
+                color: '#4cc9f0'
+            },
+            augmented: {
+                intervals: [0, 3, 4, 7, 8, 11],
+                pattern: 'Minor3rd-Half-Minor3rd-Half-Minor3rd-Half',
+                positions: '12-3-4-7-8-11',
+                color: '#ff006e'
+            },
+            diminished: {
+                intervals: [0, 2, 3, 5, 6, 8, 9, 11],
+                pattern: 'Whole-Half-Whole-Half-Whole-Half-Whole-Half',
+                positions: '12-2-3-5-6-8-9-11',
+                color: '#06ffa5'
+            }
+        };
+        
+        function getCurrentScale() {
+            const scaleType = document.getElementById('scaleType').value;
+            return scaleDefinitions[scaleType];
+        }
+        
+        function updateScaleInfo() {
+            const scale = getCurrentScale();
+            const scaleType = document.getElementById('scaleType').value;
+            
+            // Map scale types to display names
+            const scaleNames = {
+                major: 'Major',
+                minor: 'Natural Minor',
+                harmonic: 'Harmonic Minor',
+                melodic: 'Melodic Minor',
+                augmented: 'Augmented',
+                diminished: 'Diminished'
+            };
+            
+            const scaleName = scaleNames[scaleType];
+            
+            document.getElementById('scaleInfo').innerHTML = `
+                <strong>${scaleName} Scale Pattern:</strong> ${scale.pattern}
+                <br><strong>Clock Positions:</strong> ${scale.positions}
+            `;
+        }
+        
+        // Canvas setup
+        const canvas = document.getElementById('circleCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 250;
+        const noteRadius = 35;
+        
+        // Audio context for MIDI playback
+        let audioContext = null;
+        let isPlaying = false;
+        let stopRequested = false;
+        
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function midiToFrequency(midiNote) {
+            return 440 * Math.pow(2, (midiNote - 69) / 12);
+        }
+        
+        function playNote(frequency, duration, startTime) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(frequency, startTime);
+            
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(0.2, startTime + duration - 0.1);
+            gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+            
+            oscillator.start(startTime);
+            oscillator.stop(startTime + duration);
+            
+            return oscillator;
+        }
+        
+        async function playMajorScale() {
+            if (isPlaying) return;
+            
+            initAudioContext();
+            isPlaying = true;
+            stopRequested = false;
+            
+            const rootNote = parseInt(document.getElementById('keySelect').value);
+            const scale = getCurrentScale();
+            const scaleIntervals = scale.intervals;
+            const noteDuration = 0.5;
+            let currentTime = audioContext.currentTime;
+            
+            for (let i = 0; i < scaleIntervals.length; i++) {
+                if (stopRequested) {
+                    isPlaying = false;
+                    return;
+                }
+                
+                const interval = scaleIntervals[i];
+                const noteIndex = (rootNote + interval) % 12;
+                const midiNote = baseMidiNote + rootNote + interval;
+                const frequency = midiToFrequency(midiNote);
+                
+                highlightNote(noteIndex);
+                playNote(frequency, noteDuration, currentTime);
+                
+                currentTime += noteDuration;
+                
+                await new Promise(resolve => setTimeout(resolve, noteDuration * 1000));
+            }
+            
+            // Play the octave (root note again)
+            if (!stopRequested) {
+                const midiNote = baseMidiNote + rootNote + 12;
+                const frequency = midiToFrequency(midiNote);
+                highlightNote(rootNote);
+                playNote(frequency, noteDuration, currentTime);
+                await new Promise(resolve => setTimeout(resolve, noteDuration * 1000));
+            }
+            
+            isPlaying = false;
+            drawCircle();
+        }
+        
+        function stopPlayback() {
+            stopRequested = true;
+            if (audioContext) {
+                audioContext.close().then(() => {
+                    audioContext = null;
+                    isPlaying = false;
+                    drawCircle();
+                });
+            }
+        }
+        
+        function highlightNote(noteIndex) {
+            drawCircle();
+            const angle = (noteIndex * 30 - 90) * Math.PI / 180;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, noteRadius + 10, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+            
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = noteColors[noteIndex];
+            ctx.fillStyle = noteColors[noteIndex];
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+        
+        function drawCircle() {
+            const rootNote = parseInt(document.getElementById('keySelect').value);
+            const scale = getCurrentScale();
+            const scaleIntervals = scale.intervals;
+            const scaleColor = scale.color;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections for current scale
+            ctx.beginPath();
+            ctx.strokeStyle = scaleColor;
+            ctx.lineWidth = 4;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = scaleColor;
+            
+            for (let i = 0; i < scaleIntervals.length; i++) {
+                const currentInterval = scaleIntervals[i];
+                const currentNoteIndex = (rootNote + currentInterval) % 12;
+                const angle = (currentNoteIndex * 30 - 90) * Math.PI / 180;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Draw all 12 chromatic notes
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                const actualNoteIndex = i;
+                const isInScale = scaleIntervals.includes((actualNoteIndex - rootNote + 12) % 12);
+                
+                // Draw note circle
+                ctx.beginPath();
+                ctx.arc(x, y, noteRadius, 0, 2 * Math.PI);
+                
+                if (isInScale) {
+                    ctx.fillStyle = noteColors[actualNoteIndex];
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = noteColors[actualNoteIndex];
+                } else {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.shadowBlur = 0;
+                }
+                
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                // Draw border
+                ctx.strokeStyle = isInScale ? '#fff' : 'rgba(255, 255, 255, 0.4)';
+                ctx.lineWidth = isInScale ? 3 : 2;
+                ctx.stroke();
+                
+                // Draw note label
+                ctx.fillStyle = isInScale ? '#000' : '#fff';
+                ctx.font = 'bold 18px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(chromaticNotes[actualNoteIndex], x, y);
+            }
+            
+            // Draw center text
+            const scaleType = document.getElementById('scaleType').value;
+            
+            // Map scale types to display names
+            const scaleNames = {
+                major: 'Major',
+                minor: 'Natural Minor',
+                harmonic: 'Harmonic Minor',
+                melodic: 'Melodic Minor',
+                augmented: 'Augmented',
+                diminished: 'Diminished'
+            };
+            
+            const scaleName = scaleNames[scaleType];
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 22px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${chromaticNotes[rootNote]} ${scaleName}`, centerX, centerY - 10);
+            ctx.font = '16px Arial';
+            ctx.fillText('Click notes to play', centerX, centerY + 15);
+        }
+        
+        // Event listeners
+        document.getElementById('scaleType').addEventListener('change', () => {
+            updateScaleInfo();
+            drawCircle();
+        });
+        document.getElementById('keySelect').addEventListener('change', drawCircle);
+        document.getElementById('playScale').addEventListener('click', playMajorScale);
+        document.getElementById('stopBtn').addEventListener('click', stopPlayback);
+        
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const clickY = event.clientY - rect.top;
+            
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                const distance = Math.sqrt((clickX - x) ** 2 + (clickY - y) ** 2);
+                
+                if (distance <= noteRadius) {
+                    initAudioContext();
+                    const rootNote = parseInt(document.getElementById('keySelect').value);
+                    const midiNote = baseMidiNote + i;
+                    const frequency = midiToFrequency(midiNote);
+                    highlightNote(i);
+                    playNote(frequency, 0.5, audioContext.currentTime);
+                    setTimeout(() => drawCircle(), 500);
+                    break;
+                }
+            }
+        });
+        
+        // Initial draw
+        updateScaleInfo();
+        drawCircle();
+    </script>
+</body>
+</html>

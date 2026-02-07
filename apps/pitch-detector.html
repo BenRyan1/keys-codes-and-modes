@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Pitch Detector Pro | Keys, Codes & Modes</title>
+    <meta name="description" content="Professional pitch detection with synchronized chromatic visualization, MIDI output, and audio recording.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .site-header {
+            background: linear-gradient(135deg, rgba(74, 123, 167, 0.95) 0%, rgba(42, 77, 111, 0.95) 100%);
+            padding: 15px 30px;
+            border-bottom: 3px solid #4A7BA7;
+            box-shadow: 0 4px 20px rgba(74, 123, 167, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: auto;
+            filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo-text h1 {
+            color: #FFD700;
+            font-size: 1.3em;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            color: #FFFFFF;
+            font-size: 0.75em;
+            opacity: 0.9;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .main-nav a {
+            color: #E8E8E8;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .main-nav a.active {
+            background: rgba(0, 128, 128, 0.3);
+            color: #E8E8E8;
+            border: 1px solid #008080;
+        }
+
+        /* MAIN LAYOUT - VIZ LEFT, CONTROLS RIGHT */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: 1800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            border: 2px solid #4A7BA7;
+        }
+
+        /* VISUALIZATION WINDOW - LEFT SIDE */
+        .viz-window {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #4A7BA7;
+            box-shadow: 0 8px 32px rgba(74, 123, 167, 0.3);
+        }
+
+        .viz-title {
+            color: #F4D03F;
+            font-size: 1.5em;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .current-note-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: 900;
+            color: #F4D03F;
+            text-shadow: 
+                -3px -3px 6px #000,
+                3px -3px 6px #000,
+                -3px 3px 6px #000,
+                3px 3px 6px #000,
+                0 0 20px rgba(244, 208, 63, 0.8);
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .current-note-display.active {
+            opacity: 1;
+        }
+
+        .view-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .view-box {
+            background: rgba(15, 15, 30, 0.6);
+            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid rgba(74, 123, 167, 0.4);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .view-box-title {
+            color: #F4D03F;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .view-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            position: relative;
+        }
+
+        /* CHROMATIC CIRCLE */
+        #chromaticCircle {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, #2c3e50 0%, #1a252f 100%);
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .sphere {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            border: 3px solid rgba(255,255,255,0.6);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: all 0.2s;
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .sphere:active {
+            transform: scale(1.25);
+        }
+        
+        .sphere.active {
+            border-color: #ffffff;
+            box-shadow: 0 0 30px currentColor, 0 0 50px currentColor;
+            transform: scale(1.45);
+            animation: spherePulse 0.3s ease-in-out;
+            filter: brightness(1.3);
+            font-weight: 900;
+            font-size: 14px !important;
+            text-shadow: 
+                -2px -2px 3px #000,
+                2px -2px 3px #000,
+                -2px 2px 3px #000,
+                2px 2px 3px #000,
+                0 0 6px rgba(0, 0, 0, 1);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes spherePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.55); }
+            100% { transform: scale(1.45); }
+        }
+
+        /* PIANO KEYBOARD */
+        .piano-container {
+            position: relative;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .white-key {
+            width: 36px;
+            height: 160px;
+            background: linear-gradient(to bottom, #fff 0%, #f0f0f0 100%);
+            border: 2px solid #333;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s;
+            user-select: none;
+        }
+        
+        .white-key:active {
+            transform: translateY(4px);
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .white-key.playing {
+            transform: translateY(3px);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.3), 0 0 20px currentColor, 0 0 40px currentColor;
+            animation: keyGlow 0.3s ease-in-out;
+            filter: brightness(1.3);
+        }
+        
+        .white-key.playing .key-label {
+            text-shadow: 
+                -1px -1px 0 #fff,
+                1px -1px 0 #fff,
+                -1px 1px 0 #fff,
+                1px 1px 0 #fff,
+                0 0 4px rgba(255, 255, 255, 0.8);
+            font-weight: 900;
+        }
+        
+        @keyframes keyGlow {
+            0%, 100% { filter: brightness(1.3); }
+            50% { filter: brightness(1.5); }
+        }
+        
+        .black-key {
+            width: 24px;
+            height: 100px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+            border: 2px solid #000;
+            cursor: pointer;
+            position: absolute;
+            z-index: 2;
+            transition: all 0.15s;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        
+        .black-key:active {
+            transform: translateY(4px);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.9);
+        }
+        
+        .black-key.playing {
+            transform: translateY(3px);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.7), 0 0 20px currentColor, 0 0 40px currentColor;
+            animation: keyGlow 0.3s ease-in-out;
+            filter: brightness(1.3);
+        }
+        
+        .black-key.playing .key-label {
+            text-shadow: 
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000,
+                0 0 4px rgba(0, 0, 0, 0.8);
+            font-weight: 900;
+        }
+        
+        .key-label {
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .black-key .key-label {
+            bottom: 4px;
+            font-size: 9px;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* FRETBOARD */
+        .fretboard-container {
+            position: relative;
+            background: linear-gradient(to bottom, #8B4513 0%, #A0522D 100%);
+            border-radius: 3px;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .fretboard {
+            position: relative;
+            width: 140px;
+            height: 280px;
+            background: linear-gradient(to right, #D2691E 0%, #8B4513 50%, #654321 100%);
+            border-radius: 2px;
+            border: 1px solid #654321;
+        }
+
+        .guitar-string {
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #C0C0C0 0%, #808080 100%);
+            top: 0;
+        }
+        
+        .fret-wire {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #888 0%, #aaa 50%, #888 100%);
+            left: 0;
+        }
+        
+        .note-dot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transform: translate(-11px, -11px);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .note-dot:active {
+            transform: translate(-11px, -11px) scale(1.35);
+        }
+        
+        .note-dot.playing {
+            border-color: #ffffff;
+            box-shadow: 0 0 25px currentColor, 0 0 45px currentColor;
+            transform: translate(-11px, -11px) scale(1.5);
+            animation: dotPulse 0.3s ease-in-out;
+            filter: brightness(1.3);
+            font-weight: 900;
+            font-size: 11px;
+            text-shadow: 
+                -2px -2px 3px #000,
+                2px -2px 3px #000,
+                -2px 2px 3px #000,
+                2px 2px 3px #000,
+                0 0 4px rgba(0, 0, 0, 1);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes dotPulse {
+            0% { transform: translate(-11px, -11px) scale(1); }
+            50% { transform: translate(-11px, -11px) scale(1.6); }
+            100% { transform: translate(-11px, -11px) scale(1.5); }
+        }
+        
+        .string-label {
+            position: absolute;
+            top: -50px;
+            font-weight: 700;
+            font-size: 20px;
+            color: white;
+            text-align: center;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 500;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .string-label:active {
+            transform: scale(1.35);
+            color: #F4D03F;
+        }
+
+        /* STAFF */
+        #staffSVG {
+            width: 100%;
+            height: 100%;
+            max-width: 320px;
+            max-height: 280px;
+        }
+
+        /* CONTROL PANEL - RIGHT SIDE */
+        .control-panel {
+            background: linear-gradient(135deg, rgba(74, 123, 167, 0.95) 0%, rgba(42, 77, 111, 0.95) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #F4D03F;
+            box-shadow: 0 8px 32px rgba(74, 123, 167, 0.4);
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .control-section h3 {
+            color: #F4D03F;
+            font-size: 1em;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #F4D03F;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .big-button {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .big-button.start {
+            background: #008080;
+            color: white;
+        }
+
+        .big-button.stop {
+            background: #CF7A5A;
+            color: white;
+            font-weight: 800;
+        }
+
+        .big-button.stop:active:not(:disabled) {
+            transform: translateY(0px);
+            box-shadow: 0 2px 8px rgba(207, 122, 90, 0.5);
+        }
+
+        .big-button.record {
+            background: #8B6BA3;
+            color: white;
+        }
+
+        .big-button.record.recording {
+            background: #7a5b93;
+            animation: recordPulse 1s infinite;
+        }
+
+        @keyframes recordPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .big-button:disabled {
+            background: rgba(74, 123, 167, 0.3);
+            color: rgba(232, 232, 232, 0.5);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .toggle-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(15, 15, 30, 0.4);
+            border-radius: 8px;
+            border: 2px solid rgba(74, 123, 167, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .toggle-label {
+            color: white;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(74, 123, 167, 0.5);
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #008080;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .status-box {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            border: 2px solid #F4D03F;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-box.waiting {
+            background: rgba(74, 123, 167, 0.5);
+            color: white;
+        }
+
+        .status-box.listening {
+            background: #008080;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status-box.recording {
+            background: #8B6BA3;
+            color: white;
+            animation: recordPulse 1s infinite;
+        }
+
+        .status-box.error {
+            background: #CF7A5A;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.75; }
+        }
+
+        .permission-help {
+            display: none;
+            padding: 12px;
+            background: rgba(207, 122, 90, 0.2);
+            border: 2px solid #CF7A5A;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 0.85em;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .permission-help.show {
+            display: block;
+        }
+
+        .permission-help strong {
+            color: #F4D03F;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .permission-help ol {
+            margin: 8px 0 8px 20px;
+            padding: 0;
+        }
+
+        .permission-help li {
+            margin-bottom: 4px;
+        }
+
+        .info-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, rgba(42, 77, 111, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #F4D03F;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-panel-label {
+            color: #F4D03F;
+            font-size: 0.7em;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-panel-value {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 800;
+        }
+
+        /* RECORDING INDICATOR */
+        .recording-indicator {
+            display: none;
+            padding: 8px;
+            background: #8B6BA3;
+            color: white;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            animation: recordPulse 1s infinite;
+            box-shadow: 0 4px 12px rgba(139, 107, 163, 0.4);
+        }
+
+        .recording-indicator.active {
+            display: block;
+        }
+
+        /* FOOTER */
+        .site-footer {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+            color: #E8E8E8;
+            padding: 30px 20px;
+            border-top: 3px solid #4A7BA7;
+            box-shadow: 0 -4px 20px rgba(74, 123, 167, 0.3);
+        }
+
+        .footer-content {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            color: #F4D03F;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section a {
+            color: #E8E8E8;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95em;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(74, 123, 167, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            font-weight: 700;
+            border: 1px solid rgba(74, 123, 167, 0.5);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(74, 123, 167, 0.3);
+            font-size: 0.9em;
+            color: #E8E8E8;
+        }
+
+        @media (max-width: 1400px) {
+            .view-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="#" class="logo-container">
+                <img src="data:image/png;base64,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" 
+                     alt="Keys, Codes & Modes"
+                     class="header-logo">
+                <div class="logo-text">
+                    <h1>KEYS, CODES & MODES</h1>
+                    <p>A Visual Approach to Understanding Music</p>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html">Insights</a>
+                <a href="offerings.html">Offerings</a>
+                <a href="#" class="active">Tools</a>
+                <a href="index.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="app-container">
+            <!-- VISUALIZATION WINDOW - LEFT SIDE -->
+            <section class="viz-window">
+                <h2 class="viz-title">Synchronized 4-View Display</h2>
+                <div class="view-grid">
+                    <div class="view-box">
+                        <div class="view-box-title">Chromatic Circle</div>
+                        <div class="view-content">
+                            <div id="chromaticCircle">
+                                <div class="current-note-display" id="circleNoteDisplay"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="view-box">
+                        <div class="view-box-title">Piano Keyboard</div>
+                        <div class="view-content">
+                            <div class="piano-container" id="pianoContainer"></div>
+                        </div>
+                    </div>
+
+                    <div class="view-box">
+                        <div class="view-box-title">Guitar Fretboard</div>
+                        <div class="view-content">
+                            <div class="fretboard-container">
+                                <div class="fretboard" id="fretboard"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="view-box">
+                        <div class="view-box-title">Musical Staff</div>
+                        <div class="view-content">
+                            <svg id="staffSVG" viewBox="0 0 220 135"></svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTROL PANEL - RIGHT SIDE -->
+            <aside class="control-panel">
+                <!-- OCTAVE/REGISTER CONTROLS -->
+                <div class="control-section">
+                    <h3>Register Control</h3>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(15, 15, 30, 0.4); border-radius: 8px; border: 2px solid rgba(244, 208, 63, 0.5);">
+                        <button id="octaveDown" class="octave-btn" style="font-size: 1.5em; width: 45px; height: 45px; background: rgba(74, 123, 167, 0.8); border: 2px solid #F4D03F; border-radius: 8px; color: white; font-weight: 900; cursor: pointer;">−</button>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 0.8em; color: #F4D03F; font-weight: 700; margin-bottom: 4px;">OCTAVE</div>
+                            <div id="octaveDisplay" style="font-size: 2em; font-weight: 900; color: white;">0</div>
+                            <div style="font-size: 0.7em; color: #E8E8E8; margin-top: 2px;">(-2 to +2)</div>
+                        </div>
+                        <button id="octaveUp" class="octave-btn" style="font-size: 1.5em; width: 45px; height: 45px; background: rgba(74, 123, 167, 0.8); border: 2px solid #F4D03F; border-radius: 8px; color: white; font-weight: 900; cursor: pointer;">+</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Microphone Detection</h3>
+                    <div style="margin-bottom: 10px; padding: 8px; background: rgba(0, 128, 128, 0.1); border: 1px solid rgba(0, 128, 128, 0.3); border-radius: 6px; font-size: 0.8em; color: #E8E8E8; line-height: 1.3;">
+                        <strong style="color: #008080;">How It Works:</strong><br>
+                        Microphone mode is <strong>SILENT</strong> (no speaker sound) to prevent feedback.<br>
+                        Works with <strong>normal singing volume</strong> - just sing naturally!<br>
+                        Watch the status box flash GREEN when detecting your voice.<br>
+                        Visual updates every 100ms - smooth and responsive.
+                    </div>
+                    <div id="permissionHelp" class="permission-help">
+                        <strong>Microphone Permission Required</strong>
+                        <p>To use the pitch detector, you must allow microphone access:</p>
+                        <ol>
+                            <li><strong>Chrome/Edge:</strong> Click the camera/microphone icon in the address bar, select "Always allow" for microphone</li>
+                            <li><strong>Firefox:</strong> Click the shield icon, go to Permissions, enable Microphone</li>
+                            <li><strong>Safari:</strong> Go to Safari menu → Settings → Websites → Microphone, allow this site</li>
+                            <li>After changing permissions, <strong>refresh this page</strong> and click "Start Listening"</li>
+                        </ol>
+                        <p><strong>Important:</strong> This must be served via HTTPS or localhost. Opening as a file directly may not work in some browsers.</p>
+                    </div>
+                    <button id="startBtn" class="big-button start">Start Microphone</button>
+                    <button id="stopBtn" class="big-button stop" disabled>Stop Microphone</button>
+                </div>
+
+                <div class="control-section">
+                    <h3>Live Data</h3>
+                    <div id="status" class="status-box waiting">Ready</div>
+                    <div class="info-panels">
+                        <div class="info-panel">
+                            <div class="info-panel-label">MIDI</div>
+                            <div class="info-panel-value" id="midiPanel">—</div>
+                        </div>
+                        <div class="info-panel">
+                            <div class="info-panel-label">Note</div>
+                            <div class="info-panel-value" id="notePanel">—</div>
+                        </div>
+                        <div class="info-panel">
+                            <div class="info-panel-label">Freq Hz</div>
+                            <div class="info-panel-value" id="freqPanel">—</div>
+                        </div>
+                        <div class="info-panel">
+                            <div class="info-panel-label">Tuning</div>
+                            <div class="info-panel-value" id="tuningPanel">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Settings</h3>
+                    <div class="toggle-control">
+                        <span class="toggle-label">Note Sound (Manual Clicks)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="soundToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <button id="stopSoundBtn" class="big-button stop" style="margin-top: 10px;">STOP ALL SOUNDS</button>
+                    <div style="margin-top: 10px; padding: 8px; background: rgba(244, 208, 63, 0.1); border: 1px solid rgba(244, 208, 63, 0.3); border-radius: 6px; font-size: 0.8em; color: #E8E8E8; line-height: 1.3;">
+                        <strong style="color: #F4D03F;">Manual Mode:</strong><br>
+                        Click any note to hear it play.<br>
+                        Only one note plays at a time.<br>
+                        <br>
+                        <strong style="color: #F4D03F;">Microphone Mode:</strong><br>
+                        Silent detection (no speaker sound).<br>
+                        Prevents feedback loop.
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Recording</h3>
+                    <div id="recordingIndicator" class="recording-indicator">RECORDING IN PROGRESS</div>
+                    <button id="recordBtn" class="big-button record" disabled>Record</button>
+                    <button id="stopRecordBtn" class="big-button stop" disabled>Stop Recording</button>
+                    <button id="downloadBtn" class="big-button start" disabled>Download</button>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Keys, Codes & Modes</h4>
+                <p>Visual music theory through chromatic color coding.</p>
+                <p style="margin-top: 10px; font-style: italic;">Created by Ben Ryan</p>
+            </div>
+            <div class="footer-section">
+                <h4>Tools</h4>
+                <ul>
+                    <li><a href="Keys codes modes guitar fretboard.html">Music Theory Explorer</a></li>
+                    <li><a href="circle of fifths fixed.html">Circle of Fifths</a></li>
+                    <li><a href="KCM-Final-Professional-Pitch-Detector.html">Pitch Detector</a></li>
+                    <li><a href="Keys codes modes guitar fretboard.html">Fretboard Trainer</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Offerings</h4>
+                <ul>
+                    <li><a href="offerings.html">Free Tier</a></li>
+                    <li><a href="offerings.html#pricing">Premium</a></li>
+                    <li><a href="offerings.html#pricing">Founder Edition</a></li>
+                    <li><a href="offerings.html">Educational</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="index.html">Contact</a></li>
+                    <li><a href="index.html">Support</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="https://facebook.com/keyscodesandmodes" target="_blank" rel="noopener" title="Facebook">FB</a>
+                    <a href="https://instagram.com/keyscodesandmodes" target="_blank" rel="noopener" title="Instagram">IG</a>
+                    <a href="https://tiktok.com/@keyscodesandmodes" target="_blank" rel="noopener" title="TikTok">TT</a>
+                    <a href="https://x.com/keyscodesandmodes" target="_blank" rel="noopener" title="X">X</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Keys, Codes & Modes. All rights reserved.</p>
+            <p>Visual Music Theory by Ben Ryan | Patent Pending</p>
+        </div>
+    </footer>
+
+    <script>
+        // NO EMOJIS RULE - ENFORCED THROUGHOUT
+        
+        // BEN'S CHROMATIC COLORS
+        const colors = ['#FFFF00', '#FFC400', '#FF8000', '#FF4000', '#FF0000', '#C4007F', '#8000FF', '#4000FF', '#0000FF', '#007FFF', '#00FF80', '#80FF00'];
+        const textColors = ['#000', '#000', '#000', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#000', '#000'];
+        const noteNamesShort = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const noteNames = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+        const enharmonicNames = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        
+        const keySignatures = {
+            0: {sharps: 0, flats: 0, name: 'C major'},
+            1: {sharps: 0, flats: 5, name: 'Db major'},
+            2: {sharps: 2, flats: 0, name: 'D major'},
+            3: {sharps: 0, flats: 3, name: 'Eb major'},
+            4: {sharps: 4, flats: 0, name: 'E major'},
+            5: {sharps: 0, flats: 1, name: 'F major'},
+            6: {sharps: 6, flats: 0, name: 'F# major'},
+            7: {sharps: 1, flats: 0, name: 'G major'},
+            8: {sharps: 0, flats: 4, name: 'Ab major'},
+            9: {sharps: 3, flats: 0, name: 'A major'},
+            10: {sharps: 0, flats: 2, name: 'Bb major'},
+            11: {sharps: 5, flats: 0, name: 'B major'}
+        };
+
+        let rootNote = 0;
+        let audioContext, analyser, microphone, scriptProcessor, mediaStream;
+        let synthContext; // Sound context
+        let currentOscillator = null; // Track the ONE sound playing
+        let currentGain = null; // Track the ONE gain node
+        let lastClickTime = 0; // Prevent rapid duplicate clicks
+        let clickCooldown = 150; // Milliseconds between allowed clicks (balanced for responsiveness)
+        let lastDetectionTime = 0; // Prevent rapid microphone updates
+        let detectionCooldown = 100; // Faster microphone response (was 200ms)
+        let octaveShift = 0; // Register control: -2 to +2 octaves
+        let initialized = false; // Prevent duplicate initialization
+        let mediaRecorder, audioChunks = [];
+        let isListening = false, isRecording = false, currentFrequency = null;
+        let currentNoteIndex = -1;
+        let playingNotes = new Set();
+
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const stopRecordBtn = document.getElementById('stopRecordBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const octaveDownBtn = document.getElementById('octaveDown');
+        const octaveUpBtn = document.getElementById('octaveUp');
+        const octaveDisplay = document.getElementById('octaveDisplay');
+        const soundToggle = document.getElementById('soundToggle');
+        const status = document.getElementById('status');
+        const midiPanel = document.getElementById('midiPanel');
+        const notePanel = document.getElementById('notePanel');
+        const freqPanel = document.getElementById('freqPanel');
+        const tuningPanel = document.getElementById('tuningPanel');
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const permissionHelp = document.getElementById('permissionHelp');
+        const stopSoundBtn = document.getElementById('stopSoundBtn');
+
+        // Initialize UI elements only once
+        if (!initialized) {
+            createSpheres();
+            createPiano();
+            createGuitar();
+            updateStaffNotation([]);
+            initialized = true;
+        }
+
+        // Simple click-to-play function - plays note briefly then stops
+        function playNote(noteIndex) {
+            // COOLDOWN CHECK - prevent duplicate/multiple clicks
+            const now = Date.now();
+            if (now - lastClickTime < clickCooldown) {
+                return; // Ignore this click - too fast!
+            }
+            lastClickTime = now;
+            
+            const baseFrequency = 440;
+            const A4Index = 9;
+            // Apply octave shift: shift by (octaveShift * 12) semitones
+            const semitoneOffset = noteIndex - A4Index + (octaveShift * 12);
+            const frequency = baseFrequency * Math.pow(2, semitoneOffset / 12);
+            
+            console.log(`Playing: ${noteNamesShort[noteIndex]} at ${frequency.toFixed(2)} Hz (Octave: ${octaveShift})`);
+            
+            // Update visuals
+            const color = colors[noteIndex];
+            rootNote = noteIndex;
+            highlightNote(noteIndex, true, color);
+            updateStaffNotation([noteIndex]);
+            currentNoteIndex = noteIndex;
+            
+            // Update info panels (MIDI note includes octave shift)
+            const midiNote = 60 + noteIndex + (octaveShift * 12);
+            midiPanel.textContent = midiNote;
+            notePanel.textContent = noteNamesShort[noteIndex];
+            freqPanel.textContent = frequency.toFixed(1);
+            tuningPanel.textContent = 'PERFECT';
+            
+            // Play ONE sound at a time
+            if (soundToggle.checked && synthContext) {
+                playOneNote(frequency);
+            }
+            
+            // Clear after 1 second (unless listening)
+            if (!isListening) {
+                setTimeout(() => {
+                    if (!isListening) {
+                        clearHighlights();
+                        midiPanel.textContent = '—';
+                        notePanel.textContent = '—';
+                        freqPanel.textContent = '—';
+                        tuningPanel.textContent = '—';
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Play a short beep sound (400ms) then automatically stop
+        function playShortBeep(frequency) {
+            if (!synthContext) return;
+            
+            const beepOsc = synthContext.createOscillator();
+            const beepGain = synthContext.createGain();
+            
+            beepOsc.type = 'sine';
+            beepOsc.frequency.value = frequency;
+            beepOsc.connect(beepGain);
+            beepGain.connect(synthContext.destination);
+            
+            // Start at volume
+            beepGain.gain.value = 0.15;
+            beepOsc.start();
+            
+            // Fade out to prevent clicks
+            beepGain.gain.exponentialRampToValueAtTime(0.001, synthContext.currentTime + 0.4);
+            
+            // Stop after 400ms
+            beepOsc.stop(synthContext.currentTime + 0.4);
+        }
+
+        // Check microphone permission on load
+        if (navigator.permissions && navigator.permissions.query) {
+            navigator.permissions.query({ name: 'microphone' }).then(function(permissionStatus) {
+                if (permissionStatus.state === 'denied') {
+                    status.className = 'status-box error';
+                    status.textContent = 'MICROPHONE BLOCKED';
+                    permissionHelp.classList.add('show');
+                } else if (permissionStatus.state === 'granted') {
+                    status.className = 'status-box waiting';
+                    status.textContent = 'READY - CLICK START';
+                }
+                
+                permissionStatus.onchange = function() {
+                    if (this.state === 'denied') {
+                        status.className = 'status-box error';
+                        status.textContent = 'MICROPHONE BLOCKED';
+                        permissionHelp.classList.add('show');
+                    } else if (this.state === 'granted') {
+                        status.className = 'status-box waiting';
+                        status.textContent = 'READY - CLICK START';
+                        permissionHelp.classList.remove('show');
+                    }
+                };
+            }).catch(function(err) {
+                console.log('Permission check not supported:', err);
+            });
+        }
+
+        startBtn.addEventListener('click', startPitchDetection);
+        stopBtn.addEventListener('click', stopPitchDetection);
+        recordBtn.addEventListener('click', startRecording);
+        stopRecordBtn.addEventListener('click', stopRecording);
+        stopSoundBtn.addEventListener('click', () => {
+            stopCurrentSound();
+            clearHighlights();
+            if (!isListening) {
+                midiPanel.textContent = '—';
+                notePanel.textContent = '—';
+                freqPanel.textContent = '—';
+                tuningPanel.textContent = '—';
+            }
+        });
+        
+        // Octave controls
+        octaveDownBtn.addEventListener('click', () => {
+            if (octaveShift > -2) {
+                octaveShift--;
+                octaveDisplay.textContent = octaveShift > 0 ? `+${octaveShift}` : octaveShift;
+            }
+        });
+        
+        octaveUpBtn.addEventListener('click', () => {
+            if (octaveShift < 2) {
+                octaveShift++;
+                octaveDisplay.textContent = octaveShift > 0 ? `+${octaveShift}` : octaveShift;
+            }
+        });
+        
+        downloadBtn.addEventListener('click', () => {
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kcm-${Date.now()}.webm`;
+            a.click();
+        });
+
+        async function startPitchDetection() {
+            try {
+                // Hide permission help
+                permissionHelp.classList.remove('show');
+                
+                status.className = 'status-box listening';
+                status.textContent = 'Connecting...';
+                
+                // Check if we're in a secure context
+                if (!window.isSecureContext && location.protocol !== 'file:') {
+                    throw new Error('Microphone requires HTTPS or localhost');
+                }
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const constraints = {
+                    audio: {
+                        echoCancellation: true,  // PREVENT FEEDBACK
+                        noiseSuppression: true,  // BLOCK KEYBOARD TYPING
+                        autoGainControl: true,   // STABILIZE VOLUME
+                        sampleRate: 48000
+                    },
+                    video: false
+                };
+                
+                // Request microphone access with explicit permission
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                if (!mediaStream || !mediaStream.active) {
+                    throw new Error('Microphone stream not active');
+                }
+                
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(mediaStream);
+                scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+                analyser.fftSize = 4096;
+
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+
+                initializeSynthesizer();
+
+                scriptProcessor.onaudioprocess = function() {
+                    const buffer = new Float32Array(analyser.fftSize);
+                    analyser.getFloatTimeDomainData(buffer);
+                    const pitch = autoCorrelate(buffer, audioContext.sampleRate);
+                    updateAll(pitch);
+                };
+
+                isListening = true;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                recordBtn.disabled = false;
+                status.className = 'status-box listening';
+                status.textContent = 'LISTENING';
+            } catch (err) {
+                console.error('Microphone error:', err);
+                status.className = 'status-box error';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                
+                if (err.name === 'NotAllowedError') {
+                    status.textContent = 'MICROPHONE ACCESS DENIED';
+                    permissionHelp.classList.add('show');
+                } else if (err.name === 'NotFoundError') {
+                    status.textContent = 'NO MICROPHONE FOUND';
+                    permissionHelp.classList.remove('show');
+                } else {
+                    status.textContent = 'MICROPHONE ERROR: ' + err.message;
+                    permissionHelp.classList.remove('show');
+                }
+            }
+        }
+
+        function stopPitchDetection() {
+            if (scriptProcessor) scriptProcessor.disconnect();
+            if (analyser) analyser.disconnect();
+            if (microphone) microphone.disconnect();
+            if (audioContext) audioContext.close();
+            if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+            stopSynthesizer();
+
+            isListening = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            recordBtn.disabled = true;
+            status.className = 'status-box waiting';
+            status.textContent = 'Ready';
+            status.style.background = ''; // Reset to default
+            resetAll();
+        }
+
+        function initializeSynthesizer() {
+            if (!synthContext) {
+                synthContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // STOP any currently playing sound
+        function stopCurrentSound() {
+            if (currentOscillator) {
+                try {
+                    currentOscillator.stop();
+                    currentOscillator.disconnect();
+                } catch(e) {}
+                currentOscillator = null;
+            }
+            if (currentGain) {
+                try {
+                    currentGain.disconnect();
+                } catch(e) {}
+                currentGain = null;
+            }
+        }
+
+        function playSynthesizedNote(frequency, noteColor) {
+            if (!soundToggle.checked || !synthContext) return;
+            playOneNote(frequency);
+        }
+
+        function stopSynthesizer() {
+            stopCurrentSound();
+        }
+
+        // Play ONE note - stops any previous note first
+        function playOneNote(frequency) {
+            if (!synthContext) {
+                initializeSynthesizer();
+            }
+            
+            // STOP old sound first - ONLY ONE AT A TIME
+            stopCurrentSound();
+            
+            // Create NEW sound
+            currentOscillator = synthContext.createOscillator();
+            currentGain = synthContext.createGain();
+            
+            // Connect
+            currentOscillator.connect(currentGain);
+            currentGain.connect(synthContext.destination);
+            
+            // Configure
+            currentOscillator.type = 'sine';
+            currentOscillator.frequency.value = frequency;
+            currentGain.gain.value = 0.15;
+            
+            // Play
+            const now = synthContext.currentTime;
+            currentOscillator.start(now);
+            
+            // Fade out smoothly
+            currentGain.gain.setValueAtTime(0.15, now);
+            currentGain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            
+            // Auto-stop and cleanup
+            currentOscillator.stop(now + 0.45);
+            
+            setTimeout(() => {
+                if (currentOscillator) {
+                    try {
+                        currentOscillator.disconnect();
+                        currentGain.disconnect();
+                    } catch(e) {}
+                }
+                currentOscillator = null;
+                currentGain = null;
+            }, 500);
+        }
+
+        function startRecording() {
+            if (!mediaStream) return;
+            audioChunks = [];
+            mediaRecorder = new MediaRecorder(mediaStream);
+            mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => { 
+                downloadBtn.disabled = false;
+                recordingIndicator.classList.remove('active');
+                status.className = 'status-box listening';
+                status.textContent = 'LISTENING';
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            recordBtn.disabled = true;
+            recordBtn.classList.add('recording');
+            stopRecordBtn.disabled = false;
+            recordingIndicator.classList.add('active');
+            status.className = 'status-box recording';
+            status.textContent = 'RECORDING';
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                recordBtn.disabled = false;
+                recordBtn.classList.remove('recording');
+                stopRecordBtn.disabled = true;
+            }
+        }
+
+        function autoCorrelate(buffer, sampleRate) {
+            let sum = 0;
+            for (let i = 0; i < buffer.length; i++) sum += buffer[i] * buffer[i];
+            const rms = Math.sqrt(sum / buffer.length);
+            if (rms < 0.06) return -1; // More sensitive - detects normal singing volume
+
+            let r1 = 0, r2 = buffer.length - 1;
+            const threshold = 0.2;
+            for (let i = 0; i < buffer.length / 2; i++) {
+                if (Math.abs(buffer[i]) < threshold) { r1 = i; break; }
+            }
+            for (let i = 1; i < buffer.length / 2; i++) {
+                if (Math.abs(buffer[buffer.length - i]) < threshold) { r2 = buffer.length - i; break; }
+            }
+
+            buffer = buffer.slice(r1, r2);
+            const size = buffer.length;
+            const correlations = new Array(size).fill(0);
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size - i; j++) {
+                    correlations[i] += buffer[j] * buffer[j + i];
+                }
+            }
+
+            let d = 0;
+            while (correlations[d] > correlations[d + 1]) d++;
+            let maxValue = -1, maxIndex = -1;
+            for (let i = d; i < size; i++) {
+                if (correlations[i] > maxValue) { maxValue = correlations[i]; maxIndex = i; }
+            }
+
+            let T0 = maxIndex;
+            const x1 = correlations[T0 - 1], x2 = correlations[T0], x3 = correlations[T0 + 1];
+            const a = (x1 + x3 - 2 * x2) / 2, b = (x3 - x1) / 2;
+            if (a) T0 = T0 - b / (2 * a);
+
+            return sampleRate / T0;
+        }
+
+        function getNote(frequency) {
+            const noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
+            const noteIndex = Math.round(noteNum) + 69;
+            const noteName = noteNamesShort[noteIndex % 12];
+            const octave = Math.floor(noteIndex / 12) - 1;
+            const cents = Math.floor((noteNum - Math.round(noteNum)) * 100);
+            return { note: noteName + octave, noteName: noteName, noteIndex: noteIndex % 12, midiNote: noteIndex, cents: cents };
+        }
+
+        function updateAll(frequency) {
+            // DEBOUNCE CHECK - prevent stuttering from rapid updates
+            const now = Date.now();
+            if (now - lastDetectionTime < detectionCooldown) {
+                return; // Ignore this update - too fast! PREVENTS STUTTERING
+            }
+            lastDetectionTime = now;
+            
+            if (frequency === -1) { 
+                resetAll(); 
+                currentFrequency = null; 
+                currentNoteIndex = -1;
+                // Visual feedback - no detection
+                status.style.background = 'rgba(0, 128, 128, 0.3)';
+                return; 
+            }
+
+            // Visual feedback - detecting!
+            status.style.background = 'rgba(0, 255, 128, 0.5)';
+            
+            const noteInfo = getNote(frequency);
+            const color = colors[noteInfo.noteIndex];
+            
+            rootNote = noteInfo.noteIndex;
+            
+            midiPanel.textContent = noteInfo.midiNote;
+            notePanel.textContent = noteInfo.noteName;
+            freqPanel.textContent = frequency.toFixed(1);
+            
+            let tuningText = noteInfo.cents;
+            if (Math.abs(noteInfo.cents) < 5) tuningText = 'PERFECT';
+            else if (noteInfo.cents > 0) tuningText = '+' + noteInfo.cents;
+            else tuningText = noteInfo.cents.toString();
+            tuningPanel.textContent = tuningText;
+            
+            if (currentNoteIndex !== noteInfo.noteIndex) {
+                highlightNote(noteInfo.noteIndex, true, color);
+                updateStaffNotation([noteInfo.noteIndex]);
+                currentNoteIndex = noteInfo.noteIndex;
+            }
+
+            if (Math.abs(frequency - (currentFrequency || 0)) > 15) {
+                // DO NOT play sound when microphone is listening - prevents feedback!
+                // playSynthesizedNote(frequency, color);  // DISABLED to prevent feedback
+                currentFrequency = frequency;
+            }
+        }
+
+        function resetAll() {
+            midiPanel.textContent = '—';
+            notePanel.textContent = '—';
+            freqPanel.textContent = '—';
+            tuningPanel.textContent = '—';
+            clearHighlights();
+            updateStaffNotation([]);
+        }
+
+        function highlightNote(n, on, color) {
+            clearHighlights();
+            
+            if (!on) return;
+
+            // Update center circle display
+            const circleDisplay = document.getElementById('circleNoteDisplay');
+            if (circleDisplay) {
+                circleDisplay.textContent = noteNamesShort[n];
+                circleDisplay.style.color = color;
+                circleDisplay.classList.add('active');
+            }
+
+            const sphere = document.querySelector(`.sphere[data-note="${n}"]`);
+            if (sphere) {
+                sphere.classList.add('active');
+                sphere.style.color = color;
+            }
+
+            document.querySelectorAll('.white-key, .black-key').forEach(key => {
+                if (parseInt(key.dataset.note) === n) {
+                    key.classList.add('playing');
+                    key.style.backgroundColor = color;
+                    key.style.color = color;
+                }
+            });
+
+            document.querySelectorAll('.note-dot').forEach(dot => {
+                if (parseInt(dot.dataset.note) === n) {
+                    dot.classList.add('playing');
+                    dot.style.color = color;
+                }
+            });
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.sphere, .white-key, .black-key, .note-dot').forEach(el => {
+                el.classList.remove('active', 'playing');
+            });
+            
+            const circleDisplay = document.getElementById('circleNoteDisplay');
+            if (circleDisplay) {
+                circleDisplay.classList.remove('active');
+            }
+        }
+
+        function createSpheres() {
+            const circle = document.getElementById('chromaticCircle');
+            if (!circle) return;
+            
+            circle.innerHTML = ''; // CLEAR existing spheres to prevent duplicates!
+            
+            const enharmonicLabels = ['C', 'C♯\nD♭', 'D', 'D♯\nE♭', 'E', 'F', 'F♯\nG♭', 'G', 'G♯\nA♭', 'A', 'A♯\nB♭', 'B'];
+            
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * (Math.PI / 180);
+                const x = 140 + 105 * Math.cos(angle);
+                const y = 140 + 105 * Math.sin(angle);
+                const s = document.createElement('div');
+                s.className = 'sphere';
+                s.style.left = (x - 24) + 'px';
+                s.style.top = (y - 24) + 'px';
+                s.style.background = colors[i];
+                s.style.color = textColors[i];
+                s.style.fontSize = enharmonicLabels[i].includes('\n') ? '9px' : '11px';
+                s.style.lineHeight = '1.2';
+                s.style.whiteSpace = 'pre-line';
+                s.style.textAlign = 'center';
+                s.textContent = enharmonicLabels[i];
+                s.dataset.note = i;
+                
+                // Add click handler
+                const handleInteraction = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!synthContext) initializeSynthesizer();
+                    playNote(i);
+                };
+                s.addEventListener('click', handleInteraction);
+                s.addEventListener('touchstart', handleInteraction);
+                
+                circle.appendChild(s);
+            }
+        }
+
+        function createPiano() {
+            const container = document.getElementById('pianoContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const whiteNotes = [0, 2, 4, 5, 7, 9, 11];
+            const blackNotes = [
+                {note: 1, after: 0},
+                {note: 3, after: 2},
+                {note: 6, after: 5},
+                {note: 8, after: 7},
+                {note: 10, after: 9}
+            ];
+
+            whiteNotes.forEach((n, idx) => {
+                const k = document.createElement('div');
+                k.className = 'white-key';
+                k.dataset.note = n;
+                const l = document.createElement('div');
+                l.className = 'key-label';
+                l.textContent = noteNamesShort[n];
+                l.style.color = '#333';
+                k.appendChild(l);
+                
+                // Add click handler
+                const handleInteraction = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!synthContext) initializeSynthesizer();
+                    playNote(n);
+                };
+                k.addEventListener('click', handleInteraction);
+                k.addEventListener('touchstart', handleInteraction);
+                
+                container.appendChild(k);
+            });
+
+            blackNotes.forEach(({note, after}) => {
+                const k = document.createElement('div');
+                k.className = 'black-key';
+                k.dataset.note = note;
+                const afterIdx = whiteNotes.indexOf(after);
+                k.style.left = ((afterIdx * 36) + 36 - 12) + 'px';
+                const l = document.createElement('div');
+                l.className = 'key-label';
+                l.textContent = enharmonicNames[note];
+                k.appendChild(l);
+                
+                // Add click handler
+                const handleInteraction = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    if (!synthContext) initializeSynthesizer();
+                    playNote(note);
+                };
+                k.addEventListener('click', handleInteraction, true);
+                k.addEventListener('touchstart', handleInteraction, true);
+                
+                container.appendChild(k);
+            });
+        }
+
+        function createGuitar() {
+            const fb = document.getElementById('fretboard');
+            if (!fb) return;
+            
+            fb.innerHTML = '';
+            const tuning = [4, 9, 2, 7, 11, 4];
+            const names = ['E', 'A', 'D', 'G', 'B', 'E'];
+            const guitarFretCount = 5;
+            const fretHeight = 56;
+
+            for (let s = 0; s < 6; s++) {
+                const str = document.createElement('div');
+                str.className = 'guitar-string';
+                str.style.left = (23 * s + 12) + 'px';
+                str.style.width = '2px';
+                str.style.height = '100%';
+                fb.appendChild(str);
+
+                const lbl = document.createElement('div');
+                lbl.className = 'string-label';
+                lbl.textContent = names[s];
+                lbl.style.left = (23 * s) + 'px';
+                
+                // Add click handler (open string)
+                const handleStringInteraction = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent event bubbling
+                    if (!synthContext) initializeSynthesizer();
+                    playNote(tuning[s]);
+                };
+                lbl.addEventListener('click', handleStringInteraction);
+                lbl.addEventListener('touchstart', handleStringInteraction);
+                
+                fb.appendChild(lbl);
+            }
+
+            for (let f = 1; f <= guitarFretCount; f++) {
+                const fw = document.createElement('div');
+                fw.className = 'fret-wire';
+                fw.style.top = (f * fretHeight) + 'px';
+                fb.appendChild(fw);
+            }
+
+            for (let s = 0; s < 6; s++) {
+                for (let f = 1; f <= guitarFretCount; f++) {
+                    const n = (tuning[s] + f) % 12;
+                    const dot = document.createElement('div');
+                    dot.className = 'note-dot';
+                    dot.style.left = (23 * s + 12) + 'px';
+                    dot.style.top = (f * fretHeight - fretHeight / 2) + 'px';
+                    dot.style.background = colors[n];
+                    dot.style.color = textColors[n];
+                    dot.textContent = noteNamesShort[n];
+                    dot.dataset.note = n;
+                    
+                    // Add click handler
+                    const handleDotInteraction = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation(); // Prevent event bubbling
+                        if (!synthContext) initializeSynthesizer();
+                        playNote(n);
+                    };
+                    dot.addEventListener('click', handleDotInteraction);
+                    dot.addEventListener('touchstart', handleDotInteraction);
+                    
+                    fb.appendChild(dot);
+                }
+            }
+        }
+
+        function updateStaffNotation(notes) {
+            const svg = document.getElementById('staffSVG');
+            if (!svg) return;
+            svg.innerHTML = '';
+
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', '15');
+                line.setAttribute('y1', 20 + i * 10);
+                line.setAttribute('x2', '205');
+                line.setAttribute('y2', 20 + i * 10);
+                line.setAttribute('stroke', '#fff');
+                line.setAttribute('stroke-width', '1.2');
+                svg.appendChild(line);
+            }
+
+            const clef = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            clef.setAttribute('x', '18');
+            clef.setAttribute('y', '50');
+            clef.setAttribute('font-size', '40');
+            clef.setAttribute('font-family', 'serif');
+            clef.textContent = '𝄞';
+            clef.setAttribute('fill', '#fff');
+            svg.appendChild(clef);
+
+            const keySig = keySignatures[rootNote];
+            let sigX = 48;
+            
+            if (keySig.sharps > 0) {
+                const sharpPositions = [20, 35, 15, 50, 25, 60, 40];
+                for (let i = 0; i < keySig.sharps; i++) {
+                    const sharp = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    sharp.setAttribute('x', sigX);
+                    sharp.setAttribute('y', sharpPositions[i]);
+                    sharp.setAttribute('font-size', '22');
+                    sharp.setAttribute('font-weight', 'bold');
+                    sharp.setAttribute('font-family', 'serif');
+                    sharp.textContent = '♯';
+                    sharp.setAttribute('fill', '#fff');
+                    svg.appendChild(sharp);
+                    sigX += 10;
+                }
+            } else if (keySig.flats > 0) {
+                const flatPositions = [40, 55, 45, 50, 30, 35, 25];
+                for (let i = 0; i < keySig.flats; i++) {
+                    const flat = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    flat.setAttribute('x', sigX);
+                    flat.setAttribute('y', flatPositions[i]);
+                    flat.setAttribute('font-size', '22');
+                    flat.setAttribute('font-weight', 'bold');
+                    flat.setAttribute('font-family', 'serif');
+                    flat.textContent = '♭';
+                    flat.setAttribute('fill', '#fff');
+                    svg.appendChild(flat);
+                    sigX += 10;
+                }
+            }
+
+            const pos = {
+                0: 70, 1: 68, 2: 65, 3: 62, 4: 60, 5: 55,
+                6: 52, 7: 50, 8: 47, 9: 45, 10: 42, 11: 40
+            };
+
+            const sortedNotes = Array.from(new Set(notes)).sort((a, b) => a - b);
+            
+            if (sortedNotes.length === 0) return;
+
+            let x = Math.max(70, sigX + 12);
+
+            sortedNotes.forEach((n) => {
+                const y = pos[n];
+                
+                if (y === 70) {
+                    const ledger = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    ledger.setAttribute('x1', x - 8);
+                    ledger.setAttribute('y1', 70);
+                    ledger.setAttribute('x2', x + 8);
+                    ledger.setAttribute('y2', 70);
+                    ledger.setAttribute('stroke', '#fff');
+                    ledger.setAttribute('stroke-width', '1.2');
+                    svg.appendChild(ledger);
+                }
+                
+                const noteHead = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                noteHead.setAttribute('cx', x);
+                noteHead.setAttribute('cy', y);
+                noteHead.setAttribute('rx', '6');
+                noteHead.setAttribute('ry', '5');
+                noteHead.setAttribute('fill', colors[n]);
+                noteHead.setAttribute('stroke', '#fff');
+                noteHead.setAttribute('stroke-width', '1');
+                svg.appendChild(noteHead);
+
+                const stem = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                if (y > 42) {
+                    stem.setAttribute('x1', x + 5.5);
+                    stem.setAttribute('y1', y);
+                    stem.setAttribute('x2', x + 5.5);
+                    stem.setAttribute('y2', y - 28);
+                } else {
+                    stem.setAttribute('x1', x - 5.5);
+                    stem.setAttribute('y1', y);
+                    stem.setAttribute('x2', x - 5.5);
+                    stem.setAttribute('y2', y + 28);
+                }
+                stem.setAttribute('stroke', '#fff');
+                stem.setAttribute('stroke-width', '1.8');
+                svg.appendChild(stem);
+
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', x);
+                label.setAttribute('y', '85');
+                label.setAttribute('font-size', '10');
+                label.setAttribute('font-weight', 'bold');
+                label.setAttribute('text-anchor', 'middle');
+                label.setAttribute('fill', '#fff');
+                label.textContent = noteNamesShort[n];
+                svg.appendChild(label);
+            });
+
+            if (sortedNotes.length >= 1) {
+                const keyInfo = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                keyInfo.setAttribute('x', '110');
+                keyInfo.setAttribute('y', '110');
+                keyInfo.setAttribute('font-size', '9');
+                keyInfo.setAttribute('font-weight', 'bold');
+                keyInfo.setAttribute('text-anchor', 'middle');
+                keyInfo.setAttribute('fill', '#F4D03F');
+                keyInfo.textContent = `Key: ${keySig.name}`;
+                svg.appendChild(keyInfo);
+            }
+        }
+    </script>
+</body>
+</html>

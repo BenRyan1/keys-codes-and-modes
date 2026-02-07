@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacred Geometry Music Visualizer | Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1800px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .circle-container {
+            flex: 1;
+            min-width: 500px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .circle-title {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            cursor: crosshair;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .control-section h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            grid-column: 1 / -1;
+            font-size: 1.1em;
+            padding: 15px;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            grid-column: 1 / -1;
+            font-size: 1.1em;
+            padding: 15px;
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            min-height: 60px;
+        }
+
+        .info-panel h4 {
+            color: #FFD700;
+            margin-bottom: 8px;
+        }
+
+        .info-panel p {
+            color: #c0c0c0;
+            line-height: 1.6;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .settings {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-item label {
+            color: #a0a0a0;
+        }
+
+        .setting-item input[type="range"] {
+            width: 150px;
+        }
+
+        .setting-item select {
+            padding: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .circle-container {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hero-logo">KEYS, CODES & MODES</div>
+        <div class="tagline">Sacred Geometry Meets Music Theory</div>
+    </div>
+
+    <div class="main-container">
+        <div class="circle-container" style="max-width: 600px; margin: 0 auto;">
+            <div class="circle-title">Sacred Geometry Music Visualizer</div>
+            <div class="canvas-wrapper">
+                <canvas id="chromaticCanvas" width="500" height="500"></canvas>
+            </div>
+            <div class="info-panel">
+                <h4>Chromatic Circle with Sacred Geometry</h4>
+                <p>All 12 notes in chromatic order: C → C# → D → D# → E → F → F# → G → G# → A → A# → B<br>
+                <strong>💡 Click any note to hear its sound! Select patterns below to visualize musical relationships.</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-section">
+            <h3>🎵 Intervals</h3>
+            <div class="button-grid">
+                <button onclick="drawPattern('interval', 1)">Minor 2nd</button>
+                <button onclick="drawPattern('interval', 2)">Major 2nd</button>
+                <button onclick="drawPattern('interval', 3)">Minor 3rd</button>
+                <button onclick="drawPattern('interval', 4)">Major 3rd</button>
+                <button onclick="drawPattern('interval', 5)">Perfect 4th</button>
+                <button onclick="drawPattern('interval', 6)">Tritone</button>
+                <button onclick="drawPattern('interval', 7)">Perfect 5th</button>
+                <button onclick="drawPattern('interval', 8)">Minor 6th</button>
+                <button onclick="drawPattern('interval', 9)">Major 6th</button>
+                <button onclick="drawPattern('interval', 10)">Minor 7th</button>
+                <button onclick="drawPattern('interval', 11)">Major 7th</button>
+                <button onclick="drawPattern('interval', 12)">Octave</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>🎹 Triads & Chords</h3>
+            <div class="button-grid">
+                <button onclick="drawPattern('major-triad')">Major Triad</button>
+                <button onclick="drawPattern('minor-triad')">Minor Triad</button>
+                <button onclick="drawPattern('diminished-triad')">Diminished</button>
+                <button onclick="drawPattern('augmented-triad')">Augmented</button>
+                <button onclick="drawPattern('major7')">Major 7th</button>
+                <button onclick="drawPattern('minor7')">Minor 7th</button>
+                <button onclick="drawPattern('dominant7')">Dominant 7th</button>
+                <button onclick="drawPattern('diminished7')">Diminished 7th</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>🎼 Scales</h3>
+            <div class="button-grid">
+                <button onclick="drawPattern('major-scale')">Major Scale</button>
+                <button onclick="drawPattern('minor-scale')">Minor Scale</button>
+                <button onclick="drawPattern('pentatonic-major')">Pentatonic Major</button>
+                <button onclick="drawPattern('pentatonic-minor')">Pentatonic Minor</button>
+                <button onclick="drawPattern('blues-scale')">Blues Scale</button>
+                <button onclick="drawPattern('chromatic')">Chromatic</button>
+                <button onclick="drawPattern('whole-tone')">Whole Tone</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>🎭 Modes</h3>
+            <div class="button-grid">
+                <button onclick="drawPattern('ionian')">Ionian</button>
+                <button onclick="drawPattern('dorian')">Dorian</button>
+                <button onclick="drawPattern('phrygian')">Phrygian</button>
+                <button onclick="drawPattern('lydian')">Lydian</button>
+                <button onclick="drawPattern('mixolydian')">Mixolydian</button>
+                <button onclick="drawPattern('aeolian')">Aeolian</button>
+                <button onclick="drawPattern('locrian')">Locrian</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>✨ Sacred Geometry</h3>
+            <div class="button-grid">
+                <button onclick="drawPattern('triangle')">Triangle (3)</button>
+                <button onclick="drawPattern('square')">Square (4)</button>
+                <button onclick="drawPattern('pentagon')">Pentagon (5)</button>
+                <button onclick="drawPattern('hexagon')">Hexagon (6)</button>
+                <button onclick="drawPattern('heptagon')">Heptagon (7)</button>
+                <button onclick="drawPattern('octagon')">Octagon (8)</button>
+                <button onclick="drawPattern('vesica-piscis')">Vesica Piscis</button>
+                <button onclick="drawPattern('flower-of-life')">Flower of Life</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>⚙️ Settings</h3>
+            <div class="settings">
+                <div class="setting-item">
+                    <label>Root Note:</label>
+                    <select id="rootNote" onchange="updatePattern()">
+                        <option value="0">C</option>
+                        <option value="1">C#/Db</option>
+                        <option value="2">D</option>
+                        <option value="3">D#/Eb</option>
+                        <option value="4">E</option>
+                        <option value="5">F</option>
+                        <option value="6">F#/Gb</option>
+                        <option value="7">G</option>
+                        <option value="8">G#/Ab</option>
+                        <option value="9">A</option>
+                        <option value="10">A#/Bb</option>
+                        <option value="11">B</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Line Width:</label>
+                    <input type="range" id="lineWidth" min="1" max="8" value="3" onchange="updatePattern()">
+                    <span id="lineWidthValue">3</span>
+                </div>
+                <div class="setting-item">
+                    <label>Animation Speed:</label>
+                    <input type="range" id="animSpeed" min="50" max="500" value="150" step="50">
+                    <span id="animSpeedValue">150ms</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <div class="button-grid">
+                <button class="play-btn" onclick="playPattern()">▶️ Play Pattern</button>
+                <button class="clear-btn" onclick="clearAll()">Clear All</button>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h4>Current Pattern Info</h4>
+            <p id="patternInfo">Select a pattern to see musical and geometric information</p>
+        </div>
+
+        <div class="control-section">
+            <h3>🎨 Chromatic Color Legend</h3>
+            <div class="legend" id="colorLegend"></div>
+        </div>
+    </div>
+
+    <script>
+        // Keys, Codes & Modes 12-Color Chromatic System
+        const chromaticColors = {
+            'C': '#FFFF00',    // Yellow
+            'C#': '#FFC400',   // Yellow-Orange
+            'D': '#FF8000',    // Orange
+            'D#': '#FF4000',   // Red-Orange
+            'E': '#FF0000',    // Red
+            'F': '#C4007F',    // Red-Purple
+            'F#': '#8000FF',   // Purple
+            'G': '#4000FF',    // Blue-Purple
+            'G#': '#0000FF',   // Blue
+            'A': '#007FFF',    // Blue-Green
+            'A#': '#00FF80',   // Green
+            'B': '#80FF00'     // Yellow-Green
+        };
+
+        const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+        // Audio Context
+        let audioContext;
+        let currentPattern = { type: null, notes: [], name: '' };
+
+        // Initialize canvases
+        const chromaticCanvas = document.getElementById('chromaticCanvas');
+        const chromaticCtx = chromaticCanvas.getContext('2d');
+
+        // Initialize audio on first user interaction
+        document.addEventListener('click', initAudio, { once: true });
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Draw circle on load
+        window.onload = function() {
+            drawCircle(chromaticCtx, noteNames);
+            createColorLegend();
+            updateSliderValues();
+            setupCanvasInteractivity();
+        };
+
+        function drawCircle(ctx, noteOrder) {
+            const centerX = 250;
+            const centerY = 250;
+            const radius = 180;
+            const noteRadius = 200;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, 500, 500);
+
+            // Draw horizontal diameter lines connecting opposite notes (in slate gray)
+            ctx.strokeStyle = 'rgba(120, 130, 140, 0.3)'; // Slate color
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]); // Dashed line
+            
+            // Draw 6 diameter lines connecting opposite notes
+            for (let i = 0; i < 6; i++) {
+                const angle1 = (i * 30 - 90) * Math.PI / 180;
+                const angle2 = ((i + 6) * 30 - 90) * Math.PI / 180;
+                
+                const x1 = centerX + noteRadius * Math.cos(angle1);
+                const y1 = centerY + noteRadius * Math.sin(angle1);
+                const x2 = centerX + noteRadius * Math.cos(angle2);
+                const y2 = centerY + noteRadius * Math.sin(angle2);
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+            
+            ctx.setLineDash([]); // Reset to solid lines
+
+            // Draw outer circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw 12 positions with notes
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180; // Start at 12 o'clock
+                const x = centerX + noteRadius * Math.cos(angle);
+                const y = centerY + noteRadius * Math.sin(angle);
+                
+                const noteName = noteOrder[i];
+                // CRITICAL: Use the note's actual chromatic color, not position-based
+                const color = chromaticColors[noteName];
+
+                // Draw note circle with glow
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 30, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw note name - use black or white text depending on brightness
+                const brightness = getBrightness(color);
+                ctx.fillStyle = brightness > 128 ? '#000' : '#fff';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(noteName, x, y);
+
+                // Draw clock number
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.font = '12px Arial';
+                const clockNumber = i === 0 ? 12 : i;
+                const numberX = centerX + (radius - 30) * Math.cos(angle);
+                const numberY = centerY + (radius - 30) * Math.sin(angle);
+                ctx.fillText(clockNumber, numberX, numberY);
+            }
+        }
+
+        function getBrightness(hexColor) {
+            const hex = hexColor.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            return (r * 299 + g * 587 + b * 114) / 1000;
+        }
+
+        function getNotePosition(noteName, noteOrder) {
+            const index = noteOrder.indexOf(noteName);
+            const angle = (index * 30 - 90) * Math.PI / 180;
+            const noteRadius = 200;
+            return {
+                x: 250 + noteRadius * Math.cos(angle),
+                y: 250 + noteRadius * Math.sin(angle),
+                angle: angle
+            };
+        }
+
+        function drawPattern(type, param) {
+            const rootIndex = parseInt(document.getElementById('rootNote').value);
+            let notes = [];
+            let patternName = '';
+            let description = '';
+
+            // Calculate pattern notes
+            switch(type) {
+                case 'interval':
+                    notes = [0, param];
+                    patternName = getIntervalName(param);
+                    description = `Two notes separated by ${param} semitones, creating a ${patternName.toLowerCase()}.`;
+                    break;
+                
+                case 'major-triad':
+                    notes = [0, 4, 7];
+                    patternName = 'Major Triad';
+                    description = 'Root, major third, perfect fifth - the foundation of major harmony. Triangle shape.';
+                    break;
+                
+                case 'minor-triad':
+                    notes = [0, 3, 7];
+                    patternName = 'Minor Triad';
+                    description = 'Root, minor third, perfect fifth - the foundation of minor harmony. Triangle shape.';
+                    break;
+                
+                case 'diminished-triad':
+                    notes = [0, 3, 6];
+                    patternName = 'Diminished Triad';
+                    description = 'Root, minor third, diminished fifth - creates tension. Symmetrical triangle.';
+                    break;
+                
+                case 'augmented-triad':
+                    notes = [0, 4, 8];
+                    patternName = 'Augmented Triad';
+                    description = 'Root, major third, augmented fifth - perfect symmetry dividing the octave in thirds.';
+                    break;
+                
+                case 'major7':
+                    notes = [0, 4, 7, 11];
+                    patternName = 'Major 7th Chord';
+                    description = 'Major triad plus major seventh - sophisticated, jazzy quality. Four-point design.';
+                    break;
+                
+                case 'minor7':
+                    notes = [0, 3, 7, 10];
+                    patternName = 'Minor 7th Chord';
+                    description = 'Minor triad plus minor seventh - smooth, mellow character. Four-point design.';
+                    break;
+                
+                case 'dominant7':
+                    notes = [0, 4, 7, 10];
+                    patternName = 'Dominant 7th Chord';
+                    description = 'Major triad plus minor seventh - creates tension wanting to resolve. Four-point asymmetric design.';
+                    break;
+                
+                case 'diminished7':
+                    notes = [0, 3, 6, 9];
+                    patternName = 'Diminished 7th Chord';
+                    description = 'Perfect symmetry - divides octave into four equal parts. Square shape on chromatic circle.';
+                    break;
+                
+                case 'major-scale':
+                    notes = [0, 2, 4, 5, 7, 9, 11];
+                    patternName = 'Major Scale';
+                    description = 'W-W-H-W-W-W-H pattern. The most fundamental Western scale. Seven-pointed star.';
+                    break;
+                
+                case 'minor-scale':
+                    notes = [0, 2, 3, 5, 7, 8, 10];
+                    patternName = 'Natural Minor Scale';
+                    description = 'W-H-W-W-H-W-W pattern. Relative minor shares key signature. Seven-pointed asymmetric star.';
+                    break;
+                
+                case 'pentatonic-major':
+                    notes = [0, 2, 4, 7, 9];
+                    patternName = 'Major Pentatonic';
+                    description = 'Five-note scale removing half steps. Universal across cultures. Pentagon shape.';
+                    break;
+                
+                case 'pentatonic-minor':
+                    notes = [0, 3, 5, 7, 10];
+                    patternName = 'Minor Pentatonic';
+                    description = 'Five-note scale - foundation of blues and rock. Pentagon shape.';
+                    break;
+                
+                case 'blues-scale':
+                    notes = [0, 3, 5, 6, 7, 10];
+                    patternName = 'Blues Scale';
+                    description = 'Minor pentatonic plus blues note (tritone). Six-pointed hexagram.';
+                    break;
+                
+                case 'chromatic':
+                    notes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                    patternName = 'Chromatic Scale';
+                    description = 'All twelve notes - complete 12-pointed star. Full spectrum of Western music.';
+                    break;
+                
+                case 'whole-tone':
+                    notes = [0, 2, 4, 6, 8, 10];
+                    patternName = 'Whole Tone Scale';
+                    description = 'Only whole steps - creates ambiguous, dreamlike quality. Perfect hexagon.';
+                    break;
+                
+                case 'ionian':
+                    notes = [0, 2, 4, 5, 7, 9, 11];
+                    patternName = 'Ionian Mode (Major)';
+                    description = 'First mode - same as major scale. Bright and stable character.';
+                    break;
+                
+                case 'dorian':
+                    notes = [0, 2, 3, 5, 7, 9, 10];
+                    patternName = 'Dorian Mode';
+                    description = 'Second mode - minor with raised 6th. Jazz and folk favorite.';
+                    break;
+                
+                case 'phrygian':
+                    notes = [0, 1, 3, 5, 7, 8, 10];
+                    patternName = 'Phrygian Mode';
+                    description = 'Third mode - minor with flat 2nd. Spanish/Middle Eastern flavor.';
+                    break;
+                
+                case 'lydian':
+                    notes = [0, 2, 4, 6, 7, 9, 11];
+                    patternName = 'Lydian Mode';
+                    description = 'Fourth mode - major with raised 4th. Dreamy, ethereal quality.';
+                    break;
+                
+                case 'mixolydian':
+                    notes = [0, 2, 4, 5, 7, 9, 10];
+                    patternName = 'Mixolydian Mode';
+                    description = 'Fifth mode - major with flat 7th. Blues and rock staple.';
+                    break;
+                
+                case 'aeolian':
+                    notes = [0, 2, 3, 5, 7, 8, 10];
+                    patternName = 'Aeolian Mode (Natural Minor)';
+                    description = 'Sixth mode - natural minor scale. Dark, melancholic character.';
+                    break;
+                
+                case 'locrian':
+                    notes = [0, 1, 3, 5, 6, 8, 10];
+                    patternName = 'Locrian Mode';
+                    description = 'Seventh mode - diminished 5th creates tension. Rarely used as tonal center.';
+                    break;
+                
+                case 'triangle':
+                    notes = [0, 4, 8];
+                    patternName = 'Equilateral Triangle';
+                    description = 'Three notes dividing octave equally - augmented triad. Sacred trinity.';
+                    break;
+                
+                case 'square':
+                    notes = [0, 3, 6, 9];
+                    patternName = 'Square / Cross';
+                    description = 'Four notes dividing octave equally - diminished 7th. Four elements, four directions.';
+                    break;
+                
+                case 'pentagon':
+                    notes = [0, 2, 5, 7, 10];
+                    patternName = 'Pentagon';
+                    description = 'Five-pointed star - related to major pentatonic. Golden ratio relationships.';
+                    break;
+                
+                case 'hexagon':
+                    notes = [0, 2, 4, 6, 8, 10];
+                    patternName = 'Hexagon';
+                    description = 'Six-pointed star - whole tone scale. Perfect hexagonal symmetry.';
+                    break;
+                
+                case 'heptagon':
+                    notes = [0, 2, 4, 5, 7, 9, 11];
+                    patternName = 'Heptagon';
+                    description = 'Seven-pointed star - major scale. Seven days, seven chakras.';
+                    break;
+                
+                case 'octagon':
+                    notes = [0, 1, 3, 4, 6, 7, 9, 10];
+                    patternName = 'Octagon';
+                    description = 'Eight-pointed star - octatonic scale. Symmetrical alternating pattern.';
+                    break;
+                
+                case 'vesica-piscis':
+                    notes = [0, 5, 7];
+                    patternName = 'Vesica Piscis';
+                    description = 'Perfect fourth and fifth - the intersection of two circles. Ancient sacred symbol.';
+                    break;
+                
+                case 'flower-of-life':
+                    notes = [0, 2, 4, 5, 7, 9, 11];
+                    patternName = 'Flower of Life';
+                    description = 'Major scale pattern - seven circles in sacred geometry. Blueprint of creation.';
+                    break;
+            }
+
+            // Apply root note transposition
+            notes = notes.map(n => (n + rootIndex) % 12);
+
+            // Store current pattern
+            currentPattern = {
+                type: type,
+                notes: notes.map(n => noteNames[n]),
+                name: patternName,
+                description: description
+            };
+
+            // Update info
+            const rootNoteName = noteNames[rootIndex];
+            document.getElementById('patternInfo').innerHTML = 
+                `<strong>${patternName}</strong> starting on ${rootNoteName}<br>${description}`;
+
+            // Draw on chromatic canvas
+            drawConnections(chromaticCtx, notes, noteNames);
+        }
+
+        function drawConnections(ctx, noteIndices, noteOrder) {
+            // Redraw circle
+            drawCircle(ctx, noteOrder);
+
+            const lineWidth = parseInt(document.getElementById('lineWidth').value);
+            
+            // Draw connections
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 15;
+
+            for (let i = 0; i < noteIndices.length; i++) {
+                const fromNote = noteNames[noteIndices[i]];
+                const toNote = noteNames[noteIndices[(i + 1) % noteIndices.length]];
+                
+                const fromPos = getNotePosition(fromNote, noteOrder);
+                const toPos = getNotePosition(toNote, noteOrder);
+
+                // Draw line with gradient
+                const gradient = ctx.createLinearGradient(fromPos.x, fromPos.y, toPos.x, toPos.y);
+                gradient.addColorStop(0, chromaticColors[fromNote]);
+                gradient.addColorStop(1, chromaticColors[toNote]);
+                
+                ctx.strokeStyle = gradient;
+                ctx.shadowColor = chromaticColors[fromNote];
+                
+                ctx.beginPath();
+                ctx.moveTo(fromPos.x, fromPos.y);
+                ctx.lineTo(toPos.x, toPos.y);
+                ctx.stroke();
+            }
+
+            ctx.shadowBlur = 0;
+
+            // Highlight active notes
+            noteIndices.forEach(index => {
+                const noteName = noteNames[index];
+                const pos = getNotePosition(noteName, noteOrder);
+                
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 35, 0, Math.PI * 2);
+                ctx.strokeStyle = chromaticColors[noteName];
+                ctx.lineWidth = 4;
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = chromaticColors[noteName];
+                ctx.stroke();
+            });
+        }
+
+        function playPattern() {
+            if (!audioContext) {
+                initAudio();
+            }
+            
+            if (currentPattern.notes.length === 0) {
+                alert('Please select a pattern first!');
+                return;
+            }
+
+            const speed = parseInt(document.getElementById('animSpeed').value);
+            
+            currentPattern.notes.forEach((note, index) => {
+                setTimeout(() => {
+                    playNote(note);
+                    highlightNote(note);
+                }, index * speed);
+            });
+        }
+
+        function playNote(noteName) {
+            if (!audioContext) return;
+
+            const noteIndex = noteNames.indexOf(noteName);
+            const frequency = 261.63 * Math.pow(2, noteIndex / 12); // C4 = 261.63 Hz
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+
+        function highlightNote(noteName) {
+            // Flash highlight on chromatic circle
+            const pos = getNotePosition(noteName, noteNames);
+            
+            chromaticCtx.save();
+            chromaticCtx.beginPath();
+            chromaticCtx.arc(pos.x, pos.y, 40, 0, Math.PI * 2);
+            chromaticCtx.fillStyle = chromaticColors[noteName] + '80';
+            chromaticCtx.fill();
+            chromaticCtx.restore();
+
+            // Redraw after highlight
+            setTimeout(() => {
+                if (currentPattern.type) {
+                    const notes = currentPattern.notes.map(n => noteNames.indexOf(n));
+                    drawConnections(chromaticCtx, notes, noteNames);
+                }
+            }, 100);
+        }
+
+        function clearAll() {
+            currentPattern = { type: null, notes: [], name: '' };
+            drawCircle(chromaticCtx, noteNames);
+            document.getElementById('patternInfo').textContent = 'Select a pattern to see musical and geometric information';
+        }
+
+        function updatePattern() {
+            if (currentPattern.type) {
+                drawPattern(currentPattern.type);
+            }
+            updateSliderValues();
+        }
+
+        function updateSliderValues() {
+            document.getElementById('lineWidthValue').textContent = document.getElementById('lineWidth').value;
+            document.getElementById('animSpeedValue').textContent = document.getElementById('animSpeed').value + 'ms';
+        }
+
+        function getIntervalName(semitones) {
+            const names = ['Unison', 'Minor 2nd', 'Major 2nd', 'Minor 3rd', 'Major 3rd', 
+                          'Perfect 4th', 'Tritone', 'Perfect 5th', 'Minor 6th', 'Major 6th', 
+                          'Minor 7th', 'Major 7th', 'Octave'];
+            return names[semitones] || 'Interval';
+        }
+
+        function createColorLegend() {
+            const legend = document.getElementById('colorLegend');
+            noteNames.forEach(note => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                
+                const colorBox = document.createElement('div');
+                colorBox.className = 'legend-color';
+                colorBox.style.backgroundColor = chromaticColors[note];
+                
+                const label = document.createElement('span');
+                label.textContent = note;
+                
+                item.appendChild(colorBox);
+                item.appendChild(label);
+                legend.appendChild(item);
+            });
+        }
+
+        function setupCanvasInteractivity() {
+            // Click to play
+            chromaticCanvas.addEventListener('click', (e) => handleCanvasClick(e, chromaticCanvas, noteNames));
+            
+            // Hover to preview sound
+            let lastHoveredNote = null;
+            chromaticCanvas.addEventListener('mousemove', (e) => {
+                const rect = chromaticCanvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = 250;
+                const centerY = 250;
+                const noteRadius = 200;
+
+                // Check which note is being hovered
+                for (let i = 0; i < 12; i++) {
+                    const angle = (i * 30 - 90) * Math.PI / 180;
+                    const noteX = centerX + noteRadius * Math.cos(angle);
+                    const noteY = centerY + noteRadius * Math.sin(angle);
+                    
+                    const distance = Math.sqrt((x - noteX) ** 2 + (y - noteY) ** 2);
+                    
+                    if (distance < 30) {
+                        const noteName = noteNames[i];
+                        
+                        // Only play if we moved to a different note
+                        if (noteName !== lastHoveredNote) {
+                            lastHoveredNote = noteName;
+                            playNote(noteName);
+                            chromaticCanvas.style.cursor = 'pointer';
+                        }
+                        return;
+                    }
+                }
+                
+                // Not hovering over any note
+                lastHoveredNote = null;
+                chromaticCanvas.style.cursor = 'crosshair';
+            });
+        }
+
+        function handleCanvasClick(e, canvas, noteOrder) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = 250;
+            const centerY = 250;
+            const noteRadius = 200;
+
+            // Check which note was clicked
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const noteX = centerX + noteRadius * Math.cos(angle);
+                const noteY = centerY + noteRadius * Math.sin(angle);
+                
+                const distance = Math.sqrt((x - noteX) ** 2 + (y - noteY) ** 2);
+                
+                if (distance < 30) {
+                    const noteName = noteOrder[i];
+                    playNote(noteName);
+                    flashNote(noteName);
+                    return;
+                }
+            }
+        }
+
+        function flashNote(noteName) {
+            // Flash on chromatic canvas
+            const chromaticPos = getNotePosition(noteName, noteNames);
+            
+            // Draw flash
+            chromaticCtx.save();
+            chromaticCtx.beginPath();
+            chromaticCtx.arc(chromaticPos.x, chromaticPos.y, 35, 0, Math.PI * 2);
+            chromaticCtx.strokeStyle = chromaticColors[noteName];
+            chromaticCtx.lineWidth = 6;
+            chromaticCtx.shadowBlur = 25;
+            chromaticCtx.shadowColor = chromaticColors[noteName];
+            chromaticCtx.stroke();
+            chromaticCtx.restore();
+
+            // Remove flash after delay
+            setTimeout(() => {
+                if (currentPattern.type) {
+                    const notes = currentPattern.notes.map(n => noteNames.indexOf(n));
+                    drawConnections(chromaticCtx, notes, noteNames);
+                } else {
+                    drawCircle(chromaticCtx, noteNames);
+                }
+            }, 150);
+        }
+
+        // Slider event listeners
+        document.getElementById('lineWidth').addEventListener('input', updatePattern);
+        document.getElementById('animSpeed').addEventListener('input', updateSliderValues);
+    </script>
+</body>
+</html>

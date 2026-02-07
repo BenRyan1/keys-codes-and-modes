@@ -1,0 +1,404 @@
+<!--
+================================================================================
+KEYS, CODES & MODES - APP DESIGN STANDARD
+Version 1.0 - January 2026
+================================================================================
+Official design guidelines for ALL music theory applications
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Design Standard | Keys, Codes & Modes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            padding: 2rem 1rem;
+            line-height: 1.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1), rgba(139, 107, 163, 0.1));
+            border: 2px solid rgba(0, 128, 128, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: rgba(232, 232, 232, 0.7);
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--primary-teal);
+            margin: 2rem 0 1rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 128, 128, 0.2);
+        }
+        
+        .color-swatch {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid white;
+            margin-right: 1rem;
+            vertical-align: middle;
+        }
+        
+        .spec-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .spec-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 128, 128, 0.1);
+        }
+        
+        .spec-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-teal);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        code {
+            background: rgba(0, 128, 128, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: var(--primary-gold);
+            font-size: 0.95rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 128, 128, 0.2);
+        }
+        
+        th {
+            background: rgba(0, 128, 128, 0.2);
+            color: var(--primary-gold);
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+        
+        .critical {
+            background: rgba(207, 122, 90, 0.2);
+            border: 2px solid var(--primary-coral);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .critical::before {
+            content: '⚠️ CRITICAL: ';
+            color: var(--primary-coral);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .color-swatch {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>APP DESIGN STANDARD</h1>
+        <p class="subtitle">Keys, Codes & Modes™ | Official Guidelines | Version 1.0</p>
+        
+        <!-- INTRODUCTION -->
+        <div class="section">
+            <p><strong>Purpose:</strong> This document defines the design standard for ALL Keys, Codes & Modes music theory applications. Use this as your foundation for creating new apps and updating existing ones.</p>
+            <p><strong>Applies To:</strong> All 20+ apps, all future apps, no exceptions.</p>
+            <p><strong>Created By:</strong> Benjamin Ryan, Santa Barbara, California</p>
+        </div>
+        
+        <!-- COLOR PALETTE -->
+        <div class="section">
+            <h2>1. COLOR PALETTE</h2>
+            <p>These are the ONLY colors to be used. Never deviate from these exact hex codes.</p>
+            
+            <h3>Primary Colors</h3>
+            <table>
+                <tr>
+                    <th>Color</th>
+                    <th>Hex Code</th>
+                    <th>CSS Variable</th>
+                    <th>Usage</th>
+                </tr>
+                <tr>
+                    <td><span class="color-swatch" style="background: #008080;"></span> Teal</td>
+                    <td><code>#008080</code></td>
+                    <td><code>--primary-teal</code></td>
+                    <td>Borders, buttons, accents</td>
+                </tr>
+                <tr>
+                    <td><span class="color-swatch" style="background: #F4D03F;"></span> Gold</td>
+                    <td><code>#F4D03F</code></td>
+                    <td><code>--primary-gold</code></td>
+                    <td>Headings, highlights</td>
+                </tr>
+                <tr>
+                    <td><span class="color-swatch" style="background: #8B6BA3;"></span> Purple</td>
+                    <td><code>#8B6BA3</code></td>
+                    <td><code>--primary-purple</code></td>
+                    <td>Gradients, accents</td>
+                </tr>
+                <tr>
+                    <td><span class="color-swatch" style="background: #CF7A5A;"></span> Coral</td>
+                    <td><code>#CF7A5A</code></td>
+                    <td><code>--primary-coral</code></td>
+                    <td>Warnings, errors</td>
+                </tr>
+                <tr>
+                    <td><span class="color-swatch" style="background: #0f0f1e;"></span> Dark BG</td>
+                    <td><code>#0f0f1e</code></td>
+                    <td><code>--dark-bg</code></td>
+                    <td>Backgrounds</td>
+                </tr>
+                <tr>
+                    <td><span class="color-swatch" style="background: #E8E8E8;"></span> Light Text</td>
+                    <td><code>#E8E8E8</code></td>
+                    <td><code>--light-text</code></td>
+                    <td>Body text</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- TYPOGRAPHY -->
+        <div class="section">
+            <h2>2. TYPOGRAPHY</h2>
+            
+            <h3>Font Families</h3>
+            <ul class="spec-list">
+                <li><strong>Display Font:</strong> Cinzel (serif) - Headings, titles</li>
+                <li><strong>Body Font:</strong> Montserrat (sans-serif) - Text, UI</li>
+                <li>Load from Google Fonts on every page</li>
+            </ul>
+            
+            <div class="critical">
+                "KEYS, CODES & MODES" must ALWAYS use Gold → Teal gradient. Never solid colors.
+            </div>
+        </div>
+        
+        <!-- LAYOUT STANDARD -->
+        <div class="section">
+            <h2>3. APP LAYOUT STANDARD</h2>
+            
+            <h3>Structure (Every App Must Follow)</h3>
+            <ul class="spec-list">
+                <li><strong>Header:</strong> Logo + "KEYS, CODES & MODES" + Control Panel + Upgrade</li>
+                <li><strong>Left Side (66%):</strong> Visual display (fretboard, piano, charts)</li>
+                <li><strong>Right Side (33%):</strong> Control panel (buttons, settings, Start button)</li>
+                <li><strong>Footer:</strong> 5 social links + copyright + disclosures</li>
+            </ul>
+            
+            <h3>Responsive Behavior</h3>
+            <ul class="spec-list">
+                <li><strong>Desktop (>768px):</strong> Side-by-side layout</li>
+                <li><strong>Mobile (≤768px):</strong> Stacked (display on top, controls below)</li>
+            </ul>
+        </div>
+        
+        <!-- HEADER -->
+        <div class="section">
+            <h2>4. HEADER SPECIFICATIONS</h2>
+            
+            <h3>Required Elements</h3>
+            <ul class="spec-list">
+                <li>Logo (50px × 50px triangle/circle design)</li>
+                <li>"KEYS, CODES & MODES" with Gold → Teal gradient</li>
+                <li>"Control Panel" link → auth/offerings.html</li>
+                <li>"Upgrade" link → pricing.html</li>
+            </ul>
+            
+            <h3>Styling</h3>
+            <ul class="spec-list">
+                <li>Background: Frosted glass with backdrop-filter: blur(10px)</li>
+                <li>Border-bottom: 3px solid #008080</li>
+                <li>Position: sticky (top: 0)</li>
+                <li>Padding: 1.5rem 2rem</li>
+            </ul>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="section">
+            <h2>5. FOOTER SPECIFICATIONS</h2>
+            
+            <h3>Required Social Media Links (PUBLIC PAGES ONLY!)</h3>
+            <table>
+                <tr>
+                    <th>Platform</th>
+                    <th>URL (PUBLIC VIEW)</th>
+                </tr>
+                <tr>
+                    <td>Facebook</td>
+                    <td><code>https://www.facebook.com/KeysCodesModes</code></td>
+                </tr>
+                <tr>
+                    <td>X (Twitter)</td>
+                    <td><code>https://x.com/keyscodesandmodes</code></td>
+                </tr>
+                <tr>
+                    <td>Instagram</td>
+                    <td><code>https://www.instagram.com/keyscodesandmodes/</code></td>
+                </tr>
+                <tr>
+                    <td>TikTok</td>
+                    <td><code>https://www.tiktok.com/@keyscodesandmodes</code></td>
+                </tr>
+                <tr>
+                    <td>LinkedIn</td>
+                    <td><code>https://www.linkedin.com/in/ben-ryan-guitar-freestyle/</code></td>
+                </tr>
+            </table>
+            
+            <h3>Required Text</h3>
+            <ul class="spec-list">
+                <li>© 2026 Keys, Codes & Modes™</li>
+                <li>Created by Benjamin Ryan</li>
+                <li>Based on "Keys, Codes, and Modes: A Visual Approach to Understanding Music"</li>
+                <li>Santa Barbara, California</li>
+            </ul>
+            
+            <div class="critical">
+                Social links MUST go to PUBLIC pages, NOT personal control panels!
+            </div>
+        </div>
+        
+        <!-- INTERACTION -->
+        <div class="section">
+            <h2>6. INTERACTION STANDARDS</h2>
+            
+            <h3>Auto-Play (NEW STANDARD)</h3>
+            <ul class="spec-list">
+                <li><strong>ON CLICK:</strong> Sound plays INSTANTLY when user clicks key/note</li>
+                <li><strong>NO DELAY:</strong> Zero delay between click and sound</li>
+                <li><strong>VISUAL FEEDBACK:</strong> Element glows gold immediately</li>
+                <li><strong>START BUTTON:</strong> Still visible but optional</li>
+            </ul>
+            
+            <h3>Start Button</h3>
+            <ul class="spec-list">
+                <li>Always visible in control panel</li>
+                <li>Optional use - auto-play is default</li>
+                <li>Style: Large Teal gradient button</li>
+                <li>Text: "Start" or "Initialize Audio"</li>
+            </ul>
+        </div>
+        
+        <!-- CHECKLIST -->
+        <div class="section">
+            <h2>7. IMPLEMENTATION CHECKLIST</h2>
+            
+            <h3>Every App Must Have:</h3>
+            <ul class="spec-list">
+                <li>✓ Correct color palette (exact hex codes)</li>
+                <li>✓ Cinzel + Montserrat fonts loaded</li>
+                <li>✓ Header with logo + gradient text + 2 links</li>
+                <li>✓ Layout: Display left (66%), Controls right (33%)</li>
+                <li>✓ Start button visible and prominent</li>
+                <li>✓ Auto-play enabled (instant sound)</li>
+                <li>✓ Footer with 5 social links (correct PUBLIC URLs)</li>
+                <li>✓ Copyright + location info</li>
+                <li>✓ Responsive (mobile tested)</li>
+                <li>✓ All animations smooth (0.3s ease)</li>
+            </ul>
+        </div>
+        
+        <!-- CONTACT -->
+        <div class="section">
+            <h2>8. QUESTIONS & UPDATES</h2>
+            <p><strong>Contact:</strong> ben@keyscodesandmodes.com</p>
+            <p><strong>Version:</strong> 1.0 (January 2026)</p>
+            <p><strong>Last Updated:</strong> January 29, 2026</p>
+            
+            <div class="critical">
+                This standard applies to ALL apps - no exceptions. Any deviations must be approved by Benjamin Ryan.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

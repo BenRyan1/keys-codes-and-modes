@@ -1,0 +1,199 @@
+<!--
+================================================================================
+APP HEADER TEMPLATE - Keys, Codes & Modes
+================================================================================
+Simplified header for all music theory applications
+Contains: Logo + "KEYS, CODES & MODES" + Control Panel + Upgrade links
+================================================================================
+-->
+
+<!-- APP HEADER CSS - Put this in your <style> section -->
+<style>
+    /* App Header Styles */
+    .app-header {
+        background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(26, 26, 46, 0.95));
+        backdrop-filter: blur(10px);
+        border-bottom: 3px solid var(--primary-teal);
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0, 128, 128, 0.2);
+    }
+    
+    .app-header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .app-logo-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .app-logo-svg {
+        width: 50px;
+        height: 50px;
+        filter: drop-shadow(0 2px 8px rgba(244, 208, 63, 0.3));
+        transition: transform 0.3s ease;
+    }
+    
+    .app-logo-section:hover .app-logo-svg {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .app-title {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+        line-height: 1.2;
+        letter-spacing: 2px;
+    }
+    
+    .app-nav-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    
+    .app-nav-links a {
+        color: var(--light-text);
+        text-decoration: none;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .app-nav-links a:hover {
+        color: var(--primary-gold);
+        background: rgba(0, 128, 128, 0.1);
+    }
+    
+    .upgrade-link {
+        background: linear-gradient(135deg, var(--primary-teal), #006666) !important;
+        color: white !important;
+        padding: 0.75rem 1.5rem !important;
+        border-radius: 50px;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(0, 128, 128, 0.3);
+    }
+    
+    .upgrade-link:hover {
+        background: linear-gradient(135deg, #006666, var(--primary-teal)) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 128, 128, 0.5);
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+        .app-header {
+            padding: 1rem;
+        }
+        
+        .app-title {
+            font-size: 1.1rem;
+        }
+        
+        .app-logo-svg {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .app-nav-links {
+            gap: 0.75rem;
+        }
+        
+        .app-nav-links a {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .upgrade-link {
+            padding: 0.6rem 1rem !important;
+        }
+    }
+</style>
+
+<!-- APP HEADER HTML - Put this right after <body> tag -->
+<header class="app-header" role="banner">
+    <div class="app-header-content">
+        <!-- Logo & Title Section -->
+        <div class="app-logo-section">
+            <svg class="app-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+                <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+                <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+                <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+                <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+                <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+            </svg>
+            <h1 class="app-title">KEYS, CODES & MODES</h1>
+        </div>
+        
+        <!-- Navigation Links -->
+        <nav class="app-nav-links" role="navigation" aria-label="App navigation">
+            <a href="../auth/offerings.html">Control Panel</a>
+            <a href="../pricing.html" class="upgrade-link">Upgrade</a>
+        </nav>
+    </div>
+</header>
+
+<!--
+================================================================================
+USAGE INSTRUCTIONS
+================================================================================
+
+1. Copy the CSS and put it in your <style> section (in <head>)
+2. Copy the HTML and put it right after your <body> tag
+3. Update the links based on your folder structure:
+
+LINK FIXES BY FOLDER:
+
+A. If your app is in ROOT folder:
+   - Control Panel: href="auth/offerings.html"
+   - Upgrade: href="pricing.html"
+
+B. If your app is in auth/ folder:
+   - Control Panel: href="offerings.html"
+   - Upgrade: href="../pricing.html"
+
+C. If your app is in apps/ folder:
+   - Control Panel: href="../auth/offerings.html"
+   - Upgrade: href="../pricing.html"
+
+REQUIRED CSS VARIABLES:
+Make sure these are in your page:
+- --primary-teal: #008080
+- --primary-gold: #F4D03F
+- --primary-purple: #8B6BA3
+- --light-text: #E8E8E8
+- --font-display: 'Cinzel', serif
+- --font-body: 'Montserrat', sans-serif
+
+FEATURES:
+✓ Simplified navigation (only 2 links)
+✓ Logo animates on hover
+✓ Gradient title text
+✓ "Upgrade" button styled prominently
+✓ Sticky header (follows scroll)
+✓ Mobile responsive
+✓ Matches brand standards perfectly
+
+================================================================================
+-->

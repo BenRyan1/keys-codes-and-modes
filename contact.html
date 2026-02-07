@@ -1,0 +1,674 @@
+<!--
+================================================================================
+COPYRIGHT NOTICE - LEGAL WARNING
+================================================================================
+
+© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved
+
+This website and all content, code, design, applications, and materials are the 
+exclusive intellectual property of Benjamin Ryan and Keys, Codes & Modes™.
+
+STRICTLY PROHIBITED:
+Copying, reproducing, duplicating, distributing, or any unauthorized use of 
+these Works is STRICTLY PROHIBITED without express written permission.
+
+VIOLATORS WILL BE PROSECUTED TO THE FULLEST EXTENT OF THE LAW.
+
+Legal consequences include:
+• Statutory damages up to $150,000 per work infringed
+• Injunctive relief and cease and desist orders
+• Attorneys fees and court costs
+• Criminal prosecution where applicable
+
+Protected by U.S. Copyright Law (17 U.S.C. § 101 et seq.)
+FreeStyle® is a registered trademark. U.S. Patents.
+
+For licensing: [Contact via website]
+Santa Barbara, California | All Rights Reserved
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Cookie Consent CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+
+<style>
+/* Custom styling for cookie consent banner */
+.cc-window {
+    font-family: 'Montserrat', sans-serif !important;
+    background: #0a0a15 !important;
+    border: 2px solid #008080 !important;
+    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3) !important;
+}
+.cc-btn {
+    background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important;
+    border: none !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+.cc-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0, 128, 128, 0.4) !important;
+}
+.cc-link { color: #F4D03F !important; }
+.cc-link:hover { color: #008080 !important; }
+</style>
+
+<!-- Cookie Consent Script -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  window.cookieconsent.initialise({
+    palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
+    theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
+    onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
+    onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
+  });
+});
+function loadGoogleAnalytics() {
+  if (window.gaLoaded) return; window.gaLoaded = true;
+  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
+  gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
+}
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Keys, Codes & Modes</title>
+    <meta name="description" content="Get in touch with Benjamin Ryan about Keys, Codes & Modes music theory platform or the FreeStyle Musical Device.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0a0a15;
+            --darker-bg: #050508;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2) 0%, rgba(139, 107, 163, 0.2) 100%);
+            border-bottom: 2px solid var(--primary-teal);
+            box-shadow: 0 4px 30px rgba(0, 217, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-gold) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-gold);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d9d9 0%, var(--primary-gold) 50%, #ff006e 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(232, 232, 232, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-card {
+            background: rgba(26, 61, 95, 0.3);
+            border: 2px solid var(--primary-teal);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-card:hover {
+            border-color: var(--primary-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+        
+        .contact-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-card p {
+            color: rgba(232, 232, 232, 0.9);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .contact-card a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            word-break: break-word;
+        }
+        
+        .contact-card a:hover {
+            color: var(--primary-gold);
+            text-decoration: underline;
+        }
+        
+        .contact-info-section {
+            background: rgba(26, 61, 95, 0.3);
+            border: 2px solid var(--primary-teal);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-info-section h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .contact-info-section p {
+            color: rgba(232, 232, 232, 0.9);
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2) 0%, rgba(139, 107, 163, 0.2) 100%);
+            border: 2px solid var(--primary-gold);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-section p {
+            color: rgba(232, 232, 232, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            background: var(--primary-teal);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background: var(--primary-gold);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(244, 208, 63, 0.4);
+        }
+        
+        .cta-button.secondary {
+            background: var(--primary-purple);
+        }
+        
+        .cta-button.secondary:hover {
+            background: var(--primary-coral);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            border-top: 1px solid rgba(0, 128, 128, 0.3);
+            margin-top: 4rem;
+        }
+        
+        footer p {
+            color: rgba(232, 232, 232, 0.6);
+            margin: 0.5rem 0;
+        }
+        
+        footer a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: var(--primary-gold);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-card,
+            .contact-info-section,
+            .cta-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-text">
+                <h1>KEYS, CODES & MODES</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="insights.html">All Apps</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">Get In Touch</h1>
+        <p class="subtitle">Questions about Keys, Codes & Modes or the FreeStyle® Musical Device? Let's connect!</p>
+        
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-card-icon">✉️</div>
+                <h3>Email</h3>
+                <p>Send me a message anytime!</p>
+                <p>
+                    <a href="#" onclick="revealEmail(event)" id="emailLink" style="cursor: pointer;">
+                        Click to reveal email
+                    </a>
+                </p>
+                <script>
+                function revealEmail(event) {
+                    event.preventDefault();
+                    var user = 'ben.ryan';
+                    var domain = 'att.net';
+                    var email = user + '@' + domain;
+                    var link = document.getElementById('emailLink');
+                    link.href = 'mailto:' + email;
+                    link.textContent = email;
+                    link.onclick = null;
+                }
+                </script>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-card-icon">📍</div>
+                <h3>Location</h3>
+                <p><strong>Santa Barbara, California</strong></p>
+                <p style="margin-top: 1rem;">1187 Coast Village Rd #110<br>Santa Barbara, CA 93108</p>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-card-icon">🌐</div>
+                <h3>FreeStyle® Device</h3>
+                <p>Learn more about the revolutionary FreeStyle® guitar:</p>
+                <p><a href="http://www.unlockinfinite.com" target="_blank" rel="noopener noreferrer">www.unlockinfinite.com</a></p>
+                <p><a href="http://www.guitarfreestyle.com" target="_blank" rel="noopener noreferrer">www.guitarfreestyle.com</a></p>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-card-icon">👥</div>
+                <h3>Social Media & Links</h3>
+                <p style="margin-bottom: 15px;">Connect with me:</p>
+                <p style="margin-bottom: 10px;"><strong>Social Media:</strong></p>
+                <p><a href="https://www.instagram.com/keyscodesandmodes" target="_blank" rel="noopener noreferrer">📷 Instagram - Keys, Codes & Modes</a></p>
+                <p><a href="https://www.facebook.com/KeysCodesModes/" target="_blank" rel="noopener noreferrer">📘 Facebook - Keys, Codes & Modes</a></p>
+                <p><a href="https://www.facebook.com/AxexelFB" target="_blank" rel="noopener noreferrer">📘 Facebook - Ben Ryan Profile</a></p>
+                <p><a href="https://www.tiktok.com/@keyscodesandmodes" target="_blank" rel="noopener noreferrer">🎵 TikTok - @keyscodesandmodes</a></p>
+                <p><a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/" target="_blank" rel="noopener noreferrer">💼 LinkedIn - Ben Ryan</a></p>
+                <p><a href="https://x.com/keyscodesmodes" target="_blank" rel="noopener noreferrer">𝕏 X (Twitter) - @keyscodesmodes</a></p>
+                <p style="margin-top: 20px; margin-bottom: 10px;"><strong>Site Navigation:</strong></p>
+                <p><a href="index.html">Home</a></p>
+                <p><a href="insights.html">All Apps</a></p>
+                <p><a href="about.html">About</a></p>
+                <p><a href="contact.html">Contact</a></p>
+            </div>
+        </div>
+        
+        <div class="contact-info-section">
+            <h2>I'd Love to Hear From You!</h2>
+            <p>
+                Whether you're a music educator interested in using Keys, Codes & Modes in your classroom, 
+                a musician exploring new learning tools, or someone curious about the FreeStyle® Musical Device, 
+                I'm here to help.
+            </p>
+            <p>
+                <strong>Topics I'm happy to discuss:</strong>
+            </p>
+            <p>
+                🎵 Keys, Codes & Modes platform and applications<br>
+                🎸 FreeStyle® Musical Device demonstrations and availability<br>
+                🎓 Music education and visual learning methods<br>
+                💼 Partnerships, collaborations, and licensing opportunities<br>
+                🎨 Custom music theory tools and applications<br>
+                📚 Speaking engagements and workshops
+            </p>
+        </div>
+        
+        <!-- CONTACT FORM SECTION -->
+        <div class="contact-info-section">
+            <h2>Send Me a Message</h2>
+            <p style="margin-bottom: 2rem;">Fill out the form below and I'll get back to you as soon as possible.</p>
+            
+            <form id="contactForm" onsubmit="handleContactSubmit(event)" style="max-width: 700px; margin: 0 auto;">
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="contactName" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
+                        Your Name <span style="color: #ff0000;">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="contactName" 
+                        name="name" 
+                        placeholder="John Doe" 
+                        required
+                        style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
+                        onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
+                        onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="contactEmail" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
+                        Your Email <span style="color: #ff0000;">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="contactEmail" 
+                        name="email" 
+                        placeholder="you@example.com" 
+                        required
+                        style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
+                        onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
+                        onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="contactSubject" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
+                        Subject <span style="color: #ff0000;">*</span>
+                    </label>
+                    <select 
+                        id="contactSubject" 
+                        name="subject" 
+                        required
+                        style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
+                        onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
+                        onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'">
+                        <option value="" style="background: #1a1a2e; color: white;">-- Select a subject --</option>
+                        <option value="general" style="background: #1a1a2e; color: white;">General Inquiry</option>
+                        <option value="theory" style="background: #1a1a2e; color: white;">Music Theory Question</option>
+                        <option value="freestyle" style="background: #1a1a2e; color: white;">FreeStyle® Device</option>
+                        <option value="collaboration" style="background: #1a1a2e; color: white;">Collaboration Opportunity</option>
+                        <option value="education" style="background: #1a1a2e; color: white;">Educational Partnership</option>
+                        <option value="technical" style="background: #1a1a2e; color: white;">Technical Support</option>
+                        <option value="other" style="background: #1a1a2e; color: white;">Other</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="contactMessage" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
+                        Your Message <span style="color: #ff0000;">*</span>
+                    </label>
+                    <textarea 
+                        id="contactMessage" 
+                        name="message" 
+                        rows="6" 
+                        placeholder="Tell me what you'd like to discuss..." 
+                        required
+                        style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; resize: vertical; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
+                        onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
+                        onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'"></textarea>
+                </div>
+                
+                <button 
+                    type="submit" 
+                    style="width: 100%; padding: 1.25rem; background: linear-gradient(135deg, #F4D03F, #e6c62f); color: #1a1a2e; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4); font-family: 'Montserrat', sans-serif;"
+                    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(244, 208, 63, 0.6)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 25px rgba(244, 208, 63, 0.4)'">
+                    Send Message →
+                </button>
+            </form>
+            
+            <p style="margin-top: 1.5rem; text-align: center; color: #999; font-size: 0.9rem;">
+                * Required fields
+            </p>
+        </div>
+        
+        <div class="cta-section">
+            <h2>Ready to Transform Your Music Learning?</h2>
+            <p>
+                Explore our free interactive music theory tools or learn more about our comprehensive platform.
+            </p>
+            <div class="cta-buttons">
+                <a href="insights.html" class="cta-button">Explore Free Apps</a>
+                <a href="about.html" class="cta-button secondary">Learn More About Me</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved</p>
+        <p>Santa Barbara, California</p>
+        <p style="font-size: 0.9rem; margin-top: 10px; color: rgba(232, 232, 232, 0.6);">
+            Inventor, Author, Educator
+        </p>
+    </footer>
+    
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+    function handleContactSubmit(event) {
+        event.preventDefault();
+        
+        // Get form data
+        const formData = {
+            name: document.getElementById('contactName').value,
+            email: document.getElementById('contactEmail').value,
+            subject: document.getElementById('contactSubject').value,
+            message: document.getElementById('contactMessage').value,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Log to console (for testing/debugging)
+        console.log('Contact Form Submission:', formData);
+        
+        // TODO: Integrate with your preferred email service
+        // Popular options:
+        // 1. EmailJS (easiest) - https://www.emailjs.com/
+        // 2. Formspree - https://formspree.io/
+        // 3. SendGrid API
+        // 4. Your own backend endpoint
+        
+        /* EXAMPLE: EmailJS Integration (after signup at emailjs.com)
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+            from_name: formData.name,
+            from_email: formData.email,
+            subject: formData.subject,
+            message: formData.message,
+            to_email: 'ben@keyscodesandmodes.com'
+        })
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+            alert('✅ Message sent successfully! I\'ll get back to you soon.');
+            document.getElementById('contactForm').reset();
+        }, function(error) {
+            console.log('FAILED...', error);
+            alert('❌ There was an error sending your message. Please try emailing directly: ben@keyscodesandmodes.com');
+        });
+        */
+        
+        /* EXAMPLE: Formspree Integration (replace with your Formspree endpoint)
+        fetch('https://formspree.io/f/YOUR_FORM_ID', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('✅ Message sent successfully! I\'ll get back to you soon.');
+                document.getElementById('contactForm').reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ There was an error. Please try emailing directly: ben@keyscodesandmodes.com');
+        });
+        */
+        
+        // Temporary: Show success message and reset form
+        // This works without any backend - good for testing!
+        const subjectLabels = {
+            'general': 'General Inquiry',
+            'theory': 'Music Theory Question',
+            'freestyle': 'FreeStyle® Device',
+            'collaboration': 'Collaboration Opportunity',
+            'education': 'Educational Partnership',
+            'technical': 'Technical Support',
+            'other': 'Other'
+        };
+        
+        const subjectText = subjectLabels[formData.subject] || formData.subject;
+        
+        alert(
+            '✅ Thank you for your message, ' + formData.name + '!\n\n' +
+            'Subject: ' + subjectText + '\n\n' +
+            'I\'ll get back to you at ' + formData.email + ' as soon as possible.\n\n' +
+            'For immediate assistance, you can also email me directly at:\n' +
+            'ben@keyscodesandmodes.com'
+        );
+        
+        // Reset form after submission
+        document.getElementById('contactForm').reset();
+        
+        // Optional: Track form submission with Google Analytics
+        trackEvent(, 'contact_form_submit', {
+                'event_category': 'Contact',
+                'event_label': formData.subject
+            });
+        }
+        
+        return false;
+    }
+    </script>
+</body>
+</html><

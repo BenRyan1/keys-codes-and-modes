@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyphonic Guitar Detector - Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        #startBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        #stopBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status.active {
+            background: rgba(78, 205, 196, 0.2);
+            border: 2px solid #4ecdc4;
+        }
+
+        .visualizations {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .visualizations {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .viz-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .panel-title {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #4ecdc4;
+        }
+
+        #chromaticCircle {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .detected-notes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            min-height: 100px;
+            align-items: center;
+        }
+
+        .note-badge {
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: noteAppear 0.3s ease-out;
+        }
+
+        @keyframes noteAppear {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .chord-info {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .chord-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd93d;
+            margin-bottom: 10px;
+        }
+
+        .chord-notes {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        .frequency-bars {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 5px;
+            height: 150px;
+            align-items: flex-end;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .freq-bar {
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.1s;
+            position: relative;
+        }
+
+        .freq-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #aaa;
+        }
+
+        .settings {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .setting-row label {
+            font-size: 1.1em;
+        }
+
+        .setting-row input[type="range"] {
+            width: 200px;
+        }
+
+        .setting-row .value {
+            min-width: 50px;
+            text-align: right;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎸 Polyphonic Guitar Detector</h1>
+            <div class="subtitle">Keys, Codes & Modes • Real-Time Analysis</div>
+        </header>
+
+        <div class="controls">
+            <button id="startBtn">🎤 Start Listening</button>
+            <button id="stopBtn" disabled>⏹️ Stop</button>
+        </div>
+
+        <div class="status" id="status">
+            Click "Start Listening" to begin real-time guitar analysis
+        </div>
+
+        <div class="settings">
+            <div class="setting-row">
+                <label>Sensitivity Threshold:</label>
+                <input type="range" id="threshold" min="0.1" max="1.0" step="0.05" value="0.3">
+                <span class="value" id="thresholdValue">0.30</span>
+            </div>
+            <div class="setting-row">
+                <label>Smoothing:</label>
+                <input type="range" id="smoothing" min="0" max="0.9" step="0.1" value="0.5">
+                <span class="value" id="smoothingValue">0.50</span>
+            </div>
+        </div>
+
+        <div class="visualizations">
+            <div class="viz-panel">
+                <div class="panel-title">Chromatic Circle</div>
+                <canvas id="chromaticCircle" width="500" height="500"></canvas>
+            </div>
+
+            <div class="viz-panel">
+                <div class="panel-title">Detected Notes</div>
+                <div class="detected-notes" id="detectedNotes">
+                    <div style="color: #888;">Play your guitar...</div>
+                </div>
+                <div class="chord-info" id="chordInfo" style="display: none;">
+                    <div class="chord-name" id="chordName">-</div>
+                    <div class="chord-notes" id="chordNotes">-</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="viz-panel">
+            <div class="panel-title">Frequency Spectrum (12-TET Notes)</div>
+            <div class="frequency-bars" id="frequencyBars"></div>
+        </div>
+    </div>
+
+    <script>
+        // Ben's 12-color chromatic spectrum from Music Theory Explorer Pro
+        const CHROMATIC_COLORS = {
+            'C': '#FF0000',   // Red
+            'C#': '#FF7F00',  // Orange
+            'D': '#FFFF00',   // Yellow
+            'D#': '#7FFF00',  // Chartreuse
+            'E': '#00FF00',   // Green
+            'F': '#00FF7F',   // Spring Green
+            'F#': '#00FFFF',  // Cyan
+            'G': '#007FFF',   // Azure
+            'G#': '#0000FF',  // Blue
+            'A': '#7F00FF',   // Violet
+            'A#': '#FF00FF',  // Magenta
+            'B': '#FF007F'    // Rose
+        };
+
+        const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const A4_FREQUENCY = 440;
+
+        class PolyphonicDetector {
+            constructor() {
+                this.audioContext = null;
+                this.analyser = null;
+                this.microphone = null;
+                this.dataArray = null;
+                this.bufferLength = null;
+                this.animationId = null;
+                this.detectedNotes = new Set();
+                this.threshold = 0.3;
+                this.smoothing = 0.5;
+            }
+
+            async start() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.analyser = this.audioContext.createAnalyser();
+                    this.microphone = this.audioContext.createMediaStreamSource(stream);
+                    
+                    this.analyser.fftSize = 8192; // Higher FFT for better frequency resolution
+                    this.analyser.smoothingTimeConstant = this.smoothing;
+                    this.bufferLength = this.analyser.frequencyBinCount;
+                    this.dataArray = new Uint8Array(this.bufferLength);
+                    
+                    this.microphone.connect(this.analyser);
+                    
+                    this.detect();
+                    return true;
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    alert('Could not access microphone. Please grant permission and try again.');
+                    return false;
+                }
+            }
+
+            stop() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+                if (this.microphone) {
+                    this.microphone.disconnect();
+                }
+                if (this.audioContext) {
+                    this.audioContext.close();
+                }
+                this.detectedNotes.clear();
+            }
+
+            frequencyToNote(frequency) {
+                const noteNum = 12 * (Math.log2(frequency / A4_FREQUENCY)) + 69;
+                const roundedNote = Math.round(noteNum);
+                const noteName = NOTE_NAMES[roundedNote % 12];
+                const octave = Math.floor(roundedNote / 12) - 1;
+                return { noteName, octave, noteNum: roundedNote, frequency };
+            }
+
+            detect() {
+                this.analyser.getByteFrequencyData(this.dataArray);
+                
+                const newNotes = new Set();
+                const nyquist = this.audioContext.sampleRate / 2;
+                const binWidth = nyquist / this.bufferLength;
+                
+                // Find peaks in frequency spectrum
+                const peaks = this.findPeaks(this.dataArray, this.threshold * 255);
+                
+                peaks.forEach(peakIndex => {
+                    const frequency = peakIndex * binWidth;
+                    
+                    // Only process guitar range: E2 (82.41 Hz) to E6 (1318.51 Hz)
+                    if (frequency >= 80 && frequency <= 1400) {
+                        const note = this.frequencyToNote(frequency);
+                        newNotes.add(note.noteName);
+                    }
+                });
+                
+                this.detectedNotes = newNotes;
+                this.animationId = requestAnimationFrame(() => this.detect());
+            }
+
+            findPeaks(dataArray, threshold) {
+                const peaks = [];
+                
+                for (let i = 2; i < dataArray.length - 2; i++) {
+                    const current = dataArray[i];
+                    
+                    if (current > threshold &&
+                        current > dataArray[i - 1] &&
+                        current > dataArray[i - 2] &&
+                        current > dataArray[i + 1] &&
+                        current > dataArray[i + 2]) {
+                        
+                        // Check if this is a harmonic of an already detected peak
+                        const frequency = i * (this.audioContext.sampleRate / 2) / this.bufferLength;
+                        let isHarmonic = false;
+                        
+                        for (const peakIdx of peaks) {
+                            const peakFreq = peakIdx * (this.audioContext.sampleRate / 2) / this.bufferLength;
+                            const ratio = frequency / peakFreq;
+                            
+                            // If close to integer ratio (2x, 3x, 4x), likely a harmonic
+                            if (Math.abs(ratio - Math.round(ratio)) < 0.05 && ratio > 1.5) {
+                                isHarmonic = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!isHarmonic) {
+                            peaks.push(i);
+                        }
+                    }
+                }
+                
+                return peaks;
+            }
+
+            updateThreshold(value) {
+                this.threshold = value;
+            }
+
+            updateSmoothing(value) {
+                this.smoothing = value;
+                if (this.analyser) {
+                    this.analyser.smoothingTimeConstant = value;
+                }
+            }
+        }
+
+        // Chord detection logic
+        const CHORD_PATTERNS = {
+            // Triads
+            'major': [0, 4, 7],
+            'minor': [0, 3, 7],
+            'diminished': [0, 3, 6],
+            'augmented': [0, 4, 8],
+            
+            // Seventh chords
+            'major7': [0, 4, 7, 11],
+            'dominant7': [0, 4, 7, 10],
+            'minor7': [0, 3, 7, 10],
+            'half-diminished7': [0, 3, 6, 10],
+            'diminished7': [0, 3, 6, 9],
+            
+            // Extensions
+            'major9': [0, 4, 7, 11, 14],
+            'dominant9': [0, 4, 7, 10, 14],
+            'minor9': [0, 3, 7, 10, 14]
+        };
+
+        function identifyChord(notes) {
+            if (notes.length < 2) return null;
+            
+            const noteIndices = notes.map(note => NOTE_NAMES.indexOf(note)).sort((a, b) => a - b);
+            const root = noteIndices[0];
+            const intervals = noteIndices.map(idx => (idx - root + 12) % 12).sort((a, b) => a - b);
+            
+            for (const [chordType, pattern] of Object.entries(CHORD_PATTERNS)) {
+                if (arraysEqual(intervals, pattern)) {
+                    return {
+                        root: NOTE_NAMES[root],
+                        type: chordType,
+                        notes: notes
+                    };
+                }
+            }
+            
+            return null;
+        }
+
+        function arraysEqual(a, b) {
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+
+        // Visualization
+        const canvas = document.getElementById('chromaticCircle');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 180;
+
+        function drawChromaticCircle(activeNotes) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            NOTE_NAMES.forEach((note, index) => {
+                const angle = (index * 30 - 90) * Math.PI / 180;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                const isActive = activeNotes.has(note);
+                
+                // Draw segment
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, angle - 0.25, angle + 0.25);
+                ctx.lineWidth = isActive ? 60 : 40;
+                ctx.strokeStyle = isActive ? CHROMATIC_COLORS[note] : `${CHROMATIC_COLORS[note]}33`;
+                ctx.stroke();
+                
+                // Draw note label
+                const labelX = centerX + (radius + 60) * Math.cos(angle);
+                const labelY = centerY + (radius + 60) * Math.sin(angle);
+                
+                ctx.fillStyle = isActive ? '#fff' : '#888';
+                ctx.font = isActive ? 'bold 24px Arial' : '18px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(note, labelX, labelY);
+            });
+        }
+
+        function updateDetectedNotes(notes) {
+            const container = document.getElementById('detectedNotes');
+            container.innerHTML = '';
+            
+            if (notes.size === 0) {
+                container.innerHTML = '<div style="color: #888;">Play your guitar...</div>';
+                document.getElementById('chordInfo').style.display = 'none';
+                return;
+            }
+            
+            const notesArray = Array.from(notes).sort((a, b) => 
+                NOTE_NAMES.indexOf(a) - NOTE_NAMES.indexOf(b)
+            );
+            
+            notesArray.forEach(note => {
+                const badge = document.createElement('div');
+                badge.className = 'note-badge';
+                badge.textContent = note;
+                badge.style.background = CHROMATIC_COLORS[note];
+                badge.style.color = '#000';
+                container.appendChild(badge);
+            });
+            
+            // Try to identify chord
+            const chord = identifyChord(notesArray);
+            if (chord && notesArray.length >= 3) {
+                document.getElementById('chordInfo').style.display = 'block';
+                document.getElementById('chordName').textContent = 
+                    `${chord.root} ${chord.type.replace(/([a-z])([0-9])/, '$1 $2')}`;
+                document.getElementById('chordNotes').textContent = 
+                    `Notes: ${chord.notes.join(' - ')}`;
+            } else {
+                document.getElementById('chordInfo').style.display = 'none';
+            }
+        }
+
+        function createFrequencyBars() {
+            const container = document.getElementById('frequencyBars');
+            NOTE_NAMES.forEach(note => {
+                const bar = document.createElement('div');
+                bar.className = 'freq-bar';
+                bar.id = `bar-${note}`;
+                bar.style.height = '0%';
+                
+                const label = document.createElement('div');
+                label.className = 'freq-label';
+                label.textContent = note;
+                bar.appendChild(label);
+                
+                container.appendChild(bar);
+            });
+        }
+
+        function updateFrequencyBars(activeNotes) {
+            NOTE_NAMES.forEach(note => {
+                const bar = document.getElementById(`bar-${note}`);
+                if (activeNotes.has(note)) {
+                    bar.style.height = '100%';
+                    bar.style.background = `linear-gradient(to top, ${CHROMATIC_COLORS[note]}, #fff)`;
+                } else {
+                    bar.style.height = '10%';
+                    bar.style.background = 'linear-gradient(to top, #667eea, #764ba2)';
+                }
+            });
+        }
+
+        // Initialize
+        const detector = new PolyphonicDetector();
+        let isListening = false;
+
+        createFrequencyBars();
+
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            const success = await detector.start();
+            if (success) {
+                isListening = true;
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+                document.getElementById('status').textContent = '🎸 Listening... Play your guitar!';
+                document.getElementById('status').classList.add('active');
+                
+                // Animation loop
+                function animate() {
+                    if (!isListening) return;
+                    
+                    drawChromaticCircle(detector.detectedNotes);
+                    updateDetectedNotes(detector.detectedNotes);
+                    updateFrequencyBars(detector.detectedNotes);
+                    
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+        });
+
+        document.getElementById('stopBtn').addEventListener('click', () => {
+            detector.stop();
+            isListening = false;
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('status').textContent = 'Stopped. Click "Start Listening" to begin.';
+            document.getElementById('status').classList.remove('active');
+            
+            drawChromaticCircle(new Set());
+            updateDetectedNotes(new Set());
+            updateFrequencyBars(new Set());
+        });
+
+        document.getElementById('threshold').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            detector.updateThreshold(value);
+            document.getElementById('thresholdValue').textContent = value.toFixed(2);
+        });
+
+        document.getElementById('smoothing').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            detector.updateSmoothing(value);
+            document.getElementById('smoothingValue').textContent = value.toFixed(2);
+        });
+
+        // Initial draw
+        drawChromaticCircle(new Set());
+    </script>
+</body>
+</html>

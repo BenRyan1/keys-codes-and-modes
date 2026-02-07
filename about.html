@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Cookie Consent CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+
+<style>
+/* Custom styling for cookie consent banner */
+.cc-window {
+    font-family: 'Montserrat', sans-serif !important;
+    background: #0a0a15 !important;
+    border: 2px solid #008080 !important;
+    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3) !important;
+}
+.cc-btn {
+    background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important;
+    border: none !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+.cc-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0, 128, 128, 0.4) !important;
+}
+.cc-link { color: #F4D03F !important; }
+.cc-link:hover { color: #008080 !important; }
+</style>
+
+<!-- Cookie Consent Script -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  window.cookieconsent.initialise({
+    palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
+    theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
+    onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
+    onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
+  });
+});
+function loadGoogleAnalytics() {
+  if (window.gaLoaded) return; window.gaLoaded = true;
+  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
+  gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
+}
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Keys, Codes & Modes</title>
+    <meta name="description" content="Meet Benjamin Ryan - Inventor, author, and music educator with 45+ years of experience bridging technology, creativity, and education.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0a0a15;
+            --darker-bg: #050508;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2) 0%, rgba(139, 107, 163, 0.2) 100%);
+            border-bottom: 2px solid var(--primary-teal);
+            box-shadow: 0 4px 30px rgba(0, 217, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-gold) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-gold);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d9d9 0%, var(--primary-gold) 50%, #ff006e 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+        
+        .about-section {
+            background: rgba(26, 61, 95, 0.3);
+            border: 2px solid var(--primary-teal);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .about-section h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-section h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--primary-teal);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-section p {
+            color: rgba(232, 232, 232, 0.9);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .highlight-box {
+            background: rgba(0, 128, 128, 0.1);
+            border-left: 4px solid var(--primary-gold);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        
+        .highlight-box h4 {
+            color: var(--primary-gold);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .career-timeline {
+            margin: 2rem 0;
+        }
+        
+        .timeline-item {
+            border-left: 3px solid var(--primary-teal);
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary-gold);
+            border: 3px solid var(--dark-bg);
+        }
+        
+        .timeline-item h4 {
+            color: var(--primary-gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-item p {
+            color: rgba(232, 232, 232, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .achievement-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-teal);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-card:hover {
+            border-color: var(--primary-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .achievement-card h4 {
+            color: var(--primary-gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .achievement-card p {
+            color: rgba(232, 232, 232, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            border-top: 1px solid rgba(0, 128, 128, 0.3);
+            margin-top: 4rem;
+        }
+        
+        footer p {
+            color: rgba(232, 232, 232, 0.6);
+            margin: 0.5rem 0;
+        }
+        
+        footer a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: var(--primary-gold);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .about-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .about-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .achievements {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-text">
+                <h1>KEYS, CODES & MODES</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="insights.html">All Apps</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">About Benjamin Ryan</h1>
+        
+        <div class="about-section">
+            <h2>Creator, Innovator, Educator</h2>
+            <p>
+                Benjamin Ryan is a multi-dimensional innovator who transforms complex ideas into accessible reality. 
+                With 45+ years of experience bridging technology, creativity, and education, he brings clarity to 
+                complexity through innovative visual communication.
+            </p>
+            
+            <div class="highlight-box">
+                <h4>📚 Author & Music Educator</h4>
+                <p>
+                    Author and illustrator of <em>"Keys, Codes, and Modes: A Visual Approach to Understanding Music"</em>, 
+                    Ben translates intricate music theory into visual clarity. His work empowers musicians at every level 
+                    to grasp concepts that traditionally confuse—making the abstract tangible through innovative visual systems.
+                </p>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>🎸 Inventor & Patent Holder</h4>
+                <p>
+                    As the inventor of the revolutionary <strong>FreeStyle® Musical Device</strong>, Ben holds four U.S. patents 
+                    for a groundbreaking guitar technology that unlocks infinite tonal possibilities. With 45+ years of musical 
+                    experience across folk, rock, jazz, and country, he combines deep musical understanding with engineering innovation.
+                </p>
+            </div>
+        </div>
+        
+        <div class="about-section">
+            <h2>Professional Journey</h2>
+            
+            <div class="career-timeline">
+                <div class="timeline-item">
+                    <h4>1978 - Pioneer in Visual Communication</h4>
+                    <p>
+                        Began career at <strong>GE Genigraphics</strong>, developing computer graphics technology that 
+                        became the precursor to PowerPoint. This foundation in visual storytelling carries through everything 
+                        he creates today.
+                    </p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h4>1980s - Aerospace & Defense</h4>
+                    <p>
+                        <strong>Proposal Coach at Northrop Corporation</strong>, leading communication strategies for 
+                        billion-dollar defense projects. Developed skills in technical communication and strategic presentation.
+                    </p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h4>1988-Present - Real Estate Professional</h4>
+                    <p>
+                        <strong>California Real Estate Broker</strong> with 45+ years of experience. Founded Visual Media Group, 
+                        applying visual communication principles to real estate marketing and sales.
+                    </p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h4>Post-9/11 - Emergency Management</h4>
+                    <p>
+                        <strong>FEMA Emergency Management Trainer</strong> across 14 western states. Developed and delivered 
+                        critical training programs for disaster preparedness and response.
+                    </p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h4>2000s-Present - Music Innovation</h4>
+                    <p>
+                        Developed the <strong>FreeStyle® Musical Device</strong> (4 U.S. patents) and authored 
+                        <em>Keys, Codes, and Modes</em>. Created interactive music theory applications combining technology, 
+                        visual education, and accessible learning.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="about-section">
+            <h2>Key Achievements</h2>
+            
+            <div class="achievements">
+                <div class="achievement-card">
+                    <h4>🏆 4 U.S. Patents</h4>
+                    <p>FreeStyle® Musical Device - Revolutionary guitar technology enabling infinite tonal possibilities</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h4>📖 Published Author</h4>
+                    <p>"Keys, Codes, and Modes: A Visual Approach to Understanding Music" - Complete with original illustrations</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h4>💻 Technology Pioneer</h4>
+                    <p>Early computer graphics work at GE Genigraphics (precursor to PowerPoint)</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h4>🎸 45+ Years Music</h4>
+                    <p>Extensive experience across folk, rock, jazz, and country genres</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h4>🏢 Founded Companies</h4>
+                    <p>Visual Media Group and multiple entrepreneurial ventures</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h4>🎓 Educator & Trainer</h4>
+                    <p>FEMA emergency management training across 14 western states</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="about-section">
+            <h2>Current Focus</h2>
+            <p>
+                Today, Ben combines all his expertise—technology, visual communication, music theory, and education—into 
+                <strong>Keys, Codes & Modes</strong>, a comprehensive interactive music theory platform. His mission is to 
+                make music theory accessible, visual, and intuitive for musicians worldwide.
+            </p>
+            
+            <h3>The Vision</h3>
+            <p>
+                Music theory has traditionally been taught through abstract notation and complex terminology. Ben's visual 
+                approach reveals the patterns, relationships, and logic that make music theory intuitive and memorable. 
+                By seeing the connections, musicians at all levels can understand and apply music theory naturally.
+            </p>
+            
+            <h3>Philosophy</h3>
+            <p>
+                "Complexity becomes clear when you can see the patterns. Whether it's the chromatic circle, chord relationships, 
+                or scale structures—when you visualize music theory, the 'aha!' moments come naturally. That's what Keys, Codes 
+                & Modes is all about: making the invisible visible, the complex simple, and music theory accessible to everyone."
+            </p>
+        </div>
+    </div>
+    
+    <!-- Pricing CTA Section -->
+    <div style="max-width: 800px; margin: 4rem auto; padding: 3rem 2rem; text-align: center; background: linear-gradient(135deg, rgba(0, 128, 128, 0.1) 0%, rgba(139, 107, 163, 0.1) 100%); border-radius: 15px; border: 2px solid rgba(0, 128, 128, 0.3);">
+        <h2 style="font-family: 'Cinzel', serif; font-size: 2rem; color: #F4D03F; margin-bottom: 1rem;">Ready to Transform Your Musical Journey?</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.6;">
+            Join thousands of musicians mastering music theory through visual, interactive learning. 
+            Choose from free access, premium tools, or lifetime membership.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="pricing.html" style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #F4D03F, #e6c62f); color: #1a1a2e; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4); transition: all 0.3s;">
+                View Pricing Plans →
+            </a>
+            <a href="insights.html" style="display: inline-block; padding: 1rem 2rem; background: rgba(0, 128, 128, 0.2); color: #008080; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; border: 2px solid #008080; transition: all 0.3s;">
+                Explore All Apps
+            </a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Benjamin Ryan | Inventor, Author, Educator</p>
+        <p>Santa Barbara, California</p>
+        <p style="margin-top: 15px;">
+            <a href="index.html">Home</a>
+            <a href="insights.html">All Apps</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </p>
+        <p style="margin-top: 15px;">
+            <a href="https://www.facebook.com/AxexelFB" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </p>
+        <p style="margin-top: 10px;">© 2026 Keys, Codes & Modes | FreeStyle® is a registered trademark</p>
+    </footer>
+</body>
+</html>

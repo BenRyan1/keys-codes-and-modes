@@ -1,0 +1,28 @@
+# Keys, Codes & Modes - robots.txt
+# Updated: February 5, 2026
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /account/
+
+# Disallow specific file types
+Disallow: /*.json$
+Disallow: /*.xml$ 
+Disallow: /*?access_code=*
+
+# Allow specific apps
+Allow: /apps/
+
+# Sitemap location
+Sitemap: https://keyscodesandmodes.com/sitemap.xml
+
+# Crawl delay (optional - helps prevent server overload)
+Crawl-delay: 1

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+    <title>My Apps | Keys, Codes & Modes</title>
+    <meta name="description" content="Access your personalized music theory learning apps.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 20s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .welcome-message {
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+        
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-teal), var(--primary-gold));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 15px 40px rgba(244, 208, 63, 0.3);
+        }
+        
+        .app-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .app-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .app-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .app-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .app-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #aaa;
+        }
+        
+        .app-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-teal);
+            font-weight: bold;
+        }
+        
+        .launch-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
+            color: var(--dark-bg);
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(244, 208, 63, 0.3);
+        }
+        
+        .launch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.5);
+        }
+        
+        .upgrade-banner {
+            margin-top: 3rem;
+            padding: 2.5rem;
+            background: rgba(139, 107, 163, 0.1);
+            border: 2px solid var(--primary-purple);
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .upgrade-banner h2 {
+            font-family: var(--font-display);
+            color: var(--primary-purple);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .upgrade-banner p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .upgrade-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .upgrade-btn:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .error-message h2 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+        
+        .error-message a {
+            color: var(--primary-gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>My Music Theory Apps</h1>
+            <p class="welcome-message" id="welcomeMessage">Welcome back!</p>
+            <p>Here are your personalized learning tools. Click any app to launch it.</p>
+        </div>
+        
+        <div id="appsContainer">
+            <!-- Apps will be loaded here dynamically -->
+        </div>
+        
+        <div class="upgrade-banner">
+            <h2>🎵 Want Access to ALL 20+ Apps?</h2>
+            <p>Upgrade to Premium or Founder tier and unlock our complete suite of professional music theory tools!</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                <a href="../insight.html" class="upgrade-btn" style="background: transparent; border: 2px solid var(--primary-teal); color: var(--primary-teal);">View All Apps →</a>
+                <a href="pricing.html" class="upgrade-btn">Upgrade Now →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Complete app database with all possible apps
+        const ALL_APPS = [
+            {
+                id: 'music-theory-pro',
+                file: 'music-theory-pro.html',
+                icon: '🎼',
+                title: 'Music Theory Explorer Pro',
+                description: 'Our flagship comprehensive music theory visualization tool with real-time audio.',
+                features: ['Visual chromatic circles', 'Interactive piano & guitar', 'Real-time audio', 'Multiple views']
+            },
+            {
+                id: 'chromatic-roulette',
+                file: 'chromatic-roulette.html',
+                icon: '🎨',
+                title: 'Chromatic Roulette',
+                description: 'Spin the wheel of musical possibilities through an innovative circular interface.',
+                features: ['Interactive wheel', 'Scale exploration', 'Chord discovery', 'Visual harmony']
+            },
+            {
+                id: 'circle-of-fifths',
+                file: 'circle-of-fifths.html',
+                icon: '⭕',
+                title: 'Circle of Fifths',
+                description: 'Master key relationships with the classic Circle of Fifths.',
+                features: ['Interactive circle', 'Key relationships', 'Audio feedback', 'Theory insights']
+            },
+            {
+                id: 'circle-of-modes',
+                file: 'circle-of-modes.html',
+                icon: '🎭',
+                title: 'Circle of Modes',
+                description: 'Explore the seven modes through beautiful circular visualization.',
+                features: ['Mode visualization', 'Scale comparison', 'Audio playback', 'Explanations']
+            },
+            {
+                id: 'guitar-fretboard',
+                file: 'guitar-fretboard-complete.html',
+                icon: '🎸',
+                title: 'Guitar Fretboard Master',
+                description: 'Master scales, chords, and patterns across the entire neck.',
+                features: ['Full fretboard map', 'Scale patterns', 'Chord shapes', 'CAGED system']
+            },
+            {
+                id: 'caged-stencil',
+                file: 'caged-stencil-fretboard.html',
+                icon: '🎯',
+                title: 'CAGED Stencil System',
+                description: 'Master the CAGED system with interactive stencil overlays.',
+                features: ['CAGED patterns', 'Movable shapes', 'Visual learning', 'Position guides']
+            },
+            {
+                id: 'chromatic-circle',
+                file: 'chromatic-circle.html',
+                icon: '⚫',
+                title: 'Chromatic Circle',
+                description: 'Pure chromatic circle for understanding note relationships.',
+                features: ['12-tone circle', 'Interval mapping', 'Relationships', 'Color coding']
+            },
+            {
+                id: 'chord-builder',
+                file: 'chord-builder.html',
+                icon: '🔨',
+                title: 'Chord Builder',
+                description: 'Build and analyze any chord on piano, guitar, and notation.',
+                features: ['Custom chords', 'Multi-instrument', 'Chord analysis', 'Audio playback']
+            }
+        ];
+        
+        // Load and display the user's unique 3 apps
+        function loadMyApps() {
+            const container = document.getElementById('appsContainer');
+            const selectedAppIds = JSON.parse(localStorage.getItem('freeApps') || '[]');
+            const userName = localStorage.getItem('userName') || 'Friend';
+            
+            // Update welcome message
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${userName}! 👋`;
+            
+            // Check if user has selected apps
+            if (!selectedAppIds || selectedAppIds.length === 0) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h2>No Apps Selected</h2>
+                        <p>You haven't selected your free apps yet.</p>
+                        <p><a href="welcome-free-picker.html">Choose your 3 free apps →</a></p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Filter to get ONLY the user's selected apps
+            const userApps = ALL_APPS.filter(app => selectedAppIds.includes(app.id));
+            
+            if (userApps.length === 0) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h2>Apps Not Found</h2>
+                        <p>We couldn't find your selected apps.</p>
+                        <p><a href="welcome-free-picker.html">Choose your 3 apps →</a></p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create the grid with ONLY the user's 3 apps
+            const appsGrid = document.createElement('div');
+            appsGrid.className = 'apps-grid';
+            
+            userApps.forEach(app => {
+                const appCard = document.createElement('a');
+                appCard.className = 'app-card';
+                appCard.href = `../apps/${app.file}`;
+                
+                appCard.innerHTML = `
+                    <span class="app-icon">${app.icon}</span>
+                    <h3 class="app-title">${app.title}</h3>
+                    <p class="app-description">${app.description}</p>
+                    <ul class="app-features">
+                        ${app.features.map(feature => `<li>${feature}</li>`).join('')}
+                    </ul>
+                    <span class="launch-btn">Launch App →</span>
+                `;
+                
+                appsGrid.appendChild(appCard);
+            });
+            
+            container.appendChild(appsGrid);
+        }
+        
+        // Load apps when page loads
+        document.addEventListener('DOMContentLoaded', loadMyApps);
+    </script>
+</body>
+</html>

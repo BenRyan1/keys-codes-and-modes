@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chord Builder | Smooth Ascending Notes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+        }
+        
+        /* HEADER BRANDING */
+        .site-header {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.95), rgba(139, 107, 163, 0.85));
+            border-bottom: 4px solid #F4D03F;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .header-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #F4D03F;
+            box-shadow: 0 0 30px rgba(244, 208, 63, 0.6);
+            transition: all 0.3s ease;
+            animation: logoGlow 4s ease-in-out infinite;
+        }
+        
+        .header-logo:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 0 40px rgba(0, 128, 128, 0.8);
+        }
+        
+        @keyframes logoGlow {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(244, 208, 63, 0.6);
+            }
+            50% { 
+                box-shadow: 0 0 50px rgba(0, 128, 128, 0.9), 0 0 60px rgba(139, 107, 163, 0.5);
+            }
+        }
+        
+        .header-branding {
+            text-align: center;
+        }
+        
+        .header-title {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFF00, #FFC400, #FF8000, #FF4000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+            line-height: 1.2;
+        }
+        
+        .header-tagline {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        
+        .header-motto {
+            font-size: 1.1rem;
+            color: #F4D03F;
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        
+        /* Responsive header */
+        @media (max-width: 768px) {
+            .header-logo {
+                width: 80px;
+                height: 80px;
+            }
+            .header-title {
+                font-size: 2rem;
+            }
+            .header-tagline {
+                font-size: 1rem;
+            }
+            .header-motto {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Main content area */
+        .main-content {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00d9ff, #f4d03f, #ff006e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 3rem;
+        }
+        
+        .main-input-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 3px solid #00d9ff;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .input-label {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f4d03f;
+            margin-bottom: 1rem;
+        }
+        
+        .note-input {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            border: 3px solid #00d9ff;
+            border-radius: 15px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.3rem;
+        }
+        
+        .note-input:focus {
+            outline: none;
+            border-color: #f4d03f;
+            box-shadow: 0 0 30px rgba(244, 208, 63, 0.5);
+        }
+        
+        .hint {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .chromatic-circle-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 2rem auto;
+        }
+        
+        .chromatic-circle {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .note-segment {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 4px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .note-segment:hover {
+            transform: scale(1.2);
+            box-shadow: 0 8px 30px rgba(255,255,255,0.4);
+            z-index: 10;
+        }
+        
+        .note-segment.active {
+            transform: scale(1.3);
+            border: 5px solid #fff;
+            box-shadow: 0 0 40px rgba(255,255,255,0.8);
+            z-index: 20;
+            animation: pulse 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1.3); }
+            50% { transform: scale(1.4); }
+        }
+        
+        .center-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(0,0,0,0.8);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 3px solid #f4d03f;
+            min-width: 200px;
+        }
+        
+        .chord-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #f4d03f;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chord-notes {
+            font-size: 1.2rem;
+            color: #00d9ff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chord-type {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .play-button {
+            margin-top: 1rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d9ff, #f4d03f);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            color: #000;
+            transition: all 0.3s;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+        }
+        
+        .instruction-box {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-width: 800px;
+        }
+        
+        .instruction-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f4d03f;
+            margin-bottom: 1rem;
+        }
+        
+        .instruction-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .quick-examples {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        /* BRANDING SECTION */
+        .branding-section {
+            text-align: center;
+            padding: 2.5rem 0;
+            margin: 2rem auto;
+            max-width: 800px;
+            background: linear-gradient(135deg, rgba(0,128,128,0.1), rgba(244,208,63,0.1));
+            border-radius: 20px;
+            border: 2px solid rgba(244,208,63,0.3);
+        }
+        
+        .hero-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-logo {
+            width: 160px;
+            height: 160px;
+            animation: glow 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(244, 208, 63, 0.6));
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-logo:hover {
+            transform: scale(1.05) rotate(5deg);
+            filter: drop-shadow(0 0 30px rgba(0, 128, 128, 0.8));
+        }
+        
+        @keyframes glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(244, 208, 63, 0.6));
+            }
+            50% { 
+                filter: drop-shadow(0 0 35px rgba(0, 128, 128, 0.8)) drop-shadow(0 0 45px rgba(139, 107, 163, 0.5));
+            }
+        }
+        
+        .brand-text {
+            text-align: center;
+        }
+        
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #008080, #F4D03F, #8B6BA3, #CF7A5A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(244,208,63,0.3);
+        }
+        
+        .brand-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        
+        .brand-tagline {
+            font-size: 1rem;
+            color: rgba(244,208,63,0.8);
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        
+        /* CAGED SYSTEM BUTTONS */
+        .caged-section {
+            background: rgba(244, 208, 63, 0.15);
+            border: 3px solid #f4d03f;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+        
+        .caged-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #f4d03f;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .caged-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .caged-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .caged-btn {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.3), rgba(244, 208, 63, 0.3));
+            border: 4px solid #00d9ff;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+        
+        .caged-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+            border-color: #f4d03f;
+            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+            background: linear-gradient(135deg, rgba(244, 208, 63, 0.4), rgba(0, 217, 255, 0.4));
+        }
+        
+        .caged-btn:active {
+            transform: scale(1.05) translateY(-2px);
+        }
+        
+        .caged-letter {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 217, 255, 0.8);
+        }
+        
+        .caged-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.3rem;
+            font-weight: 600;
+        }
+        
+        .caged-btn::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #f4d03f;
+            opacity: 0.5;
+        }
+        
+        .caged-btn:last-child::after {
+            content: '→ C';
+            right: -40px;
+            font-size: 1rem;
+            opacity: 0.3;
+        }
+        
+        /* EXTENDED CHORDS INTERFACE */
+        .extended-section {
+            background: linear-gradient(135deg, rgba(139, 107, 163, 0.2), rgba(207, 122, 90, 0.2));
+            border: 3px solid #8B6BA3;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .extended-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #8B6BA3;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .extended-subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .chord-builder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .base-chord-selector {
+            background: rgba(0, 217, 255, 0.2);
+            border: 3px solid #00d9ff;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .base-chord-selector:hover {
+            background: rgba(0, 217, 255, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .extension-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .extension-btn {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(139, 107, 163, 0.3), rgba(207, 122, 90, 0.3));
+            border: 3px solid #8B6BA3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(139, 107, 163, 0.8);
+        }
+        
+        .extension-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+            border-color: #CF7A5A;
+            box-shadow: 0 8px 30px rgba(207, 122, 90, 0.6);
+            background: linear-gradient(135deg, rgba(207, 122, 90, 0.4), rgba(139, 107, 163, 0.4));
+        }
+        
+        .extension-btn.active {
+            background: linear-gradient(135deg, #CF7A5A, #8B6BA3);
+            border-color: #F4D03F;
+            transform: scale(1.2);
+            box-shadow: 0 0 30px rgba(244, 208, 63, 0.8);
+        }
+        
+        .extension-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            white-space: nowrap;
+        }
+        
+        .chord-formula-display {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(139, 107, 163, 0.5);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .formula-title {
+            font-size: 1.2rem;
+            color: #8B6BA3;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .formula-content {
+            font-size: 1.5rem;
+            color: #00d9ff;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .formula-notes {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .formula-explanation {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+        
+        .quick-extensions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .quick-ext-btn {
+            background: rgba(139, 107, 163, 0.2);
+            border: 2px solid #8B6BA3;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .quick-ext-btn:hover {
+            background: rgba(139, 107, 163, 0.4);
+            border-color: #CF7A5A;
+            transform: translateY(-3px);
+        }
+        
+        .quick-ext-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+        
+        .quick-ext-notes {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .example-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 217, 255, 0.2);
+            border: 2px solid #00d9ff;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .example-btn:hover {
+            background: rgba(0, 217, 255, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .chromatic-circle-container {
+                width: 350px;
+                height: 350px;
+            }
+            .note-segment {
+                width: 70px;
+                height: 70px;
+                font-size: 1.3rem;
+            }
+            .title {
+                font-size: 1.8rem;
+            }
+            .caged-btn {
+                width: 80px;
+                height: 80px;
+            }
+            .caged-letter {
+                font-size: 2.2rem;
+            }
+            .caged-btn::after {
+                display: none;
+            }
+            .extension-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            .base-chord-selector {
+                font-size: 1.2rem;
+                min-width: 100px;
+                padding: 0.8rem 1rem;
+            }
+            .quick-extensions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">🎵 Simple Chord Builder</h1>
+    <p class="subtitle">Type any 3+ notes and hear them play smoothly in ascending order!</p>
+    
+    <div class="main-input-section">
+        <div class="input-label">Type Your Notes Here:</div>
+        <input 
+            type="text" 
+            id="noteInput" 
+            class="note-input" 
+            placeholder="Type: GBD or G B D"
+            autocomplete="off"
+        >
+        <div class="hint">💡 Type notes any way: "GBD" or "G B D" or "CEG" or "C E G" - all work!</div>
+    </div>
+    
+    <!-- KEYS CODES & MODES BRANDING -->
+    <div class="branding-section">
+        <div class="hero-logo-container">
+            <img src="data:image/webp;base64,UklGRlYqAQBXRUJQVlA4WAoAAAAwAAAAzwcAzwcASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZBTFBIuCgAAAEkxW3bRtL+c+dG+46ICTALqICtgDGNUjcP1knLbcewPxh0bKGAs4wrXud9447dV/xyKEGKfpWF5rFR23ZtaaMbAQGBIO5KjBJF3BGjhBgE/QARCaFGHWupdYw11ibWaIla41hrMzqpY6w1qWbnuFJqHWXhNrhDREQREXGvxBiCiEiImlCjROFj990/JLMN3/u+z3NfHxExAdSv/zMkVzXBbC5i27advLp/gG3bWJwTzdWcYMJFbNu2bdu2MfVqcacrnTrdVfOJiAkQ+B//43/8j//xP/7H/+3+b/d/Tlbp5OwKVq+PQzk7Rjp7RChnP7BUNQ5n97h8eh4JZ7eBvSkYyfI86R5nR7Kc24KUlJr5IOmG01MzXwyG3hqc+WXp1u98/P0/BT7Pbf7+vfJZ8tPN3/8MzOmR0foJNrrHM1rvgmsydrd6iI32wd2tbkEyf9nfajMb+6b9ra7BLm/ktHqfzcRvc1pdgFam5rd6m83LW/mtpgCUuKJHK9ksvVH06EhMEnyu1XI2Y6+da7UnDulYUlJS8gWbv6UlJSUlbuijsLS0tPQLNpNLHz0GOXZUPNrM5nRTxaNbccb71dXV1Q1sfturq6ur30EXy2pqamrsbKbba2pqahZjipm1tbW1DWzO22tra2tfQhJJdrvd3sRmf5PdbrfH44cwx6NsHToeDYUMnp6endna7OTp6YkSfHx9fX3tbIV+5+vr6+sDDvwDAwOvsbX6WWBgoB8mCAgKCgoqYms2PygoKCgACnQODg7exVZvRnBwcAAE6BwaGrqRreIPQkNDA0S/gLCwsNVsNf8xLCzsMZHPLzw8fAlb1b8NDw/3FfW8IyMj57DVPSsyMtJLxPOw2Wz/zFb5z2w2WwfZbkxCwgS22pMTEkZLdWOSk1vYmm9ITo4X5+InTpx4j638mokTJ8aJcTEpKSk3WAW8lpKSMkp+GzVt2iVWCc9PmxYtuEXOnDnzFKuHJ2bOnPmsxBYxe/ZhVhezZ88eJqqFpaam7mfVcU9qauogGa3/okXbWJVMX7QoxHTWe+nSLaxW/j05uayxrOvy5cvTWMUc1KVLl0LmsU4rV37EKueAv/9OMIkFunfvL72f69askcK69+krvaLr1r0tfr21IT39kfSS2jds2PCvctcf0tLusxf127S030lci7dsqWF19estWxbKWqnbt99i1bV6+/bXpKxXMjOrWI2tzMx8Wb6alpV1g1Xa61lZUySrSbm511m9vZab+6JMlVhQUM6qbllBQbw0FV1cfI3V3rLi4ucEqWculLMKfO3CEBmq35UrFawKX79yJVh66l5WVslq8Y2ysgC5yaOy8ktWkasqK2Smylu3WV2+datMXLp2lxVnx93PJKWLDx44WH12PHhwWkYqaGx0sCrtaGw8Ihu5ubkdZvX6gJubm0zk4eW1g1XtrV5eHuKQl//HrHZ/4O8lCfl07bqe1e+1Xbt6C0G+PVeyKr68Zyf5x7dPnzdZJV/Sp08n0cd3wAJWz+cN8JV6Og0ZMpfV9FeHDPEReHwiXmaV/aUIb1mnY1TUS6y6T4mK8hRzPGInsxo/IbaDiJOY+E+szo9LHCvevDCOFfuWcc+LNj+e1MDq/cNJL0g1yVOm3Gc1/x9TpiQJND+e/hWr/DenvyDLJM2aVcGq/7VZsxLFmKQ5V1gPvDxnrAjz/PyLrA+emz9WfBm7+CzrhcWL4yWXuGXLilg/PLFsmU1osa3IZ10xb0W0wBK16ijrjLmrhgsrz67NZd3x0NpwOeWp997LYR0y+733Boko/Tdmsz55YGOIePLkpoOsVx7Y1Es0eTw9m/XLrPTuYkmXnYdYzzy4018i8dy7N4f1zey9e92kkewc1j0PHRBFsvJYA3Xk7RVD9hU2sx7aVLhbBPnkTCProw1ntosf2y81sJ5af2mr6LH1aj3rp/VX/yZ2pJXXs55aV/4fIseGqnrWV+uq1osb6+7YWW+tv7NG1Fh9r4H114Z7b4kZK+qaWI9tqvu9iLGk2cH6bEvzQuHCzf111m9/7e4mVrj7vMp67ss+7iKFR8AM1nenBniIE549fs967+QenqKEZ69JrP++2MtTjPAMGcd68PMhHuKEx6DnWR+OH+QuPnQYGs96sW2om+wwPIb146jhgkPUSNaSHSNHSA0xjawrP7SJDKOT6lhfvp8UKy7Ej/8H6813xo8WFRImV7P+XDk5XkxImHqd9eiyqfEiQsKMz1mf/nRGvHyQeJn16vNjhIPEeRdZtz43b4xgkLDwLOvYpxaOFgpGLyliXfvEkliBIPbNAta5j705ShqIPca695FRosDI1fmsf+etjhQDnns3j/Xww+9GiADPfHiE9fHDHz6t/w3LZb085ynNb/DmPNbNczf31/hCMvJYR8/NCNb0nth9lHX1I7t/pOMFHWOdPa+bdtc5p4D19uM5flqdV34R6++F+R30uQ7FrMef0ubOnGdd/txJLa6oxMH6fEtJvv52soX1+uZ8zS2/opl1+6aKXI0tt7qZdfym6oO6Wm4z6/pNB7W0A7XNrO83136ine2yt7De32LP0Mt2sgSYro25e25mKfBjT3cdrOMGlgTXd9S+fAI/YFnw3UBvvctvLcuDb/tqXP7Ba1gi/PdgP03rsdA/slT4Zqi/jhWwjCXDf3lMuwoI/z3LhovDH9OrOr/B8uGCAI0qwPYGS4jzbf66VMB8lhLn+WtR/skLWE6cl+zrf/L7DcuKc573OfmkpLK0+M3rQT+T11yWGL/M61tynzmPZcavP/YrzWW58Utf0txUlhx/+Np/9Hozy44PvvMZpS5tYOnxbvK3fqIF37EEef0H39D8lfdZhrz693f+oAU1LEde+MEH9Pq6r1mSPN/nW7/Pz7dYmjz9va8nNe0raZ6sSntN30mtYpmy8jVN57XtVSxVVm5/VceZU8mSZcUr2s2vsm6ybHkja4ZeM6uS5cuKX+g0v7zJEmbldG1mWvGXLGNWFf9Mj5lazXLml5M1mElXbrGk+dWVF3WXCXdY2rydrLeMq2F585vnNZYxt75lifPurRhdJfY7ljpro7SU4Q/qWe6sfzBUPxnWxLJn02DNxO0plj/7u2kkbqEsgwZrI26hLIX2dtNDuvZjObR3Vx0kmGXRnvpHHxZGHU9qHqEDHNIINwzop3MMfsAS6bcD9Y2n77FM+vUQTSM86huWSr+KGqpjPHuTJdPrEfrFiAqWTcsiNYvocddYOv183AidYtQVllAvRusTMZdZRj0/SpOImX6BpdSz00fpEHGnWVI9GaM/jD7FsmphrOYQN7+IpdUT8306Q1wBS6zHYvSF0cdZZj0aoyuMPs5S69EYLcG26jjLrUdXResHtmMsux6J0g1G5rP0mjdCL4g+zvLrsUiNYPimApZg8zeF6wIRBSzF5g/VA8ILWY4tGKIDPH2KJdmTg5S//tmnWZY9ld1X7Qs5w/Ls6WCV78mLLNGe76nuPVHCMu3lHopel0tXWar97JKfiudfxpJtqbd6513Bsu11d9XO/UuWbqtUuzss336l1N2+xxLuvZvq3G0Wch2VqtxXLOfeUOLcq1jSLXdX3rx8rrOsW+rjpbb5fcry7nk/lS3wIku8pzupa93Pssxb2E1Ve7yIpd7jQWparwKWe/OeUNCChx5jyffw0N6qWd9sln73P6mW9cti+XdPX5Ws/36WgD8JVscG7mEZeNcAVWxwJkvBOwYqYYMm72Y5ePvkAerX4G0sC28dqHoN3sbS8NaBatfgDJaHtwxUucIyWCLeOlDdGpzBMvHWgarW4G0sFacPULMGbWO5OL2/ijVwB0vGGf2Uq76rd7JsvG11sFr15HaWjzN6qVS9d7GEvKOnOvVEJsvIu36kSgXtZSk5s5sa1f0Ay8n7AlWoLtksKWf5q0/+uSwr5/ioTj5HWVrO81SbPE+wvFzgpjIVFbPEXFSgLhWz0Ow4oSqddkhN3FKoJp1pYbm5uVBFOt3CknNzoXp0uoVl5+ZC1ehMC0vPzYVq0ekWlp9bClWiYgdL0I4T6tAplqKPK0IeJ1iOzvNQgbyPsiR9yFv98TvMsnSWr+pTKJul6b0Bak/R2SxPf9JV5SkxQ0rUO7urO6WnSjP1tiBVp+xkaapO76nmlJ8gzdVbeqk4FcdJk/XmYPWm8hhptv57H9Wm6mhpur7UV62pNkqar/8WotJUGylN2Gkh6kz1EdKM/dcQVab6cGnK/muIGlN9uDRn/zVEhak2Qpq000LUl2ojpVn7b31Vl6qjpGl7Ux+1pfJoad7+e7DKUnGMNHFv7qWulB8nzdxbeqoqZSdIU3d6kJpSerI0d2/rrqKUmCpN3ju7qidFZ0iz9ycBqkmh2dL0vddXLfHLZvk7y1sl8T7MEvghD3XE4yjL4HnqyAmWwo+rIqdYDj+hhhSzIO4oVEFOOyQxbilUP860sCzeXKh6nG5haby5UO043cLyeHOhynGmhSXy5kJ143QLy+QtJ1SNYgdL5Y4CNaOIJfN8FcOzWDQr8FQvfE6wbJ7no1r4H2XpPMdfreiSy/J5VqBK0T2bJfR93dSJoAMso2f+SJV4Yi9L6bt6qhG9M1lO39FLhXhyF0vqGcHqQ9/tLKun91EeVrO0/pbqMHCnuJbRX20YtIPl9fQBKsPgbSyxpw9UFwZvY5l960BVISyDpfatA9WDwRkst28ZqCIMzmDJfetA9WDwNpbdtw5QDQZtY+k9vb9iMJnl9/FqweDdAtyOASrBwEyW4HeFqgP997AM/0lfVaDffpbi9zypBvTNYjl+f28VIDibJfmsngrAUJblB1l/vY4Jc3lBVt/jBSzNH+9m7XUvYnm+sLOVF3iWJfrTftad30WW6c97WXVen7JUX9LBovNhud7dmnO/LtiVW3NVLNnfsOK+Ytm+0nq7zcK946bVdpvFe0elxXZPvuM7lpr7HZbwq9ytM+8vWca/7m2V+VewlF/qZ411KWM5/0qgJXaJJf0zVtgTV0W9yz2trydLWNY/H2x1hVxkaf90X2ur/xmW94tCLa1slvj3WllPnxb5Tg6xrsJPscxfMNSqiihkqT8/3JoaXsBy/9EIS2oTS/4brajoAtHv2AjraeRxlv3zoqwmWz5L/0eirSXbMZb/j4y0lFYxAlxhJY0+DgGOxlhHo48zBjwaYxXFHWcUeMxmDcUVMA48NsoSms9IcI4VNLoIChTGWD9xpxgLnhxl9cScZjR4Ktrimc54cIq1E3MBEJyPtnJGXWZEeHGEdRN9hTFhyXDLZhyjwkSrZsQ1WFAWYc08W8G48PpQKyb8JiPDyjALJoqxYYT18vT34ODrgVbL4HuMDr/tZ62EPmB8+CDYUhnACLGPldLHAREcPa2TYEaJQVZJV8aJ/taIWz+g0NsScQtlpBhshYQyVnzS+nBjtGh9PAUXBlsdwxguNg21NoY34QWui7A0HjBivGtlxNZDhtoY62LMd4wZ7462LG4xaqy0KsZ9Cxu+SbYmJtQwbjz9ohUx6Q4jx+qJFsQVxo4XrIept8DDlz+zGqZVM3q8+XOLoZjxY4G18MuvAUTlL6yEWTcZQVbMsA5+VckY8vrLlkEWo8iKVy2B7Ywkt1gBqVVQovI18y+1irFk5RzTL43R5Aaz7+ev4MSXc829325J+2T1XFNvHdso15h5C76GFHfmmXfzaxhTfjPXtFvJqHK5WbfgPqy4N9ecS/2OcWXtHFNuKSPLRWbc6w3QomGO+Ta3mbFl8yumWyqjy9kmm/tcxpevuJtqMxlhTjPTvOZBjNkdzTOfuYwxX/U2zVIYZU40y/xSYcYcX3PM/zeMM3/tZ4olM9JMMMMCFkCNef7mV8B8xppz/U0vG6PNSLOr8xtwY8Fj5lbAG4w3F/ibWuGMOMPMrIDfQ45/8TevHlvGmPN3fqZVKKPOYLPK/4+wY3knkyqYcWeQOeW3Bni87W1G+axl5PmnjiZUIGNPX/Op4wfgY7272eS+gdHnB2aTJ+NPs2kzANlkMjEAdZhLOxEIZ5hJuxiCtmwzkewYhGvNowMtIKQ50zSqZRRaYxblNsOQpoPmUG4z49DGg6ZQNSPRCjMovxmKNOWaQBWMRUvNn5PNYKQ53+wpamE02pxv8pQwHj1n7pxxABJHoZnT4Twj0lMdzBuvYsakBV6mTT6j0hyzpnMRLDnW2aTJYVy635wJKgAmeT8yY544xsj0cE8TZjdj0wzzJeQoOMnpa7pkMDrdbLYMzoMnOYNMls2MTz82V4blAZSF9XXKM7mMUOc31CgfMkaN6JPnjoCUBU21ybuMUsO6ZGQeTFnUSpOsZpwa0iOx+UBlSVsdEnuMkeqStibIm4xVE82P0QVgZUWM6bGE0epCsyOhCK4UxpkcCxmvzjM3Es8CluLRpsY8RqyvmBmJFyHL+XjzIuEyY9aL5kTCDeBSHmtKTGbkOt6MiK+GLtU2E2I8Y9ck82H0P8BLzUjTIYnRa7zZEFMHXx6OMBeiGhm/NZgGQxnFDjILPOJhjM3dJBjEODbEHPB8HsjEe5gCIYxke5kBnuOgTJKHCdCLsWwP4+c5CcyM9zB8PRjNBhg9j5/DmcnuBi+A8ayPsXOfAWimuRk6H0a07kbO7VVIM8vIuTOmNXKvg5p5Bo5BbbNxW4JqWt4wbM2ohuuM2goHrGl606DVMa69Z8xWNwGbhpWG7B4j26+N2LoGaFO/1oDdYWxbZbw22MFN3fuGq4rRbbnRWraHNw83GqxyRrvXjNMnDSDHvs0wnWGUW2iU9jXCnMZdBqmQce5RY5TVDHSaMw1RHiPdbCOUzVh3r/HxzAE7+z0Nz15GuztcreiSA3cOBBqcnYx3043N44cAz74gQ5POiHeTkXkyG/LsCzYwmxjzbjQu/Q+Cnn2hhmUjo973jMpT2bBn32CD8h7j3rWuUTybA3wOPmNI1jLyXWVEonKhT/ZzBmQVY98VxsN2FPwcjjYcKxj9LjMacfnwJ89mMJYx/l3s2sTYIgBUGG8oFjMCnm8knj8LgU6PMRDzGQPPMQ5JF0HQ+QTDMIdR8CyjkHQFBn2aYBBmMQ6e7prEjyuA0PVEQzCdkfAUI5D8FRSqHmsApjAWnuR6xI/vg6F7Y52+SYyGxzl7LzTAoYYxTt44xsOJzl0iI+JYVyI8/gkSJbs7cbGMiaOct46TQdEET6ctilFxhKsQPi/BoineTloE4+Ihzlmnl4HRSz5O2RBGxgNcgfCdC41md3LCBjA27uN8+S4AR7/xcbr6MDouE++D75vwKCWfy+rJ+Liou/JZCZC6BV1VV0bI+eN58FoPkSJ5XJQ/Y+QE9+TxMUjKCLgmL0bJcTu47YBJE1wT4+R4HQ4DpXkuiYHyQ3dUgJSiy1xRI1KSt+NxuOiASk82OUEPGCtfdb3hmgMsRT9zeu4yWr7l7FQyXHaUOTm38BJXOjcetwHTTQ+nppIRc5krDd2/hEzXuzkxZYyZr7jO0K8SNF0LcVquMGq+4CrDMxWw6YthTsoFxs3Fzkl0OXAqjXJKihk5F7jCkHgNOn2e4IQUMHbOdX1hUjl4Kp3gdOQyes5ydWHadfhU9nMnI4vxc6ZrC6/cAFDlM52KTEbQ211ZSK2CUJWvORHbGUNvcV1h8S0QVb3AadjCKDrNVYU/1MCob5Y4CWmMoze4pvDWfSB1/w9OwQZG0uva/ff/snsjq1TjSiegj7RLr2n7An0tU392a/O6S9v0SlcTOvW3Tr3j08atlPbp5a4ldP3IQrW+S5u2nG3US9v997/aOw1SbezVhi1lTL3IdYT+W0DVpn5t1iJG1amuIoRtg1Xpg9qoVMbVs9v99z8csR9YZQ5rk2Yzsp7pCkLkYWiVHdEGzWRsPa3df/+Do06Bq5Mj2pxpjK5TXD2IuQSvLka3MSmMrye2+++/GX8DYFXY2pSJjLCTXD24MQy6BZJCvydz61Jcja6vscJNaqKLPL8gKqAIPWBZQQCqgCD1gWUEAqoA" class="hero-logo" alt="Keys Codes & Modes">
+            <div class="brand-text">
+                <div class="brand-title">KEYS, CODES & MODES</div>
+                <div class="brand-subtitle">Visual Music Theory</div>
+                <div class="brand-tagline">Learn • Explore • Master</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CAGED SYSTEM BUTTONS -->
+    <div class="caged-section">
+        <div class="caged-title">🎸 The CAGED System</div>
+        <div class="caged-subtitle">5 Essential Chord Shapes - Click to Explore!</div>
+        <div class="caged-buttons">
+            <button class="caged-btn" onclick="tryCAGED('C')">
+                <div class="caged-letter">C</div>
+                <div class="caged-label">Major</div>
+            </button>
+            <button class="caged-btn" onclick="tryCAGED('A')">
+                <div class="caged-letter">A</div>
+                <div class="caged-label">Major</div>
+            </button>
+            <button class="caged-btn" onclick="tryCAGED('G')">
+                <div class="caged-letter">G</div>
+                <div class="caged-label">Major</div>
+            </button>
+            <button class="caged-btn" onclick="tryCAGED('E')">
+                <div class="caged-letter">E</div>
+                <div class="caged-label">Major</div>
+            </button>
+            <button class="caged-btn" onclick="tryCAGED('D')">
+                <div class="caged-letter">D</div>
+                <div class="caged-label">Major</div>
+            </button>
+        </div>
+        <div style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
+            Each shape connects to the next: C→A→G→E→D→C (cycle continues!)
+        </div>
+        <div id="cagedInfo" style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 10px; min-height: 60px; display: none;">
+            <div style="color: #f4d03f; font-weight: 700; margin-bottom: 0.5rem;">Chord Relationships:</div>
+            <div id="cagedInfoContent" style="font-size: 0.9rem; line-height: 1.6;"></div>
+        </div>
+    </div>
+    
+    <!-- EXTENDED CHORDS INTERFACE -->
+    <div class="extended-section">
+        <div class="extended-title">🎹 Extended Chords</div>
+        <div class="extended-subtitle">Add 7th, 9th, 11th, and 13th intervals to any chord!</div>
+        
+        <div class="chord-builder">
+            <div style="text-align: center;">
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">Select Base Chord:</div>
+                <select id="baseChordSelect" class="base-chord-selector" onchange="updateExtendedChord()">
+                    <option value="C">C Major</option>
+                    <option value="Cm">C Minor</option>
+                    <option value="G">G Major</option>
+                    <option value="Gm">G Minor</option>
+                    <option value="D">D Major</option>
+                    <option value="Dm">D Minor</option>
+                    <option value="A">A Major</option>
+                    <option value="Am">A Minor</option>
+                    <option value="E">E Major</option>
+                    <option value="Em">E Minor</option>
+                    <option value="F">F Major</option>
+                    <option value="Fm">F Minor</option>
+                </select>
+            </div>
+            
+            <div style="font-size: 2rem; color: #8B6BA3; font-weight: 900;">+</div>
+            
+            <div style="text-align: center;">
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">Add Extensions:</div>
+                <div class="extension-selector">
+                    <button class="extension-btn" id="ext7" onclick="toggleExtension('7')">
+                        7
+                        <div class="extension-label">7th</div>
+                    </button>
+                    <button class="extension-btn" id="ext9" onclick="toggleExtension('9')">
+                        9
+                        <div class="extension-label">9th</div>
+                    </button>
+                    <button class="extension-btn" id="ext11" onclick="toggleExtension('11')">
+                        11
+                        <div class="extension-label">11th</div>
+                    </button>
+                    <button class="extension-btn" id="ext13" onclick="toggleExtension('13')">
+                        13
+                        <div class="extension-label">13th</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chord-formula-display" id="extendedFormulaDisplay">
+            <div class="formula-title">Current Chord:</div>
+            <div class="formula-content" id="extendedChordName">C Major</div>
+            <div class="formula-notes" id="extendedChordNotes">C - E - G</div>
+            <div class="formula-explanation" id="extendedExplanation">
+                Select a base chord and click the extension buttons above to build complex chords!
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 1rem 0;">
+            <button class="play-button" onclick="playExtendedChord()">▶ Play Extended Chord</button>
+        </div>
+        
+        <div style="border-top: 2px solid rgba(139, 107, 163, 0.3); padding-top: 1.5rem; margin-top: 1.5rem;">
+            <div style="text-align: center; font-size: 1.1rem; font-weight: 700; color: #8B6BA3; margin-bottom: 1rem;">
+                🎵 Quick Extended Chords (Click to Hear!)
+            </div>
+            <div class="quick-extensions">
+                <div class="quick-ext-btn" onclick="tryExtended('CEGB')" title="Cmaj7: Bright, jazzy sound with major 7th">
+                    <div class="quick-ext-name">Cmaj7</div>
+                    <div class="quick-ext-notes">C-E-G-B</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('CEGA#')" title="C7: Dominant 7th, wants to resolve">
+                    <div class="quick-ext-name">C7</div>
+                    <div class="quick-ext-notes">C-E-G-A#</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('CEGBD')" title="Cmaj9: Lush, colorful major 9th">
+                    <div class="quick-ext-name">Cmaj9</div>
+                    <div class="quick-ext-notes">C-E-G-B-D</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('CEGA#D')" title="C9: Dominant 9th, jazzy and rich">
+                    <div class="quick-ext-name">C9</div>
+                    <div class="quick-ext-notes">C-E-G-A#-D</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('GBDF#')" title="Gmaj7: Bright G major with major 7th">
+                    <div class="quick-ext-name">Gmaj7</div>
+                    <div class="quick-ext-notes">G-B-D-F#</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('GBDF#A')" title="Gmaj9: Lush G major 9th">
+                    <div class="quick-ext-name">Gmaj9</div>
+                    <div class="quick-ext-notes">G-B-D-F#-A</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('ACEG')" title="Am7: Mellow minor 7th, very common">
+                    <div class="quick-ext-name">Am7</div>
+                    <div class="quick-ext-notes">A-C-E-G</div>
+                </div>
+                <div class="quick-ext-btn" onclick="tryExtended('ACEGB')" title="Am9: Rich minor 9th chord">
+                    <div class="quick-ext-name">Am9</div>
+                    <div class="quick-ext-notes">A-C-E-G-B</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="quick-examples">
+        <button class="example-btn" onclick="tryExample('GBD')">G Major (GBD)</button>
+        <button class="example-btn" onclick="tryExample('CEG')">C Major (CEG)</button>
+        <button class="example-btn" onclick="tryExample('FAC')">F Major (FAC)</button>
+        <button class="example-btn" onclick="tryExample('ACE')">A Minor (ACE)</button>
+        <button class="example-btn" onclick="tryExample('DF#A')">D Major (DF#A)</button>
+        <button class="example-btn" onclick="tryExample('EGB')">E Minor (EGB)</button>
+    </div>
+    
+    <div class="chromatic-circle-container">
+        <div class="chromatic-circle" id="chromaticCircle"></div>
+        <div class="center-display" id="centerDisplay">
+            <div class="chord-name" id="chordName">Type 3+ Notes</div>
+            <div class="chord-notes" id="chordNotes">...</div>
+            <div class="chord-type" id="chordType">Enter notes to identify chord</div>
+            <button class="play-button" id="playBtn" onclick="playChord()">▶ Play Chord</button>
+        </div>
+    </div>
+    
+    <div class="instruction-box">
+        <div class="instruction-title">📚 How It Works:</div>
+        <div class="instruction-text">
+            <strong>1. A chord is 3 or more notes played together</strong><br>
+            <strong>2. Type any notes</strong> (like "GBD" or "C E G") in the box above<br>
+            <strong>3. Watch the circle light up</strong> showing exactly which notes you typed<br>
+            <strong>4. See the chord name</strong> appear in the center<br>
+            <strong>5. Click Play to hear</strong> - notes ascend smoothly through octaves!<br><br>
+            
+            <strong>🎵 Octave Magic:</strong> When you type "GBD", you hear G→B→D going UP smoothly! 
+            The tool automatically adjusts octaves so notes never jump down - just like playing a scale!<br><br>
+            
+            <strong>🎯 Educational Value:</strong> This teaches you that chords are just combinations of notes! 
+            Every chord you know (G Major, C Major, Am, etc.) is simply 3+ specific notes played together.
+        </div>
+    </div>
+    
+    <script>
+        // Note definitions with colors matching chromatic circle
+        const notes = [
+            { note: 'C',  color: '#FFFF00', freq: 261.63 },   // Yellow
+            { note: 'C#', color: '#FFC400', freq: 277.18 },   // Gold
+            { note: 'D',  color: '#FF8000', freq: 293.66 },   // Orange
+            { note: 'D#', color: '#FF4000', freq: 311.13 },   // Red-Orange
+            { note: 'E',  color: '#FF0000', freq: 329.63 },   // Red
+            { note: 'F',  color: '#C4007F', freq: 349.23 },   // Magenta
+            { note: 'F#', color: '#8000FF', freq: 369.99 },   // Purple
+            { note: 'G',  color: '#4000FF', freq: 392.00 },   // Blue
+            { note: 'G#', color: '#0000FF', freq: 415.30 },   // Navy
+            { note: 'A',  color: '#007FFF', freq: 440.00 },   // Cyan
+            { note: 'A#', color: '#00FF80', freq: 466.16 },   // Green
+            { note: 'B',  color: '#80FF00', freq: 493.88 }    // Lime
+        ];
+        
+        // Comprehensive chord database
+        const chordDatabase = {
+            'C-E-G': { name: 'C Major', type: 'Major Triad', formula: '1-3-5' },
+            'C#-F-G#': { name: 'C# Major', type: 'Major Triad', formula: '1-3-5' },
+            'D-F#-A': { name: 'D Major', type: 'Major Triad', formula: '1-3-5' },
+            'D#-G-A#': { name: 'D# Major', type: 'Major Triad', formula: '1-3-5' },
+            'E-G#-B': { name: 'E Major', type: 'Major Triad', formula: '1-3-5' },
+            'F-A-C': { name: 'F Major', type: 'Major Triad', formula: '1-3-5' },
+            'F#-A#-C#': { name: 'F# Major', type: 'Major Triad', formula: '1-3-5' },
+            'G-B-D': { name: 'G Major', type: 'Major Triad', formula: '1-3-5' },
+            'G#-C-D#': { name: 'G# Major', type: 'Major Triad', formula: '1-3-5' },
+            'A-C#-E': { name: 'A Major', type: 'Major Triad', formula: '1-3-5' },
+            'A#-D-F': { name: 'A# Major', type: 'Major Triad', formula: '1-3-5' },
+            'B-D#-F#': { name: 'B Major', type: 'Major Triad', formula: '1-3-5' },
+            
+            // Minor chords
+            'A-C-E': { name: 'A Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'B-D-F#': { name: 'B Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'C-D#-G': { name: 'C Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'C#-E-G#': { name: 'C# Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'D-F-A': { name: 'D Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'E-G-B': { name: 'E Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'F-G#-C': { name: 'F Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'F#-A-C#': { name: 'F# Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+            'G-A#-D': { name: 'G Minor', type: 'Minor Triad', formula: '1-♭3-5' },
+        };
+        
+        let audioContext = null;
+        let currentNotes = [];
+        
+        // Initialize audio on user interaction
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+        
+        // Play a single note
+        function playNote(frequency, duration = 0.5) {
+            initAudio();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        // Create chromatic circle
+        function createChromaticCircle() {
+            const circle = document.getElementById('chromaticCircle');
+            const radius = 200;
+            const centerX = 250;
+            const centerY = 250;
+            
+            notes.forEach((noteData, index) => {
+                const angle = (index * 30 - 90) * (Math.PI / 180); // Start at top
+                const x = centerX + radius * Math.cos(angle) - 50;
+                const y = centerY + radius * Math.sin(angle) - 50;
+                
+                const segment = document.createElement('div');
+                segment.className = 'note-segment';
+                segment.style.left = x + 'px';
+                segment.style.top = y + 'px';
+                segment.style.background = noteData.color;
+                segment.textContent = noteData.note;
+                segment.dataset.note = noteData.note;
+                
+                segment.onclick = () => {
+                    initAudio();
+                    playNote(noteData.freq);
+                    toggleNote(noteData.note);
+                };
+                
+                circle.appendChild(segment);
+            });
+        }
+        
+        // Toggle note selection from circle click
+        function toggleNote(note) {
+            const input = document.getElementById('noteInput');
+            const currentValue = input.value.trim().toUpperCase();
+            const notesList = currentValue.split(/[\s,]+/).filter(n => n);
+            
+            if (notesList.includes(note)) {
+                // Remove note
+                const newNotes = notesList.filter(n => n !== note);
+                input.value = newNotes.join(' ');
+            } else {
+                // Add note
+                notesList.push(note);
+                input.value = notesList.join(' ');
+            }
+            
+            analyzeChord();
+        }
+        
+        // Analyze and identify chord from input
+        function analyzeChord() {
+            const input = document.getElementById('noteInput').value.trim().toUpperCase();
+            
+            // Clear previous highlights
+            document.querySelectorAll('.note-segment').forEach(seg => {
+                seg.classList.remove('active');
+            });
+            
+            if (!input) {
+                resetDisplay();
+                return;
+            }
+            
+            // Parse input - handle multiple formats
+            let inputNotes = [];
+            
+            // If input has spaces or commas, split on those
+            if (input.includes(' ') || input.includes(',')) {
+                inputNotes = input.split(/[\s,]+/).filter(n => n);
+            } else {
+                // No separators - parse character by character
+                // Handle notes like "GBD" or "G#BD" or "CEG"
+                let i = 0;
+                while (i < input.length) {
+                    let note = input[i];
+                    // Check if next character is a sharp
+                    if (i + 1 < input.length && input[i + 1] === '#') {
+                        note += '#';
+                        i += 2;
+                    } else {
+                        i += 1;
+                    }
+                    inputNotes.push(note);
+                }
+            }
+            
+            // Validate notes
+            const validNotes = inputNotes.filter(note => 
+                notes.some(n => n.note === note)
+            );
+            
+            currentNotes = validNotes;
+            
+            // Highlight notes on circle
+            validNotes.forEach(note => {
+                const segment = document.querySelector(`[data-note="${note}"]`);
+                if (segment) {
+                    segment.classList.add('active');
+                }
+            });
+            
+            // Update display
+            const chordNameEl = document.getElementById('chordName');
+            const chordNotesEl = document.getElementById('chordNotes');
+            const chordTypeEl = document.getElementById('chordType');
+            
+            if (validNotes.length === 0) {
+                chordNameEl.textContent = 'Try Again';
+                chordNotesEl.textContent = 'No valid notes found';
+                chordTypeEl.textContent = 'Valid notes: C, C#, D, D#, E, F, F#, G, G#, A, A#, B';
+                return;
+            }
+            
+            if (validNotes.length < 3) {
+                chordNameEl.textContent = validNotes.join(' + ');
+                chordNotesEl.textContent = validNotes.length === 1 ? 'Single Note' : 'Two Notes';
+                chordTypeEl.textContent = 'Add ' + (3 - validNotes.length) + ' more note(s) to make a chord';
+                return;
+            }
+            
+            // Sort notes to create chord signature
+            const sortedNotes = [...validNotes].sort((a, b) => {
+                const indexA = notes.findIndex(n => n.note === a);
+                const indexB = notes.findIndex(n => n.note === b);
+                return indexA - indexB;
+            });
+            
+            const chordSignature = sortedNotes.join('-');
+            const chordInfo = chordDatabase[chordSignature];
+            
+            if (chordInfo) {
+                chordNameEl.textContent = chordInfo.name;
+                chordNotesEl.textContent = sortedNotes.join(' + ');
+                chordTypeEl.textContent = `${chordInfo.type} (${chordInfo.formula})`;
+            } else {
+                chordNameEl.textContent = 'Custom Chord';
+                chordNotesEl.textContent = sortedNotes.join(' + ');
+                chordTypeEl.textContent = validNotes.length + ' notes - Experiment!';
+            }
+        }
+        
+        // Play current chord
+        function playChord() {
+            initAudio();
+            
+            if (currentNotes.length === 0) {
+                alert('Type some notes first!');
+                return;
+            }
+            
+            // Get frequencies for notes and ensure ascending octaves
+            const noteFrequencies = [];
+            let lastFrequency = 0;
+            
+            currentNotes.forEach(note => {
+                const noteData = notes.find(n => n.note === note);
+                if (noteData) {
+                    let freq = noteData.freq;
+                    
+                    // If this frequency is lower than the last one, move it up octaves
+                    while (freq <= lastFrequency) {
+                        freq *= 2; // Next octave
+                    }
+                    
+                    noteFrequencies.push(freq);
+                    lastFrequency = freq;
+                }
+            });
+            
+            // Play notes in ascending order
+            noteFrequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    playNote(freq, 1.0);
+                }, index * 300);
+            });
+        }
+        
+        // Reset display
+        function resetDisplay() {
+            document.getElementById('chordName').textContent = 'Type 3+ Notes';
+            document.getElementById('chordNotes').textContent = '...';
+            document.getElementById('chordType').textContent = 'Enter notes to identify chord';
+            currentNotes = [];
+        }
+        
+        // ========================================
+        // EXTENDED CHORDS SYSTEM
+        // ========================================
+        
+        let activeExtensions = [];
+        let currentExtendedNotes = [];
+        
+        const extendedChordData = {
+            'C': { root: 'C', third: 'E', fifth: 'G', seventh: 'B', ninth: 'D', eleventh: 'F', thirteenth: 'A' },
+            'Cm': { root: 'C', third: 'D#', fifth: 'G', seventh: 'A#', ninth: 'D', eleventh: 'F', thirteenth: 'A' },
+            'G': { root: 'G', third: 'B', fifth: 'D', seventh: 'F#', ninth: 'A', eleventh: 'C', thirteenth: 'E' },
+            'Gm': { root: 'G', third: 'A#', fifth: 'D', seventh: 'F', ninth: 'A', eleventh: 'C', thirteenth: 'E' },
+            'D': { root: 'D', third: 'F#', fifth: 'A', seventh: 'C#', ninth: 'E', eleventh: 'G', thirteenth: 'B' },
+            'Dm': { root: 'D', third: 'F', fifth: 'A', seventh: 'C', ninth: 'E', eleventh: 'G', thirteenth: 'B' },
+            'A': { root: 'A', third: 'C#', fifth: 'E', seventh: 'G#', ninth: 'B', eleventh: 'D', thirteenth: 'F#' },
+            'Am': { root: 'A', third: 'C', fifth: 'E', seventh: 'G', ninth: 'B', eleventh: 'D', thirteenth: 'F#' },
+            'E': { root: 'E', third: 'G#', fifth: 'B', seventh: 'D#', ninth: 'F#', eleventh: 'A', thirteenth: 'C#' },
+            'Em': { root: 'E', third: 'G', fifth: 'B', seventh: 'D', ninth: 'F#', eleventh: 'A', thirteenth: 'C#' },
+            'F': { root: 'F', third: 'A', fifth: 'C', seventh: 'E', ninth: 'G', eleventh: 'A#', thirteenth: 'D' },
+            'Fm': { root: 'F', third: 'G#', fifth: 'C', seventh: 'D#', ninth: 'G', eleventh: 'A#', thirteenth: 'D' }
+        };
+        
+        function toggleExtension(ext) {
+            const btn = document.getElementById('ext' + ext);
+            const index = activeExtensions.indexOf(ext);
+            
+            if (index > -1) {
+                activeExtensions.splice(index, 1);
+                btn.classList.remove('active');
+            } else {
+                activeExtensions.push(ext);
+                btn.classList.add('active');
+            }
+            
+            // Sort extensions in order: 7, 9, 11, 13
+            activeExtensions.sort((a, b) => parseInt(a) - parseInt(b));
+            
+            updateExtendedChord();
+        }
+        
+        function updateExtendedChord() {
+            const baseChord = document.getElementById('baseChordSelect').value;
+            const chordData = extendedChordData[baseChord];
+            
+            if (!chordData) return;
+            
+            // Build chord notes array
+            const chordNotes = [chordData.root, chordData.third, chordData.fifth];
+            currentExtendedNotes = [...chordNotes];
+            
+            // Add extensions
+            const extensionMap = {
+                '7': 'seventh',
+                '9': 'ninth',
+                '11': 'eleventh',
+                '13': 'thirteenth'
+            };
+            
+            let chordNameParts = [baseChord];
+            let explanation = [];
+            
+            activeExtensions.forEach(ext => {
+                const interval = extensionMap[ext];
+                if (chordData[interval]) {
+                    currentExtendedNotes.push(chordData[interval]);
+                    chordNameParts.push(ext);
+                    
+                    const noteAdded = chordData[interval];
+                    explanation.push(`<strong>${ext}th (${noteAdded}):</strong> Adds ${getIntervalName(ext)} to the chord`);
+                }
+            });
+            
+            // Build chord name
+            let chordName = baseChord;
+            if (activeExtensions.length > 0) {
+                const isMajor7 = baseChord.indexOf('m') === -1 && activeExtensions.includes('7');
+                if (isMajor7) {
+                    chordName += 'maj';
+                }
+                chordName += activeExtensions[activeExtensions.length - 1];
+            }
+            
+            // Update display
+            document.getElementById('extendedChordName').textContent = chordName;
+            document.getElementById('extendedChordNotes').textContent = currentExtendedNotes.join(' - ');
+            
+            // Update explanation
+            let explanationText = `<strong>Formula:</strong> ${baseChord} triad (${chordNotes.join('-')})`;
+            if (explanation.length > 0) {
+                explanationText += '<br>' + explanation.join('<br>');
+            } else {
+                explanationText += '<br><em>Click the extension buttons above to add 7th, 9th, 11th, or 13th!</em>';
+            }
+            
+            document.getElementById('extendedExplanation').innerHTML = explanationText;
+            
+            // Update input and circle
+            document.getElementById('noteInput').value = currentExtendedNotes.join('');
+            analyzeChord();
+        }
+        
+        function getIntervalName(ext) {
+            const names = {
+                '7': 'color and depth',
+                '9': 'sparkle and movement',
+                '11': 'tension and sophistication',
+                '13': 'lush jazz harmony'
+            };
+            return names[ext] || 'extension';
+        }
+        
+        function playExtendedChord() {
+            initAudio();
+            
+            if (currentExtendedNotes.length === 0) {
+                alert('Build a chord first by selecting a base and adding extensions!');
+                return;
+            }
+            
+            // Get frequencies and ensure ascending octaves
+            const noteFrequencies = [];
+            let lastFrequency = 0;
+            
+            currentExtendedNotes.forEach(note => {
+                const noteData = notes.find(n => n.note === note);
+                if (noteData) {
+                    let freq = noteData.freq;
+                    
+                    // If this frequency is lower than the last one, move it up octaves
+                    while (freq <= lastFrequency) {
+                        freq *= 2;
+                    }
+                    
+                    noteFrequencies.push(freq);
+                    lastFrequency = freq;
+                }
+            });
+            
+            // Play notes in ascending order
+            noteFrequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    playNote(freq, 0.8);
+                }, index * 250);
+            });
+        }
+        
+        function tryExtended(noteString) {
+            // Parse the note string and load it
+            document.getElementById('noteInput').value = noteString;
+            analyzeChord();
+            
+            // Store notes for playback
+            currentExtendedNotes = [];
+            let i = 0;
+            while (i < noteString.length) {
+                let note = noteString[i];
+                // Check if next character is a sharp
+                if (i + 1 < noteString.length && noteString[i + 1] === '#') {
+                    note += '#';
+                    i += 2;
+                } else {
+                    i += 1;
+                }
+                currentExtendedNotes.push(note);
+            }
+            
+            // Reset extensions display
+            activeExtensions = [];
+            document.querySelectorAll('.extension-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show info
+            console.log('═══════════════════════════════════════════');
+            console.log('🎹 EXTENDED CHORD LOADED');
+            console.log('═══════════════════════════════════════════');
+            console.log('Notes:', currentExtendedNotes.join('-'));
+            console.log('Input string:', noteString);
+            console.log('Tip: Listen to the chord play automatically!');
+            console.log('═══════════════════════════════════════════');
+            
+            // Auto-play the chord after a brief delay
+            setTimeout(() => {
+                playExtendedChord();
+            }, 300);
+        }
+        
+        // Try CAGED system chord with relationships
+        function tryCAGED(root) {
+            const cagedChords = {
+                'C': {
+                    notes: 'CEG',
+                    relatives: {
+                        relative_minor: 'Am (ACE)',
+                        next_in_caged: 'A Major (AC#E)',
+                        fourth: 'F (FAC)',
+                        fifth: 'G (GBD)'
+                    },
+                    progression: 'C→G→Am→F',
+                    info: 'C shape connects to A shape up the neck'
+                },
+                'A': {
+                    notes: 'AC#E',
+                    relatives: {
+                        relative_minor: 'F#m (F#AC#)',
+                        next_in_caged: 'G Major (GBD)',
+                        fourth: 'D (DF#A)',
+                        fifth: 'E (EG#B)'
+                    },
+                    progression: 'A→E→F#m→D',
+                    info: 'A shape connects to G shape up the neck'
+                },
+                'G': {
+                    notes: 'GBD',
+                    relatives: {
+                        relative_minor: 'Em (EGB)',
+                        next_in_caged: 'E Major (EG#B)',
+                        fourth: 'C (CEG)',
+                        fifth: 'D (DF#A)'
+                    },
+                    progression: 'G→D→Em→C',
+                    info: 'G shape connects to E shape up the neck'
+                },
+                'E': {
+                    notes: 'EG#B',
+                    relatives: {
+                        relative_minor: 'C#m (C#EG#)',
+                        next_in_caged: 'D Major (DF#A)',
+                        fourth: 'A (AC#E)',
+                        fifth: 'B (BD#F#)'
+                    },
+                    progression: 'E→B→C#m→A',
+                    info: 'E shape connects to D shape up the neck'
+                },
+                'D': {
+                    notes: 'DF#A',
+                    relatives: {
+                        relative_minor: 'Bm (BDF#)',
+                        next_in_caged: 'C Major (CEG)',
+                        fourth: 'G (GBD)',
+                        fifth: 'A (AC#E)'
+                    },
+                    progression: 'D→A→Bm→G',
+                    info: 'D shape connects to C shape (cycle complete!)'
+                }
+            };
+            
+            const chord = cagedChords[root];
+            if (chord) {
+                // Type the notes
+                document.getElementById('noteInput').value = chord.notes;
+                analyzeChord();
+                
+                // Display relationship info on page
+                const infoBox = document.getElementById('cagedInfo');
+                const infoContent = document.getElementById('cagedInfoContent');
+                
+                infoContent.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong style="color: #00d9ff;">${root} Major:</strong> ${chord.notes}
+                    </div>
+                    <div style="margin-bottom: 0.3rem;">
+                        <span style="color: rgba(255,255,255,0.7);">🎸 Relative Minor:</span> ${chord.relatives.relative_minor}
+                    </div>
+                    <div style="margin-bottom: 0.3rem;">
+                        <span style="color: rgba(255,255,255,0.7);">➡️ Next Shape:</span> ${chord.relatives.next_in_caged}
+                    </div>
+                    <div style="margin-bottom: 0.3rem;">
+                        <span style="color: rgba(255,255,255,0.7);">🎵 IV Chord:</span> ${chord.relatives.fourth} | 
+                        <span style="color: rgba(255,255,255,0.7);">V Chord:</span> ${chord.relatives.fifth}
+                    </div>
+                    <div style="margin-bottom: 0.3rem;">
+                        <span style="color: rgba(255,255,255,0.7);">🎼 Common Progression:</span> ${chord.progression}
+                    </div>
+                    <div style="margin-top: 0.5rem; font-style: italic; color: rgba(255,255,255,0.5);">
+                        ${chord.info}
+                    </div>
+                `;
+                
+                infoBox.style.display = 'block';
+                
+                // Console log for reference
+                console.log('═══════════════════════════════════════════');
+                console.log(`🎸 CAGED SYSTEM: ${root} Major`);
+                console.log('═══════════════════════════════════════════');
+                console.log(`Notes: ${chord.notes}`);
+                console.log(`Relative Minor: ${chord.relatives.relative_minor}`);
+                console.log(`Next Shape: ${chord.relatives.next_in_caged}`);
+                console.log(`Progression: ${chord.progression}`);
+                console.log('═══════════════════════════════════════════');
+            }
+        }
+        
+        // Try example chord
+        function tryExample(notes) {
+            document.getElementById('noteInput').value = notes;
+            analyzeChord();
+        }
+        
+        // Initialize
+        createChromaticCircle();
+        
+        // Listen to input changes
+        document.getElementById('noteInput').addEventListener('input', analyzeChord);
+        
+        // Initialize audio on first interaction
+        document.body.addEventListener('click', initAudio, { once: true });
+    </script>
+</body>
+</html>

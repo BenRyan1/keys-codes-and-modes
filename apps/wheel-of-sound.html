@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Wheel of Sound™ | Keys, Codes & Modes</title>
+    <meta name="description" content="See music in living color. Touch, hear, and understand note relationships through our revolutionary interactive chromatic wheel.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0a0a15;
+            --darker-bg: #050508;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Animated Background Stars */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* Header */
+        header {
+            position: relative;
+            z-index: 100;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2) 0%, rgba(139, 107, 163, 0.2) 100%);
+            border-bottom: 2px solid var(--primary-teal);
+            box-shadow: 0 4px 30px rgba(0, 217, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .header-logo {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 4px 15px rgba(0, 217, 255, 0.5));
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+        
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-gold) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+            letter-spacing: 2px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .logo-tagline {
+            font-size: 0.9rem;
+            color: var(--primary-gold);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-gold);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 3rem 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d9d9 0%, var(--primary-gold) 50%, #ff006e 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            animation: titleGlow 3s ease-in-out infinite;
+            letter-spacing: 3px;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8)); }
+        }
+        
+        .app-subtitle {
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .app-description {
+            font-size: 1rem;
+            color: rgba(232, 232, 232, 0.8);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+        
+        /* Main Content */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* Canvas Container */
+        .canvas-wrapper {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            max-width: 90vw;
+            max-height: 90vw;
+        }
+        
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            filter: drop-shadow(0 0 40px rgba(0, 217, 255, 0.3));
+        }
+        
+        /* Center Display */
+        .center-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 20;
+        }
+        
+        .selected-note {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 
+                0 0 20px rgba(0, 217, 255, 0.8),
+                0 0 40px rgba(0, 217, 255, 0.6),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 0.5rem;
+            animation: noteAppear 0.3s ease;
+        }
+        
+        @keyframes noteAppear {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .note-frequency {
+            font-size: 1.2rem;
+            color: #FFFFFF;
+            font-weight: 600;
+            text-shadow: 
+                0 0 10px rgba(0, 217, 255, 0.6),
+                1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+        
+        .note-interval {
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            margin-top: 0.5rem;
+            text-shadow: 
+                0 0 8px rgba(0, 217, 255, 0.4),
+                1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            background: rgba(26, 61, 95, 0.3);
+            border: 2px solid var(--primary-teal);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 128, 128, 0.2);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .control-section {
+            margin-bottom: 2rem;
+        }
+        
+        .control-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-label {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .mode-btn {
+            padding: 1rem 1.5rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2) 0%, rgba(139, 107, 163, 0.2) 100%);
+            border: 2px solid var(--primary-teal);
+            border-radius: 12px;
+            color: var(--light-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .mode-btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 217, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .mode-btn:hover:before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .mode-btn:hover {
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+        }
+        
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-purple) 100%);
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 30px rgba(244, 208, 63, 0.5);
+        }
+        
+        .mode-btn span {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+        
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .option-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--primary-teal);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .option-group select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--primary-teal);
+            border-radius: 8px;
+            color: var(--light-text);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-group select:hover {
+            border-color: var(--primary-gold);
+            background: rgba(0, 128, 128, 0.1);
+        }
+        
+        .option-group select:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 15px rgba(244, 208, 63, 0.3);
+        }
+        
+        /* Info Panel */
+        .info-panel {
+            background: rgba(26, 61, 95, 0.3);
+            border: 2px solid var(--primary-purple);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(139, 107, 163, 0.2);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .info-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .info-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 128, 128, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: var(--primary-teal);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .info-card-title {
+            font-size: 1.1rem;
+            color: var(--primary-teal);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-card-text {
+            font-size: 0.95rem;
+            color: rgba(232, 232, 232, 0.8);
+            line-height: 1.6;
+        }
+        
+        /* Instructions */
+        .instructions {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1) 0%, rgba(139, 107, 163, 0.1) 100%);
+            border: 2px solid var(--primary-gold);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .instructions h3 {
+            font-family: var(--font-display);
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .instructions li {
+            padding: 0.75rem 0;
+            color: rgba(232, 232, 232, 0.9);
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            line-height: 1.6;
+        }
+        
+        .instructions li:before {
+            content: '🎵';
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .instructions li strong {
+            color: var(--primary-teal);
+            font-weight: 700;
+        }
+        
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            border-top: 1px solid rgba(0, 128, 128, 0.3);
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-gold);
+        }
+        
+        footer p {
+            color: rgba(232, 232, 232, 0.6);
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+        
+        .trademark {
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-logo {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.3rem;
+            }
+            
+            .logo-tagline {
+                font-size: 0.75rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .app-title {
+                font-size: 2.2rem;
+            }
+            
+            .app-subtitle {
+                font-size: 1rem;
+            }
+            
+            .selected-note {
+                font-size: 2.5rem;
+            }
+            
+            .mode-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .app-title {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+            
+            .control-panel,
+            .info-panel,
+            .instructions {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Stars Background -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <svg class="header-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#00d9d9" stroke-width="2"/>
+                    <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.85"/>
+                    <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                    <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                    <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                    <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                    <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="#00d9d9" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="10" fill="#F4D03F"/>
+                    <line x1="40" y1="40" x2="160" y2="160" stroke="#00d9d9" stroke-width="2" opacity="0.4"/>
+                    <line x1="160" y1="40" x2="40" y2="160" stroke="#00d9d9" stroke-width="2" opacity="0.4"/>
+                </svg>
+                <div class="logo-text">
+                    <h1>KEYS, CODES & MODES</h1>
+                    <p class="logo-tagline">A Visual Approach to Understanding Music</p>
+                </div>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="insight.html">All Apps</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="app-title">CHROMATIC WHEEL OF SOUND™</h1>
+        <p class="app-subtitle">"See Music in Living Color - Touch, Hear, Understand"</p>
+        <p class="app-description">
+            Experience the revolutionary way to understand music theory. Click any note to hear it,
+            watch relationships illuminate, and discover the visual harmony that connects all music.
+        </p>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Wheel Container -->
+        <div class="wheel-container">
+            <div class="canvas-wrapper">
+                <canvas id="wheelCanvas"></canvas>
+                <div class="center-display" id="centerDisplay">
+                    <div class="selected-note" id="selectedNote">C</div>
+                    <div class="note-frequency" id="noteFrequency">261.63 Hz</div>
+                    <div class="note-interval" id="noteInterval">Root Note</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>🎵 How to Use the Chromatic Wheel</h3>
+            <ul>
+                <li><strong>Click</strong> any colored wedge to play that note and see its relationships</li>
+                <li><strong>Hold</strong> your click to sustain the note longer</li>
+                <li><strong>Click multiple notes</strong> quickly to create harmonies and chords</li>
+                <li><strong>Watch the center</strong> for real-time information about each note</li>
+                <li><strong>Explore different modes</strong> below to learn, quiz yourself, or compose</li>
+            </ul>
+        </div>
+        
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="control-section">
+                <div class="control-label">
+                    <span>🎭</span>
+                    <span>Learning Mode</span>
+                </div>
+                <div class="mode-buttons">
+                    <button class="mode-btn active" data-mode="explore">
+                        <span>🔍 Explore</span>
+                    </button>
+                    <button class="mode-btn" data-mode="relationships">
+                        <span>🔗 Relationships</span>
+                    </button>
+                    <button class="mode-btn" data-mode="intervals">
+                        <span>📐 Intervals</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="control-section">
+                <div class="control-label">
+                    <span>🎚️</span>
+                    <span>Sound Options</span>
+                </div>
+                <div class="options-grid">
+                    <div class="option-group">
+                        <label for="waveform">Waveform</label>
+                        <select id="waveform">
+                            <option value="sine">Pure Sine (Clean)</option>
+                            <option value="triangle">Triangle (Mellow)</option>
+                            <option value="square">Square (Bright)</option>
+                            <option value="sawtooth">Sawtooth (Rich)</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="duration">Note Duration</label>
+                        <select id="duration">
+                            <option value="0.3">Short (0.3s)</option>
+                            <option value="0.5">Medium (0.5s)</option>
+                            <option value="1.0" selected>Long (1.0s)</option>
+                            <option value="2.0">Extended (2.0s)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <h2 class="info-title">Why the Chromatic Wheel?</h2>
+            <div class="info-content">
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <span>🎨</span>
+                        <span>Visual Learning</span>
+                    </div>
+                    <p class="info-card-text">
+                        See relationships between notes instantly. Colors and positions reveal 
+                        harmonic connections that traditional notation hides.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <span>🎵</span>
+                        <span>Auditory Discovery</span>
+                    </div>
+                    <p class="info-card-text">
+                        Hear how notes relate. Click adjacent notes for smooth transitions, 
+                        opposite notes for dramatic tension.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <span>🧠</span>
+                        <span>Intuitive Understanding</span>
+                    </div>
+                    <p class="info-card-text">
+                        Music theory becomes obvious when you can see and hear it. No memorization 
+                        needed—just exploration and discovery.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="insight.html">All Apps</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+            <p>Created by Benjamin Ryan, Inventor & Music Educator</p>
+            <p>© 2026 Keys, Codes & Modes | Santa Barbara, CA</p>
+            <p class="trademark">Chromatic Wheel of Sound™ and FreeStyle® are registered trademarks</p>
+        </div>
+    </footer>
+    
+    <script>
+        // ========================================
+        // CHROMATIC WHEEL OF SOUND™
+        // Interactive Music Theory Learning Tool
+        // ========================================
+        
+        // Initialize Audio Context
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Note Data with Frequencies, MIDI Numbers, and Exact Color Spectrum
+        // CORRECT CLOCKWISE ORDER: C at 12 o'clock (270°), going CLOCKWISE (increasing angles)
+        // Clockwise progression: C → C# → D → D# → E → F → F# → G → G# → A → A# → B
+        const notes = [
+            { name: 'C', frequency: 261.63, midi: 60, color: '#FFFF00', angle: 270 },     // Yellow (12 o'clock) ⭐
+            { name: 'C#/Db', frequency: 277.18, midi: 61, color: '#FFC400', angle: 300 }, // Yellow-Orange (1 o'clock)
+            { name: 'D', frequency: 293.66, midi: 62, color: '#FF8000', angle: 330 },     // Orange (2 o'clock)
+            { name: 'D#/Eb', frequency: 311.13, midi: 63, color: '#FF4000', angle: 0 },   // Red-Orange (3 o'clock)
+            { name: 'E', frequency: 329.63, midi: 64, color: '#FF0000', angle: 30 },      // Red (4 o'clock)
+            { name: 'F', frequency: 349.23, midi: 65, color: '#C4007F', angle: 60 },      // Red-Purple (5 o'clock)
+            { name: 'F#/Gb', frequency: 369.99, midi: 66, color: '#8000FF', angle: 90 },  // Purple (6 o'clock) 💜
+            { name: 'G', frequency: 392.00, midi: 67, color: '#4000FF', angle: 120 },     // Blue-Purple (7 o'clock)
+            { name: 'G#/Ab', frequency: 415.30, midi: 68, color: '#0000FF', angle: 150 }, // Blue (8 o'clock)
+            { name: 'A', frequency: 440.00, midi: 69, color: '#007FFF', angle: 180 },     // Blue-Green (9 o'clock) 🌊
+            { name: 'A#/Bb', frequency: 466.16, midi: 70, color: '#00FF80', angle: 210 }, // Green (10 o'clock)
+            { name: 'B', frequency: 493.88, midi: 71, color: '#80FF00', angle: 240 }      // Yellow-Green (11 o'clock)
+        ];
+        
+        // Canvas Setup
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        let canvasSize = 600;
+        let centerX, centerY, radius;
+        let currentMode = 'explore';
+        let lastNote = null;
+        let activeNotes = new Set();
+        
+        // Initialize Canvas Size
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvasSize = Math.min(container.clientWidth, container.clientHeight, 600);
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
+            centerX = canvasSize / 2;
+            centerY = canvasSize / 2;
+            radius = canvasSize * 0.4;
+            drawWheel();
+        }
+        
+        // Draw the Chromatic Wheel
+        function drawWheel() {
+            ctx.clearRect(0, 0, canvasSize, canvasSize);
+            
+            // Draw each note wedge
+            notes.forEach((note, index) => {
+                const startAngle = (note.angle - 15) * Math.PI / 180;
+                const endAngle = (note.angle + 15) * Math.PI / 180;
+                
+                // Determine if note is active
+                const isActive = activeNotes.has(index);
+                const glowIntensity = isActive ? 1 : 0.7;
+                
+                // Draw wedge
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                
+                // Create gradient for wedge
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+                gradient.addColorStop(1, note.color);
+                ctx.fillStyle = gradient;
+                ctx.globalAlpha = glowIntensity;
+                ctx.fill();
+                
+                // Add glow effect if active
+                if (isActive) {
+                    ctx.shadowBlur = 30;
+                    ctx.shadowColor = note.color;
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+                }
+                
+                // Draw border
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 1;
+                ctx.stroke();
+                
+                // Draw note label
+                const labelAngle = note.angle * Math.PI / 180;
+                const labelRadius = radius * 0.75;
+                const labelX = centerX + Math.cos(labelAngle) * labelRadius;
+                const labelY = centerY + Math.sin(labelAngle) * labelRadius;
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 16px Montserrat';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(note.name.split('/')[0], labelX, labelY);
+            });
+            
+            // Draw center circle (larger for better text readability)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.35, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(10, 10, 21, 0.95)';
+            ctx.fill();
+            ctx.strokeStyle = '#00d9d9';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+        
+        // Play Note Function
+        function playNote(frequency, duration = 1.0) {
+            const waveform = document.getElementById('waveform').value;
+            const noteDuration = parseFloat(document.getElementById('duration').value);
+            
+            // Create oscillator
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = waveform;
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            
+            // Envelope
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + noteDuration);
+            
+            // Connect and play
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + noteDuration);
+        }
+        
+        // Get Note from Click Position
+        function getNoteFromPosition(x, y) {
+            const dx = x - centerX;
+            const dy = y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // Check if click is within wheel (accounting for larger center circle)
+            if (distance > radius || distance < radius * 0.35) {
+                return null;
+            }
+            
+            // Calculate angle
+            let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            if (angle < 0) angle += 360;
+            
+            // Find closest note
+            let closestNote = null;
+            let minDiff = 360;
+            
+            notes.forEach((note, index) => {
+                let diff = Math.abs(note.angle - angle);
+                if (diff > 180) diff = 360 - diff;
+                
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestNote = index;
+                }
+            });
+            
+            return closestNote;
+        }
+        
+        // Update Center Display
+        function updateDisplay(noteIndex) {
+            const note = notes[noteIndex];
+            document.getElementById('selectedNote').textContent = note.name;
+            document.getElementById('noteFrequency').textContent = `${note.frequency.toFixed(2)} Hz | MIDI ${note.midi}`;
+            
+            // Calculate interval from last note
+            if (lastNote !== null) {
+                const interval = (noteIndex - lastNote + 12) % 12;
+                const intervalNames = [
+                    'Unison', 'Minor 2nd', 'Major 2nd', 'Minor 3rd', 
+                    'Major 3rd', 'Perfect 4th', 'Tritone', 'Perfect 5th',
+                    'Minor 6th', 'Major 6th', 'Minor 7th', 'Major 7th'
+                ];
+                document.getElementById('noteInterval').textContent = intervalNames[interval];
+            } else {
+                document.getElementById('noteInterval').textContent = 'Root Note';
+            }
+        }
+        
+        // Handle Canvas Click and Hold
+        let isMouseDown = false;
+        let currentHeldNote = null;
+        let sustainedOscillator = null;
+        let sustainedGain = null;
+        
+        canvas.addEventListener('mousedown', function(e) {
+            isMouseDown = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            
+            const noteIndex = getNoteFromPosition(x, y);
+            
+            if (noteIndex !== null) {
+                currentHeldNote = noteIndex;
+                
+                // Start sustained note
+                const waveform = document.getElementById('waveform').value;
+                sustainedOscillator = audioContext.createOscillator();
+                sustainedGain = audioContext.createGain();
+                
+                sustainedOscillator.type = waveform;
+                sustainedOscillator.frequency.setValueAtTime(notes[noteIndex].frequency, audioContext.currentTime);
+                
+                // Smooth attack
+                sustainedGain.gain.setValueAtTime(0, audioContext.currentTime);
+                sustainedGain.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.05);
+                
+                sustainedOscillator.connect(sustainedGain);
+                sustainedGain.connect(audioContext.destination);
+                sustainedOscillator.start(audioContext.currentTime);
+                
+                // Visual feedback
+                activeNotes.add(noteIndex);
+                drawWheel();
+                
+                // Update display
+                updateDisplay(noteIndex);
+                lastNote = noteIndex;
+            }
+        });
+        
+        canvas.addEventListener('mouseup', function(e) {
+            isMouseDown = false;
+            if (sustainedOscillator && sustainedGain) {
+                // Smooth release
+                sustainedGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.1);
+                sustainedOscillator.stop(audioContext.currentTime + 0.1);
+                sustainedOscillator = null;
+                sustainedGain = null;
+            }
+            
+            if (currentHeldNote !== null) {
+                setTimeout(() => {
+                    activeNotes.delete(currentHeldNote);
+                    drawWheel();
+                }, 100);
+                currentHeldNote = null;
+            }
+        });
+        
+        canvas.addEventListener('mouseleave', function(e) {
+            // Stop sustained note if mouse leaves canvas
+            if (isMouseDown && sustainedOscillator && sustainedGain) {
+                sustainedGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.05);
+                sustainedOscillator.stop(audioContext.currentTime + 0.05);
+                sustainedOscillator = null;
+                sustainedGain = null;
+                isMouseDown = false;
+            }
+            
+            if (currentHeldNote !== null) {
+                activeNotes.delete(currentHeldNote);
+                drawWheel();
+                currentHeldNote = null;
+            }
+        });
+        
+        // Touch support for mobile
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+            
+            const noteIndex = getNoteFromPosition(x, y);
+            
+            if (noteIndex !== null) {
+                // Play note
+                playNote(notes[noteIndex].frequency);
+                
+                // Visual feedback
+                activeNotes.add(noteIndex);
+                drawWheel();
+                setTimeout(() => {
+                    activeNotes.delete(noteIndex);
+                    drawWheel();
+                }, 1000);
+                
+                // Update display
+                updateDisplay(noteIndex);
+                lastNote = noteIndex;
+            }
+        });
+        
+        // Handle Canvas Hover
+        canvas.addEventListener('mousemove', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            
+            const noteIndex = getNoteFromPosition(x, y);
+            canvas.style.cursor = noteIndex !== null ? 'pointer' : 'default';
+        });
+        
+        // Mode Buttons
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentMode = this.dataset.mode;
+                
+                // Mode-specific visual and instructional feedback
+                if (currentMode === 'relationships') {
+                    // Show relationships mode info
+                    document.getElementById('noteInterval').textContent = 'Click notes to see harmonic relationships!';
+                    setTimeout(() => {
+                        if (lastNote !== null) {
+                            const note = notes[lastNote];
+                            document.getElementById('selectedNote').textContent = note.name;
+                        }
+                    }, 2000);
+                } else if (currentMode === 'intervals') {
+                    // Show intervals mode info
+                    document.getElementById('noteInterval').textContent = 'Click two notes to hear their interval!';
+                    setTimeout(() => {
+                        if (lastNote !== null) {
+                            const note = notes[lastNote];
+                            document.getElementById('selectedNote').textContent = note.name;
+                        }
+                    }, 2000);
+                } else {
+                    // Explore mode
+                    document.getElementById('noteInterval').textContent = 'Explore freely - click any note!';
+                    setTimeout(() => {
+                        if (lastNote !== null) {
+                            const note = notes[lastNote];
+                            document.getElementById('selectedNote').textContent = note.name;
+                        }
+                    }, 2000);
+                }
+            });
+        });
+        
+        // Create Animated Stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Initialize
+        window.addEventListener('load', function() {
+            resizeCanvas();
+            createStars();
+        });
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Update center display on load
+        updateDisplay(0);
+    </script>
+</body>
+</html>

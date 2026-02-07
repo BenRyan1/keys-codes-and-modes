@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+    <title>Pricing Plans | Keys, Codes & Modes</title>
+    <meta name="description" content="Choose your plan and unlock professional music theory tools. From free to lifetime access.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.08;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 25s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 20px) scale(1.05); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(232, 232, 232, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* Pricing Cards - Frosted Glass Design */
+        .pricing-card {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1) 0%, rgba(139, 107, 163, 0.1) 100%);
+            border: 2px solid rgba(0, 128, 128, 0.4);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 128, 128, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pricing-card:nth-child(1) { animation-delay: 0.2s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.4s; }
+        .pricing-card:nth-child(3) { animation-delay: 0.6s; }
+        
+        /* Glow effect on hover */
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 128, 128, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .pricing-card:hover::before {
+            opacity: 1;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-teal);
+            box-shadow: 0 15px 50px rgba(0, 128, 128, 0.4);
+        }
+        
+        /* Featured card (Professional) */
+        .pricing-card.featured {
+            border-color: var(--primary-gold);
+            background: linear-gradient(135deg, rgba(244, 208, 63, 0.15) 0%, rgba(0, 128, 128, 0.15) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(244, 208, 63, 0.3);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(244, 208, 63, 0.5);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
+            color: var(--dark-bg);
+            padding: 0.5rem 3rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transform: rotate(45deg);
+            box-shadow: 0 4px 15px rgba(244, 208, 63, 0.4);
+        }
+        
+        .plan-name {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        
+        .pricing-card.featured .plan-name {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .plan-price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-display);
+        }
+        
+        .plan-price span {
+            font-size: 1.2rem;
+            color: rgba(232, 232, 232, 0.6);
+            font-family: var(--font-body);
+            font-weight: 400;
+        }
+        
+        .plan-billing {
+            color: var(--primary-gold);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+        }
+        
+        .plan-features li {
+            padding: 1rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: rgba(232, 232, 232, 0.85);
+            font-size: 1rem;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(0, 128, 128, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-features li:hover {
+            color: var(--primary-gold);
+            padding-left: 2rem;
+        }
+        
+        .plan-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-teal);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .pricing-card.featured .plan-features li::before {
+            content: "⭐";
+        }
+        
+        /* Buttons - Matching site style */
+        .plan-cta {
+            display: block;
+            width: 100%;
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 0.75rem;
+        }
+        
+        .plan-cta.primary {
+            background: linear-gradient(135deg, var(--primary-teal), #006666);
+            color: white;
+            box-shadow: 0 8px 30px rgba(0, 128, 128, 0.3);
+        }
+        
+        .plan-cta.primary:hover {
+            background: linear-gradient(135deg, #006666, var(--primary-teal));
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 128, 128, 0.5);
+        }
+        
+        .plan-cta.secondary {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2), rgba(139, 107, 163, 0.2));
+            color: var(--primary-gold);
+            border: 2px solid rgba(0, 128, 128, 0.4);
+        }
+        
+        .plan-cta.secondary:hover {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.3), rgba(139, 107, 163, 0.3));
+            border-color: var(--primary-teal);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.3);
+        }
+        
+        .plan-cta.yearly {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-teal));
+            color: white;
+            box-shadow: 0 8px 30px rgba(139, 107, 163, 0.3);
+        }
+        
+        .plan-cta.yearly:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(139, 107, 163, 0.5);
+        }
+        
+        /* Founder's Circle Banner */
+        .founders-banner {
+            background: linear-gradient(135deg, rgba(244, 208, 63, 0.15), rgba(139, 107, 163, 0.15));
+            border: 3px solid var(--primary-gold);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 50px rgba(244, 208, 63, 0.3);
+            animation: fadeInUp 1s ease 0.8s;
+            animation-fill-mode: both;
+        }
+        
+        .founders-badge {
+            display: inline-block;
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(244, 208, 63, 0.5);
+        }
+        
+        .founders-banner h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .founders-price {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin: 1.5rem 0;
+            font-family: var(--font-display);
+        }
+        
+        .founders-subtitle {
+            font-size: 1.3rem;
+            color: rgba(232, 232, 232, 0.9);
+            max-width: 800px;
+            margin: 1.5rem auto;
+            line-height: 1.8;
+        }
+        
+        .founders-cta {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 40px rgba(244, 208, 63, 0.4);
+        }
+        
+        .founders-cta:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(244, 208, 63, 0.6);
+        }
+        
+        /* Guarantee Section */
+        .guarantee-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1), rgba(139, 107, 163, 0.1));
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 20px;
+            margin: 3rem 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .guarantee-section h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .guarantee-section p {
+            font-size: 1.1rem;
+            color: rgba(232, 232, 232, 0.85);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 4rem;
+        }
+        
+        .faq-section h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--primary-gold);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .faq-item {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.05), rgba(139, 107, 163, 0.05));
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            border-color: var(--primary-teal);
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.2);
+        }
+        
+        .faq-question {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .faq-answer {
+            color: rgba(232, 232, 232, 0.85);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            
+            .pricing-card.featured:hover {
+                transform: translateY(-10px) scale(1);
+            }
+            
+            .plan-price {
+                font-size: 2.5rem;
+            }
+            
+            .founders-banner h2 {
+                font-size: 2rem;
+            }
+            
+            .founders-price {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Choose Your Plan</h1>
+            <p>Unlock professional music theory tools and transform your musical journey</p>
+        </div>
+        
+        <!-- Pricing Grid -->
+        <div class="pricing-grid">
+            <!-- Free Tier -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Free</h3>
+                <div class="plan-price">$0</div>
+                <p class="plan-billing">Forever free</p>
+                
+                <ul class="plan-features">
+                    <li>Choose ANY 3 apps</li>
+                    <li>Full app functionality</li>
+                    <li>Unlimited usage</li>
+                    <li>Mobile & desktop access</li>
+                    <li>Community access</li>
+                </ul>
+                
+                <a href="email-signup-landing.html" class="plan-cta primary">
+                    Start Free - Pick 3 Apps
+                </a>
+            </div>
+            
+            <!-- Student Tier -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Student</h3>
+                <div class="plan-price">$15 <span>/month</span></div>
+                <p class="plan-billing">or $147/year (save $33)</p>
+                
+                <ul class="plan-features">
+                    <li>All 20+ interactive apps</li>
+                    <li>Unlimited usage</li>
+                    <li>All future updates</li>
+                    <li>Email support</li>
+                    <li>Community access</li>
+                    <li>Mobile & desktop access</li>
+                </ul>
+                
+                <a href="https://buy.stripe.com/3cI9AU8ZT1Fsg3a9pn63K04" class="plan-cta primary">
+                    Get Monthly - $15/mo
+                </a>
+                <a href="https://buy.stripe.com/5kQaEY5NHfwicQY30Z63K05" class="plan-cta yearly">
+                    Get Yearly - $147 (Save $33)
+                </a>
+            </div>
+            
+            <!-- Professional Tier (Featured) -->
+            <div class="pricing-card featured">
+                <div class="popular-badge">MOST POPULAR</div>
+                <h3 class="plan-name">Professional</h3>
+                <div class="plan-price">$39 <span>/month</span></div>
+                <p class="plan-billing">or $397/year (save $71)</p>
+                
+                <ul class="plan-features">
+                    <li>All 20+ interactive apps</li>
+                    <li>Unlimited usage</li>
+                    <li>Priority email support</li>
+                    <li>Downloadable resources</li>
+                    <li>Certificate of completion</li>
+                    <li>Early access to new features</li>
+                    <li>Private community forum</li>
+                    <li>Exclusive video tutorials</li>
+                </ul>
+                
+                <a href="https://buy.stripe.com/8x2cN67VP1Fs4kscBz63K06" class="plan-cta primary">
+                    Get Monthly - $39/mo
+                </a>
+                <a href="https://buy.stripe.com/14kdRacc5ck6eZ6dFD63K03" class="plan-cta yearly">
+                    Get Yearly - $397 (Save $71)
+                </a>
+            </div>
+        </div>
+        
+        <!-- Founder's Circle Banner -->
+        <div id="founders" class="founders-banner">
+            <div class="founders-badge">LIFETIME ACCESS</div>
+            <h2>Founder's Circle</h2>
+            <div class="founders-price">$697</div>
+            <p class="founders-subtitle">Lock in lifetime access to EVERYTHING we ever build. All current apps, all future apps, all updates forever. First 250 members only.</p>
+            <a href="https://buy.stripe.com/6oU14o1xrese6sA6db63K01" class="founders-cta">
+                Join Founder's Circle Now
+            </a>
+        </div>
+        
+        <!-- Guarantee Section -->
+        <div class="guarantee-section">
+            <h3>🛡️ 30-Day Money-Back Guarantee</h3>
+            <p>Try any paid plan risk-free for 30 days. If you're not completely satisfied, we'll refund your payment - no questions asked.</p>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h4 class="faq-question">What's included in the Founder's Circle?</h4>
+                <p class="faq-answer">Yes! One payment of $697 gives you lifetime access to everything - all current apps, all future apps, all updates, and all features we ever add. No recurring payments ever.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4 class="faq-question">Can I upgrade or downgrade my plan?</h4>
+                <p class="faq-answer">Absolutely! You can upgrade to a higher tier at any time. If you downgrade, the change will take effect at the start of your next billing cycle.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4 class="faq-question">How do I access the apps after payment?</h4>
+                <p class="faq-answer">After completing your Stripe payment, you'll receive an email with your access code within 24 hours. Use this code to unlock all apps from your dashboard.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4 class="faq-question">Do you offer student discounts?</h4>
+                <p class="faq-answer">Yes! The Student plan at $15/month is our special educational pricing. Just sign up with your .edu email address or provide student verification.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4 class="faq-question">What payment methods do you accept?</h4>
+                <p class="faq-answer">We accept all major credit cards, debit cards, and digital payment methods through our secure Stripe payment processor.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

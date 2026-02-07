@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle of Modes — Keys, Codes & Modes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap');
+    
+    :root {
+      --ocean-blue: #0066CC;
+      --golden-yellow: #FFD700;
+      --bg: #0a0e14;
+      --panel-bg: #0f1419;
+      --border: #1a2332;
+      --text: #e6e9f0;
+      --muted: #8b95a8;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    header {
+      padding: 40px 40px;
+      background: linear-gradient(135deg, #003d7a 0%, #002147 100%);
+      border-bottom: 4px solid var(--golden-yellow);
+      box-shadow: 0 4px 20px rgba(0, 102, 204, 0.4);
+      text-align: center;
+    }
+    
+    header .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    header .hero-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    }
+    
+    header .brand-logo {
+      font-size: 56px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, var(--golden-yellow), #FFA500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+      margin-bottom: 8px;
+    }
+    
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    
+    header .tagline {
+      color: var(--golden-yellow);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    header .subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      font-style: italic;
+      margin-top: 8px;
+    }
+    
+    .container {
+      display: grid;
+      grid-template-areas:
+        "left-legend wheel details"
+        "left-legend audio-controls details"
+        "quick-ref quick-ref quick-ref";
+      grid-template-columns: 280px 1fr 280px;
+      grid-template-rows: 1fr auto auto;
+      gap: 20px;
+      padding: 30px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    
+    .top-controls {
+      grid-area: controls;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: var(--panel-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+    }
+    
+    select, button {
+      padding: 12px 20px;
+      font-size: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      border: 2px solid var(--ocean-blue);
+      border-radius: 8px;
+      background: var(--panel-bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    select {
+      min-width: 180px;
+    }
+    
+    select:hover, select:focus {
+      border-color: var(--golden-yellow);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+    }
+    
+    button {
+      background: linear-gradient(135deg, var(--ocean-blue), #0052a3);
+      color: white;
+      border: none;
+    }
+    
+    button:hover {
+      background: linear-gradient(135deg, #0052a3, var(--ocean-blue));
+      box-shadow: 0 4px 16px rgba(0, 102, 204, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .wheel-container {
+      grid-area: wheel;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+    
+    svg {
+      max-width: 800px;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 40px rgba(0, 102, 204, 0.3));
+    }
+    
+    .left-legend {
+      grid-area: left-legend;
+      background: var(--panel-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    
+    .left-legend h3 {
+      color: var(--golden-yellow);
+      margin-bottom: 16px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+    
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--golden-yellow);
+    }
+    
+    .chip.selected {
+      background: rgba(0, 102, 204, 0.2);
+      border-color: var(--ocean-blue);
+    }
+    
+    .swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .details-panel {
+      grid-area: details;
+      background: var(--panel-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    
+    .details-panel h3 {
+      color: var(--golden-yellow);
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+    
+    .note-display {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    
+    .note-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 6px;
+      border-left: 3px solid var(--ocean-blue);
+    }
+    
+    .note-item .degree {
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 45px;
+    }
+    
+    .note-item .note {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--golden-yellow);
+    }
+    
+    .audio-controls {
+      grid-area: audio-controls;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .audio-controls button {
+      min-width: 180px;
+      padding: 16px 24px;
+      font-size: 16px;
+      background: linear-gradient(135deg, var(--ocean-blue), #0052a3);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .audio-controls button:hover {
+      background: linear-gradient(135deg, #0052a3, var(--ocean-blue));
+      box-shadow: 0 4px 16px rgba(0, 102, 204, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .quick-ref {
+      grid-area: quick-ref;
+      background: var(--panel-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .quick-ref-horizontal {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+    
+    .quick-ref-horizontal strong {
+      color: var(--golden-yellow);
+    }
+    
+    .ring-label {
+      fill: var(--golden-yellow);
+      font-size: 42px;
+      font-weight: 900;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .key-selector-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, var(--ocean-blue) 0%, #004d99 100%);
+      border: 4px solid var(--golden-yellow);
+      border-radius: 16px;
+      padding: 40px;
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.3);
+      display: none;
+    }
+    
+    .key-selector-overlay.active {
+      display: block;
+    }
+    
+    .key-selector-overlay h3 {
+      color: var(--golden-yellow);
+      margin-bottom: 24px;
+      text-align: center;
+      font-size: 28px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+    
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    
+    .key-btn {
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--ocean-blue), #0052a3);
+      color: white;
+      border: 2px solid var(--ocean-blue);
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .key-btn:hover {
+      background: linear-gradient(135deg, var(--golden-yellow), #FFA500);
+      border-color: var(--golden-yellow);
+      color: #000;
+      transform: scale(1.05);
+    }
+    
+    .center-circle-clickable {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .center-circle-clickable:hover {
+      filter: brightness(1.3);
+    }
+    
+    .current-key-display {
+      fill: var(--golden-yellow);
+      font-size: 96px;
+      font-weight: 900;
+      font-family: 'Montserrat', sans-serif;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+    
+    @keyframes pulseWave {
+      0% {
+        r: 280;
+        opacity: 0.8;
+        stroke-width: 8;
+      }
+      100% {
+        r: 1100;
+        opacity: 0;
+        stroke-width: 2;
+      }
+    }
+    
+    @keyframes breatheWedge {
+      0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      50% {
+        transform: scale(1.05);
+        filter: brightness(1.3);
+      }
+    }
+    
+    @keyframes rotateArc {
+      0% {
+        stroke-dashoffset: 6911;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+    
+    .pulse-circle {
+      fill: none;
+      stroke: #FFD700;
+      animation: pulseWave 0.4s ease-out forwards;
+    }
+    
+    .rotating-arc {
+      fill: none;
+      stroke: #FFD700;
+      stroke-width: 12;
+      stroke-linecap: round;
+      opacity: 0.7;
+      filter: drop-shadow(0 0 8px #FFD700);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <svg class="hero-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="1"/>
+        <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.85"/>
+        <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+        <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+        <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+        <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+        <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+        <circle cx="100" cy="100" r="50" fill="none" stroke="#2a4d6f" stroke-width="2.5"/>
+        <circle cx="100" cy="100" r="7" fill="#2a4d6f"/>
+        <line x1="40" y1="40" x2="160" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+        <line x1="160" y1="40" x2="40" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+        <line x1="100" y1="20" x2="100" y2="180" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+        <line x1="20" y1="100" x2="180" y2="100" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+      </svg>
+      <div class="brand-logo">KEYS, CODES & MODES</div>
+      <h1>Circle of Modes — Interactive Visualization</h1>
+      <div class="tagline">A Visual Approach to Understanding Music</div>
+      <div class="subtitle">Author: Benjamin Ryan • FreeStyle® Musical Device Inventor</div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="left-legend">
+      <h3>🎵 Mode Selection</h3>
+      <div id="left-legend"></div>
+    </div>
+    
+    <div class="wheel-container">
+      <svg id="chart" viewBox="0 0 2400 2400" xmlns="http://www.w3.org/2000/svg"></svg>
+      
+      <div id="key-selector" class="key-selector-overlay">
+        <h3>🎹 TYPE ROOT KEY</h3>
+        <div style="text-align: center; margin: 20px 0;">
+          <input 
+            type="text" 
+            id="key-input" 
+            placeholder="Enter key (C, C#, D, etc.)" 
+            style="
+              width: 300px;
+              padding: 18px 28px;
+              font-size: 28px;
+              font-weight: 700;
+              text-align: center;
+              background: rgba(255, 255, 255, 0.95);
+              color: #0066CC;
+              border: 4px solid #FFD700;
+              border-radius: 12px;
+              font-family: 'Montserrat', sans-serif;
+              text-transform: uppercase;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            "
+            onkeypress="handleKeyInput(event)"
+          />
+          <div style="margin-top: 16px; color: rgba(255, 255, 255, 0.9); font-size: 14px; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">
+            Valid keys: C, C#, Db, D, D#, Eb, E, F, F#, Gb, G, G#, Ab, A, A#, Bb, B
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 24px;">
+          <button class="key-btn" onclick="submitKey()" style="min-width: 140px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; border: none;">✓ Select</button>
+          <button class="key-btn" onclick="closeKeySelector()" style="min-width: 140px; background: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white;">✕ Close</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="details-panel">
+      <h3 id="mode-title">Select a Mode</h3>
+      <div class="note-display" id="note-display"></div>
+    </div>
+    
+    <div class="audio-controls">
+      <button onclick="showKeySelector()">🎹 Select Key</button>
+      <button onclick="playScale()">▶ Play Scale</button>
+      <button onclick="stopAudio()">⏹ Stop Audio</button>
+    </div>
+    
+    <div class="quick-ref">
+      <div class="quick-ref-horizontal">
+        <div><strong>ROOT</strong> (1°)</div>
+        <div><strong>2ND</strong> (2°)</div>
+        <div><strong>3RD</strong> (3°)</div>
+        <div><strong>4TH</strong> (4°)</div>
+        <div><strong>5TH</strong> (5°)</div>
+        <div><strong>6TH</strong> (6°)</div>
+        <div><strong>7TH</strong> (7°)</div>
+        <div style="margin-left: 20px; color: #8b95a8;">Click rings to hear notes • Click mode to select</div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const svg = document.getElementById('chart');
+    const leftLegend = document.getElementById('left-legend');
+    const noteDisplay = document.getElementById('note-display');
+    const modeTitle = document.getElementById('mode-title');
+    
+    const cx = 1200, cy = 1200;
+    const innerRadius = 280;
+    const outerRadius = 1100;
+    const ringCount = 7;
+    const tau = Math.PI * 2;
+    
+    let selectedWedge = 0;
+    let modes = [];
+    let cellGroups = [];
+    let audioContext = null;
+    let currentNotes = [];
+    let currentKey = 'C'; // Default starting key
+    
+    const chromaticNotes = [
+      {note: "C", color: "#FFFF00"},
+      {note: "C#", color: "#FFC400"},
+      {note: "D", color: "#FF8000"},
+      {note: "D#", color: "#FF4000"},
+      {note: "E", color: "#FF0000"},
+      {note: "F", color: "#C4007F"},
+      {note: "F#", color: "#80007F"},
+      {note: "G", color: "#4000FF"},
+      {note: "G#", color: "#0040FF"},
+      {note: "A", color: "#007FFF"},
+      {note: "A#", color: "#00FFC4"},
+      {note: "B", color: "#80FF00"}
+    ];
+    
+    const modeNames = ["Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"];
+    const modeIntervals = {
+      "Ionian": [0, 2, 4, 5, 7, 9, 11],
+      "Dorian": [0, 2, 3, 5, 7, 9, 10],
+      "Phrygian": [0, 1, 3, 5, 7, 8, 10],
+      "Lydian": [0, 2, 4, 6, 7, 9, 11],
+      "Mixolydian": [0, 2, 4, 5, 7, 9, 10],
+      "Aeolian": [0, 2, 3, 5, 7, 8, 10],
+      "Locrian": [0, 1, 3, 5, 6, 8, 10]
+    };
+    
+    const layers = [
+      {symbol: "ROOT", label: "Root Note"},
+      {symbol: "2ND", label: "2nd Degree"},
+      {symbol: "3RD", label: "3rd Degree"},
+      {symbol: "4TH", label: "4th Degree"},
+      {symbol: "5TH", label: "5th Degree"},
+      {symbol: "6TH", label: "6th Degree"},
+      {symbol: "7TH", label: "7th Degree"}
+    ];
+    
+    const allModes = [];
+    chromaticNotes.forEach(({note, color}) => {
+      modeNames.forEach(modeName => {
+        const intervals = modeIntervals[modeName];
+        const notes = intervals.map(interval => {
+          const idx = (chromaticNotes.findIndex(n => n.note === note) + interval) % 12;
+          return chromaticNotes[idx].note;
+        });
+        allModes.push({root: note, name: modeName, color: color, notes: notes});
+      });
+    });
+    
+    modes = [
+      allModes.find(m => m.root === "C" && m.name === "Ionian"),
+      allModes.find(m => m.root === "D" && m.name === "Dorian"),
+      allModes.find(m => m.root === "E" && m.name === "Phrygian"),
+      allModes.find(m => m.root === "F" && m.name === "Lydian"),
+      allModes.find(m => m.root === "G" && m.name === "Mixolydian"),
+      allModes.find(m => m.root === "A" && m.name === "Aeolian"),
+      allModes.find(m => m.root === "B" && m.name === "Locrian")
+    ];
+    
+    function polarToXY(r, angle) {
+      return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+    }
+    
+    function arcPath(rInner, rOuter, a0, a1) {
+      const largeArc = (a1 - a0 > Math.PI) ? 1 : 0;
+      const [x0i, y0i] = polarToXY(rInner, a0);
+      const [x1i, y1i] = polarToXY(rInner, a1);
+      const [x0o, y0o] = polarToXY(rOuter, a0);
+      const [x1o, y1o] = polarToXY(rOuter, a1);
+      return `M ${x0i} ${y0i} A ${rInner} ${rInner} 0 ${largeArc} 1 ${x1i} ${y1i} L ${x1o} ${y1o} A ${rOuter} ${rOuter} 0 ${largeArc} 0 ${x0o} ${y0o} Z`;
+    }
+    
+    function shadeColor(color, percent) {
+      const num = parseInt(color.replace("#",""), 16);
+      const amt = Math.round(2.55 * percent * 100);
+      const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+      const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
+      const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+      return "#" + (0x1000000 + R*0x10000 + G*0x100 + B).toString(16).slice(1);
+    }
+    
+    function drawWheel() {
+      svg.innerHTML = '';
+      cellGroups = [];
+      
+      const wedgeCount = modes.length;
+      const wedgeAngle = tau / wedgeCount;
+      const ringWidth = (outerRadius - innerRadius) / ringCount;
+      
+      const mainGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      
+      // Add clickable center circle for key selection - BLACK
+      const centerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      centerCircle.setAttribute("cx", cx);
+      centerCircle.setAttribute("cy", cy);
+      centerCircle.setAttribute("r", innerRadius);
+      centerCircle.setAttribute("fill", "#000000");
+      centerCircle.setAttribute("stroke", "#FFD700");
+      centerCircle.setAttribute("stroke-width", "4");
+      centerCircle.setAttribute("class", "center-circle-clickable");
+      centerCircle.addEventListener("click", randomSpinKey);
+      mainGroup.appendChild(centerCircle);
+      
+      // Add current key display in center - LARGER TEXT
+      const keyText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      keyText.setAttribute("x", cx);
+      keyText.setAttribute("y", cy - 30);
+      keyText.setAttribute("class", "current-key-display");
+      keyText.textContent = currentKey;
+      mainGroup.appendChild(keyText);
+      
+      // Add "CLICK TO SPIN" text below key
+      const spinText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      spinText.setAttribute("x", cx);
+      spinText.setAttribute("y", cy + 50);
+      spinText.setAttribute("fill", "#FFD700");
+      spinText.setAttribute("font-size", "20");
+      spinText.setAttribute("font-weight", "600");
+      spinText.setAttribute("text-anchor", "middle");
+      spinText.setAttribute("dominant-baseline", "central");
+      spinText.setAttribute("opacity", "0.7");
+      spinText.setAttribute("style", "pointer-events: none;");
+      spinText.textContent = "CLICK TO SPIN";
+      mainGroup.appendChild(spinText);
+      
+      for(let w = 0; w < wedgeCount; w++) {
+        const a0 = -Math.PI/2 + w * wedgeAngle;
+        const a1 = a0 + wedgeAngle;
+        const mode = modes[w];
+        
+        const div = document.createElementNS("http://www.w3.org/2000/svg","line");
+        const [dx0, dy0] = polarToXY(innerRadius, a0);
+        const [dx1, dy1] = polarToXY(outerRadius, a0);
+        div.setAttribute("x1", dx0);
+        div.setAttribute("y1", dy0);
+        div.setAttribute("x2", dx1);
+        div.setAttribute("y2", dy1);
+        div.setAttribute("stroke", "rgba(255,255,255,0.1)");
+        div.setAttribute("stroke-width", "3");
+        mainGroup.appendChild(div);
+        
+        for(let r = 0; r < ringCount; r++) {
+          const rInner = innerRadius + r * ringWidth;
+          const rOuter = rInner + ringWidth;
+          const cell = document.createElementNS("http://www.w3.org/2000/svg","path");
+          cell.setAttribute("d", arcPath(rInner, rOuter, a0, a1));
+          cell.setAttribute("fill", shadeColor(mode.color, -(0.10 + r * 0.06)));
+          cell.setAttribute("stroke", "rgba(255,255,255,0.08)");
+          cell.setAttribute("stroke-width", "2");
+          cell.style.cursor = "pointer";
+          cell.style.transition = "all 0.15s ease";
+          
+          const noteForCell = mode.notes[r];
+          
+          cell.addEventListener("click", () => {
+            selectWedge(w);
+            playNote(noteForCell, r);
+          });
+          
+          cell.addEventListener("mouseenter", () => hoverCell(w, r, true));
+          cell.addEventListener("mouseleave", () => hoverCell(w, r, false));
+          
+          mainGroup.appendChild(cell);
+          cellGroups.push({wedge: w, ring: r, el: cell, note: noteForCell});
+        }
+        
+        const labelAngle = (a0 + a1) / 2;
+        const [lx, ly] = polarToXY(outerRadius - 50, labelAngle);
+        const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+        text.setAttribute("x", lx);
+        text.setAttribute("y", ly);
+        text.setAttribute("fill", "#ffffff");
+        text.setAttribute("font-size", "44");
+        text.setAttribute("font-weight", "800");
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "central");
+        text.style.pointerEvents = "none";
+        text.textContent = mode.name;
+        mainGroup.appendChild(text);
+      }
+      
+      for(let r = 0; r < ringCount; r++) {
+        // Move labels one ring to the right by adding one ring width
+        const radius = innerRadius + (r + 1) * ringWidth + ringWidth / 2;
+        const angle = 0;
+        const [lx, ly] = polarToXY(radius, angle);
+        
+        const labelText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        labelText.setAttribute("x", lx - 108);
+        labelText.setAttribute("y", ly);
+        labelText.setAttribute("class", "ring-label");
+        labelText.setAttribute("text-anchor", "middle");
+        labelText.setAttribute("dominant-baseline", "central");
+        labelText.textContent = layers[r].symbol;
+        mainGroup.appendChild(labelText);
+      }
+      
+      svg.appendChild(mainGroup);
+    }
+    
+    function renderDetails(wedgeIndex) {
+      const mode = modes[wedgeIndex];
+      modeTitle.textContent = `${mode.root} ${mode.name}`;
+      
+      noteDisplay.innerHTML = '';
+      mode.notes.forEach((note, i) => {
+        const item = document.createElement('div');
+        item.className = 'note-item';
+        item.innerHTML = `
+          <span class="degree">${layers[i].symbol}</span>
+          <span class="note">${note}</span>
+        `;
+        noteDisplay.appendChild(item);
+      });
+    }
+    
+    function selectWedge(w) {
+      selectedWedge = w;
+      document.querySelectorAll('.chip').forEach((c, i) => {
+        c.classList.toggle('selected', i === w);
+      });
+      renderDetails(w);
+    }
+    
+    function hoverCell(wedge, ring, isHover) {
+      const cells = cellGroups.filter(c => c.wedge === wedge && c.ring === ring);
+      cells.forEach(c => {
+        if (isHover) {
+          c.el.style.filter = 'brightness(1.4) saturate(1.3)';
+          c.el.setAttribute('stroke', '#FFD700');
+          c.el.setAttribute('stroke-width', '5');
+        } else {
+          c.el.style.filter = '';
+          c.el.setAttribute('stroke', 'rgba(255,255,255,0.08)');
+          c.el.setAttribute('stroke-width', '2');
+        }
+      });
+    }
+    
+    function playNote(note, ring) {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      const noteOrder = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      const mode = modes[selectedWedge];
+      const rootNote = mode.root;
+      
+      // Get the index of root and current note in chromatic scale
+      const rootIndex = noteOrder.indexOf(rootNote);
+      const currentIndex = noteOrder.indexOf(note);
+      
+      // Determine octave: start at 4 for root, go to 5 if we've wrapped around
+      let octave = 4;
+      if (ring > 0 && currentIndex < rootIndex) {
+        octave = 5; // We've wrapped to next octave
+      }
+      
+      const noteFreqs = {
+        "C": 261.63, "C#": 277.18, "D": 293.66, "D#": 311.13,
+        "E": 329.63, "F": 349.23, "F#": 369.99, "G": 392.00,
+        "G#": 415.30, "A": 440.00, "A#": 466.16, "B": 493.88
+      };
+      
+      // Get base frequency and adjust for octave
+      const baseFreq = noteFreqs[note] || 440;
+      const frequency = baseFreq * Math.pow(2, octave - 4);
+      
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      
+      osc.frequency.value = frequency;
+      osc.type = 'sine';
+      
+      gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      
+      osc.start(audioContext.currentTime);
+      osc.stop(audioContext.currentTime + 0.3);
+      
+      currentNotes.push(osc);
+    }
+    
+    function playScale() {
+      stopAudio();
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      const mode = modes[selectedWedge];
+      
+      // Create animation layer group
+      const animGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      animGroup.setAttribute("id", "animation-layer");
+      svg.appendChild(animGroup);
+      
+      // Apply breathing animation to selected wedge
+      const wedgeCells = cellGroups.filter(c => c.wedge === selectedWedge);
+      const wedgeGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      wedgeGroup.style.transformOrigin = `${cx}px ${cy}px`;
+      wedgeGroup.style.animation = `breatheWedge ${7 * 0.4}s ease-in-out`;
+      
+      mode.notes.forEach((note, i) => {
+        setTimeout(() => {
+          // 1. PULSE WAVE from center to specific ring
+          createPulseWave(i);
+          
+          // 2. LIGHT UP WEDGE SEGMENT for this ring (clockwise progression)
+          highlightRing(i);
+          
+          // 3. Play note
+          playNote(note, i);
+        }, i * 400);
+      });
+      
+      // Remove animation layer after completion
+      setTimeout(() => {
+        const layer = document.getElementById('animation-layer');
+        if (layer) layer.remove();
+      }, 7 * 400 + 500);
+    }
+    
+    function createPulseWave(ringIndex) {
+      const animGroup = document.getElementById('animation-layer');
+      if (!animGroup) return;
+      
+      const mode = modes[selectedWedge];
+      const ringWidth = (outerRadius - innerRadius) / ringCount;
+      
+      // Calculate target radius for this specific ring
+      const targetRadius = innerRadius + (ringIndex + 1) * ringWidth;
+      
+      const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      pulse.setAttribute("cx", cx);
+      pulse.setAttribute("cy", cy);
+      pulse.setAttribute("r", innerRadius);
+      
+      // Use mode's chromatic color
+      pulse.setAttribute("stroke", mode.color);
+      pulse.setAttribute("fill", "none");
+      pulse.setAttribute("stroke-width", "8");
+      pulse.setAttribute("opacity", "0.8");
+      
+      // Animate to specific ring
+      pulse.style.transition = `r 0.4s ease-out, opacity 0.4s ease-out, stroke-width 0.4s ease-out`;
+      animGroup.appendChild(pulse);
+      
+      // Trigger animation
+      setTimeout(() => {
+        pulse.setAttribute("r", targetRadius);
+        pulse.setAttribute("opacity", "0");
+        pulse.setAttribute("stroke-width", "2");
+      }, 10);
+      
+      // Remove after animation
+      setTimeout(() => pulse.remove(), 450);
+    }
+    
+    function highlightRing(ringIndex) {
+      // Light up the WEDGE SEGMENT for this ring
+      const cells = cellGroups.filter(c => c.wedge === selectedWedge && c.ring === ringIndex);
+      cells.forEach(c => {
+        // Intense golden highlight on the wedge segment
+        c.el.style.filter = 'brightness(1.8) saturate(1.5)';
+        c.el.setAttribute('stroke', '#FFD700');
+        c.el.setAttribute('stroke-width', '8');
+        
+        // Also create a glowing overlay clone
+        const clone = c.el.cloneNode(true);
+        clone.setAttribute('fill', '#FFD700');
+        clone.setAttribute('opacity', '0.4');
+        clone.setAttribute('stroke', 'none');
+        clone.style.filter = 'blur(8px)';
+        clone.setAttribute('id', `glow-${selectedWedge}-${ringIndex}`);
+        c.el.parentNode.appendChild(clone);
+        
+        setTimeout(() => {
+          c.el.style.filter = '';
+          c.el.setAttribute('stroke', 'rgba(255,255,255,0.08)');
+          c.el.setAttribute('stroke-width', '2');
+          
+          // Remove glow clone
+          const glowClone = document.getElementById(`glow-${selectedWedge}-${ringIndex}`);
+          if (glowClone) glowClone.remove();
+        }, 320);
+      });
+    }
+    
+    function stopAudio() {
+      currentNotes.forEach(osc => {
+        try { osc.stop(); } catch(e) {}
+      });
+      currentNotes = [];
+    }
+    function showKeySelector() {
+      document.getElementById('key-selector').classList.add('active');
+      setTimeout(() => {
+        document.getElementById('key-input').focus();
+        document.getElementById('key-input').value = '';
+      }, 100);
+    }
+    
+    function closeKeySelector() {
+      document.getElementById('key-selector').classList.remove('active');
+    }
+    
+    function handleKeyInput(event) {
+      if (event.key === 'Enter') {
+        submitKey();
+      }
+    }
+    
+    function submitKey() {
+      const input = document.getElementById('key-input').value.trim().toUpperCase();
+      
+      // Map common variations to standard chromatic notes
+      const keyMap = {
+        'C': 'C', 'C#': 'C#', 'DB': 'C#', 'D♭': 'C#',
+        'D': 'D', 'D#': 'D#', 'EB': 'D#', 'E♭': 'D#',
+        'E': 'E',
+        'F': 'F', 'F#': 'F#', 'GB': 'F#', 'G♭': 'F#',
+        'G': 'G', 'G#': 'G#', 'AB': 'G#', 'A♭': 'G#',
+        'A': 'A', 'A#': 'A#', 'BB': 'A#', 'B♭': 'A#',
+        'B': 'B'
+      };
+      
+      const normalizedKey = keyMap[input];
+      
+      if (normalizedKey) {
+        selectKey(normalizedKey);
+      } else {
+        alert('Invalid key! Please enter: C, C#, Db, D, D#, Eb, E, F, F#, Gb, G, G#, Ab, A, A#, Bb, or B');
+        document.getElementById('key-input').focus();
+      }
+    }
+    
+    function randomSpinKey() {
+      // Random key selection
+      const keys = chromaticNotes.map(n => n.note);
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      currentKey = randomKey;
+      rebuildForKey(randomKey);
+    }
+    
+    function selectKey(key) {
+      currentKey = key;
+      closeKeySelector();
+      rebuildForKey(key);
+    }
+    
+    function rebuildForKey(key) {
+      // Get all 7 modes for the selected key
+      modes = modeNames.map(modeName => 
+        allModes.find(m => m.root === key && m.name === modeName)
+      ).filter(m => m);
+      
+      drawWheel();
+      updateLegends();
+      selectedWedge = 0;
+      renderDetails(0);
+      selectWedge(0);
+    }
+    
+    function updateLegends() {
+      leftLegend.innerHTML = '';
+      modes.forEach((m, i) => {
+        const chip = document.createElement("div");
+        chip.className = "chip";
+        chip.id = `chip-${i}`;
+        chip.addEventListener("click", () => {
+          selectWedge(i);
+          playScale(); // PLAY SCALE when mode chip is clicked
+        });
+        chip.addEventListener("mouseenter", () => hoverCell(i, 0, true));
+        chip.addEventListener("mouseleave", () => hoverCell(i, 0, false));
+        
+        const swatch = document.createElement("div");
+        swatch.className = "swatch";
+        swatch.style.background = m.color;
+        
+        const label = document.createElement("div");
+        label.className = "label";
+        label.textContent = `${m.root} ${m.name}`;
+        
+        chip.appendChild(swatch);
+        chip.appendChild(label);
+        leftLegend.appendChild(chip);
+      });
+    }
+    
+    
+    // Initialize
+    drawWheel();
+    updateLegends();
+    renderDetails(0);
+    selectWedge(0);
+  </script>
+</body>
+</html>

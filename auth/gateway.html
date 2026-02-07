@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Gateway | Keys, Codes & Modes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            padding: 1rem 1rem 3rem 1rem;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.08;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 25s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 20px) scale(1.05); }
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        h1 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+            animation: fadeInUp 1.2s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(232, 232, 232, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            animation: fadeInUp 1.4s ease;
+        }
+        
+        .gateway-box {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1) 0%, rgba(139, 107, 163, 0.1) 100%);
+            border: 2px solid rgba(0, 128, 128, 0.4);
+            border-radius: 20px;
+            padding: 2rem 2rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 128, 128, 0.2);
+            animation: fadeInUp 1.6s ease;
+        }
+        
+        .gateway-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .gateway-text {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: rgba(232, 232, 232, 0.85);
+            margin-bottom: 2rem;
+        }
+        
+        .code-display {
+            background: rgba(244, 208, 63, 0.1);
+            border: 2px solid var(--primary-gold);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+            font-weight: bold;
+        }
+        
+        .instruction-divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-teal), var(--primary-gold));
+            margin: 2rem auto;
+        }
+        
+        .instruction-text {
+            font-size: 1.2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+        }
+        
+        /* Password Entry Section */
+        .password-section {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.15) 0%, rgba(139, 107, 163, 0.15) 100%);
+            border: 2px solid rgba(0, 128, 128, 0.5);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            margin-top: 1.5rem;
+            animation: fadeInUp 1.8s ease;
+        }
+        
+        .password-label {
+            font-size: 1.1rem;
+            color: rgba(232, 232, 232, 0.9);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .input-wrapper {
+            margin-bottom: 1.5rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            background: rgba(15, 15, 30, 0.8);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 10px;
+            color: var(--light-text);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 20px rgba(0, 128, 128, 0.4);
+            background: rgba(15, 15, 30, 0.9);
+        }
+        
+        input::placeholder {
+            color: rgba(232, 232, 232, 0.4);
+            letter-spacing: 1px;
+        }
+        
+        .enter-btn {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-teal), #006666);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 30px rgba(0, 128, 128, 0.3);
+            animation: pulse 2s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(0, 128, 128, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(0, 128, 128, 0.5);
+            }
+        }
+        
+        .enter-btn:hover {
+            background: linear-gradient(135deg, #006666, var(--primary-teal));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 128, 128, 0.5);
+        }
+        
+        .error {
+            background: rgba(207, 122, 90, 0.2);
+            border: 1px solid var(--primary-coral);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            color: #ffcccc;
+            text-align: center;
+        }
+        
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .enter-btn:hover .arrow {
+            transform: translateX(8px);
+        }
+        
+        .note {
+            font-size: 0.95rem;
+            color: rgba(232, 232, 232, 0.6);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        
+        .hint-text {
+            font-size: 0.9rem;
+            color: rgba(232, 232, 232, 0.5);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem 3rem 0.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .gateway-box {
+                padding: 2rem 1.5rem;
+            }
+            
+            .code-display {
+                font-size: 1.4rem;
+                padding: 1rem;
+            }
+            
+            .password-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .enter-btn {
+                padding: 1.2rem 2rem;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <!-- Logo -->
+        <svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+            <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+            <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+            <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+            <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+            <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+            <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+            <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+            <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+            <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+            <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+        </svg>
+        
+        <h1>The Gateway Awaits</h1>
+        
+        <p class="subtitle">
+            You've received your access code.<br>
+            Now it's time to unlock the treasure trove.
+        </p>
+        
+        <!-- Code Display Section -->
+        <div class="gateway-box">
+            <div class="gateway-title">Your Access Code</div>
+            
+            <p class="gateway-text">
+                This is your key to unlocking all 20+ revolutionary music theory applications.
+            </p>
+            
+            <div class="code-display" id="accessCode">
+                KCM2026Premium!
+            </div>
+            
+            <p class="gateway-text" style="margin-top: 2rem; font-size: 1rem; color: rgba(232, 232, 232, 0.7);">
+                💡 <em>Copy this code and paste it below, or type it carefully.</em>
+            </p>
+        </div>
+        
+        <div class="instruction-divider"></div>
+        
+        <p class="instruction-text">Enter Your Access Code Below</p>
+        
+        <!-- Password Entry Section -->
+        <div class="password-section">
+            <div class="error" id="errorMessage">
+                Incorrect code. Please try again.
+            </div>
+            
+            <div class="password-label">Paste or type your access code:</div>
+            
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="password" 
+                    placeholder="KCM2026Premium!"
+                    autofocus
+                >
+            </div>
+            
+            <button onclick="checkPass()" class="enter-btn">
+                Access the Treasure Trove <span class="arrow">→</span>
+            </button>
+            
+            <p class="hint-text">
+                💡 Tip: Copy the code above and paste it here
+            </p>
+        </div>
+        
+        <p class="note">
+            This is beta access. Your feedback shapes what emerges.
+        </p>
+    </div>
+    
+    <script>
+        // PASSWORDS
+        const PASS1 = "KCM2026Premium!";
+        const PASS2 = "KCM2026Founder!";
+        
+        // Get access code from localStorage and display it
+        window.addEventListener('DOMContentLoaded', function() {
+            const userTier = localStorage.getItem('userTier');
+            const accessCode = document.getElementById('accessCode');
+            const placeholder = document.getElementById('password');
+            
+            // Update code display based on tier
+            if (userTier === 'founder') {
+                accessCode.textContent = 'KCM2026Founder!';
+                placeholder.placeholder = 'KCM2026Founder!';
+            } else {
+                accessCode.textContent = 'KCM2026Premium!';
+                placeholder.placeholder = 'KCM2026Premium!';
+            }
+            
+            console.log('✅ Gateway page loaded');
+            console.log('User tier:', userTier || 'premium (default)');
+        });
+        
+        // Check password function
+        function checkPass() {
+            const input = document.getElementById('password').value.trim();
+            const error = document.getElementById('errorMessage');
+            
+            console.log('🔍 Checking access code...');
+            
+            if (input === PASS1) {
+                console.log('✅ PREMIUM CODE CORRECT');
+                localStorage.setItem('userTier', 'premium');
+                localStorage.setItem('accessGranted', 'true');
+                localStorage.setItem('accessLevel', 'premium');
+                console.log('🚀 Redirecting to offerings...');
+                window.location.href = 'offerings.html';
+            } 
+            else if (input === PASS2) {
+                console.log('✅ FOUNDER CODE CORRECT');
+                localStorage.setItem('userTier', 'founder');
+                localStorage.setItem('accessGranted', 'true');
+                localStorage.setItem('accessLevel', 'founder');
+                console.log('🚀 Redirecting to offerings...');
+                window.location.href = 'offerings.html';
+            } 
+            else {
+                console.log('❌ Incorrect code');
+                error.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+                
+                // Hide error after 3 seconds
+                setTimeout(function() {
+                    error.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Allow Enter key
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkPass();
+            }
+        });
+        
+        console.log('✅ Gateway with password entry loaded');
+    </script>
+</body>
+</html>

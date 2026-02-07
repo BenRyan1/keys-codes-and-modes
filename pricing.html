@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Cookie Consent CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+
+<style>
+/* Custom styling for cookie consent banner */
+.cc-window {
+    font-family: 'Montserrat', sans-serif !important;
+    background: #0a0a15 !important;
+    border: 2px solid #008080 !important;
+    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3) !important;
+}
+.cc-btn {
+    background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important;
+    border: none !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+.cc-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0, 128, 128, 0.4) !important;
+}
+.cc-link { color: #F4D03F !important; }
+.cc-link:hover { color: #008080 !important; }
+</style>
+
+<!-- Cookie Consent Script -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  window.cookieconsent.initialise({
+    palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
+    theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
+    onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
+    onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
+  });
+});
+function loadGoogleAnalytics() {
+  if (window.gaLoaded) return; window.gaLoaded = true;
+  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
+  gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
+}
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+    <title>Pricing Plans | Keys, Codes & Modes</title>
+    <meta name="description" content="Choose your perfect plan. Student, Professional, or Lifetime Founder's Circle - unlock the world's most comprehensive visual music theory platform.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 20s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+        }
+        
+        header {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+        
+        .back-link {
+            color: var(--primary-gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary-gold);
+            border-radius: 50px;
+        }
+        
+        .back-link:hover {
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 15px 40px rgba(244, 208, 63, 0.3);
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--primary-gold);
+            box-shadow: 0 10px 40px rgba(244, 208, 63, 0.3);
+        }
+        
+        .pricing-card.featured::before {
+            content: '⭐ MOST POPULAR';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .tier-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price span {
+            font-size: 1.2rem;
+            color: #999;
+        }
+        
+        .price-note {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .features-list li {
+            padding: 0.75rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #ccc;
+        }
+        
+        .features-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-teal);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
+            color: var(--dark-bg);
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 35px rgba(244, 208, 63, 0.6);
+        }
+        
+        .founder-section {
+            background: rgba(139, 107, 163, 0.1);
+            border: 3px solid var(--primary-purple);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .founder-section h2 {
+            font-family: var(--font-display);
+            color: var(--primary-purple);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .founder-section .price {
+            color: var(--primary-purple);
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h2 {
+                font-size: 2rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <header>
+        <div class="header-content">
+            <div class="logo-text">
+                <h1>KEYS, CODES & MODES</h1>
+            </div>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="page-header">
+            <h2>Your Musical Journey Starts Here</h2>
+            <p>Choose the plan that fits your goals. Every tier unlocks our revolutionary visual approach to mastering music theory.</p>
+        </div>
+        
+        <!-- STUDENT & PROFESSIONAL TIERS -->
+        <div class="pricing-grid">
+            
+            <!-- STUDENT TIER - Monthly -->
+            <div class="pricing-card">
+                <h3 class="tier-name">Student Tier</h3>
+                <div class="price">$15<span>/month</span></div>
+                <p class="price-note">Begin your journey with full access to our complete library</p>
+                
+                <ul class="features-list">
+                    <li>Full access to all 20+ interactive apps</li>
+                    <li>Visual music theory that actually makes sense</li>
+                    <li>Learn at your own pace, on your schedule</li>
+                    <li>Beautiful guitar & piano visualizations</li>
+                    <li>Master the Circle of Fifths intuitively</li>
+                    <li>Unlock the CAGED system secrets</li>
+                    <li>New apps and features added regularly</li>
+                </ul>
+                
+                <a href="https://buy.stripe.com/3cI9AU8ZT1Fsg3a9pn63K04" class="cta-button">
+                    Start Learning →
+                </a>
+            </div>
+            
+            <!-- STUDENT TIER - Yearly (BEST VALUE) -->
+            <div class="pricing-card featured">
+                <h3 class="tier-name">Student Tier</h3>
+                <div class="price">$147<span>/year</span></div>
+                <p class="price-note">Best value! Save $33/year • That's just $12.25/month</p>
+                
+                <ul class="features-list">
+                    <li>Everything in Student Monthly, plus:</li>
+                    <li><strong>2+ months absolutely FREE</strong></li>
+                    <li>Priority support - we're here to help!</li>
+                    <li>Be first to try exciting new features</li>
+                    <li>Exclusive downloadable study guides</li>
+                    <li>Cancel anytime, no questions asked</li>
+                </ul>
+                
+                <a href="https://buy.stripe.com/5kQaEY5NHfwicQY30Z63K05" class="cta-button">
+                    Get Best Value →
+                </a>
+            </div>
+            
+            <!-- PROFESSIONAL TIER - Monthly -->
+            <div class="pricing-card">
+                <h3 class="tier-name">Professional</h3>
+                <div class="price">$39<span>/month</span></div>
+                <p class="price-note">Elevate your craft with advanced features and direct support</p>
+                
+                <ul class="features-list">
+                    <li>Everything in Student Tier, plus:</li>
+                    <li>Advanced composition and arrangement tools</li>
+                    <li>Export and share your discoveries</li>
+                    <li>Seamless access across all your devices</li>
+                    <li>Priority support - we've got your back</li>
+                    <li>Exclusive masterclasses with Ben Ryan</li>
+                    <li>Commercial use license included</li>
+                </ul>
+                
+                <a href="https://buy.stripe.com/8x2cN67VP1Fs4kscBz63K06" class="cta-button">
+                    Go Professional →
+                </a>
+            </div>
+            
+            <!-- PROFESSIONAL TIER - Yearly -->
+            <div class="pricing-card">
+                <h3 class="tier-name">Professional</h3>
+                <div class="price">$397<span>/year</span></div>
+                <p class="price-note">Commit to your growth • Save $71/year at just $33/month</p>
+                
+                <ul class="features-list">
+                    <li>Everything in Professional Monthly, plus:</li>
+                    <li><strong>2 months absolutely FREE</strong></li>
+                    <li>Personal 1-on-1 onboarding with our team</li>
+                    <li>Custom teaching materials tailored for you</li>
+                    <li>Direct communication line to Ben Ryan</li>
+                    <li>Lifetime access to all recorded workshops</li>
+                </ul>
+                
+                <a href="https://buy.stripe.com/14AdRacc5ck6eZ6dFD63K03" class="cta-button">
+                    Save Big →
+                </a>
+            </div>
+            
+        </div>
+        
+        <!-- FOUNDER'S CIRCLE - LIFETIME -->
+        <div class="founder-section" id="founders">
+            <h2>🏆 Join the Founder's Circle</h2>
+            <div class="price">$697<span> one-time investment</span></div>
+            <p class="price-note" style="font-size: 1.1rem; margin-bottom: 2rem; color: var(--primary-gold);">
+                Become a founding member and enjoy lifetime access to everything we create, forever. Limited to just 250 visionaries.
+            </p>
+            
+            <ul class="features-list" style="max-width: 600px; margin: 0 auto 2rem; text-align: left;">
+                <li><strong>Lifetime access to everything - now and forever</strong></li>
+                <li>Never pay another subscription - you're set for life</li>
+                <li>Exclusive Founder's badge and community recognition</li>
+                <li>Personal mentorship access with Ben Ryan</li>
+                <li>Help shape the future - vote on new features</li>
+                <li>Private community forum with fellow founders</li>
+                <li>All Professional benefits, yours forever</li>
+                <li>Transferable license - share with family or students</li>
+            </ul>
+            
+            <a href="https://buy.stripe.com/6oU14o1xrese6sA6db63K01" class="cta-button" style="max-width: 400px; margin: 0 auto; background: linear-gradient(135deg, var(--primary-purple), #7a5a93);">
+                Join Founder's Circle →
+            </a>
+            
+            <p style="margin-top: 1.5rem; color: var(--light-text); font-size: 1rem;">
+                🔥 Limited to just 250 founding members • Only <span style="color: var(--primary-gold); font-weight: 700; font-size: 1.1rem;">37 spots remaining</span>
+            </p>
+        </div>
+        
+        <!-- ACCESS CODE SECTION -->
+        <div style="background: linear-gradient(135deg, rgba(0, 128, 128, 0.15), rgba(139, 107, 163, 0.1)); border: 2px solid var(--primary-teal); border-radius: 20px; padding: 3rem; text-align: center; margin-top: 3rem; box-shadow: 0 8px 30px rgba(0, 128, 128, 0.2);">
+            <h2 style="font-family: var(--font-display); color: var(--primary-gold); font-size: 2rem; margin-bottom: 1rem;">
+                ✨ Have a Special Access Code?
+            </h2>
+            <p style="color: var(--light-text); font-size: 1.15rem; margin-bottom: 2rem; line-height: 1.6;">
+                Been invited to our beta program or given early access? Enter your code below and unlock your premium experience instantly!
+            </p>
+            
+            <form id="accessCodeForm" onsubmit="redeemAccessCode(event)" style="max-width: 500px; margin: 0 auto 2rem;">
+                <input 
+                    type="text" 
+                    id="accessCodeInput" 
+                    placeholder="Enter your access code" 
+                    style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 50px; color: white; font-size: 1rem; text-align: center; margin-bottom: 1rem;"
+                    required>
+                <button 
+                    type="submit" 
+                    style="width: 100%; padding: 1.25rem; background: linear-gradient(135deg, var(--primary-teal), #007070); color: white; border: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 25px rgba(0, 128, 128, 0.4);"
+                    onmouseover="this.style.transform='scale(1.05)'"
+                    onmouseout="this.style.transform='scale(1)'">
+                    Redeem Access Code →
+                </button>
+            </form>
+            
+            <p style="color: var(--light-text); font-size: 1rem; margin-top: 1rem;">
+                Don't have a code yet? <a href="contact.html" style="color: var(--primary-gold); text-decoration: none; font-weight: 600; transition: all 0.3s;">Reach out to Ben</a> and let's chat about getting you access!
+            </p>
+        </div>
+        
+    </div>
+    
+    <script>
+        // Access Code Redemption
+        function redeemAccessCode(event) {
+            event.preventDefault();
+            
+            const codeInput = document.getElementById('accessCodeInput');
+            const code = codeInput.value.trim().toUpperCase();
+            
+            // Valid access codes
+            const validCodes = [
+                'KCM2026PREMIUM!',
+                'KCM2026FOUNDER!',
+                'BETATESTER2026!',
+                'PRESSACCESS2026!',
+                'FRIENDOFBEN2026!',
+                'DEMOACCESS2026!'
+            ];
+            
+            if (validCodes.includes(code)) {
+                // Valid code - set access
+                localStorage.setItem('validAccessCode', 'true');
+                localStorage.setItem('accessCodeUsed', code);
+                localStorage.setItem('paidMember', 'true');
+                
+                // Set tier based on code
+                if (code.includes('FOUNDER') || code.includes('FRIENDOFBEN')) {
+                    localStorage.setItem('userTier', 'founder');
+                } else {
+                    localStorage.setItem('userTier', 'premium');
+                }
+                
+                // Success message and redirect
+                alert('✅ Access code validated! Redirecting to your apps...');
+                
+                setTimeout(() => {
+                    window.location.href = `offerings.html?code=${code}`;
+                }, 500);
+                
+            } else {
+                // Invalid code
+                alert('❌ Invalid access code. Please check your code and try again, or contact Ben Ryan for assistance.');
+                codeInput.value = '';
+                codeInput.focus();
+            }
+        }
+        
+        // Track Stripe success returns
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+        const tier = urlParams.get('tier');
+        
+        if (success === 'true') {
+            // Set user as paid member
+            localStorage.setItem('paidMember', 'true');
+            
+            if (tier) {
+                localStorage.setItem('userTier', tier);
+            }
+            
+            // Track with Google Analytics
+            trackEvent(, 'purchase', {
+                    'event_category': 'Pricing',
+                    'event_label': tier || 'unknown'
+                });
+            }
+            
+            // Redirect to offerings page
+            setTimeout(() => {
+                window.location.href = 'offerings.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

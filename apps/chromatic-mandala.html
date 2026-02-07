@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Mandala | Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-logo {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 80px);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .mandala-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #mandalaCanvas {
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .controls-panel {
+            width: 320px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        h3 {
+            color: #FFD700;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+        }
+
+        .hint {
+            color: #888;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 8px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.5);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            font-size: 1.1em;
+            padding: 16px;
+        }
+
+        .loop-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            font-size: 1.1em;
+            padding: 16px;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            font-size: 1.1em;
+            padding: 16px;
+        }
+
+        .symmetry-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .symmetry-btns button {
+            padding: 12px 8px;
+            font-size: 0.9em;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .info-box {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 3px solid #FFD700;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .current-notes {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            min-height: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .note-pill {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-indicator {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hero-logo">CHROMATIC MANDALA</div>
+    </div>
+
+    <div class="main-container">
+        <div class="mandala-section">
+            <canvas id="mandalaCanvas" width="700" height="700"></canvas>
+            <div class="mode-indicator">
+                <strong>Current Key:</strong> <span id="currentKey">C</span> | 
+                <strong>Mode:</strong> <span id="currentMode">Chromatic Circle</span>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="section">
+                <h3>🎼 Circle Type</h3>
+                <button onclick="showChromatic()" id="btn-chromatic" class="active">Chromatic Circle<br><small>Rainbow color order</small></button>
+                <button onclick="showCircleOfFifths()" id="btn-fifths">Circle of Fifths<br><small>Perfect 5th intervals</small></button>
+            </div>
+
+            <div class="section">
+                <h3>🎹 Root Key</h3>
+                <div class="hint">Choose your starting note</div>
+                <select id="keySelect" onchange="changeKey()">
+                    <option value="0">C</option>
+                    <option value="1">C# / Db</option>
+                    <option value="2">D</option>
+                    <option value="3">D# / Eb</option>
+                    <option value="4">E</option>
+                    <option value="5">F</option>
+                    <option value="6">F# / Gb</option>
+                    <option value="7">G</option>
+                    <option value="8">G# / Ab</option>
+                    <option value="9">A</option>
+                    <option value="10">A# / Bb</option>
+                    <option value="11">B</option>
+                </select>
+            </div>
+
+            <div class="section">
+                <h3>🎨 Symmetry</h3>
+                <div class="hint">How many copies when you click</div>
+                <div class="symmetry-btns">
+                    <button onclick="setSymmetry(1)" id="sym-1">1×</button>
+                    <button onclick="setSymmetry(3)" id="sym-3" class="active">3×</button>
+                    <button onclick="setSymmetry(6)" id="sym-6">6×</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>🎵 Quick Patterns</h3>
+                <button onclick="loadPattern('major')">Major Chord</button>
+                <button onclick="loadPattern('minor')">Minor Chord</button>
+                <button onclick="loadPattern('scale')">Major Scale</button>
+                <button onclick="loadPattern('penta')">Pentatonic</button>
+            </div>
+
+            <div class="section">
+                <h3>▶️ Play Music</h3>
+                <button class="play-btn" onclick="playAllNotes()">🎵 Play All</button>
+                <button class="loop-btn" onclick="toggleLoop()" id="loopBtn">🔄 Start Loop</button>
+                <button class="clear-btn" onclick="clearAll()">🗑️ Clear</button>
+            </div>
+
+            <div class="section">
+                <h3>📝 Active Notes</h3>
+                <div class="current-notes" id="notesList">
+                    <span style="color: #888;">Click the mandala!</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>How to Use:</strong><br>
+                • Pick circle type (Chromatic or Fifths)<br>
+                • Choose your root key<br>
+                • Click colored sections = outer ring<br>
+                • Click inner circles = inner octaves<br>
+                • Use symmetry for patterns!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chromatic Colors - CORRECT COLORS FOR EACH NOTE
+        const chromaticColors = {
+            'C': '#FFFF00', 'C#': '#FFC400', 'D': '#FF8000', 'D#': '#FF4000',
+            'E': '#FF0000', 'F': '#C4007F', 'F#': '#8000FF', 'G': '#4000FF',
+            'G#': '#0000FF', 'A': '#007FFF', 'A#': '#00FF80', 'B': '#80FF00'
+        };
+
+        const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        
+        // Circle of Fifths order (C at top, going clockwise by perfect 5ths)
+        const fifthsOrder = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
+
+        // State
+        const canvas = document.getElementById('mandalaCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const outerRadius = 320;
+        const numRings = 3; // 3 concentric rings for octaves
+
+        let currentMode = 'chromatic';
+        let rootKey = 0; // 0 = C, 1 = C#, etc.
+        let activeNotes = new Set();
+        let symmetry = 3;
+        let audioContext;
+        let isLooping = false;
+        let loopInterval = null;
+
+        // Initialize
+        drawMandala();
+        setupEvents();
+
+        function setupEvents() {
+            canvas.addEventListener('click', handleClick);
+            document.addEventListener('click', () => {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }, { once: true });
+        }
+
+        function drawMandala() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Get note order based on current mode and transpose by rootKey
+            const baseOrder = currentMode === 'chromatic' ? noteNames : fifthsOrder;
+            const noteOrder = baseOrder.map((note, i) => {
+                const noteIndex = noteNames.indexOf(note);
+                const transposedIndex = (noteIndex + rootKey) % 12;
+                return noteNames[transposedIndex];
+            });
+            
+            // Draw concentric rings
+            for (let ring = 0; ring < numRings; ring++) {
+                const innerR = (outerRadius / numRings) * ring;
+                const outerR = (outerRadius / numRings) * (ring + 1);
+                
+                // Draw 12 sections per ring
+                for (let i = 0; i < 12; i++) {
+                    const note = noteOrder[i];
+                    const startAngle = (i * 30 - 90 - 15) * Math.PI / 180;
+                    const endAngle = ((i + 1) * 30 - 90 - 15) * Math.PI / 180;
+                    
+                    // Draw wedge
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, outerR, startAngle, endAngle);
+                    ctx.arc(centerX, centerY, innerR, endAngle, startAngle, true);
+                    ctx.closePath();
+                    
+                    // Use the CORRECT chromatic color for each note
+                    const opacity = 1 - (ring * 0.2); // Outer rings brighter
+                    ctx.fillStyle = chromaticColors[note] + Math.floor(opacity * 255).toString(16).padStart(2, '0');
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Draw note label on outermost ring only
+                    if (ring === numRings - 1) {
+                        const labelAngle = (i * 30 - 90) * Math.PI / 180;
+                        const labelRadius = outerR - (outerR - innerR) / 2;
+                        const labelX = centerX + labelRadius * Math.cos(labelAngle);
+                        const labelY = centerY + labelRadius * Math.sin(labelAngle);
+
+                        ctx.fillStyle = isLightColor(chromaticColors[note]) ? '#000' : '#fff';
+                        ctx.font = 'bold 18px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.shadowColor = '#000';
+                        ctx.shadowBlur = 3;
+                        ctx.fillText(note, labelX, labelY);
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+
+            // Draw active notes
+            drawActiveNotes(noteOrder);
+        }
+
+        function drawActiveNotes(noteOrder) {
+            activeNotes.forEach(noteData => {
+                const [note, octave] = noteData.split(':');
+                const noteIndex = noteOrder.indexOf(note);
+                if (noteIndex === -1) return;
+
+                const ring = parseInt(octave);
+
+                for (let s = 0; s < symmetry; s++) {
+                    const symIndex = (noteIndex + s * (12 / symmetry)) % 12;
+                    const angle = (symIndex * 30 - 90) * Math.PI / 180;
+                    const ringRadius = (outerRadius / numRings) * (ring + 0.5);
+                    const x = centerX + ringRadius * Math.cos(angle);
+                    const y = centerY + ringRadius * Math.sin(angle);
+
+                    // Draw note marker
+                    ctx.beginPath();
+                    ctx.arc(x, y, 30, 0, Math.PI * 2);
+                    ctx.fillStyle = chromaticColors[noteOrder[symIndex]];
+                    ctx.shadowColor = chromaticColors[noteOrder[symIndex]];
+                    ctx.shadowBlur = 20;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    ctx.fillStyle = isLightColor(chromaticColors[noteOrder[symIndex]]) ? '#000' : '#fff';
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(noteOrder[symIndex], x, y);
+                }
+            });
+        }
+
+        function handleClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const dx = x - centerX;
+            const dy = y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > outerRadius || distance < 10) return;
+
+            // Determine which ring (octave)
+            const ring = Math.floor(distance / (outerRadius / numRings));
+
+            // Determine angle and section
+            let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90 + 15;
+            if (angle < 0) angle += 360;
+            if (angle >= 360) angle -= 360;
+
+            const sectionIndex = Math.floor(angle / 30);
+            
+            const baseOrder = currentMode === 'chromatic' ? noteNames : fifthsOrder;
+            const noteOrder = baseOrder.map((note, i) => {
+                const noteIndex = noteNames.indexOf(note);
+                const transposedIndex = (noteIndex + rootKey) % 12;
+                return noteNames[transposedIndex];
+            });
+            
+            const clickedNote = noteOrder[sectionIndex];
+            const noteKey = `${clickedNote}:${ring}`;
+
+            // Toggle note
+            if (activeNotes.has(noteKey)) {
+                activeNotes.delete(noteKey);
+            } else {
+                activeNotes.add(noteKey);
+                playNoteWithOctave(clickedNote, ring + 3); // Start from octave 3
+            }
+
+            updateNotesList();
+            drawMandala();
+        }
+
+        function showChromatic() {
+            currentMode = 'chromatic';
+            updateButtons('btn-chromatic');
+            document.getElementById('currentMode').textContent = 'Chromatic Circle';
+            drawMandala();
+        }
+
+        function showCircleOfFifths() {
+            currentMode = 'fifths';
+            updateButtons('btn-fifths');
+            document.getElementById('currentMode').textContent = 'Circle of Fifths';
+            drawMandala();
+        }
+
+        function changeKey() {
+            rootKey = parseInt(document.getElementById('keySelect').value);
+            document.getElementById('currentKey').textContent = noteNames[rootKey];
+            activeNotes.clear();
+            updateNotesList();
+            drawMandala();
+        }
+
+        function setSymmetry(num) {
+            symmetry = num;
+            updateButtons('sym-' + num);
+            drawMandala();
+        }
+
+        function updateButtons(activeId) {
+            const btn = document.getElementById(activeId);
+            if (btn) {
+                btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+        }
+
+        function loadPattern(type) {
+            activeNotes.clear();
+            
+            const patterns = {
+                'major': [0, 4, 7],      // Root, M3, P5
+                'minor': [0, 3, 7],      // Root, m3, P5
+                'scale': [0, 2, 4, 5, 7, 9, 11], // Major scale
+                'penta': [0, 2, 4, 7, 9] // Pentatonic
+            };
+
+            patterns[type].forEach(interval => {
+                const noteIndex = (rootKey + interval) % 12;
+                const note = noteNames[noteIndex];
+                activeNotes.add(`${note}:${numRings - 1}`); // Add to outer ring
+            });
+            
+            updateNotesList();
+            drawMandala();
+        }
+
+        function playAllNotes() {
+            if (!audioContext) return;
+            
+            const notesArray = Array.from(activeNotes);
+            notesArray.forEach((noteData, i) => {
+                setTimeout(() => {
+                    const [note, octave] = noteData.split(':');
+                    playNoteWithOctave(note, parseInt(octave) + 3);
+                    highlightNote(noteData);
+                }, i * 150);
+            });
+        }
+
+        function toggleLoop() {
+            isLooping = !isLooping;
+            const btn = document.getElementById('loopBtn');
+            
+            if (isLooping) {
+                btn.textContent = '⏸️ Stop Loop';
+                btn.classList.add('active');
+                startLoop();
+            } else {
+                btn.textContent = '🔄 Start Loop';
+                btn.classList.remove('active');
+                stopLoop();
+            }
+        }
+
+        function startLoop() {
+            if (activeNotes.size === 0) {
+                toggleLoop();
+                return;
+            }
+
+            const notesArray = Array.from(activeNotes);
+            let index = 0;
+
+            loopInterval = setInterval(() => {
+                const [note, octave] = notesArray[index].split(':');
+                playNoteWithOctave(note, parseInt(octave) + 3);
+                highlightNote(notesArray[index]);
+                index = (index + 1) % notesArray.length;
+            }, 300);
+        }
+
+        function stopLoop() {
+            if (loopInterval) {
+                clearInterval(loopInterval);
+                loopInterval = null;
+            }
+        }
+
+        function highlightNote(noteData) {
+            drawMandala();
+            
+            const [note, ring] = noteData.split(':');
+            const baseOrder = currentMode === 'chromatic' ? noteNames : fifthsOrder;
+            const noteOrder = baseOrder.map((n, i) => {
+                const noteIndex = noteNames.indexOf(n);
+                const transposedIndex = (noteIndex + rootKey) % 12;
+                return noteNames[transposedIndex];
+            });
+            
+            const noteIndex = noteOrder.indexOf(note);
+            if (noteIndex === -1) return;
+
+            for (let s = 0; s < symmetry; s++) {
+                const symIndex = (noteIndex + s * (12 / symmetry)) % 12;
+                const angle = (symIndex * 30 - 90) * Math.PI / 180;
+                const ringRadius = (outerRadius / numRings) * (parseInt(ring) + 0.5);
+                const x = centerX + ringRadius * Math.cos(angle);
+                const y = centerY + ringRadius * Math.sin(angle);
+
+                ctx.beginPath();
+                ctx.arc(x, y, 40, 0, Math.PI * 2);
+                ctx.fillStyle = chromaticColors[noteOrder[symIndex]] + '80';
+                ctx.shadowColor = chromaticColors[noteOrder[symIndex]];
+                ctx.shadowBlur = 30;
+                ctx.fill();
+            }
+
+            setTimeout(() => drawMandala(), 100);
+        }
+
+        function playNoteWithOctave(note, octave) {
+            if (!audioContext) return;
+
+            const noteIndex = noteNames.indexOf(note);
+            const semitonesFromC4 = noteIndex + (octave - 4) * 12;
+            const frequency = 261.63 * Math.pow(2, semitonesFromC4 / 12);
+
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc.frequency.value = frequency;
+            osc.type = 'sine';
+
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.5);
+        }
+
+        function clearAll() {
+            activeNotes.clear();
+            stopLoop();
+            document.getElementById('loopBtn').textContent = '🔄 Start Loop';
+            document.getElementById('loopBtn').classList.remove('active');
+            updateNotesList();
+            drawMandala();
+        }
+
+        function updateNotesList() {
+            const list = document.getElementById('notesList');
+            list.innerHTML = '';
+
+            if (activeNotes.size === 0) {
+                list.innerHTML = '<span style="color: #888;">Click the mandala!</span>';
+                return;
+            }
+
+            activeNotes.forEach(noteData => {
+                const [note] = noteData.split(':');
+                const pill = document.createElement('span');
+                pill.className = 'note-pill';
+                pill.textContent = note;
+                pill.style.backgroundColor = chromaticColors[note];
+                pill.style.color = isLightColor(chromaticColors[note]) ? '#000' : '#fff';
+                list.appendChild(pill);
+            });
+        }
+
+        function isLightColor(hex) {
+            const r = parseInt(hex.substr(1, 2), 16);
+            const g = parseInt(hex.substr(3, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            return (r * 299 + g * 587 + b * 114) / 1000 > 128;
+        }
+    </script>
+</body>
+</html>

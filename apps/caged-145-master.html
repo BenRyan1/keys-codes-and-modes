@@ -1,0 +1,2629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keys, Codes & Modes - CAGED I-IV-V Explorer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            color: #ffd700;
+        }
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        /* LEFT PANEL - Forms */
+        .form-panel {
+            width: 280px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 12px;
+            flex-shrink: 0;
+        }
+        .panel-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        /* CAGED Cycle Display */
+        .cycle-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .cycle-text {
+            font-size: 0.9em;
+            margin-bottom: 6px;
+        }
+        .cycle-text span { font-weight: bold; }
+        .cycle-text .c { color: #ff6b6b; }
+        .cycle-text .a { color: #4ecdc4; }
+        .cycle-text .g { color: #ffd700; }
+        .cycle-text .e { color: #a855f7; }
+        .cycle-text .d { color: #22c55e; }
+        
+        /* Form Buttons */
+        .form-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .form-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .form-btn.active {
+            border-width: 3px;
+        }
+        .form-btn .name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .form-btn .chords {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+        
+        /* Position Slider */
+        .position-control {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .position-display {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        .position-btns {
+            display: flex;
+            gap: 10px;
+        }
+        .position-btns button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .position-btns button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Current Key */
+        .key-display {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .key-display .label { font-size: 0.7em; color: #888; }
+        .key-display .key { font-size: 2.5em; font-weight: bold; }
+        .key-display .progression { font-size: 1em; margin-top: 5px; }
+        
+        /* I-IV-V Buttons */
+        .chord-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .chord-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: 3px solid #444;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+        }
+        .chord-btn.active {
+            background: rgba(255,255,255,0.2);
+        }
+        .chord-btn .degree { font-size: 0.8em; color: #888; }
+        .chord-btn .name { font-size: 1.5em; font-weight: bold; }
+        .chord-btn .shape { font-size: 0.7em; color: #666; }
+        
+        /* Play Button */
+        .play-btn {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            color: #000;
+            margin-bottom: 15px;
+        }
+        
+        /* CENTER - Fretboard */
+        .fretboard-panel {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Chromatic Circle */
+        .chromatic-circle-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+        }
+        .chromatic-circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .note-sphere {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+        .note-sphere:hover {
+            transform: scale(1.2);
+            z-index: 100;
+        }
+        .note-sphere.active {
+            transform: scale(1.3);
+            z-index: 101;
+        }
+        .note-sphere .note-name {
+            font-size: 0.8em;
+            color: #000;
+            text-shadow: 0 0 2px #fff;
+        }
+        .note-sphere .midi-num {
+            font-size: 0.5em;
+            color: #000;
+            opacity: 0.7;
+        }
+        .circle-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+        .circle-center .key-name {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .circle-center .chord-name {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+        
+        .fretboard {
+            position: relative;
+            background: linear-gradient(90deg, #8B4513 0%, #654321 100%);
+            border-radius: 5px;
+            width: 280px;
+            height: 500px;
+            margin: 0 auto 10px auto;
+            margin-left: 40px;
+            margin-right: 30px;
+            overflow: visible;
+        }
+        .nut {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: #f5f5dc;
+            border-bottom: 3px solid #333;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 0.65em;
+            color: #333;
+        }
+        .string {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ccc, #999);
+        }
+        .fret-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #888;
+        }
+        .fret-marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .note-dot {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        .note-dot.root { background: #ff6b6b; }
+        .note-dot.third { background: #4ecdc4; }
+        .note-dot.fifth { background: #ffd700; color: #000; }
+        .note-dot.seventh { background: #a855f7; }
+        .note-dot.open {
+            top: 12px !important;
+            background: transparent;
+            border: 3px solid;
+        }
+        .note-dot.muted {
+            top: 12px !important;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 1.2em;
+        }
+        .barre {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 12px;
+            background: rgba(100,100,100,0.8);
+            border-radius: 6px;
+            transform: translateY(-50%);
+        }
+        .fret-numbers {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 30px;
+            color: #888;
+            font-size: 0.8em;
+        }
+        
+        /* Audio Controls */
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .audio-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #4a5568;
+            color: #fff;
+        }
+        .audio-btn:hover { background: #5a6578; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HERO LOGO HEADER -->
+        <div style="text-align: center; margin-bottom: 20px; padding: 25px; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 50%, #1a1a2e 100%); border-radius: 20px; border: 3px solid transparent; background-clip: padding-box; position: relative; overflow: hidden;">
+            <!-- Rainbow border effect -->
+            <div style="position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #C4007F, #8000FF, #4000FF, #0000FF, #007FFF, #00FF80, #80FF00, #FFFF00); border-radius: 22px; z-index: -1;"></div>
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 50%, #1a1a2e 100%); border-radius: 17px; z-index: -1;"></div>
+            
+            <!-- Main Logo Row -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 15px;">
+                <!-- Animated Chromatic Circle Icon -->
+                <svg width="80" height="80" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FFFF00"/>
+                            <stop offset="17%" style="stop-color:#FF8000"/>
+                            <stop offset="33%" style="stop-color:#FF0000"/>
+                            <stop offset="50%" style="stop-color:#8000FF"/>
+                            <stop offset="67%" style="stop-color:#0000FF"/>
+                            <stop offset="83%" style="stop-color:#00FF80"/>
+                            <stop offset="100%" style="stop-color:#FFFF00"/>
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- Outer ring -->
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGrad)" stroke-width="4" filter="url(#glow)"/>
+                    <!-- 12 chromatic spheres -->
+                    <circle cx="50" cy="8" r="7" fill="#FFFF00" filter="url(#glow)"/><!-- C -->
+                    <circle cx="71" cy="13" r="6" fill="#FFC400"/><!-- C# -->
+                    <circle cx="87" cy="29" r="7" fill="#FF8000" filter="url(#glow)"/><!-- D -->
+                    <circle cx="92" cy="50" r="6" fill="#FF4000"/><!-- D# -->
+                    <circle cx="87" cy="71" r="7" fill="#FF0000" filter="url(#glow)"/><!-- E -->
+                    <circle cx="71" cy="87" r="6" fill="#C4007F"/><!-- F -->
+                    <circle cx="50" cy="92" r="7" fill="#8000FF" filter="url(#glow)"/><!-- F# -->
+                    <circle cx="29" cy="87" r="6" fill="#4000FF"/><!-- G -->
+                    <circle cx="13" cy="71" r="7" fill="#0000FF" filter="url(#glow)"/><!-- G# -->
+                    <circle cx="8" cy="50" r="6" fill="#007FFF"/><!-- A -->
+                    <circle cx="13" cy="29" r="7" fill="#00FF80" filter="url(#glow)"/><!-- A# -->
+                    <circle cx="29" cy="13" r="6" fill="#80FF00"/><!-- B -->
+                    <!-- Center musical note -->
+                    <text x="50" y="58" text-anchor="middle" fill="#ffd700" font-size="28" font-weight="bold" filter="url(#glow)">♪</text>
+                </svg>
+                
+                <!-- Logo Text -->
+                <div>
+                    <div style="font-size: 2.5em; font-weight: bold; background: linear-gradient(90deg, #FFFF00 0%, #FF8000 20%, #FF0000 40%, #8000FF 60%, #0000FF 80%, #00FF80 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 3px; text-shadow: 0 0 30px rgba(255,215,0,0.3);">
+                        KEYS, CODES & MODES
+                    </div>
+                    <div style="font-size: 1em; color: #888; letter-spacing: 5px; margin-top: 5px;">A VISUAL APPROACH TO MUSIC THEORY</div>
+                </div>
+                
+                <!-- Guitar/Piano Icon -->
+                <svg width="70" height="80" viewBox="0 0 70 90" style="filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));">
+                    <!-- Guitar body -->
+                    <ellipse cx="35" cy="60" rx="28" ry="25" fill="url(#guitarBody)" stroke="#ffd700" stroke-width="2"/>
+                    <defs>
+                        <radialGradient id="guitarBody" cx="30%" cy="30%">
+                            <stop offset="0%" style="stop-color:#DEB887"/>
+                            <stop offset="100%" style="stop-color:#8B4513"/>
+                        </radialGradient>
+                    </defs>
+                    <!-- Sound hole -->
+                    <ellipse cx="35" cy="60" rx="10" ry="9" fill="#1a1a2e" stroke="#ffd700" stroke-width="1"/>
+                    <!-- Neck -->
+                    <rect x="30" y="5" width="10" height="40" fill="#654321" rx="2"/>
+                    <!-- Frets -->
+                    <line x1="30" y1="15" x2="40" y2="15" stroke="#ccc" stroke-width="1"/>
+                    <line x1="30" y1="25" x2="40" y2="25" stroke="#ccc" stroke-width="1"/>
+                    <line x1="30" y1="35" x2="40" y2="35" stroke="#ccc" stroke-width="1"/>
+                    <!-- Strings with chromatic colors -->
+                    <line x1="32" y1="10" x2="32" y2="75" stroke="#FFFF00" stroke-width="1"/>
+                    <line x1="34" y1="10" x2="34" y2="75" stroke="#FF8000" stroke-width="1"/>
+                    <line x1="36" y1="10" x2="36" y2="75" stroke="#FF0000" stroke-width="1"/>
+                    <line x1="38" y1="10" x2="38" y2="75" stroke="#0000FF" stroke-width="1"/>
+                    <!-- Headstock -->
+                    <rect x="28" y="0" width="14" height="8" fill="#1a1a2e" rx="3"/>
+                    <circle cx="31" cy="4" r="2" fill="#ffd700"/>
+                    <circle cx="39" cy="4" r="2" fill="#ffd700"/>
+                </svg>
+            </div>
+            
+            <!-- Chromatic color bar -->
+            <div style="display: flex; justify-content: center; gap: 3px; margin: 15px 0;">
+                <div style="width: 25px; height: 8px; background: #FFFF00; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #FFC400; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #FF8000; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #FF4000; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #FF0000; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #C4007F; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #8000FF; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #4000FF; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #0000FF; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #007FFF; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #00FF80; border-radius: 4px;"></div>
+                <div style="width: 25px; height: 8px; background: #80FF00; border-radius: 4px;"></div>
+            </div>
+            
+            <!-- Subtitle -->
+            <div style="font-size: 1.4em; color: #ffd700; font-weight: bold; text-shadow: 0 0 20px rgba(255,215,0,0.5);">🎸 CAGED System I-IV-V Explorer</div>
+            <div style="font-size: 0.85em; color: #aaa; margin-top: 8px;">
+                <span style="color: #FFFF00;">●</span> Master Chord Forms 
+                <span style="color: #FF0000;">●</span> Train Your Ear 
+                <span style="color: #0000FF;">●</span> Visualize the Fretboard
+                <span style="color: #00FF80;">●</span> Learn 2-5-1 Jazz
+            </div>
+        </div>
+        
+        <div class="main-layout">
+            <!-- LEFT PANEL -->
+            <div class="form-panel">
+                <div class="panel-title">THE CAGED CYCLE</div>
+                
+                <div class="cycle-display">
+                    <div class="cycle-text">
+                        <span class="c">C</span> → <span class="a">A</span> → <span class="g">G</span> → <span class="e">E</span> → <span class="d">D</span> → <span class="c">C</span> → <span class="a">A</span> → ...
+                    </div>
+                    <div style="font-size: 0.7em; color: #888;">Same pattern everywhere on the neck!</div>
+                </div>
+                
+                <div class="panel-title">SELECT FORM</div>
+                
+                <button class="form-btn" data-form="C" style="border-color: #ff6b6b;">
+                    <div class="name" style="color: #ff6b6b;">C Form</div>
+                    <div class="chords">I-IV-V: C shape → F shape → G shape</div>
+                </button>
+                
+                <button class="form-btn" data-form="A" style="border-color: #4ecdc4;">
+                    <div class="name" style="color: #4ecdc4;">A Form</div>
+                    <div class="chords">I-IV-V: A shape → D shape → E shape</div>
+                </button>
+                
+                <button class="form-btn" data-form="G" style="border-color: #ffd700;">
+                    <div class="name" style="color: #ffd700;">G Form</div>
+                    <div class="chords">I-IV-V: G shape → C shape → D shape</div>
+                </button>
+                
+                <button class="form-btn" data-form="E" style="border-color: #a855f7;">
+                    <div class="name" style="color: #a855f7;">E Form</div>
+                    <div class="chords">I-IV-V: E shape → A shape → A shape</div>
+                </button>
+                
+                <button class="form-btn" data-form="D" style="border-color: #22c55e;">
+                    <div class="name" style="color: #22c55e;">D Form</div>
+                    <div class="chords">I-IV-V: D shape → G shape → A shape</div>
+                </button>
+                
+                <!-- CHROMATIC CIRCLE - Under Forms -->
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #333;">
+                    <div style="font-size: 0.85em; font-weight: bold; color: #ffd700; text-align: center; margin-bottom: 10px;">🎵 CHROMATIC CIRCLE</div>
+                    <div class="chromatic-circle-container" style="width: 240px; height: 240px; margin: 0 auto;">
+                        <div class="chromatic-circle" id="chromaticCircle"></div>
+                        <div class="circle-center">
+                            <div class="key-name" id="circleKeyName" style="font-size: 1.8em;">C</div>
+                            <div class="chord-name" id="circleChordName" style="font-size: 0.75em;">I - IV - V</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Notes Display -->
+                    <div style="margin-top: 10px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 8px;">
+                        <div style="font-size: 0.65em; color: #888; text-align: center; margin-bottom: 5px;">CHORD TONES</div>
+                        <div id="activeNotesDisplay" style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;"></div>
+                    </div>
+                    
+                    <!-- Interactive Chord Name Selector -->
+                    <div style="margin-top: 10px; background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px;">
+                        <div style="font-size: 0.65em; color: #888; text-align: center; margin-bottom: 8px;">BUILD A CHORD</div>
+                        
+                        <!-- Root Note Selector -->
+                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
+                            <span style="font-size: 0.7em; color: #aaa; width: 40px;">Root:</span>
+                            <div id="rootSelector" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1;">
+                                <button onclick="setChordRoot(0)" class="root-btn" data-root="0" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FFFF0066; color: #fff; cursor: pointer; font-size: 0.55em; border: 1px solid #FFFF00;">C</button>
+                                <button onclick="setChordRoot(1)" class="root-btn" data-root="1" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FFC40044; color: #fff; cursor: pointer; font-size: 0.55em;">C#</button>
+                                <button onclick="setChordRoot(2)" class="root-btn" data-root="2" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF800044; color: #fff; cursor: pointer; font-size: 0.55em;">D</button>
+                                <button onclick="setChordRoot(3)" class="root-btn" data-root="3" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF400044; color: #fff; cursor: pointer; font-size: 0.55em;">D#</button>
+                                <button onclick="setChordRoot(4)" class="root-btn" data-root="4" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF000044; color: #fff; cursor: pointer; font-size: 0.55em;">E</button>
+                                <button onclick="setChordRoot(5)" class="root-btn" data-root="5" style="padding: 2px 5px; border: none; border-radius: 3px; background: #C4007F44; color: #fff; cursor: pointer; font-size: 0.55em;">F</button>
+                                <button onclick="setChordRoot(6)" class="root-btn" data-root="6" style="padding: 2px 5px; border: none; border-radius: 3px; background: #8000FF44; color: #fff; cursor: pointer; font-size: 0.55em;">F#</button>
+                                <button onclick="setChordRoot(7)" class="root-btn" data-root="7" style="padding: 2px 5px; border: none; border-radius: 3px; background: #4000FF44; color: #fff; cursor: pointer; font-size: 0.55em;">G</button>
+                                <button onclick="setChordRoot(8)" class="root-btn" data-root="8" style="padding: 2px 5px; border: none; border-radius: 3px; background: #0000FF44; color: #fff; cursor: pointer; font-size: 0.55em;">G#</button>
+                                <button onclick="setChordRoot(9)" class="root-btn" data-root="9" style="padding: 2px 5px; border: none; border-radius: 3px; background: #007FFF44; color: #fff; cursor: pointer; font-size: 0.55em;">A</button>
+                                <button onclick="setChordRoot(10)" class="root-btn" data-root="10" style="padding: 2px 5px; border: none; border-radius: 3px; background: #00FF8044; color: #fff; cursor: pointer; font-size: 0.55em;">A#</button>
+                                <button onclick="setChordRoot(11)" class="root-btn" data-root="11" style="padding: 2px 5px; border: none; border-radius: 3px; background: #80FF0044; color: #fff; cursor: pointer; font-size: 0.55em;">B</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Flat/Sharp Toggle Row -->
+                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
+                            <span style="font-size: 0.7em; color: #aaa; width: 40px;">Flats:</span>
+                            <div style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1;">
+                                <button onclick="setChordRoot(1)" class="root-btn" data-root="1" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FFC40033; color: #aaa; cursor: pointer; font-size: 0.55em;">D♭</button>
+                                <button onclick="setChordRoot(3)" class="root-btn" data-root="3" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF400033; color: #aaa; cursor: pointer; font-size: 0.55em;">E♭</button>
+                                <button onclick="setChordRoot(6)" class="root-btn" data-root="6" style="padding: 2px 5px; border: none; border-radius: 3px; background: #8000FF33; color: #aaa; cursor: pointer; font-size: 0.55em;">G♭</button>
+                                <button onclick="setChordRoot(8)" class="root-btn" data-root="8" style="padding: 2px 5px; border: none; border-radius: 3px; background: #0000FF33; color: #aaa; cursor: pointer; font-size: 0.55em;">A♭</button>
+                                <button onclick="setChordRoot(10)" class="root-btn" data-root="10" style="padding: 2px 5px; border: none; border-radius: 3px; background: #00FF8033; color: #aaa; cursor: pointer; font-size: 0.55em;">B♭</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Chord Type Selector -->
+                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
+                            <span style="font-size: 0.7em; color: #aaa; width: 40px;">Type:</span>
+                            <div id="typeSelector" style="display: flex; flex-wrap: wrap; gap: 3px; flex: 1;">
+                                <button onclick="setChordType('maj')" class="type-btn" data-type="maj" style="padding: 3px 6px; border: none; border-radius: 3px; background: #ffd70044; color: #fff; cursor: pointer; font-size: 0.6em;">Maj</button>
+                                <button onclick="setChordType('min')" class="type-btn" data-type="min" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">min</button>
+                                <button onclick="setChordType('7')" class="type-btn" data-type="7" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">7</button>
+                                <button onclick="setChordType('maj7')" class="type-btn" data-type="maj7" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Maj7</button>
+                                <button onclick="setChordType('min7')" class="type-btn" data-type="min7" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">m7</button>
+                                <button onclick="setChordType('dim')" class="type-btn" data-type="dim" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">dim</button>
+                                <button onclick="setChordType('aug')" class="type-btn" data-type="aug" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">aug</button>
+                                <button onclick="setChordType('sus4')" class="type-btn" data-type="sus4" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">sus4</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Current Chord Display -->
+                        <div id="builtChordDisplay" style="text-align: center; padding: 8px; background: rgba(255,215,0,0.15); border: 2px solid #ffd700; border-radius: 8px; margin-top: 5px;">
+                            <span style="font-size: 1.4em; font-weight: bold; color: #ffd700;">C Major</span>
+                            <div style="font-size: 0.65em; color: #aaa; margin-top: 3px;">C - E - G</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Play Circle Button -->
+                    <button onclick="playCircleChord()" style="width: 100%; margin-top: 8px; padding: 10px; border: none; border-radius: 8px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer; font-size: 0.85em;">
+                        🎹 Play Chord Tones
+                    </button>
+                    
+                    <!-- Tempo Control -->
+                    <div style="margin-top: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 0.7em; color: #888;">🎵 TEMPO</span>
+                            <span id="tempoDisplay" style="font-size: 1em; font-weight: bold; color: #ffd700;">120 BPM</span>
+                        </div>
+                        <input type="range" id="tempoSlider" min="40" max="240" value="120" 
+                               style="width: 100%; height: 20px; cursor: pointer;"
+                               oninput="setTempo(this.value)">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.55em; color: #666; margin-top: 2px;">
+                            <span>40</span>
+                            <span>Slow</span>
+                            <span>Fast</span>
+                            <span>240</span>
+                        </div>
+                        <div style="display: flex; gap: 4px; margin-top: 8px; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="setTempo(60)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">60</button>
+                            <button onclick="setTempo(90)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">90</button>
+                            <button onclick="setTempo(120)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.15); color: #ffd700; cursor: pointer; font-size: 0.65em; border: 1px solid #ffd700;">120</button>
+                            <button onclick="setTempo(150)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">150</button>
+                            <button onclick="setTempo(180)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">180</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Ear Trainer -->
+                    <div style="margin-top: 15px; background: linear-gradient(135deg, rgba(138,43,226,0.2), rgba(75,0,130,0.2)); border: 1px solid #8a2be2; border-radius: 8px; padding: 10px;">
+                        <div style="font-size: 0.8em; font-weight: bold; color: #dda0dd; text-align: center; margin-bottom: 10px;">👂 EAR TRAINER</div>
+                        
+                        <!-- Trainer Mode -->
+                        <div style="display: flex; gap: 4px; margin-bottom: 10px; justify-content: center;">
+                            <button onclick="setEarTrainerMode('note')" id="modeNote" style="padding: 5px 10px; border: none; border-radius: 4px; background: #8a2be2; color: #fff; cursor: pointer; font-size: 0.7em;">Notes</button>
+                            <button onclick="setEarTrainerMode('interval')" id="modeInterval" style="padding: 5px 10px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.7em;">Intervals</button>
+                            <button onclick="setEarTrainerMode('chord')" id="modeChord" style="padding: 5px 10px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.7em;">Chords</button>
+                        </div>
+                        
+                        <!-- Play Question -->
+                        <button onclick="playEarTrainerQuestion()" style="width: 100%; padding: 10px; border: none; border-radius: 6px; background: linear-gradient(135deg, #9932cc, #8a2be2); color: #fff; font-weight: bold; cursor: pointer; font-size: 0.85em; margin-bottom: 8px;">
+                            🔊 Play Sound
+                        </button>
+                        
+                        <!-- Answer Display -->
+                        <div id="earTrainerQuestion" style="text-align: center; font-size: 0.75em; color: #aaa; margin-bottom: 8px;">Click "Play Sound" to start</div>
+                        
+                        <!-- Answer Buttons (for intervals) -->
+                        <div id="earTrainerAnswers" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+                            <button onclick="checkEarTrainerAnswer(0)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFFF0044; color: #fff; cursor: pointer; font-size: 0.6em;">C</button>
+                            <button onclick="checkEarTrainerAnswer(1)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFC40044; color: #fff; cursor: pointer; font-size: 0.6em;">C#</button>
+                            <button onclick="checkEarTrainerAnswer(2)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF800044; color: #fff; cursor: pointer; font-size: 0.6em;">D</button>
+                            <button onclick="checkEarTrainerAnswer(3)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF400044; color: #fff; cursor: pointer; font-size: 0.6em;">D#</button>
+                            <button onclick="checkEarTrainerAnswer(4)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF000044; color: #fff; cursor: pointer; font-size: 0.6em;">E</button>
+                            <button onclick="checkEarTrainerAnswer(5)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #C4007F44; color: #fff; cursor: pointer; font-size: 0.6em;">F</button>
+                            <button onclick="checkEarTrainerAnswer(6)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #8000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">F#</button>
+                            <button onclick="checkEarTrainerAnswer(7)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #4000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G</button>
+                            <button onclick="checkEarTrainerAnswer(8)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #0000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G#</button>
+                            <button onclick="checkEarTrainerAnswer(9)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #007FFF44; color: #fff; cursor: pointer; font-size: 0.6em;">A</button>
+                            <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #00FF8044; color: #fff; cursor: pointer; font-size: 0.6em;">A#</button>
+                            <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #80FF0044; color: #fff; cursor: pointer; font-size: 0.6em;">B</button>
+                        </div>
+                        
+                        <!-- Score -->
+                        <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 0.7em;">
+                            <span style="color: #4ade80;">✓ <span id="earCorrect">0</span></span>
+                            <span style="color: #888;">Score: <span id="earScore">0</span>%</span>
+                            <span style="color: #f87171;">✗ <span id="earWrong">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CENTER - Fretboard & Controls -->
+            <div class="fretboard-panel">
+                <!-- Position Slider -->
+                <div class="position-control">
+                    <div style="text-align: center; font-size: 0.8em; color: #888;">SLIDE FORM UP/DOWN NECK</div>
+                    <div class="position-display" id="positionDisplay">OPEN</div>
+                    <input type="range" id="positionSlider" min="0" max="12" value="0" 
+                           style="width: 100%; height: 30px; cursor: pointer; margin: 10px 0;"
+                           oninput="setPosition(this.value)">
+                    <div class="position-btns">
+                        <button onclick="movePosition(-1)">◀ Down</button>
+                        <button onclick="movePosition(1)">Up ▶</button>
+                    </div>
+                </div>
+                
+                <!-- Key Display -->
+                <div class="key-display" id="keyDisplay" style="background: rgba(255,107,107,0.2); border: 2px solid #ff6b6b;">
+                    <div class="label">KEY OF</div>
+                    <div class="key" style="color: #ff6b6b;">C</div>
+                    <div class="progression">C → F → G</div>
+                </div>
+                
+                <!-- I-IV-V Chord Buttons -->
+                <div class="chord-buttons" id="chordButtons">
+                    <button class="chord-btn active" onclick="showChord(0)">
+                        <div class="degree">I</div>
+                        <div class="name">C</div>
+                        <div class="shape">C shape</div>
+                    </button>
+                    <button class="chord-btn" onclick="showChord(1)">
+                        <div class="degree">IV</div>
+                        <div class="name">F</div>
+                        <div class="shape">C shape</div>
+                    </button>
+                    <button class="chord-btn" onclick="showChord(2)">
+                        <div class="degree">V</div>
+                        <div class="name">G</div>
+                        <div class="shape">C shape</div>
+                    </button>
+                </div>
+                
+                <!-- Play Progression Button -->
+                <button class="play-btn" id="playBtn" onclick="playProgression()" style="background: linear-gradient(135deg, #ff6b6b, #ff6b6b99);">
+                    🎸 Play C → F → G → C
+                </button>
+                
+                <!-- Play 2-5-1 Progression Button -->
+                <button class="play-btn" id="play251Btn" onclick="play251Progression()" style="background: linear-gradient(135deg, #9333ea, #9333ea99); margin-top: 8px;">
+                    🎹 Play ii → V → I (2-5-1)
+                </button>
+                
+                <!-- FRETBOARD -->
+                <div class="fretboard" id="fretboard">
+                    <div class="nut">
+                        <span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>
+                    </div>
+                </div>
+                
+                <!-- Audio Controls -->
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="initAudio()">🔊 Init Audio</button>
+                    <button class="audio-btn" onclick="playCurrentChord(false)">▶ Play</button>
+                    <button class="audio-btn" onclick="playCurrentChord(true)">🎸 Strum</button>
+                </div>
+                
+                <!-- Octave Control -->
+                <div style="margin-top: 10px; display: flex; gap: 5px; justify-content: center; align-items: center;">
+                    <button onclick="changeOctave(-1)" style="padding: 8px 15px; border: none; border-radius: 5px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer;">◀ Octave</button>
+                    <span id="octaveDisplay" style="padding: 5px 15px; color: #ffd700; font-weight: bold; min-width: 80px; text-align: center;">Octave 4</span>
+                    <button onclick="changeOctave(1)" style="padding: 8px 15px; border: none; border-radius: 5px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer;">Octave ▶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FOOTER BRANDING -->
+    <footer style="text-align: center; margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-radius: 15px; border: 2px solid transparent; position: relative; overflow: hidden;">
+        <!-- Rainbow border -->
+        <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80, #FFFF00); border-radius: 17px; z-index: -1; opacity: 0.5;"></div>
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-radius: 13px; z-index: -1;"></div>
+        
+        <!-- Chromatic bar -->
+        <div style="display: flex; justify-content: center; gap: 2px; margin-bottom: 15px;">
+            <div style="width: 20px; height: 4px; background: #FFFF00; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #FFC400; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #FF8000; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #FF4000; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #FF0000; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #C4007F; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #8000FF; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #4000FF; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #0000FF; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #007FFF; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #00FF80; border-radius: 2px;"></div>
+            <div style="width: 20px; height: 4px; background: #80FF00; border-radius: 2px;"></div>
+        </div>
+        
+        <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <!-- Mini chromatic circle -->
+            <svg width="40" height="40" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#footerGrad)" stroke-width="4"/>
+                <defs>
+                    <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FFFF00"/>
+                        <stop offset="33%" style="stop-color:#FF0000"/>
+                        <stop offset="66%" style="stop-color:#0000FF"/>
+                        <stop offset="100%" style="stop-color:#00FF80"/>
+                    </linearGradient>
+                </defs>
+                <text x="50" y="58" text-anchor="middle" fill="#ffd700" font-size="24" font-weight="bold">♪</text>
+            </svg>
+            <span style="font-size: 1.2em; font-weight: bold; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">KEYS, CODES & MODES</span>
+        </div>
+        
+        <div style="font-size: 0.8em; color: #888;">© 2025 Benjamin • A Visual Approach to Understanding Music</div>
+        
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 12px; font-size: 0.7em;">
+            <span style="color: #FFFF00;">◆ Chromatic Color System</span>
+            <span style="color: #FF0000;">◆ MIDI Integration</span>
+            <span style="color: #0000FF;">◆ FreeStyle® Musical Device</span>
+            <span style="color: #00FF80;">◆ Ear Training</span>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== KEYS, CODES & MODES BRANDING ====================
+        // 12-color spectrum aligned with chromatic scale starting from C
+        const CHROMATIC_COLORS = {
+            0:  { note: 'C',  color: '#FFFF00', name: 'Yellow' },
+            1:  { note: 'C#', color: '#FFC400', name: 'Yellow-Orange' },
+            2:  { note: 'D',  color: '#FF8000', name: 'Orange' },
+            3:  { note: 'D#', color: '#FF4000', name: 'Red-Orange' },
+            4:  { note: 'E',  color: '#FF0000', name: 'Red' },
+            5:  { note: 'F',  color: '#C4007F', name: 'Red-Purple' },
+            6:  { note: 'F#', color: '#8000FF', name: 'Purple' },
+            7:  { note: 'G',  color: '#4000FF', name: 'Blue-Purple' },
+            8:  { note: 'G#', color: '#0000FF', name: 'Blue' },
+            9:  { note: 'A',  color: '#007FFF', name: 'Blue-Green' },
+            10: { note: 'A#', color: '#00FF80', name: 'Green' },
+            11: { note: 'B',  color: '#80FF00', name: 'Yellow-Green' }
+        };
+
+        // MIDI note numbers for each octave (C0 = 12, C4 = 60 Middle C)
+        // Formula: MIDI = 12 + (octave * 12) + noteIndex
+        const MIDI_BASE = {
+            0: 12,   // C0
+            1: 24,   // C1
+            2: 36,   // C2
+            3: 48,   // C3
+            4: 60,   // C4 (Middle C)
+            5: 72,   // C5
+            6: 84,   // C6
+            7: 96,   // C7
+            8: 108   // C8
+        };
+
+        // Get MIDI number for a note
+        function getMidi(noteIndex, octave = 4) {
+            return MIDI_BASE[octave] + noteIndex;
+        }
+
+        // Get frequency from MIDI number (A4 = 440Hz = MIDI 69)
+        function midiToFreq(midi) {
+            return 440 * Math.pow(2, (midi - 69) / 12);
+        }
+
+        // Get color for a note
+        function getNoteColor(noteIndex) {
+            return CHROMATIC_COLORS[noteIndex % 12].color;
+        }
+
+        // Get note name
+        function getNoteName(noteIndex) {
+            return CHROMATIC_COLORS[noteIndex % 12].note;
+        }
+
+        // ==================== SPHERE DATA STRUCTURE ====================
+        // For Unity/3D integration - each sphere represents a chromatic note
+        const SPHERE_PREFABS = [];
+        
+        function generateSpherePrefabs(octave = 4) {
+            const spheres = [];
+            for (let i = 0; i < 12; i++) {
+                const noteData = CHROMATIC_COLORS[i];
+                const midi = getMidi(i, octave);
+                const freq = midiToFreq(midi);
+                
+                spheres.push({
+                    // Identity
+                    id: `sphere_${noteData.note}${octave}`,
+                    index: i,
+                    
+                    // Musical data
+                    note: noteData.note,
+                    octave: octave,
+                    midi: midi,
+                    frequency: freq.toFixed(2),
+                    
+                    // Visual data
+                    color: noteData.color,
+                    colorName: noteData.name,
+                    
+                    // Labels
+                    label: `${noteData.note}${octave}`,
+                    numberLabel: i,
+                    midiLabel: midi,
+                    
+                    // Unity prefab properties
+                    prefab: {
+                        type: 'Sphere',
+                        hasCollider: true,
+                        parent: null,
+                        children: [],
+                        groupId: null
+                    },
+                    
+                    // Playable register info
+                    register: octave < 2 ? 'bass' : octave < 4 ? 'tenor' : octave < 6 ? 'alto' : 'soprano',
+                    isPlayable: midi >= 21 && midi <= 108  // Piano range
+                });
+            }
+            return spheres;
+        }
+
+        // Generate Unity C# code for sphere prefabs
+        function generateUnityCode() {
+            let code = `using UnityEngine;
+using System.Collections.Generic;
+
+public class ChromaticSphereManager : MonoBehaviour
+{
+    public GameObject spherePrefab; // Assign a sphere prefab with a collider in Unity
+    
+    // Chromatic scale colors (Keys, Codes & Modes branding)
+    private readonly Color[] noteColors = new Color[]
+    {
+        HexToColor("#FFFF00"), // C  - Yellow
+        HexToColor("#FFC400"), // C# - Yellow-Orange
+        HexToColor("#FF8000"), // D  - Orange
+        HexToColor("#FF4000"), // D# - Red-Orange
+        HexToColor("#FF0000"), // E  - Red
+        HexToColor("#C4007F"), // F  - Red-Purple
+        HexToColor("#8000FF"), // F# - Purple
+        HexToColor("#4000FF"), // G  - Blue-Purple
+        HexToColor("#0000FF"), // G# - Blue
+        HexToColor("#007FFF"), // A  - Blue-Green
+        HexToColor("#00FF80"), // A# - Green
+        HexToColor("#80FF00")  // B  - Yellow-Green
+    };
+    
+    private readonly string[] noteNames = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+    
+    private List<ChromaticSphere> spheres = new List<ChromaticSphere>();
+    private int currentOctave = 4;
+    
+    void Start()
+    {
+        CreateChromaticSpheres(currentOctave);
+    }
+    
+    public void CreateChromaticSpheres(int octave)
+    {
+        // Clear existing spheres
+        foreach (var sphere in spheres)
+        {
+            if (sphere != null && sphere.gameObject != null)
+                Destroy(sphere.gameObject);
+        }
+        spheres.Clear();
+        
+        float radius = 2f;
+        float angleStep = 360f / 12f;
+        
+        for (int i = 0; i < 12; i++)
+        {
+            float angle = i * angleStep * Mathf.Deg2Rad;
+            Vector3 position = new Vector3(
+                Mathf.Sin(angle) * radius,
+                0,
+                Mathf.Cos(angle) * radius
+            );
+            
+            GameObject sphereObj = Instantiate(spherePrefab, position, Quaternion.identity, transform);
+            ChromaticSphere sphere = sphereObj.AddComponent<ChromaticSphere>();
+            
+            // Initialize sphere data
+            sphere.Initialize(
+                noteIndex: i,
+                noteName: noteNames[i],
+                octave: octave,
+                midi: 12 + (octave * 12) + i,
+                color: noteColors[i]
+            );
+            
+            spheres.Add(sphere);
+        }
+    }
+    
+    // Group spheres (parent-child relationships)
+    public void GroupSpheres(int[] indices, int parentIndex)
+    {
+        if (parentIndex < 0 || parentIndex >= spheres.Count) return;
+        
+        ChromaticSphere parent = spheres[parentIndex];
+        
+        foreach (int idx in indices)
+        {
+            if (idx >= 0 && idx < spheres.Count && idx != parentIndex)
+            {
+                spheres[idx].SetParent(parent);
+            }
+        }
+    }
+    
+    private static Color HexToColor(string hex)
+    {
+        ColorUtility.TryParseHtmlString(hex, out Color color);
+        return color;
+    }
+}
+
+[System.Serializable]
+public class ChromaticSphere : MonoBehaviour
+{
+    public int NoteIndex { get; private set; }
+    public string NoteName { get; private set; }
+    public int Octave { get; private set; }
+    public int MidiNumber { get; private set; }
+    public Color NoteColor { get; private set; }
+    public string Register { get; private set; }
+    
+    public ChromaticSphere Parent { get; private set; }
+    public List<ChromaticSphere> Children { get; private set; } = new List<ChromaticSphere>();
+    
+    private TextMesh labelText;
+    private SphereCollider sphereCollider;
+    
+    public void Initialize(int noteIndex, string noteName, int octave, int midi, Color color)
+    {
+        NoteIndex = noteIndex;
+        NoteName = noteName;
+        Octave = octave;
+        MidiNumber = midi;
+        NoteColor = color;
+        
+        // Set register based on octave
+        Register = octave < 2 ? "Bass" : octave < 4 ? "Tenor" : octave < 6 ? "Alto" : "Soprano";
+        
+        // Apply color to renderer
+        var renderer = GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material.color = color;
+        }
+        
+        // Ensure collider exists
+        sphereCollider = GetComponent<SphereCollider>();
+        if (sphereCollider == null)
+        {
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+        }
+        
+        // Create label
+        CreateLabel();
+        
+        gameObject.name = $"Sphere_{noteName}{octave}_MIDI{midi}";
+    }
+    
+    private void CreateLabel()
+    {
+        GameObject labelObj = new GameObject("Label");
+        labelObj.transform.SetParent(transform);
+        labelObj.transform.localPosition = Vector3.up * 0.7f;
+        
+        labelText = labelObj.AddComponent<TextMesh>();
+        labelText.text = $"{NoteName}{Octave}\\nMIDI:{MidiNumber}\\n{Register}";
+        labelText.fontSize = 24;
+        labelText.alignment = TextAlignment.Center;
+        labelText.anchor = TextAnchor.MiddleCenter;
+        labelText.color = Color.white;
+    }
+    
+    public void SetParent(ChromaticSphere parent)
+    {
+        if (Parent != null)
+        {
+            Parent.Children.Remove(this);
+        }
+        
+        Parent = parent;
+        parent.Children.Add(this);
+        transform.SetParent(parent.transform);
+    }
+    
+    public void ClearParent()
+    {
+        if (Parent != null)
+        {
+            Parent.Children.Remove(this);
+            Parent = null;
+            transform.SetParent(null);
+        }
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        ChromaticSphere other = collision.gameObject.GetComponent<ChromaticSphere>();
+        if (other != null)
+        {
+            Debug.Log($"Collision: {NoteName}{Octave} <-> {other.NoteName}{other.Octave}");
+            // Interval calculation
+            int interval = Mathf.Abs(NoteIndex - other.NoteIndex);
+            Debug.Log($"Interval: {interval} semitones");
+        }
+    }
+}`;
+            return code;
+        }
+        
+        // ==================== CONSTANTS ====================
+        const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const TUNING = [4, 9, 2, 7, 11, 4]; // E A D G B E
+        
+        const COLORS = {
+            C: '#ff6b6b',
+            A: '#4ecdc4',
+            G: '#ffd700',
+            E: '#a855f7',
+            D: '#22c55e'
+        };
+        
+        // Open chord shapes - frets for each string (6 to 1), -1 = muted, 0 = open
+        const SHAPES = {
+            C: { frets: [-1, 3, 2, 0, 1, 0], rootString: 5, rootFret: 3 },
+            A: { frets: [-1, 0, 2, 2, 2, 0], rootString: 5, rootFret: 0 },
+            G: { frets: [3, 2, 0, 0, 0, 3], rootString: 6, rootFret: 3 },
+            E: { frets: [0, 2, 2, 1, 0, 0], rootString: 6, rootFret: 0 },
+            D: { frets: [-1, -1, 0, 2, 3, 2], rootString: 4, rootFret: 0 },
+            F: { frets: [-1, -1, 3, 2, 1, 1], rootString: 4, rootFret: 3 }  // F chord shape (partial barre)
+        };
+        
+        // Forms: each defines shapes for I, IV, V and the base root note
+        const FORMS = {
+            C: { baseRoot: 0, shapes: ['C', 'F', 'G'] },  // C-F-G use their own shapes
+            A: { baseRoot: 9, shapes: ['A', 'D', 'E'] },  // A-D-E
+            G: { baseRoot: 7, shapes: ['G', 'C', 'D'] },  // G-C-D
+            E: { baseRoot: 4, shapes: ['E', 'A', 'A'] },  // E-A-B
+            D: { baseRoot: 2, shapes: ['D', 'G', 'A'] }   // D-G-A
+        };
+        
+        // ==================== STATE ====================
+        let currentForm = 'C';
+        let position = 0;  // 0 = open, 1 = fret 1, etc.
+        let activeChord = 0;  // 0=I, 1=IV, 2=V
+        let audioContext = null;
+        let tempo = 120;  // BPM (beats per minute)
+        
+        // ==================== CALCULATIONS ====================
+        
+        // Get root note for current key
+        function getKeyRoot() {
+            return (FORMS[currentForm].baseRoot + position) % 12;
+        }
+        
+        // Get the three chord roots for I-IV-V
+        function getChordRoots() {
+            const keyRoot = getKeyRoot();
+            return [
+                keyRoot,           // I
+                (keyRoot + 5) % 12, // IV
+                (keyRoot + 7) % 12  // V
+            ];
+        }
+        
+        // Calculate fret position for a shape to play a specific root
+        function getShapePosition(shapeName, targetRoot) {
+            const shape = SHAPES[shapeName];
+            const rootStringIdx = 6 - shape.rootString;
+            const openNote = TUNING[rootStringIdx];
+            const shapeRoot = (openNote + shape.rootFret) % 12;
+            return (targetRoot - shapeRoot + 12) % 12;
+        }
+        
+        // Get full chord info for I, IV, or V
+        function getChordInfo(index) {
+            const roots = getChordRoots();
+            const shapeName = FORMS[currentForm].shapes[index];
+            const root = roots[index];
+            const fretPos = getShapePosition(shapeName, root);
+            
+            return {
+                degree: ['I', 'IV', 'V'][index],
+                name: NOTE_NAMES[root],
+                shape: shapeName,
+                position: fretPos,
+                isBarre: fretPos > 0
+            };
+        }
+        
+        // ==================== UI UPDATES ====================
+        
+        function updateUI() {
+            const color = COLORS[currentForm];
+            const keyRoot = getKeyRoot();
+            const keyName = NOTE_NAMES[keyRoot];
+            const chords = [0, 1, 2].map(i => getChordInfo(i));
+            
+            // Position display
+            document.getElementById('positionDisplay').textContent = 
+                position === 0 ? 'OPEN' : 'Fret ' + position;
+            
+            // Key display
+            const keyDisplay = document.getElementById('keyDisplay');
+            keyDisplay.style.background = color + '20';
+            keyDisplay.style.borderColor = color;
+            keyDisplay.innerHTML = `
+                <div class="label">KEY OF</div>
+                <div class="key" style="color: ${color};">${keyName}</div>
+                <div class="progression">${chords[0].name} → ${chords[1].name} → ${chords[2].name}</div>
+            `;
+            
+            // Chord buttons
+            const btnsContainer = document.getElementById('chordButtons');
+            btnsContainer.innerHTML = chords.map((chord, i) => `
+                <button class="chord-btn ${i === activeChord ? 'active' : ''}" 
+                        onclick="showChord(${i})"
+                        style="border-color: ${i === activeChord ? color : '#444'};">
+                    <div class="degree" style="color: ${i === activeChord ? color : '#888'};">${chord.degree}</div>
+                    <div class="name">${chord.name}</div>
+                    <div class="shape">${chord.shape} shape${chord.isBarre ? ' ⊏' : ''}</div>
+                </button>
+            `).join('');
+            
+            // Play button
+            const playBtn = document.getElementById('playBtn');
+            playBtn.style.background = `linear-gradient(135deg, ${color}, ${color}99)`;
+            playBtn.textContent = `🎸 Play ${chords[0].name} → ${chords[1].name} → ${chords[2].name} → ${chords[0].name}`;
+            
+            // Form buttons
+            document.querySelectorAll('.form-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.form === currentForm);
+                if (btn.dataset.form === currentForm) {
+                    btn.style.borderWidth = '3px';
+                    btn.style.background = COLORS[currentForm] + '20';
+                } else {
+                    btn.style.borderWidth = '2px';
+                    btn.style.background = 'rgba(255,255,255,0.05)';
+                }
+            });
+            
+            // Fretboard
+            renderFretboard();
+            
+            // Sync chromatic circle
+            syncCircleWithChord();
+        }
+        
+        function renderFretboard() {
+            const fb = document.getElementById('fretboard');
+            const chord = getChordInfo(activeChord);
+            const shape = SHAPES[chord.shape];
+            const pos = chord.position;
+            const color = COLORS[currentForm];
+            
+            // Clear and rebuild
+            fb.innerHTML = '';
+            
+            const width = fb.offsetWidth || 280;
+            const height = fb.offsetHeight || 500;
+            const nutHeight = 25;
+            const playableHeight = height - nutHeight;
+            const numFrets = 15;
+            const fretHeight = playableHeight / numFrets;
+            const stringSpacing = width / 7;
+            
+            // Draw nut at top
+            const nut = document.createElement('div');
+            nut.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: ${nutHeight}px;
+                background: linear-gradient(180deg, #f5f5dc, #fff8dc, #f5f5dc);
+                border-bottom: 3px solid #333;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                font-size: 0.6em;
+                font-weight: bold;
+                color: #333;
+                border-radius: 3px 3px 0 0;
+                z-index: 5;
+            `;
+            nut.innerHTML = '<span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>';
+            fb.appendChild(nut);
+            
+            // Draw strings (vertical)
+            for (let s = 0; s < 6; s++) {
+                const string = document.createElement('div');
+                const xPos = stringSpacing * (s + 1);
+                const thickness = 4 - s * 0.5;
+                string.style.cssText = `
+                    position: absolute;
+                    left: ${xPos}px;
+                    top: ${nutHeight}px;
+                    bottom: 0;
+                    width: ${thickness}px;
+                    background: linear-gradient(180deg, 
+                        rgba(255,255,255,0.1), 
+                        rgba(192,192,192,0.8) 10%, 
+                        rgba(192,192,192,0.8) 90%, 
+                        rgba(255,255,255,0.1));
+                    transform: translateX(-50%);
+                    z-index: 2;
+                `;
+                fb.appendChild(string);
+            }
+            
+            // Draw fret lines (horizontal)
+            for (let f = 1; f <= numFrets; f++) {
+                const fret = document.createElement('div');
+                fret.style.cssText = `
+                    position: absolute;
+                    top: ${nutHeight + f * fretHeight}px;
+                    left: 0;
+                    right: 0;
+                    height: 3px;
+                    background: linear-gradient(90deg, #c0c0c0, #808080, #c0c0c0);
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                `;
+                fb.appendChild(fret);
+            }
+            
+            // Draw fret numbers on RIGHT side
+            for (let f = 1; f <= numFrets; f++) {
+                const num = document.createElement('div');
+                num.style.cssText = `
+                    position: absolute;
+                    right: -28px;
+                    top: ${nutHeight + (f - 0.5) * fretHeight}px;
+                    font-size: 0.7em;
+                    font-weight: bold;
+                    color: ${f === 12 ? '#ffd700' : '#888'};
+                    transform: translateY(-50%);
+                    text-align: center;
+                    width: 20px;
+                `;
+                num.textContent = f;
+                fb.appendChild(num);
+            }
+            
+            // Draw CAGED zone labels on LEFT side
+            const cagedZones = [
+                { form: 'C', startFret: 0, span: 4 },
+                { form: 'A', startFret: 3, span: 4 },
+                { form: 'G', startFret: 5, span: 4 },
+                { form: 'E', startFret: 8, span: 4 },
+                { form: 'D', startFret: 10, span: 4 }
+            ];
+            
+            // Adjust CAGED zones based on position
+            cagedZones.forEach(zone => {
+                const adjustedStart = (zone.startFret + position) % 12;
+                if (adjustedStart <= numFrets) {
+                    const zoneEl = document.createElement('div');
+                    const isActive = zone.form === currentForm;
+                    const zoneColor = COLORS[zone.form];
+                    
+                    zoneEl.style.cssText = `
+                        position: absolute;
+                        left: -45px;
+                        top: ${nutHeight + adjustedStart * fretHeight}px;
+                        width: 38px;
+                        height: ${Math.min(zone.span, numFrets - adjustedStart) * fretHeight}px;
+                        background: ${isActive ? zoneColor + '33' : 'rgba(255,255,255,0.05)'};
+                        border: 2px solid ${isActive ? zoneColor : 'rgba(255,255,255,0.15)'};
+                        border-radius: 5px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 0.7em;
+                        font-weight: bold;
+                        color: ${isActive ? zoneColor : 'rgba(255,255,255,0.3)'};
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    `;
+                    zoneEl.textContent = zone.form;
+                    zoneEl.title = `${zone.form} Form`;
+                    zoneEl.onclick = () => {
+                        currentForm = zone.form;
+                        updateUI();
+                    };
+                    fb.appendChild(zoneEl);
+                }
+            });
+            
+            // Draw fret markers
+            [3, 5, 7, 9, 12, 15].forEach(f => {
+                if (f <= numFrets) {
+                    if (f === 12) {
+                        // Double dot at fret 12
+                        [30, 70].forEach(leftPercent => {
+                            const marker = document.createElement('div');
+                            marker.style.cssText = `
+                                position: absolute;
+                                left: ${leftPercent}%;
+                                top: ${nutHeight + (f - 0.5) * fretHeight}px;
+                                width: 10px;
+                                height: 10px;
+                                background: radial-gradient(circle, #f0f0f0, #c0c0c0);
+                                border-radius: 50%;
+                                transform: translate(-50%, -50%);
+                                z-index: 1;
+                            `;
+                            fb.appendChild(marker);
+                        });
+                    } else {
+                        const marker = document.createElement('div');
+                        marker.style.cssText = `
+                            position: absolute;
+                            left: 50%;
+                            top: ${nutHeight + (f - 0.5) * fretHeight}px;
+                            width: 10px;
+                            height: 10px;
+                            background: radial-gradient(circle, #f0f0f0, #c0c0c0);
+                            border-radius: 50%;
+                            transform: translate(-50%, -50%);
+                            z-index: 1;
+                        `;
+                        fb.appendChild(marker);
+                    }
+                }
+            });
+            
+            // DRAGGABLE WINDOW - shows current form position
+            const windowSize = 4;
+            const windowStart = pos === 0 ? 0 : nutHeight + (pos - 0.5) * fretHeight;
+            const windowHeight = (windowSize + 0.5) * fretHeight;
+            
+            const chordWindow = document.createElement('div');
+            chordWindow.id = 'chordWindow';
+            chordWindow.style.cssText = `
+                position: absolute;
+                left: 3px;
+                right: 3px;
+                top: ${windowStart}px;
+                height: ${windowHeight}px;
+                background: linear-gradient(180deg, ${color}22 0%, ${color}11 50%, ${color}22 100%);
+                border: 3px solid ${color}aa;
+                border-radius: 10px;
+                cursor: ns-resize;
+                z-index: 3;
+                box-shadow: 0 0 15px ${color}44, inset 0 0 20px ${color}11;
+            `;
+            
+            // Window label
+            const windowLabel = document.createElement('div');
+            windowLabel.style.cssText = `
+                position: absolute;
+                top: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${color}ee;
+                color: #000;
+                font-size: 0.7em;
+                font-weight: bold;
+                padding: 2px 10px;
+                border-radius: 4px;
+                white-space: nowrap;
+                pointer-events: none;
+            `;
+            windowLabel.textContent = `${currentForm} Form`;
+            chordWindow.appendChild(windowLabel);
+            
+            // Chord name label
+            const chordLabel = document.createElement('div');
+            chordLabel.style.cssText = `
+                position: absolute;
+                bottom: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0,0,0,0.8);
+                color: ${color};
+                font-size: 0.85em;
+                font-weight: bold;
+                padding: 3px 12px;
+                border-radius: 4px;
+                white-space: nowrap;
+                pointer-events: none;
+            `;
+            chordLabel.textContent = chord.name;
+            chordWindow.appendChild(chordLabel);
+            
+            // Make window draggable
+            chordWindow.addEventListener('mousedown', startWindowDrag);
+            chordWindow.addEventListener('touchstart', startWindowDrag, { passive: false });
+            
+            fb.appendChild(chordWindow);
+            
+            // Draw barre if needed
+            if (pos > 0) {
+                const barre = document.createElement('div');
+                barre.style.cssText = `
+                    position: absolute;
+                    left: 12%;
+                    right: 12%;
+                    top: ${nutHeight + (pos - 0.5) * fretHeight - 8}px;
+                    height: 16px;
+                    background: linear-gradient(180deg, ${color}cc, ${color}88);
+                    border-radius: 8px;
+                    z-index: 8;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                `;
+                fb.appendChild(barre);
+            }
+            
+            // Draw chord notes
+            for (let s = 0; s < 6; s++) {
+                const baseFret = shape.frets[s];
+                if (baseFret === -1) {
+                    // Muted string
+                    const dot = document.createElement('div');
+                    dot.style.cssText = `
+                        position: absolute;
+                        left: ${stringSpacing * (s + 1)}px;
+                        top: ${nutHeight / 2}px;
+                        transform: translate(-50%, -50%);
+                        color: #888;
+                        font-size: 1.2em;
+                        font-weight: bold;
+                        z-index: 10;
+                    `;
+                    dot.textContent = '✕';
+                    fb.appendChild(dot);
+                } else {
+                    const actualFret = baseFret + pos;
+                    
+                    // Get note and its branded color
+                    const stringNote = (TUNING[s] + actualFret) % 12;
+                    const noteColor = getNoteColor(stringNote);
+                    const chordRoot = getChordRoots()[activeChord];
+                    const interval = (stringNote - chordRoot + 12) % 12;
+                    
+                    // Check if this note is part of the active chord (in activeNotes)
+                    const isActiveChordTone = activeNotes.has(stringNote);
+                    
+                    // Use branded color for the note, with special styling for root
+                    const isRoot = interval === 0;
+                    
+                    const yPos = actualFret === 0 
+                        ? nutHeight / 2 
+                        : nutHeight + (actualFret - 0.5) * fretHeight;
+                    
+                    const dot = document.createElement('div');
+                    
+                    // Style based on whether note is in active chord
+                    if (isActiveChordTone) {
+                        dot.style.cssText = `
+                            position: absolute;
+                            left: ${stringSpacing * (s + 1)}px;
+                            top: ${yPos}px;
+                            width: ${isRoot ? 34 : 28}px;
+                            height: ${isRoot ? 34 : 28}px;
+                            background: ${actualFret === 0 ? 'transparent' : noteColor};
+                            border: ${isRoot ? 4 : 3}px solid ${noteColor};
+                            border-radius: 50%;
+                            transform: translate(-50%, -50%);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.6em;
+                            font-weight: bold;
+                            color: ${actualFret === 0 ? noteColor : '#000'};
+                            ${isRoot ? 'box-shadow: 0 0 12px ' + noteColor + ';' : ''}
+                            z-index: 10;
+                            cursor: pointer;
+                        `;
+                    } else {
+                        // Dimmed style
+                        dot.style.cssText = `
+                            position: absolute;
+                            left: ${stringSpacing * (s + 1)}px;
+                            top: ${yPos}px;
+                            width: 20px;
+                            height: 20px;
+                            background: transparent;
+                            border: 2px dashed ${noteColor}55;
+                            border-radius: 50%;
+                            transform: translate(-50%, -50%);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.5em;
+                            font-weight: normal;
+                            color: ${noteColor}77;
+                            opacity: 0.6;
+                            z-index: 10;
+                            cursor: pointer;
+                        `;
+                    }
+                    
+                    dot.textContent = NOTE_NAMES[stringNote];
+                    
+                    // Click to play and toggle on circle
+                    dot.onclick = () => {
+                        if (activeNotes.has(stringNote)) {
+                            activeNotes.delete(stringNote);
+                        } else {
+                            activeNotes.add(stringNote);
+                        }
+                        renderChromaticCircle();
+                        updateActiveNotesDisplay();
+                        highlightNotesOnFretboard();
+                        initAudio();
+                        playNote(getFrequency(s, actualFret), 0.8);
+                    };
+                    
+                    fb.appendChild(dot);
+                }
+            }
+            
+            // Update slider position
+            document.getElementById('positionSlider').value = position;
+        }
+        
+        // ==================== DRAGGABLE WINDOW ====================
+        let isDragging = false;
+        let dragStartY = 0;
+        let dragStartPosition = 0;
+        
+        function startWindowDrag(e) {
+            e.preventDefault();
+            isDragging = true;
+            dragStartY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            dragStartPosition = position;
+            
+            const window = document.getElementById('chordWindow');
+            if (window) window.style.cursor = 'grabbing';
+            
+            document.addEventListener('mousemove', onWindowDrag);
+            document.addEventListener('mouseup', endWindowDrag);
+            document.addEventListener('touchmove', onWindowDrag, { passive: false });
+            document.addEventListener('touchend', endWindowDrag);
+        }
+        
+        function onWindowDrag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            const fb = document.getElementById('fretboard');
+            const height = fb.offsetHeight || 500;
+            const nutHeight = 25;
+            const playableHeight = height - nutHeight;
+            const fretHeight = playableHeight / 15;
+            
+            const deltaY = clientY - dragStartY;
+            const deltaFrets = Math.round(deltaY / fretHeight);
+            const newPosition = Math.max(0, Math.min(12, dragStartPosition + deltaFrets));
+            
+            if (newPosition !== position) {
+                position = newPosition;
+                updateUI();
+                // Play root note feedback
+                initAudio();
+                const keyRoot = getKeyRoot();
+                const midi = getMidi(keyRoot, currentOctave);
+                playNote(midiToFreq(midi), 0.3);
+            }
+        }
+        
+        function endWindowDrag() {
+            isDragging = false;
+            const window = document.getElementById('chordWindow');
+            if (window) window.style.cursor = 'ns-resize';
+            
+            document.removeEventListener('mousemove', onWindowDrag);
+            document.removeEventListener('mouseup', endWindowDrag);
+            document.removeEventListener('touchmove', onWindowDrag);
+            document.removeEventListener('touchend', endWindowDrag);
+        }
+        
+        // ==================== ACTIONS ====================
+        
+        function selectForm(name) {
+            currentForm = name;
+            position = 0;
+            activeChord = 0;
+            updateUI();
+        }
+        
+        function setPosition(newPos) {
+            position = parseInt(newPos);
+            updateUI();
+        }
+        
+        function movePosition(delta) {
+            const newPos = position + delta;
+            if (newPos >= 0 && newPos <= 12) {
+                position = newPos;
+                updateUI();
+            }
+        }
+        
+        function setTempo(bpm) {
+            tempo = parseInt(bpm);
+            document.getElementById('tempoSlider').value = tempo;
+            document.getElementById('tempoDisplay').textContent = `${tempo} BPM`;
+        }
+        
+        // Calculate timing based on tempo
+        function getBeatDuration() {
+            return 60000 / tempo;  // milliseconds per beat
+        }
+        
+        function getStrumDelay() {
+            // Strum speed scales with tempo (faster tempo = faster strum)
+            return Math.max(20, 150 - tempo * 0.5);
+        }
+        
+        function showChord(index) {
+            activeChord = index;
+            updateUI();
+            syncCircleWithChord();  // Sync the chromatic circle
+            playCurrentChord(true);
+        }
+        
+        // ==================== AUDIO ====================
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            // Test tone
+            playNote(440, 0.3);
+        }
+        
+        function playNote(freq, duration) {
+            if (!audioContext) initAudio();
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            // Use triangle wave for warmer, less harsh sound
+            osc.frequency.value = freq;
+            osc.type = 'triangle';
+            
+            // Lower initial volume to prevent distortion
+            const volume = 0.12;
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            const now = audioContext.currentTime;
+            
+            // Smooth attack and release envelope
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(volume, now + 0.02); // Quick attack
+            gain.gain.setValueAtTime(volume, now + duration * 0.7); // Sustain
+            gain.gain.exponentialRampToValueAtTime(0.001, now + duration); // Smooth release
+            
+            osc.start(now);
+            osc.stop(now + duration + 0.1);
+        }
+        
+        function getFrequency(stringIdx, fret) {
+            const midi = [40, 45, 50, 55, 59, 64][stringIdx] + fret;
+            return 440 * Math.pow(2, (midi - 69) / 12);
+        }
+        
+        function playCurrentChord(strum) {
+            const chord = getChordInfo(activeChord);
+            const shape = SHAPES[chord.shape];
+            const pos = chord.position;
+            
+            const notes = [];
+            for (let s = 0; s < 6; s++) {
+                if (shape.frets[s] !== -1) {
+                    notes.push({ string: s, fret: shape.frets[s] + pos });
+                }
+            }
+            
+            const strumDelay = getStrumDelay();
+            
+            if (strum) {
+                notes.forEach((note, i) => {
+                    setTimeout(() => {
+                        playNote(getFrequency(note.string, note.fret), 1.5);
+                    }, i * strumDelay);
+                });
+            } else {
+                notes.forEach(note => {
+                    playNote(getFrequency(note.string, note.fret), 1.5);
+                });
+            }
+        }
+        
+        async function playProgression() {
+            const sequence = [0, 1, 2, 0]; // I, IV, V, I
+            const beatDuration = getBeatDuration();
+            
+            for (const idx of sequence) {
+                activeChord = idx;
+                updateUI();
+                syncCircleWithChord();
+                playCurrentChord(true);
+                await new Promise(r => setTimeout(r, beatDuration * 2)); // 2 beats per chord
+            }
+        }
+        
+        // 2-5-1 (ii-V-I) Jazz Progression
+        async function play251Progression() {
+            initAudio();
+            const beatDuration = getBeatDuration();
+            const keyRoot = getKeyRoot();
+            
+            // ii-V-I chord roots relative to key
+            // ii = 2 semitones up (minor), V = 7 semitones up (dom7), I = root (major7)
+            const progression = [
+                { root: (keyRoot + 2) % 12, type: 'min7', degree: 'ii' },   // ii minor 7
+                { root: (keyRoot + 7) % 12, type: 'dom7', degree: 'V' },    // V dominant 7
+                { root: keyRoot, type: 'maj7', degree: 'I' }                 // I major 7
+            ];
+            
+            const chordIntervals = {
+                'min7': [0, 3, 7, 10],  // minor 7th
+                'dom7': [0, 4, 7, 10],  // dominant 7th
+                'maj7': [0, 4, 7, 11]   // major 7th
+            };
+            
+            // Update button text to show current key's 2-5-1
+            const btn = document.getElementById('play251Btn');
+            const chordNames = progression.map(p => {
+                const noteName = NOTE_NAMES[p.root];
+                const suffix = p.type === 'min7' ? 'm7' : (p.type === 'dom7' ? '7' : 'maj7');
+                return noteName + suffix;
+            });
+            btn.textContent = `🎹 Playing ${chordNames[0]} → ${chordNames[1]} → ${chordNames[2]}...`;
+            
+            for (let i = 0; i < progression.length; i++) {
+                const chord = progression[i];
+                
+                // Highlight on chromatic circle
+                const intervals = chordIntervals[chord.type];
+                const chordTones = intervals.map(interval => (chord.root + interval) % 12);
+                setActiveNotes(chordTones);
+                
+                // Show chord on fretboard AND play it (audio is triggered inside this function)
+                render251ChordOnFretboard(chord.root, chord.type, chordIntervals[chord.type], chordNames[i]);
+                
+                await new Promise(r => setTimeout(r, beatDuration * 2));
+            }
+            
+            // Reset button text
+            btn.textContent = `🎹 Play ii → V → I (2-5-1)`;
+            
+            // Sync back to current chord display
+            syncCircleWithChord();
+            updateUI();
+        }
+        
+        // Render a 251 chord on the fretboard
+        function render251ChordOnFretboard(root, chordType, intervals, chordName) {
+            const fb = document.getElementById('fretboard');
+            const width = fb.offsetWidth || 280;
+            const height = fb.offsetHeight || 500;
+            const nutHeight = 35;
+            const playableHeight = height - nutHeight;
+            const numFrets = 15;
+            const fretHeight = playableHeight / numFrets;
+            const stringSpacing = width / 7;
+            
+            // Clear existing content except nut
+            fb.innerHTML = '';
+            
+            // Recreate nut
+            const nut = document.createElement('div');
+            nut.className = 'nut';
+            nut.innerHTML = '<span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>';
+            fb.appendChild(nut);
+            
+            // Add fret lines
+            for (let fret = 1; fret <= numFrets; fret++) {
+                const fretLine = document.createElement('div');
+                fretLine.style.cssText = `
+                    position: absolute;
+                    top: ${nutHeight + fret * fretHeight}px;
+                    left: 10px;
+                    right: 10px;
+                    height: 3px;
+                    background: linear-gradient(90deg, #666 0%, #999 50%, #666 100%);
+                    border-radius: 2px;
+                `;
+                fb.appendChild(fretLine);
+                
+                // Fret number
+                if (fret % 2 === 1 || fret === 12) {
+                    const fretNum = document.createElement('div');
+                    fretNum.style.cssText = `
+                        position: absolute;
+                        top: ${nutHeight + (fret - 0.5) * fretHeight}px;
+                        right: 2px;
+                        font-size: 0.6em;
+                        color: #666;
+                    `;
+                    fretNum.textContent = fret;
+                    fb.appendChild(fretNum);
+                }
+            }
+            
+            // Add strings
+            for (let s = 0; s < 6; s++) {
+                const string = document.createElement('div');
+                const thickness = 1 + (5 - s) * 0.3;
+                string.style.cssText = `
+                    position: absolute;
+                    left: ${stringSpacing * (s + 1)}px;
+                    top: ${nutHeight}px;
+                    width: ${thickness}px;
+                    height: ${playableHeight}px;
+                    background: linear-gradient(180deg, #ddd 0%, #999 100%);
+                    transform: translateX(-50%);
+                `;
+                fb.appendChild(string);
+            }
+            
+            // Get chord tones (note indices 0-11)
+            const chordTones = intervals.map(interval => (root + interval) % 12);
+            const rootColor = getNoteColor(root);
+            
+            // Find best voicing for this chord on fretboard
+            // Simple approach: find notes within a 4-fret span
+            const voicing = find251Voicing(root, chordTones);
+            
+            // Draw chord notes
+            voicing.forEach((note, idx) => {
+                if (note.fret === -1) return; // muted string
+                
+                const noteIndex = (TUNING[note.string] + note.fret) % 12;
+                const noteColor = getNoteColor(noteIndex);
+                const isRoot = noteIndex === root;
+                
+                const yPos = note.fret === 0 
+                    ? nutHeight / 2 
+                    : nutHeight + (note.fret - 0.5) * fretHeight;
+                
+                const noteEl = document.createElement('div');
+                noteEl.style.cssText = `
+                    position: absolute;
+                    left: ${stringSpacing * (note.string + 1)}px;
+                    top: ${yPos}px;
+                    width: ${isRoot ? 36 : 30}px;
+                    height: ${isRoot ? 36 : 30}px;
+                    background: radial-gradient(circle at 30% 30%, ${noteColor}, ${noteColor}aa);
+                    border: ${isRoot ? '3px' : '2px'} solid ${noteColor};
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 0 ${isRoot ? '15px' : '10px'} ${noteColor}88;
+                    z-index: 10;
+                `;
+                noteEl.innerHTML = `
+                    <span style="font-size: 0.7em; font-weight: bold; color: #000;">${NOTE_NAMES[noteIndex]}</span>
+                `;
+                fb.appendChild(noteEl);
+            });
+            
+            // Add chord name display at top
+            const chordLabel = document.createElement('div');
+            chordLabel.style.cssText = `
+                position: absolute;
+                top: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${rootColor}44;
+                border: 2px solid ${rootColor};
+                border-radius: 8px;
+                padding: 3px 12px;
+                font-size: 0.9em;
+                font-weight: bold;
+                color: ${rootColor};
+                z-index: 20;
+            `;
+            chordLabel.textContent = chordName;
+            fb.appendChild(chordLabel);
+            
+            // Play the actual fretboard voicing
+            playFretboardVoicing(voicing);
+        }
+        
+        // Play the notes shown on fretboard
+        function playFretboardVoicing(voicing) {
+            const strumDelay = getStrumDelay();
+            
+            // Sort by string (low to high) for proper strum order
+            const sorted = [...voicing].sort((a, b) => b.string - a.string);
+            
+            sorted.forEach((note, i) => {
+                setTimeout(() => {
+                    const freq = getFrequency(note.string, note.fret);
+                    playNote(freq, 1.5);
+                }, i * strumDelay);
+            });
+        }
+        
+        // Find a playable voicing for 251 chords - OPEN POSITION (frets 0-3)
+        function find251Voicing(root, chordTones) {
+            // Pre-defined open position jazz voicings for common chords
+            // These are practical guitar voicings in first 3 frets
+            
+            const openVoicings = {
+                // Minor 7 chords (root on different strings)
+                'Dm7': [
+                    { string: 0, fret: 1, note: 5 },  // F
+                    { string: 1, fret: 1, note: 0 },  // C
+                    { string: 2, fret: 2, note: 4 },  // E (actually A - 9th, let's fix)
+                    { string: 3, fret: 0, note: 7 },  // D (wait, that's wrong)
+                ],
+                'Am7': [
+                    { string: 5, fret: 0, note: 4 },  // E
+                    { string: 4, fret: 0, note: 9 },  // A (root)
+                    { string: 3, fret: 0, note: 4 },  // E
+                    { string: 2, fret: 0, note: 7 },  // G (b7)
+                    { string: 1, fret: 1, note: 0 },  // C (b3)
+                    { string: 0, fret: 0, note: 4 },  // E
+                ],
+                'Em7': [
+                    { string: 5, fret: 0, note: 4 },  // E (root)
+                    { string: 4, fret: 2, note: 11 }, // B (5th)
+                    { string: 3, fret: 0, note: 4 },  // E
+                    { string: 2, fret: 0, note: 7 },  // G (b3)
+                    { string: 1, fret: 0, note: 11 }, // B
+                    { string: 0, fret: 0, note: 4 },  // E
+                ],
+            };
+            
+            // Build voicing dynamically within frets 0-3
+            const voicing = [];
+            const maxFret = 3;
+            
+            // For each string, find if any chord tone exists in frets 0-3
+            for (let s = 5; s >= 0; s--) {
+                for (let fret = 0; fret <= maxFret; fret++) {
+                    const noteAtPos = (TUNING[s] + fret) % 12;
+                    if (chordTones.includes(noteAtPos)) {
+                        voicing.push({ string: s, fret: fret, note: noteAtPos });
+                        break; // Only one note per string
+                    }
+                }
+            }
+            
+            return voicing;
+        }
+        
+        // ==================== CHORD BUILDER ====================
+        let selectedRoot = 0;  // C
+        let selectedType = 'maj';
+        
+        const CHORD_FORMULAS = {
+            'maj':   { intervals: [0, 4, 7],       name: 'Major',      symbol: '' },
+            'min':   { intervals: [0, 3, 7],       name: 'minor',      symbol: 'm' },
+            '7':     { intervals: [0, 4, 7, 10],   name: 'Dominant 7', symbol: '7' },
+            'maj7':  { intervals: [0, 4, 7, 11],   name: 'Major 7',    symbol: 'maj7' },
+            'min7':  { intervals: [0, 3, 7, 10],   name: 'minor 7',    symbol: 'm7' },
+            'dim':   { intervals: [0, 3, 6],       name: 'Diminished', symbol: '°' },
+            'aug':   { intervals: [0, 4, 8],       name: 'Augmented',  symbol: '+' },
+            'sus4':  { intervals: [0, 5, 7],       name: 'Sus4',       symbol: 'sus4' },
+            'sus2':  { intervals: [0, 2, 7],       name: 'Sus2',       symbol: 'sus2' },
+            'dim7':  { intervals: [0, 3, 6, 9],    name: 'Dim 7',      symbol: '°7' },
+            'min7b5':{ intervals: [0, 3, 6, 10],   name: 'Half-Dim',   symbol: 'ø7' },
+            '9':     { intervals: [0, 4, 7, 10, 14], name: 'Dominant 9', symbol: '9' },
+        };
+        
+        function setChordRoot(root) {
+            selectedRoot = root;
+            updateChordBuilder();
+            
+            // Update button styles
+            document.querySelectorAll('.root-btn').forEach(btn => {
+                const btnRoot = parseInt(btn.dataset.root);
+                const color = getNoteColor(btnRoot);
+                btn.style.background = btnRoot === root ? color : `${color}44`;
+                btn.style.border = btnRoot === root ? `2px solid ${color}` : 'none';
+            });
+        }
+        
+        function setChordType(type) {
+            selectedType = type;
+            updateChordBuilder();
+            
+            // Update button styles
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                const btnType = btn.dataset.type;
+                btn.style.background = btnType === type ? '#ffd70066' : 'rgba(255,255,255,0.1)';
+                btn.style.border = btnType === type ? '2px solid #ffd700' : 'none';
+            });
+        }
+        
+        function updateChordBuilder() {
+            const formula = CHORD_FORMULAS[selectedType];
+            const rootName = NOTE_NAMES[selectedRoot];
+            const rootColor = getNoteColor(selectedRoot);
+            
+            // Calculate chord tones
+            const chordTones = formula.intervals.map(interval => (selectedRoot + interval) % 12);
+            const toneNames = chordTones.map(tone => NOTE_NAMES[tone]);
+            
+            // Update display
+            const display = document.getElementById('builtChordDisplay');
+            display.style.borderColor = rootColor;
+            display.style.background = `${rootColor}22`;
+            display.innerHTML = `
+                <span style="font-size: 1.4em; font-weight: bold; color: ${rootColor};">${rootName}${formula.symbol}</span>
+                <div style="font-size: 0.7em; color: #aaa; margin-top: 3px;">${formula.name}</div>
+                <div style="font-size: 0.65em; color: #ccc; margin-top: 3px;">${toneNames.join(' - ')}</div>
+            `;
+            
+            // Update chromatic circle to show these notes
+            setActiveNotes(chordTones);
+            
+            // Update circle center
+            document.getElementById('circleKeyName').textContent = rootName;
+            document.getElementById('circleKeyName').style.color = rootColor;
+            document.getElementById('circleChordName').textContent = formula.name;
+        }
+        
+        // ==================== CHROMATIC CIRCLE ====================
+        let activeNotes = new Set(); // Notes currently highlighted on the circle
+        
+        function renderChromaticCircle() {
+            const container = document.getElementById('chromaticCircle');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const centerX = 120;
+            const centerY = 120;
+            const radius = 95;
+            
+            for (let i = 0; i < 12; i++) {
+                const noteData = CHROMATIC_COLORS[i];
+                const midi = getMidi(i, currentOctave);
+                
+                // Position: C at top (12 o'clock), going clockwise
+                const angle = ((i * 30) - 90) * (Math.PI / 180);
+                const x = centerX + radius * Math.cos(angle) - 18;
+                const y = centerY + radius * Math.sin(angle) - 18;
+                
+                const isActive = activeNotes.has(i);
+                
+                const sphere = document.createElement('div');
+                sphere.className = `note-sphere ${isActive ? 'active' : ''}`;
+                sphere.style.cssText = `
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: 36px;
+                    height: 36px;
+                    background: radial-gradient(circle at 30% 30%, ${noteData.color}ff, ${noteData.color}aa, ${noteData.color}66);
+                    border: 2px solid ${noteData.color};
+                    box-shadow: ${isActive ? `0 0 15px ${noteData.color}, 0 0 30px ${noteData.color}88` : `0 3px 10px ${noteData.color}44`};
+                    ${isActive ? `animation: pulse 0.5s ease-in-out infinite alternate;` : ''}
+                `;
+                sphere.innerHTML = `
+                    <span class="note-name" style="font-size: 0.7em;">${noteData.note}</span>
+                    <span class="midi-num" style="font-size: 0.45em;">${midi}</span>
+                `;
+                sphere.onclick = () => toggleNote(i);
+                sphere.title = `${noteData.note}${currentOctave} | MIDI: ${midi} | ${noteData.name}`;
+                
+                container.appendChild(sphere);
+            }
+            
+            // Update octave display
+            const octaveDisplay = document.getElementById('octaveDisplay');
+            if (octaveDisplay) octaveDisplay.textContent = `Octave ${currentOctave}`;
+        }
+        
+        function toggleNote(noteIndex) {
+            if (activeNotes.has(noteIndex)) {
+                activeNotes.delete(noteIndex);
+            } else {
+                activeNotes.add(noteIndex);
+            }
+            renderChromaticCircle();
+            updateActiveNotesDisplay();
+            highlightNotesOnFretboard(); // Sync fretboard with circle
+            
+            // Play the note
+            const midi = getMidi(noteIndex, currentOctave);
+            const freq = midiToFreq(midi);
+            initAudio();
+            playNote(freq, 0.5);
+        }
+        
+        // Highlight active notes from chromatic circle on the fretboard
+        function highlightNotesOnFretboard() {
+            // Remove existing circle highlights
+            document.querySelectorAll('.circle-highlight').forEach(el => el.remove());
+            
+            // Don't add extra highlights - the chord notes in renderFretboard 
+            // already handle the display based on activeNotes
+            // This function is now just for cleanup
+        }
+        
+        function setActiveNotes(noteIndices) {
+            activeNotes.clear();
+            noteIndices.forEach(idx => activeNotes.add(idx % 12));
+            renderChromaticCircle();
+            updateActiveNotesDisplay();
+            // Re-render fretboard to update which notes are highlighted
+            renderFretboard();
+        }
+        
+        function updateActiveNotesDisplay() {
+            const container = document.getElementById('activeNotesDisplay');
+            if (!container) return;
+            
+            if (activeNotes.size === 0) {
+                container.innerHTML = '<span style="color: #666; font-size: 0.8em;">Click notes on circle to select</span>';
+                return;
+            }
+            
+            const sortedNotes = Array.from(activeNotes).sort((a, b) => a - b);
+            container.innerHTML = sortedNotes.map(idx => {
+                const noteData = CHROMATIC_COLORS[idx];
+                return `
+                    <div style="
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 50%;
+                        background: radial-gradient(circle at 30% 30%, ${noteData.color}ff, ${noteData.color}88);
+                        border: 2px solid ${noteData.color};
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 0.7em;
+                        font-weight: bold;
+                        color: #000;
+                        box-shadow: 0 0 10px ${noteData.color}66;
+                    ">${noteData.note}</div>
+                `;
+            }).join('');
+        }
+        
+        function updateCircleCenter() {
+            const keyRoot = getKeyRoot();
+            const keyName = NOTE_NAMES[keyRoot];
+            const chords = [0, 1, 2].map(i => getChordInfo(i));
+            
+            document.getElementById('circleKeyName').textContent = keyName;
+            document.getElementById('circleKeyName').style.color = getNoteColor(keyRoot);
+            document.getElementById('circleChordName').textContent = `${chords[0].name} - ${chords[1].name} - ${chords[2].name}`;
+        }
+        
+        function syncCircleWithChord() {
+            // Get the current chord's notes
+            const chord = getChordInfo(activeChord);
+            const chordRoot = getChordRoots()[activeChord];
+            
+            // For a major chord: root, major 3rd (+4), perfect 5th (+7)
+            const chordTones = [
+                chordRoot,
+                (chordRoot + 4) % 12,  // Major 3rd
+                (chordRoot + 7) % 12   // Perfect 5th
+            ];
+            
+            setActiveNotes(chordTones);
+            updateCircleCenter();
+        }
+        
+        function playCircleChord() {
+            if (activeNotes.size === 0) return;
+            
+            initAudio();
+            
+            // Use the chord builder's selected root (or fall back to CAGED chord root)
+            const chordRoot = selectedRoot !== undefined ? selectedRoot : getChordRoots()[activeChord];
+            
+            // Convert activeNotes to array and sort by interval from root (ascending)
+            const notesArray = Array.from(activeNotes);
+            
+            // Sort notes so they play from root upward
+            // Calculate interval from root for each note, ensuring proper octave ordering
+            const sortedNotes = notesArray.sort((a, b) => {
+                // Calculate semitones above root (0-11 range, root = 0)
+                const intervalA = (a - chordRoot + 12) % 12;
+                const intervalB = (b - chordRoot + 12) % 12;
+                return intervalA - intervalB;
+            });
+            
+            const arpDelay = getStrumDelay();
+            
+            // Play notes in order: root, then intervals ascending
+            sortedNotes.forEach((noteIdx, i) => {
+                setTimeout(() => {
+                    // Calculate proper MIDI - if note is "below" root in circle, play it in next octave
+                    let midi = getMidi(noteIdx, currentOctave);
+                    const interval = (noteIdx - chordRoot + 12) % 12;
+                    
+                    // Root plays at base octave, other notes play at same or higher
+                    // This ensures we always play root position (root is lowest)
+                    if (noteIdx < chordRoot && interval > 0) {
+                        midi += 12; // Bump up an octave to keep chord in root position
+                    }
+                    
+                    const freq = midiToFreq(midi);
+                    playNote(freq, 1.5);
+                }, i * arpDelay);
+            });
+        }
+
+        // ==================== CHROMATIC SPHERES ====================
+        let currentOctave = 4;
+        
+        function renderChromaticSpheres() {
+            const container = document.getElementById('chromaticSpheres');
+            if (!container) return;
+            
+            const spheres = generateSpherePrefabs(currentOctave);
+            
+            container.innerHTML = spheres.map(sphere => `
+                <div onclick="playSphereNote(${sphere.index}, ${currentOctave})" 
+                     style="
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        background: radial-gradient(circle at 30% 30%, ${sphere.color}ff, ${sphere.color}88, ${sphere.color}44);
+                        border: 2px solid ${sphere.color};
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        box-shadow: 0 4px 15px ${sphere.color}66, inset 0 -5px 20px rgba(0,0,0,0.3);
+                        transition: transform 0.2s, box-shadow 0.2s;
+                     "
+                     onmouseover="this.style.transform='scale(1.15)'; this.style.boxShadow='0 6px 25px ${sphere.color}99, inset 0 -5px 20px rgba(0,0,0,0.3)';"
+                     onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 15px ${sphere.color}66, inset 0 -5px 20px rgba(0,0,0,0.3)';"
+                     title="${sphere.note}${sphere.octave} | MIDI: ${sphere.midi} | ${sphere.frequency}Hz | ${sphere.register}">
+                    <div style="font-size: 0.7em; font-weight: bold; color: #000; text-shadow: 0 0 3px #fff;">${sphere.note}</div>
+                    <div style="font-size: 0.5em; color: #000; opacity: 0.8;">${sphere.midi}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('octaveDisplay').textContent = `Octave ${currentOctave}`;
+        }
+        
+        function changeOctave(delta) {
+            const newOctave = currentOctave + delta;
+            if (newOctave >= 0 && newOctave <= 8) {
+                currentOctave = newOctave;
+                renderChromaticCircle();
+                renderChromaticSpheres();
+            }
+        }
+        
+        function playSphereNote(noteIndex, octave) {
+            const midi = getMidi(noteIndex, octave);
+            const freq = midiToFreq(midi);
+            initAudio();
+            playNote(freq, 1.0);
+        }
+        
+        // ==================== EAR TRAINER ====================
+        let earTrainerMode = 'note';
+        let currentQuestion = null;
+        let earCorrect = 0;
+        let earWrong = 0;
+        
+        const INTERVAL_NAMES = {
+            0: 'Unison', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
+            6: 'Tritone', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7', 12: 'Octave'
+        };
+        
+        const CHORD_TYPES = {
+            'major': [0, 4, 7],
+            'minor': [0, 3, 7],
+            'dim': [0, 3, 6],
+            'aug': [0, 4, 8],
+            'maj7': [0, 4, 7, 11],
+            'min7': [0, 3, 7, 10],
+            'dom7': [0, 4, 7, 10]
+        };
+        
+        function setEarTrainerMode(mode) {
+            earTrainerMode = mode;
+            
+            // Update button styles
+            document.getElementById('modeInterval').style.background = mode === 'interval' ? '#8a2be2' : 'rgba(255,255,255,0.1)';
+            document.getElementById('modeChord').style.background = mode === 'chord' ? '#8a2be2' : 'rgba(255,255,255,0.1)';
+            document.getElementById('modeNote').style.background = mode === 'note' ? '#8a2be2' : 'rgba(255,255,255,0.1)';
+            
+            // Update answer buttons based on mode
+            updateEarTrainerAnswers();
+            document.getElementById('earTrainerQuestion').textContent = 'Click "Play Sound" to start';
+        }
+        
+        function updateEarTrainerAnswers() {
+            const container = document.getElementById('earTrainerAnswers');
+            
+            if (earTrainerMode === 'interval') {
+                container.innerHTML = `
+                    <button onclick="checkEarTrainerAnswer(0)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Uni</button>
+                    <button onclick="checkEarTrainerAnswer(2)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">M2</button>
+                    <button onclick="checkEarTrainerAnswer(3)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">m3</button>
+                    <button onclick="checkEarTrainerAnswer(4)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">M3</button>
+                    <button onclick="checkEarTrainerAnswer(5)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">P4</button>
+                    <button onclick="checkEarTrainerAnswer(7)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">P5</button>
+                    <button onclick="checkEarTrainerAnswer(9)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">M6</button>
+                    <button onclick="checkEarTrainerAnswer(12)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Oct</button>
+                `;
+            } else if (earTrainerMode === 'chord') {
+                container.innerHTML = `
+                    <button onclick="checkEarTrainerAnswer('major')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Major</button>
+                    <button onclick="checkEarTrainerAnswer('minor')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Minor</button>
+                    <button onclick="checkEarTrainerAnswer('dim')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Dim</button>
+                    <button onclick="checkEarTrainerAnswer('aug')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Aug</button>
+                    <button onclick="checkEarTrainerAnswer('dom7')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Dom7</button>
+                    <button onclick="checkEarTrainerAnswer('maj7')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Maj7</button>
+                    <button onclick="checkEarTrainerAnswer('min7')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Min7</button>
+                `;
+            } else if (earTrainerMode === 'note') {
+                container.innerHTML = `
+                    <button onclick="checkEarTrainerAnswer(0)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFFF0044; color: #fff; cursor: pointer; font-size: 0.6em;">C</button>
+                    <button onclick="checkEarTrainerAnswer(1)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFC40044; color: #fff; cursor: pointer; font-size: 0.6em;">C#</button>
+                    <button onclick="checkEarTrainerAnswer(2)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF800044; color: #fff; cursor: pointer; font-size: 0.6em;">D</button>
+                    <button onclick="checkEarTrainerAnswer(3)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF400044; color: #fff; cursor: pointer; font-size: 0.6em;">D#</button>
+                    <button onclick="checkEarTrainerAnswer(4)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF000044; color: #fff; cursor: pointer; font-size: 0.6em;">E</button>
+                    <button onclick="checkEarTrainerAnswer(5)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #C4007F44; color: #fff; cursor: pointer; font-size: 0.6em;">F</button>
+                    <button onclick="checkEarTrainerAnswer(6)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #8000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">F#</button>
+                    <button onclick="checkEarTrainerAnswer(7)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #4000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G</button>
+                    <button onclick="checkEarTrainerAnswer(8)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #0000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G#</button>
+                    <button onclick="checkEarTrainerAnswer(9)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #007FFF44; color: #fff; cursor: pointer; font-size: 0.6em;">A</button>
+                    <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #00FF8044; color: #fff; cursor: pointer; font-size: 0.6em;">A#</button>
+                    <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #80FF0044; color: #fff; cursor: pointer; font-size: 0.6em;">B</button>
+                `;
+            }
+        }
+        
+        function playEarTrainerQuestion() {
+            initAudio();
+            
+            if (earTrainerMode === 'interval') {
+                // Random root note and interval
+                const rootNote = Math.floor(Math.random() * 12);
+                const intervals = [0, 2, 3, 4, 5, 7, 9, 12];
+                const interval = intervals[Math.floor(Math.random() * intervals.length)];
+                
+                currentQuestion = { type: 'interval', answer: interval, rootNote };
+                
+                // Highlight notes on chromatic circle
+                const secondNote = (rootNote + interval) % 12;
+                setActiveNotes([rootNote, secondNote]);
+                
+                // Play root, then interval
+                const rootMidi = getMidi(rootNote, currentOctave);
+                const intervalMidi = rootMidi + interval;
+                
+                playNote(midiToFreq(rootMidi), 0.8);
+                setTimeout(() => {
+                    playNote(midiToFreq(intervalMidi), 0.8);
+                }, 600);
+                
+                document.getElementById('earTrainerQuestion').textContent = 'What interval is this?';
+                
+            } else if (earTrainerMode === 'chord') {
+                // Random root and chord type
+                const rootNote = Math.floor(Math.random() * 12);
+                const chordTypes = Object.keys(CHORD_TYPES);
+                const chordType = chordTypes[Math.floor(Math.random() * chordTypes.length)];
+                
+                currentQuestion = { type: 'chord', answer: chordType, rootNote };
+                
+                // Highlight chord tones on chromatic circle
+                const chordTones = CHORD_TYPES[chordType].map(interval => (rootNote + interval) % 12);
+                setActiveNotes(chordTones);
+                
+                // Play chord
+                const rootMidi = getMidi(rootNote, currentOctave);
+                const intervals = CHORD_TYPES[chordType];
+                
+                intervals.forEach((interval, i) => {
+                    setTimeout(() => {
+                        playNote(midiToFreq(rootMidi + interval), 1.2);
+                    }, i * 80);
+                });
+                
+                document.getElementById('earTrainerQuestion').textContent = 'What chord type is this?';
+                
+            } else if (earTrainerMode === 'note') {
+                // Random note
+                const noteIndex = Math.floor(Math.random() * 12);
+                currentQuestion = { type: 'note', answer: noteIndex };
+                
+                // Highlight note on chromatic circle
+                setActiveNotes([noteIndex]);
+                
+                const midi = getMidi(noteIndex, currentOctave);
+                playNote(midiToFreq(midi), 1.0);
+                
+                document.getElementById('earTrainerQuestion').textContent = 'What note is this?';
+            }
+            
+            // Sync fretboard to show the notes being played
+            highlightEarTrainerOnFretboard();
+        }
+        
+        // Highlight ear trainer notes on the fretboard
+        function highlightEarTrainerOnFretboard() {
+            if (!currentQuestion) return;
+            
+            const fb = document.getElementById('fretboard');
+            
+            // Remove any existing ear trainer highlights
+            document.querySelectorAll('.ear-trainer-highlight').forEach(el => el.remove());
+            
+            const width = fb.offsetWidth || 280;
+            const height = fb.offsetHeight || 500;
+            const nutHeight = 35;
+            const playableHeight = height - nutHeight;
+            const numFrets = 15;
+            const fretHeight = playableHeight / numFrets;
+            const stringSpacing = width / 7;
+            
+            let notesToHighlight = [];
+            
+            if (currentQuestion.type === 'note') {
+                notesToHighlight = [currentQuestion.answer];
+            } else if (currentQuestion.type === 'interval') {
+                const secondNote = (currentQuestion.rootNote + currentQuestion.answer) % 12;
+                notesToHighlight = [currentQuestion.rootNote, secondNote];
+            } else if (currentQuestion.type === 'chord') {
+                notesToHighlight = CHORD_TYPES[currentQuestion.answer].map(
+                    interval => (currentQuestion.rootNote + interval) % 12
+                );
+            }
+            
+            // Find and highlight all instances of these notes on the fretboard
+            for (let s = 0; s < 6; s++) {
+                for (let fret = 0; fret <= numFrets; fret++) {
+                    const noteAtPosition = (TUNING[s] + fret) % 12;
+                    
+                    if (notesToHighlight.includes(noteAtPosition)) {
+                        const noteColor = getNoteColor(noteAtPosition);
+                        const isRoot = noteAtPosition === (currentQuestion.rootNote !== undefined ? currentQuestion.rootNote : currentQuestion.answer);
+                        
+                        const yPos = fret === 0 
+                            ? nutHeight / 2 
+                            : nutHeight + (fret - 0.5) * fretHeight;
+                        
+                        const highlight = document.createElement('div');
+                        highlight.className = 'ear-trainer-highlight';
+                        highlight.style.cssText = `
+                            position: absolute;
+                            left: ${stringSpacing * (s + 1)}px;
+                            top: ${yPos}px;
+                            width: ${isRoot ? 38 : 32}px;
+                            height: ${isRoot ? 38 : 32}px;
+                            background: ${noteColor}44;
+                            border: 3px solid ${noteColor};
+                            border-radius: 50%;
+                            transform: translate(-50%, -50%);
+                            pointer-events: none;
+                            animation: pulseHighlight 0.8s ease-in-out infinite alternate;
+                            z-index: 5;
+                        `;
+                        fb.appendChild(highlight);
+                    }
+                }
+            }
+        }
+        
+        function checkEarTrainerAnswer(answer) {
+            if (!currentQuestion) {
+                document.getElementById('earTrainerQuestion').textContent = 'Click "Play Sound" first!';
+                return;
+            }
+            
+            const isCorrect = answer === currentQuestion.answer;
+            
+            if (isCorrect) {
+                earCorrect++;
+                document.getElementById('earTrainerQuestion').innerHTML = '<span style="color: #4ade80;">✓ Correct!</span>';
+            } else {
+                earWrong++;
+                let correctAnswer = '';
+                if (currentQuestion.type === 'interval') {
+                    correctAnswer = INTERVAL_NAMES[currentQuestion.answer];
+                } else if (currentQuestion.type === 'chord') {
+                    correctAnswer = currentQuestion.answer;
+                } else {
+                    correctAnswer = NOTE_NAMES[currentQuestion.answer];
+                }
+                document.getElementById('earTrainerQuestion').innerHTML = `<span style="color: #f87171;">✗ It was ${correctAnswer}</span>`;
+            }
+            
+            // Update score
+            document.getElementById('earCorrect').textContent = earCorrect;
+            document.getElementById('earWrong').textContent = earWrong;
+            const total = earCorrect + earWrong;
+            const percentage = total > 0 ? Math.round((earCorrect / total) * 100) : 0;
+            document.getElementById('earScore').textContent = percentage;
+            
+            currentQuestion = null;
+            
+            // Clear ear trainer highlights from fretboard
+            document.querySelectorAll('.ear-trainer-highlight').forEach(el => el.remove());
+            
+            // Auto-play next question after a delay
+            setTimeout(() => {
+                playEarTrainerQuestion();
+            }, 1500);
+        }
+        
+        // ==================== INIT ====================
+        
+        document.querySelectorAll('.form-btn').forEach(btn => {
+            btn.addEventListener('click', () => selectForm(btn.dataset.form));
+        });
+        
+        // Add pulse animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                from { transform: scale(1.2); }
+                to { transform: scale(1.35); }
+            }
+            @keyframes pulseHighlight {
+                from { 
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 0.8;
+                }
+                to { 
+                    transform: translate(-50%, -50%) scale(1.15);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        updateUI();
+        renderChromaticCircle();
+        renderChromaticSpheres();
+        syncCircleWithChord(); // Initial sync of circle with fretboard
+    </script>
+</body>
+</html>

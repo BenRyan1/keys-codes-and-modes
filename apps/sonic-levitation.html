@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sonic Levitation Field</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #111 0%, #000 70%);
+      color: #eaeaea;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      margin: 16px 0 4px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      font-size: 1.2rem;
+      opacity: 0.85;
+    }
+    .subtitle {
+      font-size: 0.8rem;
+      opacity: 0.6;
+      margin-bottom: 8px;
+    }
+    canvas {
+      flex: 1;
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(to bottom, #050505, #0c0c0c);
+      border-radius: 18px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    }
+    .controls {
+      width: 100%;
+      max-width: 420px;
+      padding: 12px 16px 18px;
+    }
+    label {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      display: block;
+      margin-top: 8px;
+    }
+    input[type=range] {
+      width: 100%;
+    }
+    .readout {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+<h1>SONIC LEVITATION FIELD</h1>
+<div class="subtitle">frequency organizes space</div>
+
+<canvas id="field"></canvas>
+
+<div class="controls">
+  <label>Frequency</label>
+  <input type="range" id="freq" min="0" max="1" step="0.001" value="0.42" />
+  <div class="readout" id="freqReadout"></div>
+
+  <label>Energy (Amplitude)</label>
+  <input type="range" id="amp" min="0" max="1" step="0.001" value="0.7" />
+  <div class="readout" id="ampReadout"></div>
+
+  <label>Phase Drift</label>
+  <input type="range" id="drift" min="0" max="1" step="0.001" value="0.15" />
+  <div class="readout" id="driftReadout"></div>
+</div>
+
+<script>
+const canvas = document.getElementById('field');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = canvas.clientWidth * devicePixelRatio;
+  canvas.height = canvas.clientHeight * devicePixelRatio;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const freqSlider = document.getElementById('freq');
+const ampSlider = document.getElementById('amp');
+const driftSlider = document.getElementById('drift');
+
+const freqReadout = document.getElementById('freqReadout');
+const ampReadout = document.getElementById('ampReadout');
+const driftReadout = document.getElementById('driftReadout');
+
+let ball = {
+  y: 0.5,
+  vy: 0
+};
+
+function harmonicNode(freq) {
+  const ratios = [1, 1.25, 1.333, 1.5, 1.667, 2];
+  let closest = freq;
+  let minDist = 1;
+  ratios.forEach(r => {
+    const pos = (r % 1);
+    const d = Math.abs(freq - pos);
+    if (d < minDist) {
+      minDist = d;
+      closest = pos;
+    }
+  });
+  return { pos: closest, stability: Math.max(0, 1 - minDist * 8) };
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const freq = parseFloat(freqSlider.value);
+  const amp = parseFloat(ampSlider.value);
+  const drift = parseFloat(driftSlider.value);
+
+  freqReadout.textContent = freq.toFixed(3);
+  ampReadout.textContent = amp.toFixed(3);
+  driftReadout.textContent = drift.toFixed(3);
+
+  const fieldHeight = canvas.height;
+
+  ctx.strokeStyle = 'rgba(120,120,120,0.25)';
+  ctx.lineWidth = 1 * devicePixelRatio;
+  ctx.beginPath();
+  for (let y = 0; y <= fieldHeight; y += 4 * devicePixelRatio) {
+    const norm = y / fieldHeight;
+    const wave = Math.sin((norm * 8 + freq * 6) * Math.PI);
+    const x = canvas.width / 2 + wave * amp * 60 * devicePixelRatio;
+    if (y === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  const node = harmonicNode(freq);
+  const targetY = node.pos * fieldHeight;
+
+  const attraction = (targetY - ball.y * fieldHeight) * 0.0006 * node.stability;
+  const noise = (Math.random() - 0.5) * drift * 0.02;
+
+  ball.vy += attraction + noise;
+  ball.vy *= 0.96;
+  ball.y += ball.vy;
+
+  const bx = canvas.width / 2;
+  const by = ball.y * fieldHeight;
+  const r = 10 * devicePixelRatio;
+
+  ctx.beginPath();
+  ctx.arc(bx, by, r, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(220,220,220,${0.6 + node.stability * 0.4})`;
+  ctx.fill();
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>

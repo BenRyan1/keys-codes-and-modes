@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonized Chromatic Scale - Keys, Codes, and Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #0a0a15 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .logo .keys {
+            color: #FFFF00;
+            text-shadow: 0 0 30px rgba(255, 255, 0, 0.8), 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo .codes {
+            color: #FF8C00;
+            text-shadow: 0 0 30px rgba(255, 140, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+
+        .logo .modes {
+            color: #0000FF;
+            text-shadow: 0 0 30px rgba(0, 0, 255, 0.8), 0 0 10px rgba(0, 0, 255, 0.5);
+        }
+
+        .logo .comma {
+            color: #00FF00;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .logo .and {
+            color: #FF00FF;
+            font-style: normal;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+            margin: 0 10px;
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            color: #c0c0ff;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 2em;
+            background: linear-gradient(135deg, #FFFF00 0%, #FF8C00 25%, #FF0000 50%, #0000FF 75%, #00FF00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: nowrap;
+            max-width: 1800px;
+            width: 100%;
+        }
+
+        .wheel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .fretboard-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(26, 26, 46, 0.5) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
+            flex: 0 0 auto;
+            margin-top: 0; /* Align with wheel top */
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin-bottom: 30px;
+        }
+
+        .fretboard-container {
+            position: relative;
+            background: linear-gradient(to right, #8B4513 0%, #654321 100%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 600px; /* Match wheel height */
+        }
+
+        /* Make layout responsive for smaller screens */
+        @media (max-width: 1400px) {
+            .main-content {
+                flex-wrap: wrap;
+            }
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin-bottom: 30px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #baseWheel {
+            z-index: 1;
+        }
+
+        #overlayWheel {
+            z-index: 2;
+            cursor: grab;
+        }
+
+        #overlayWheel:active {
+            cursor: grabbing;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .key-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            border: 3px solid rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.3);
+        }
+
+        .key-selector label {
+            font-size: 1.4em;
+            color: #FFFF00;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .key-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .key-btn {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            color: white;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .key-btn:hover {
+            background: linear-gradient(135deg, #FF8C00 0%, #FFFF00 100%);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .key-btn.active {
+            background: linear-gradient(135deg, #00FF00 0%, #00FFFF 100%);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+            border-color: #00FF00;
+        }
+
+        .chord-type-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            border: 3px solid rgba(255, 140, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
+        }
+
+        .chord-type-selector label {
+            font-size: 1.4em;
+            color: #FF8C00;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+
+        .chord-type-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chord-type-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            color: white;
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .chord-type-btn:hover {
+            background: linear-gradient(135deg, #FF8C00 0%, #FF0000 100%);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .chord-type-btn.active {
+            background: linear-gradient(135deg, #0000FF 0%, #00FFFF 100%);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 255, 0.8);
+            border-color: #0000FF;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rotation-btn {
+            background: linear-gradient(135deg, #0000FF 0%, #9400D3 100%);
+            color: white;
+            font-size: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 0;
+            box-shadow: 0 0 15px rgba(0, 0, 255, 0.4);
+        }
+
+        .rotation-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 0, 255, 0.8);
+        }
+
+        .rotation-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #00FF00 0%, #00FFFF 100%);
+            color: #000;
+            font-size: 20px;
+            padding: 18px 40px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+            font-weight: 800;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.9);
+        }
+
+        .play-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .play-btn.primary {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            font-size: 22px;
+            padding: 20px 50px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.7);
+            border: 3px solid #FFD700;
+        }
+
+        .play-btn.primary:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 1);
+        }
+
+        .current-chord {
+            margin-top: 20px;
+            font-size: 2.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFFF00 0%, #00FF00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .chord-notes-display {
+            margin-top: 5px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            border: 3px solid rgba(0, 255, 255, 0.5);
+            min-height: 100px;
+        }
+
+        .chord-notes-title {
+            font-size: 1em;
+            color: #00FFFF;
+            margin-bottom: 8px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .chord-notes-list {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .note-badge {
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.8em;
+            font-weight: bold;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .note-badge.root {
+            border: 4px solid #FFD700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            transform: scale(1.15);
+            position: relative;
+        }
+
+        .note-badge.root::before {
+            content: 'ROOT';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.35em;
+            color: #FFD700;
+            font-weight: bold;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .position-indicator {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .position-indicator-title {
+            font-size: 0.9em;
+            color: #FFD700;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .position-indicator-value {
+            font-size: 1.5em;
+            color: #FFFF00;
+            font-weight: bold;
+        }
+
+        .chord-progression {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(26, 26, 46, 0.6);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .chord-progression-title {
+            font-size: 1.2em;
+            color: #00FFFF;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .chord-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chord-item {
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .chord-item.playing {
+            background: linear-gradient(135deg, #00FF00 0%, #00FFFF 100%);
+            color: #000;
+            border-color: #00FF00;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+        }
+
+        .info {
+            margin-top: 15px;
+            color: #c0c0ff;
+            font-size: 1.1em;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* Fretboard Section */
+        .fretboard-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(26, 26, 46, 0.5) 100%);
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
+        }
+
+        .fretboard-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00FF00 0%, #0000FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fretboard-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .fretboard-container {
+            position: relative;
+            background: linear-gradient(to right, #8B4513 0%, #654321 100%);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .fretboard {
+            position: relative;
+            min-height: 432px;
+            display: flex;
+            gap: 25px;
+            padding: 15px;
+        }
+
+        .string-container {
+            position: relative;
+            width: 32px;
+            min-height: 432px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .string-label {
+            position: absolute;
+            top: -35px;
+            font-weight: bold;
+            color: #FFFF00;
+            font-size: 15px;
+            text-align: center;
+            width: 32px;
+        }
+
+        .string-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #C0C0C0 0%, #808080 100%);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .fret-marker {
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: #FFD700;
+            left: 0;
+        }
+
+        .note-dot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .note-dot:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 4px 15px rgba(255, 255, 0, 0.8);
+            z-index: 10;
+        }
+
+        .note-dot.active {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.4); box-shadow: 0 0 25px currentColor; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <span class="keys">KEYS</span><span class="comma">,</span>
+            <span class="codes">CODES</span><span class="comma">,</span>
+            <span class="and">&</span>
+            <span class="modes">MODES</span>
+        </div>
+        <div class="tagline">A Visual Approach to Understanding Music</div>
+        <div class="subtitle">Harmonized Chromatic Chord Scale</div>
+    </div>
+
+    <!-- Unified Control Panel Above Both Sections -->
+    <div style="width: 100%; max-width: 1400px; margin: 0 auto 30px auto; padding: 0 20px;">
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+            <!-- Key Selector -->
+            <div class="key-selector">
+                <label>Select Key:</label>
+                <div class="key-buttons" id="keyButtons"></div>
+            </div>
+
+            <!-- Chord Type Selector -->
+            <div class="chord-type-selector">
+                <label>Harmony Type:</label>
+                <div class="chord-type-buttons">
+                    <button class="chord-type-btn active" data-type="triad">Triads (Mixed)</button>
+                    <button class="chord-type-btn" data-type="7th">7th Chords (Mixed)</button>
+                    <button class="chord-type-btn" data-type="maj7">All Maj7</button>
+                    <button class="chord-type-btn" data-type="min7">All Min7</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="wheel-section">
+            <div class="wheel-container">
+                <canvas id="baseWheel" width="600" height="600"></canvas>
+                <canvas id="overlayWheel" width="600" height="600"></canvas>
+            </div>
+
+            <div class="controls">
+                <button class="rotation-btn" id="rotateLeft">◀</button>
+                <button class="play-btn primary" id="playHarmonizedScale">▶ PLAY HARMONIZED SCALE</button>
+                <button class="rotation-btn" id="rotateRight">▶</button>
+            </div>
+
+            <div class="current-chord" id="chordDisplay">C Major</div>
+            
+            <!-- Chord Tones Title - Outside and Above Panel -->
+            <div class="chord-notes-title">Chord Tones (Notes in this Chord)</div>
+            
+            <!-- Enhanced Chord Notes Display with Root Highlighting -->
+            <div class="chord-notes-display">
+                <div class="chord-notes-list" id="chordNotesBadges"></div>
+            </div>
+
+            <!-- Position Indicator -->
+            <div class="position-indicator">
+                <div class="position-indicator-title">Current Position in Chromatic Scale</div>
+                <div class="position-indicator-value" id="positionDisplay">1 of 12 - Tonic (I)</div>
+            </div>
+        </div>
+
+        <div class="fretboard-section">
+            <div style="background: rgba(0, 255, 0, 0.2); padding: 10px; border-radius: 8px; border: 2px solid #00FF00; margin-bottom: 15px; text-align: center;">
+                <div style="color: #00FF00; font-weight: bold; font-size: 0.9em;">✓ SYNCED WITH WHEEL</div>
+                <div style="color: #00FFFF; font-size: 0.8em; margin-top: 5px;">Showing same chord tones & colors</div>
+            </div>
+            
+            <div class="fretboard-title" id="fretViewTitle">Guitar Fretboard - Current Chord</div>
+            <div class="fretboard-controls">
+                <button class="play-btn" id="ascendBtn">⬆ Ascend</button>
+                <button class="play-btn" id="descendBtn">⬇ Descend</button>
+                <button class="chord-type-btn" id="toggleViewBtn">Switch to 12 Frets</button>
+            </div>
+            <div class="fretboard-container">
+                <div class="fretboard" id="fretboardMini"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chord Progression and Info Section Below Main Content -->
+    <div style="width: 100%; max-width: 1400px; margin: 30px auto; padding: 0 20px;">
+        <div class="chord-progression">
+            <div class="chord-progression-title">12 Chromatic Chords in Key:</div>
+            <div class="chord-list" id="chordList"></div>
+        </div>
+
+        <div class="info">
+            <strong>🎵 How to Use:</strong>
+            <br>1. <strong>Select a Key</strong> (C, D, E, F#, etc.) - This is your starting note
+            <br>2. <strong>Choose Harmony Type</strong> - This determines what kind of chords you'll hear
+            <br>3. <strong>Click "PLAY HARMONIZED SCALE"</strong> - Listen as it goes through all 12 notes!
+            <br><br>
+            <strong>🎯 What You'll See:</strong>
+            <br>• <strong>Golden Arrow</strong> at top shows which chord is currently playing
+            <br>• <strong>Golden Windows</strong> on the wheel reveal the notes IN that chord
+            <br>• <strong>Root Note Badge</strong> is highlighted with golden border (the main note)
+            <br>• <strong>Position Indicator</strong> shows where you are (1-12) in the chromatic scale
+            <br><br>
+            <strong>💡 Tip:</strong> Watch the root note (first badge) change color as the wheel rotates!
+        </div>
+    </div>
+
+    <script>
+        // All 12 chromatic notes starting with C
+        const notes = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+        const simpleNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        
+        // MIDI note numbers for chromatic scale starting at C4
+        const midiNotes = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71];
+        
+        // 12-color spectrum starting with yellow
+        const chromaticColors = [
+            '#FFFF00', '#FFC400', '#FF8000', '#FF4000', '#FF0000', '#C4007F',
+            '#8000FF', '#4000FF', '#0000FF', '#007FFF', '#00FF80', '#80FF00'
+        ];
+
+        // Current state
+        let currentKey = 0; // C
+        let currentChordType = 'triad';
+        let currentRotation = -Math.PI / 12; // -15 degrees (counter-clockwise)
+        let isPlaying = false;
+        let miniFretCount = 4;
+        let currentChordIndex = 0;
+        const baseRotationOffset = -Math.PI / 12; // Global 15-degree counter-clockwise offset
+        
+        // Audio context
+        let audioContext;
+        let isAudioInitialized = false;
+
+        function initAudio() {
+            if (!isAudioInitialized) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                isAudioInitialized = true;
+            }
+        }
+
+        // Harmonized chord qualities for each chromatic degree
+        // Based on chromatic harmonization in a major key
+        const chordQualities = {
+            'triad': [
+                [0, 4, 7],    // I - C Major (Tonic)
+                [0, 3, 7],    // ♭II/♯I - C#/D♭ minor
+                [0, 3, 7],    // II - D minor (Supertonic)
+                [0, 4, 7],    // ♭III/♯II - D#/E♭ Major
+                [0, 4, 7],    // III - E Major (Mediant) 
+                [0, 4, 7],    // IV - F Major (Subdominant)
+                [0, 3, 6],    // ♯IV/♭V - F#/G♭ diminished (Tritone)
+                [0, 4, 7],    // V - G Major (Dominant)
+                [0, 3, 7],    // ♭VI/♯V - G#/A♭ minor
+                [0, 3, 7],    // VI - A minor (Submediant)
+                [0, 4, 7],    // ♭VII/♯VI - A#/B♭ Major
+                [0, 3, 6],    // VII - B diminished (Leading tone)
+            ],
+            '7th': [
+                [0, 4, 7, 11],  // Imaj7 - C Major 7
+                [0, 4, 7, 10],  // ♭II7 - C#/D♭ Dominant 7
+                [0, 3, 7, 10],  // IIm7 - D minor 7
+                [0, 4, 7, 11],  // ♭IIImaj7 - D#/E♭ Major 7
+                [0, 4, 7, 10],  // III7 - E Dominant 7
+                [0, 4, 7, 11],  // IVmaj7 - F Major 7
+                [0, 3, 6, 10],  // ♯IVm7♭5 - F#/G♭ Half-diminished
+                [0, 4, 7, 10],  // V7 - G Dominant 7
+                [0, 3, 7, 11],  // ♭VIm(maj7) - G#/A♭ minor-major 7
+                [0, 3, 7, 10],  // VIm7 - A minor 7
+                [0, 4, 7, 10],  // ♭VII7 - A#/B♭ Dominant 7
+                [0, 3, 6, 9],   // VIIm7♭5 (dim7) - B Half-dim or Fully dim
+            ],
+            'maj7': [
+                [0, 4, 7, 11],  // Imaj7 - All major 7th chords
+                [0, 4, 7, 11],  // ♭IImaj7
+                [0, 4, 7, 11],  // IImaj7
+                [0, 4, 7, 11],  // ♭IIImaj7
+                [0, 4, 7, 11],  // IIImaj7
+                [0, 4, 7, 11],  // IVmaj7
+                [0, 4, 7, 11],  // ♯IVmaj7
+                [0, 4, 7, 11],  // Vmaj7
+                [0, 4, 7, 11],  // ♭VImaj7
+                [0, 4, 7, 11],  // VImaj7
+                [0, 4, 7, 11],  // ♭VIImaj7
+                [0, 4, 7, 11],  // VIImaj7
+            ],
+            'min7': [
+                [0, 3, 7, 10],  // Im7 - All minor 7th chords
+                [0, 3, 7, 10],  // ♭IIm7
+                [0, 3, 7, 10],  // IIm7
+                [0, 3, 7, 10],  // ♭IIIm7
+                [0, 3, 7, 10],  // IIIm7
+                [0, 3, 7, 10],  // IVm7
+                [0, 3, 7, 10],  // ♯IVm7
+                [0, 3, 7, 10],  // Vm7
+                [0, 3, 7, 10],  // ♭VIm7
+                [0, 3, 7, 10],  // VIm7
+                [0, 3, 7, 10],  // ♭VIIm7
+                [0, 3, 7, 10],  // VIIm7
+            ]
+        };
+
+        // Get chord name with quality suffix
+        function getChordName(rootNote, intervals) {
+            let name = notes[rootNote];
+            
+            // Safety check
+            if (!intervals || intervals.length === 0) {
+                return name;
+            }
+            
+            if (currentChordType === 'triad') {
+                if (intervals.length === 3) {
+                    if (intervals[1] === 3 && intervals[2] === 6) {
+                        name += '°'; // Diminished (1-♭3-♭5)
+                    } else if (intervals[1] === 3 && intervals[2] === 7) {
+                        name += 'm'; // Minor (1-♭3-5)
+                    } else if (intervals[1] === 4 && intervals[2] === 7) {
+                        // Major (1-3-5) = no suffix
+                    }
+                }
+            } else if (currentChordType === '7th') {
+                if (intervals.length >= 4) {
+                    // Check for diminished 7th (1-♭3-♭5-♭♭7)
+                    if (intervals[1] === 3 && intervals[2] === 6 && intervals[3] === 9) {
+                        name += 'dim7';
+                    }
+                    // Check for half-diminished 7th (1-♭3-♭5-♭7)
+                    else if (intervals[1] === 3 && intervals[2] === 6 && intervals[3] === 10) {
+                        name += 'm7♭5';
+                    }
+                    // Check for minor-major 7th (1-♭3-5-M7)
+                    else if (intervals[1] === 3 && intervals[2] === 7 && intervals[3] === 11) {
+                        name += 'm(maj7)';
+                    }
+                    // Check for minor 7th (1-♭3-5-♭7)
+                    else if (intervals[1] === 3 && intervals[2] === 7 && intervals[3] === 10) {
+                        name += 'm7';
+                    }
+                    // Check for major 7th (1-3-5-M7)
+                    else if (intervals[1] === 4 && intervals[2] === 7 && intervals[3] === 11) {
+                        name += 'maj7';
+                    }
+                    // Check for dominant 7th (1-3-5-♭7)
+                    else if (intervals[1] === 4 && intervals[2] === 7 && intervals[3] === 10) {
+                        name += '7';
+                    }
+                }
+            } else if (currentChordType === 'maj7') {
+                name += 'maj7';
+            } else if (currentChordType === 'min7') {
+                name += 'm7';
+            }
+            
+            return name;
+        }
+
+        // Get current chord info
+        function getCurrentChord() {
+            const angleStep = (Math.PI * 2) / 12;
+            let rotationNormalized = currentRotation % (Math.PI * 2);
+            if (rotationNormalized < 0) rotationNormalized += Math.PI * 2;
+            
+            let position = Math.round(rotationNormalized / angleStep) % 12;
+            
+            // Safety check - ensure position is within bounds
+            if (position < 0) position = 0;
+            if (position >= 12) position = 11;
+            
+            const rootNote = (currentKey + position) % 12;
+            
+            // Get intervals with safety check
+            const intervals = chordQualities[currentChordType] && chordQualities[currentChordType][position] 
+                ? chordQualities[currentChordType][position] 
+                : [0, 4, 7]; // Default to major triad
+                
+            const positions = intervals.map(interval => (rootNote + interval) % 12);
+            
+            return { 
+                root: rootNote, 
+                positions: positions,
+                intervals: intervals,
+                name: getChordName(rootNote, intervals),
+                midi: midiNotes[rootNote],
+                index: position
+            };
+        }
+
+        // Play a note using MIDI frequency
+        function playNote(noteIndex, duration = 0.5, octave = 4) {
+            if (!audioContext) return;
+            
+            const midiNote = (octave * 12) + noteIndex;
+            const freq = 440 * Math.pow(2, (midiNote - 69) / 12);
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = freq;
+            oscillator.type = 'sine';
+            
+            const now = audioContext.currentTime;
+            gainNode.gain.setValueAtTime(0.3, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+            
+            oscillator.start(now);
+            oscillator.stop(now + duration);
+        }
+
+        // Draw base wheel (all 12 chromatic notes) - C at top with 15° CCW rotation
+        function drawBaseWheel() {
+            const canvas = document.getElementById('baseWheel');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 250;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const angleStep = (Math.PI * 2) / 12;
+            
+            for (let i = 0; i < 12; i++) {
+                // Apply 15-degree counter-clockwise offset to entire wheel
+                const startAngle = (i * angleStep) - (Math.PI / 2) + baseRotationOffset;
+                const endAngle = startAngle + angleStep;
+                
+                const noteIndex = (currentKey + i) % 12;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                gradient.addColorStop(0, chromaticColors[noteIndex]);
+                gradient.addColorStop(1, shadeColor(chromaticColors[noteIndex], -40));
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                const labelAngle = startAngle + angleStep / 2;
+                const labelRadius = radius * 0.7;
+                const labelX = centerX + Math.cos(labelAngle) * labelRadius;
+                const labelY = centerY + Math.sin(labelAngle) * labelRadius;
+                
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 24px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(notes[noteIndex], labelX, labelY);
+            }
+            
+            // Draw POSITION INDICATOR ARROW at EXACT 12 o'clock (straight up, vertical center)
+            // Draw in absolute coordinates for precision
+            const arrowX = centerX;
+            const arrowY = centerY - radius - 15;
+            
+            ctx.beginPath();
+            ctx.moveTo(arrowX, arrowY); // Arrow tip pointing up
+            ctx.lineTo(arrowX - 15, arrowY - 20); // Left wing
+            ctx.lineTo(arrowX + 15, arrowY - 20); // Right wing
+            ctx.closePath();
+            ctx.fillStyle = '#FFD700';
+            ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Arrow label "CURRENT" positioned just above the arrow
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('CURRENT', centerX, arrowY - 5);
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(notes[currentKey], centerX, centerY);
+        }
+
+        // Draw overlay wheel with mask showing chord tones - with 15° CCW rotation
+        function drawOverlayWheel(rotation) {
+            const canvas = document.getElementById('overlayWheel');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const outerRadius = 250;
+            const innerRadius = 60;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const chord = getCurrentChord();
+            const angleStep = (Math.PI * 2) / 12;
+            
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            // Apply the rotation with the base offset for proper alignment
+            ctx.rotate(rotation - baseRotationOffset);
+            ctx.translate(-centerX, -centerY);
+            
+            // Draw full dark overlay first
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+            ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
+            ctx.fill();
+            
+            // Cut out COMPLETE wedge-shaped windows for chord tones
+            ctx.globalCompositeOperation = 'destination-out';
+            
+            chord.positions.forEach(notePos => {
+                const relativePos = (notePos - currentKey + 12) % 12;
+                // Windows aligned with base wheel segments
+                const windowStartAngle = (relativePos * angleStep) - (Math.PI / 2) + baseRotationOffset;
+                const windowEndAngle = windowStartAngle + angleStep;
+                
+                // Draw complete wedge from center to outer edge
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY); // Start at center
+                ctx.arc(centerX, centerY, outerRadius, windowStartAngle, windowEndAngle); // Arc to outer edge
+                ctx.lineTo(centerX, centerY); // Line back to center
+                ctx.closePath();
+                ctx.fill();
+                
+                // Also cut out the inner circle area for this wedge
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, innerRadius, windowStartAngle, windowEndAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.closePath();
+                ctx.fill();
+            });
+            
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Draw golden borders on COMPLETE wedge windows
+            chord.positions.forEach(notePos => {
+                const relativePos = (notePos - currentKey + 12) % 12;
+                const windowStartAngle = (relativePos * angleStep) - (Math.PI / 2) + baseRotationOffset;
+                const windowEndAngle = windowStartAngle + angleStep;
+                
+                // Draw outer arc border
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, outerRadius, windowStartAngle, windowEndAngle);
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Draw inner arc border
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, innerRadius, windowStartAngle, windowEndAngle);
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Draw radial lines on both sides of wedge
+                ctx.beginPath();
+                ctx.moveTo(centerX + Math.cos(windowStartAngle) * innerRadius, 
+                          centerY + Math.sin(windowStartAngle) * innerRadius);
+                ctx.lineTo(centerX + Math.cos(windowStartAngle) * outerRadius, 
+                          centerY + Math.sin(windowStartAngle) * outerRadius);
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX + Math.cos(windowEndAngle) * innerRadius, 
+                          centerY + Math.sin(windowEndAngle) * innerRadius);
+                ctx.lineTo(centerX + Math.cos(windowEndAngle) * outerRadius, 
+                          centerY + Math.sin(windowEndAngle) * outerRadius);
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            });
+            
+            ctx.restore();
+        }
+
+        // Shade color helper
+        function shadeColor(color, percent) {
+            const num = parseInt(color.replace("#",""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+            const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
+            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+            return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+
+        // MASTER UPDATE FUNCTION - Single source of truth for all displays
+        function updateAllDisplays() {
+            // Get current chord - THIS IS THE SINGLE SOURCE OF TRUTH
+            const chord = getCurrentChord();
+            
+            console.log('═══════════════════════════════════════');
+            console.log('🎵 MASTER SYNC UPDATE');
+            console.log('   Chord Name:', chord.name);
+            console.log('   Root Note:', notes[chord.root], '(index:', chord.root + ')');
+            console.log('   Chord Positions:', chord.positions, '→', chord.positions.map(p => simpleNotes[p]).join(', '));
+            console.log('═══════════════════════════════════════');
+            
+            // 1. UPDATE CHORD NAME DISPLAY
+            document.getElementById('chordDisplay').textContent = chord.name;
+            
+            // 2. UPDATE CHORD TONE BADGES (with root highlighting)
+            const badgeContainer = document.getElementById('chordNotesBadges');
+            badgeContainer.innerHTML = '';
+            
+            chord.positions.forEach((pos, index) => {
+                const badge = document.createElement('div');
+                badge.className = 'note-badge';
+                if (index === 0) {
+                    badge.classList.add('root'); // Highlight root
+                }
+                badge.style.backgroundColor = chromaticColors[pos];
+                badge.style.color = '#000';
+                badge.textContent = simpleNotes[pos];
+                badgeContainer.appendChild(badge);
+            });
+            
+            // 3. UPDATE POSITION INDICATOR
+            const positionNames = [
+                '1 of 12 - Tonic (I)',
+                '2 of 12 - ♭II',
+                '3 of 12 - Supertonic (II)',
+                '4 of 12 - ♭III',
+                '5 of 12 - Mediant (III)',
+                '6 of 12 - Subdominant (IV)',
+                '7 of 12 - Tritone (♯IV/♭V)',
+                '8 of 12 - Dominant (V)',
+                '9 of 12 - ♭VI',
+                '10 of 12 - Submediant (VI)',
+                '11 of 12 - ♭VII',
+                '12 of 12 - Leading Tone (VII)'
+            ];
+            document.getElementById('positionDisplay').textContent = positionNames[chord.index];
+            
+            // 4. UPDATE CHORD LIST
+            updateChordList();
+            
+            // 5. UPDATE FRETBOARD - Uses same chord data
+            updateFretboard(chord);
+            
+            // 6. UPDATE WHEEL OVERLAY - Uses same chord data  
+            drawOverlayWheel(currentRotation);
+        }
+        
+        // Separate fretboard update function that takes chord as parameter
+        function updateFretboard(chord) {
+            const container = document.getElementById('fretboardMini');
+            container.innerHTML = '';
+            
+            const standardTuning = [4, 9, 2, 7, 11, 4]; // E A D G B e
+            const stringNames = ['E', 'A', 'D', 'G', 'B', 'e'];
+            const baseOctaves = [2, 2, 3, 3, 3, 4];
+            
+            const chordSet = new Set(chord.positions);
+            const fretHeight = miniFretCount === 4 ? 99 : 32; // Reduced proportionally from 110/36
+            
+            standardTuning.forEach((openNote, stringIdx) => {
+                const stringContainer = document.createElement('div');
+                stringContainer.className = 'string-container';
+                
+                const label = document.createElement('div');
+                label.className = 'string-label';
+                label.textContent = stringNames[stringIdx];
+                stringContainer.appendChild(label);
+                
+                const line = document.createElement('div');
+                line.className = 'string-line';
+                stringContainer.appendChild(line);
+                
+                for (let fret = 0; fret <= miniFretCount; fret++) {
+                    if (fret > 0) {
+                        const marker = document.createElement('div');
+                        marker.className = 'fret-marker';
+                        marker.style.top = (fret * fretHeight) + 'px';
+                        stringContainer.appendChild(marker);
+                    }
+                    
+                    const noteIndex = (openNote + fret) % 12;
+                    
+                    if (chordSet.has(noteIndex)) {
+                        const dot = document.createElement('div');
+                        dot.className = 'note-dot';
+                        dot.style.top = (fret * fretHeight + (fret === 0 ? 0 : fretHeight/2)) + 'px';
+                        dot.style.backgroundColor = chromaticColors[noteIndex];
+                        dot.style.color = '#000';
+                        dot.textContent = simpleNotes[noteIndex];
+                        
+                        const semitonesPitch = openNote + fret;
+                        const octaveAdjustment = Math.floor(semitonesPitch / 12);
+                        const actualOctave = baseOctaves[stringIdx] + octaveAdjustment;
+                        
+                        dot.dataset.octave = actualOctave;
+                        dot.dataset.noteIndex = noteIndex;
+                        dot.dataset.fret = fret;
+                        
+                        dot.addEventListener('click', () => {
+                            initAudio();
+                            playNote(noteIndex, 0.8, actualOctave);
+                            dot.classList.add('active');
+                            setTimeout(() => dot.classList.remove('active'), 500);
+                        });
+                        
+                        stringContainer.appendChild(dot);
+                    }
+                }
+                
+                container.appendChild(stringContainer);
+            });
+        }
+
+        // Update chord list
+        function updateChordList() {
+            const container = document.getElementById('chordList');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 12; i++) {
+                const rootNote = (currentKey + i) % 12;
+                
+                // Get intervals with safety check
+                const intervals = chordQualities[currentChordType] && chordQualities[currentChordType][i]
+                    ? chordQualities[currentChordType][i]
+                    : [0, 4, 7]; // Default to major triad
+                    
+                const chordName = getChordName(rootNote, intervals);
+                
+                const item = document.createElement('div');
+                item.className = 'chord-item';
+                item.textContent = chordName;
+                item.dataset.index = i;
+                container.appendChild(item);
+            }
+        }
+
+        // Create key selector buttons
+        function createKeyButtons() {
+            const container = document.getElementById('keyButtons');
+            container.innerHTML = '';
+            
+            notes.forEach((note, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'key-btn' + (index === currentKey ? ' active' : '');
+                btn.textContent = note;
+                btn.addEventListener('click', () => {
+                    currentKey = index;
+                    document.querySelectorAll('.key-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    drawBaseWheel();
+                    updateAllDisplays(); // Global sync update
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        // Chord type selector
+        document.querySelectorAll('.chord-type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.chord-type-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentChordType = btn.dataset.type;
+                updateAllDisplays(); // Global sync update
+            });
+        });
+
+        // Rotation controls
+        document.getElementById('rotateLeft').addEventListener('click', () => {
+            currentRotation -= (Math.PI * 2) / 12;
+            updateAllDisplays(); // Global sync update
+        });
+
+        document.getElementById('rotateRight').addEventListener('click', () => {
+            currentRotation += (Math.PI * 2) / 12;
+            updateAllDisplays(); // Global sync update
+        });
+
+        // Mouse drag rotation
+        let isDragging = false;
+        let lastAngle = 0;
+
+        document.getElementById('overlayWheel').addEventListener('mousedown', (e) => {
+            isDragging = true;
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left - 300;
+            const y = e.clientY - rect.top - 300;
+            lastAngle = Math.atan2(y, x);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const rect = document.getElementById('overlayWheel').getBoundingClientRect();
+            const x = e.clientX - rect.left - 300;
+            const y = e.clientY - rect.top - 300;
+            const angle = Math.atan2(y, x);
+            
+            currentRotation += angle - lastAngle;
+            lastAngle = angle;
+            
+            updateAllDisplays(); // Global sync update
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Ascend/Descend functions
+        async function playAscend() {
+            if (isPlaying) return;
+            isPlaying = true;
+            document.getElementById('ascendBtn').disabled = true;
+            document.getElementById('descendBtn').disabled = true;
+
+            initAudio();
+
+            const noteDots = Array.from(document.querySelectorAll('.note-dot'));
+            const notesWithOctaves = noteDots.map(dot => ({
+                noteIndex: parseInt(dot.dataset.noteIndex),
+                octave: parseInt(dot.dataset.octave),
+                element: dot,
+                absolutePitch: (parseInt(dot.dataset.octave) * 12) + parseInt(dot.dataset.noteIndex)
+            }));
+
+            notesWithOctaves.sort((a, b) => a.absolutePitch - b.absolutePitch);
+
+            const uniqueNotes = [];
+            const seen = new Set();
+            for (const note of notesWithOctaves) {
+                const key = `${note.noteIndex}-${note.octave}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueNotes.push(note);
+                }
+            }
+
+            for (const note of uniqueNotes) {
+                playNote(note.noteIndex, 0.6, note.octave);
+                note.element.classList.add('active');
+                setTimeout(() => note.element.classList.remove('active'), 400);
+                await sleep(400);
+            }
+
+            isPlaying = false;
+            document.getElementById('ascendBtn').disabled = false;
+            document.getElementById('descendBtn').disabled = false;
+        }
+
+        async function playDescend() {
+            if (isPlaying) return;
+            isPlaying = true;
+            document.getElementById('ascendBtn').disabled = true;
+            document.getElementById('descendBtn').disabled = true;
+
+            initAudio();
+
+            const noteDots = Array.from(document.querySelectorAll('.note-dot'));
+            const notesWithOctaves = noteDots.map(dot => ({
+                noteIndex: parseInt(dot.dataset.noteIndex),
+                octave: parseInt(dot.dataset.octave),
+                element: dot,
+                absolutePitch: (parseInt(dot.dataset.octave) * 12) + parseInt(dot.dataset.noteIndex)
+            }));
+
+            notesWithOctaves.sort((a, b) => a.absolutePitch - b.absolutePitch);
+
+            const uniqueNotes = [];
+            const seen = new Set();
+            for (const note of notesWithOctaves) {
+                const key = `${note.noteIndex}-${note.octave}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueNotes.push(note);
+                }
+            }
+
+            for (let i = uniqueNotes.length - 1; i >= 0; i--) {
+                const note = uniqueNotes[i];
+                playNote(note.noteIndex, 0.6, note.octave);
+                note.element.classList.add('active');
+                setTimeout(() => note.element.classList.remove('active'), 400);
+                await sleep(400);
+            }
+
+            isPlaying = false;
+            document.getElementById('ascendBtn').disabled = false;
+            document.getElementById('descendBtn').disabled = false;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Event listeners
+        document.getElementById('ascendBtn').addEventListener('click', playAscend);
+        document.getElementById('descendBtn').addEventListener('click', playDescend);
+
+        // Toggle fret view
+        document.getElementById('toggleViewBtn').addEventListener('click', () => {
+            if (miniFretCount === 4) {
+                miniFretCount = 12;
+                document.getElementById('toggleViewBtn').textContent = 'Switch to 4 Frets';
+                document.getElementById('fretViewTitle').textContent = 'Guitar Fretboard - 12 Frets';
+            } else {
+                miniFretCount = 4;
+                document.getElementById('toggleViewBtn').textContent = 'Switch to 12 Frets';
+                document.getElementById('fretViewTitle').textContent = 'Guitar Fretboard - Current Chord';
+            }
+            const chord = getCurrentChord();
+            updateFretboard(chord);
+        });
+
+        // PRIMARY FUNCTION: Play harmonized chromatic scale
+        document.getElementById('playHarmonizedScale').addEventListener('click', async () => {
+            if (isPlaying) return;
+            
+            isPlaying = true;
+            const playBtn = document.getElementById('playHarmonizedScale');
+            playBtn.disabled = true;
+            playBtn.textContent = '⏸ PLAYING...';
+            document.getElementById('ascendBtn').disabled = true;
+            document.getElementById('descendBtn').disabled = true;
+
+            initAudio();
+
+            // Play through all 12 harmonized chords with proper octave progression
+            for (let i = 0; i < 12; i++) {
+                const angleStep = (Math.PI * 2) / 12;
+                // Maintain the 15-degree offset throughout rotation
+                currentRotation = (i * angleStep) + baseRotationOffset;
+                drawOverlayWheel(currentRotation);
+                
+                const rootNote = (currentKey + i) % 12;
+                
+                // Get intervals with safety check
+                const intervals = chordQualities[currentChordType] && chordQualities[currentChordType][i]
+                    ? chordQualities[currentChordType][i]
+                    : [0, 4, 7]; // Default to major triad
+                    
+                const positions = intervals.map(interval => (rootNote + interval) % 12);
+                const chordName = getChordName(rootNote, intervals);
+                
+                document.getElementById('chordDisplay').textContent = chordName;
+                
+                // Create visual badges for each note with root highlighted
+                const badgeContainer = document.getElementById('chordNotesBadges');
+                badgeContainer.innerHTML = '';
+                
+                positions.forEach((pos, index) => {
+                    const badge = document.createElement('div');
+                    badge.className = 'note-badge';
+                    if (index === 0) {
+                        badge.classList.add('root'); // Highlight the root note
+                    }
+                    badge.style.backgroundColor = chromaticColors[pos];
+                    badge.style.color = '#000';
+                    badge.textContent = simpleNotes[pos];
+                    badgeContainer.appendChild(badge);
+                });
+                
+                // Update position indicator
+                const positionNames = [
+                    '1 of 12 - Tonic (I)',
+                    '2 of 12 - ♭II',
+                    '3 of 12 - Supertonic (II)',
+                    '4 of 12 - ♭III',
+                    '5 of 12 - Mediant (III)',
+                    '6 of 12 - Subdominant (IV)',
+                    '7 of 12 - Tritone (♯IV/♭V)',
+                    '8 of 12 - Dominant (V)',
+                    '9 of 12 - ♭VI',
+                    '10 of 12 - Submediant (VI)',
+                    '11 of 12 - ♭VII',
+                    '12 of 12 - Leading Tone (VII)'
+                ];
+                
+                document.getElementById('positionDisplay').textContent = positionNames[i];
+                
+                // Highlight in chord list
+                document.querySelectorAll('.chord-item').forEach((item, idx) => {
+                    if (idx === i) {
+                        item.classList.add('playing');
+                    } else {
+                        item.classList.remove('playing');
+                    }
+                });
+                
+                const chord = {positions, root: rootNote, intervals, name: chordName, index: i};
+                updateFretboard(chord);
+                
+                // FIXED OCTAVE PROGRESSION - Rises smoothly through registers
+                // Each chord gets progressively higher, creating a rising chromatic scale
+                // Start at octave 3, and rise one full octave over the 12 chords
+                const baseOctave = 3 + Math.floor(i / 6); // Changes every 6 chords: 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4
+                
+                // Play the harmonized chord with proper voicing
+                positions.forEach((pos, voiceIndex) => {
+                    setTimeout(() => {
+                        let noteOctave;
+                        
+                        // Calculate actual MIDI note to ensure proper octave crossing
+                        // Root note determines base, then add interval
+                        const actualMidiNote = (baseOctave * 12) + rootNote + intervals[voiceIndex];
+                        noteOctave = Math.floor(actualMidiNote / 12);
+                        
+                        // Ensure voices are stacked properly
+                        if (voiceIndex === 0) {
+                            // Root - base octave
+                            noteOctave = baseOctave;
+                        } else if (voiceIndex === 1) {
+                            // 3rd - same octave or next if interval crosses octave boundary
+                            noteOctave = baseOctave + (intervals[voiceIndex] >= 12 ? 1 : 0);
+                        } else if (voiceIndex === 2) {
+                            // 5th - one octave above root for better voicing
+                            noteOctave = baseOctave + 1;
+                        } else if (voiceIndex === 3) {
+                            // 7th - same as 5th octave
+                            noteOctave = baseOctave + 1;
+                        }
+                        
+                        playNote(pos, 0.9, noteOctave);
+                    }, voiceIndex * 100);
+                });
+                
+                await sleep(1200);
+            }
+
+            // RESOLUTION: Return to tonic chord in the NEXT register (octave 5)
+            await sleep(200);
+            
+            // Return to starting position (with 15-degree offset)
+            currentRotation = baseRotationOffset;
+            drawOverlayWheel(currentRotation);
+            
+            const rootNote = currentKey;
+            
+            // Get intervals with safety check
+            const intervals = chordQualities[currentChordType] && chordQualities[currentChordType][0]
+                ? chordQualities[currentChordType][0]
+                : [0, 4, 7]; // Default to major triad
+                
+            const positions = intervals.map(interval => (rootNote + interval) % 12);
+            const chordName = getChordName(rootNote, intervals);
+            
+            document.getElementById('chordDisplay').textContent = chordName + ' (Resolution)';
+            
+            // Highlight tonic in list
+            document.querySelectorAll('.chord-item').forEach((item, idx) => {
+                if (idx === 0) {
+                    item.classList.add('playing');
+                } else {
+                    item.classList.remove('playing');
+                }
+            });
+            
+            const resolutionChord = {positions, root: rootNote, intervals, name: chordName, index: 0};
+            updateFretboard(resolutionChord);
+            
+            // Play resolution chord TWO OCTAVES HIGHER than start (octave 5)
+            // This creates a satisfying upward arc that resolves at the octave
+            const resolutionOctave = 5;
+            positions.forEach((pos, voiceIndex) => {
+                setTimeout(() => {
+                    let noteOctave;
+                    if (voiceIndex === 0) {
+                        // Root
+                        noteOctave = resolutionOctave;
+                    } else if (voiceIndex === 1) {
+                        // 3rd
+                        noteOctave = resolutionOctave;
+                    } else if (voiceIndex === 2) {
+                        // 5th - one octave higher for open voicing
+                        noteOctave = resolutionOctave + 1;
+                    } else if (voiceIndex === 3) {
+                        // 7th
+                        noteOctave = resolutionOctave + 1;
+                    }
+                    playNote(pos, 1.5, noteOctave); // Longer duration for resolution
+                }, voiceIndex * 100);
+            });
+            
+            await sleep(1800);
+            
+            // Clear display
+            updateChordDisplay();
+            document.querySelectorAll('.chord-item').forEach(item => {
+                item.classList.remove('playing');
+            });
+
+            isPlaying = false;
+            playBtn.disabled = false;
+            playBtn.textContent = '▶ PLAY HARMONIZED SCALE';
+            document.getElementById('ascendBtn').disabled = false;
+            document.getElementById('descendBtn').disabled = false;
+        });
+
+        // Initialize
+        createKeyButtons();
+        drawBaseWheel();
+        updateAllDisplays(); // Global sync - initializes everything
+    </script>
+</body>
+</html>
