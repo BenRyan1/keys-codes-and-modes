@@ -317,6 +317,11 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
         }
         
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
         .privacy-note {
             text-align: center;
             margin-top: 1.5rem;
@@ -344,6 +349,14 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             color: var(--primary-gold);
             font-weight: 600;
             font-size: 1.1rem;
+        }
+        
+        .loading-message {
+            text-align: center;
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
         }
         
         @media (max-width: 768px) {
@@ -397,7 +410,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 </ul>
             </div>
             
-            <!-- SIMPLE SIGNUP FORM -->
+            <!-- SIGNUP FORM -->
             <div class="signup-form">
                 <div class="form-group">
                     <label for="first_name">First Name</label>
@@ -417,9 +430,13 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                         required>
                 </div>
                 
-                <button type="button" class="submit-btn" onclick="handleSignup()">
+                <button type="button" class="submit-btn" id="submitBtn" onclick="handleSignup()">
                     Get Free Access Now →
                 </button>
+                
+                <div class="loading-message" id="loadingMsg">
+                    Saving your information...
+                </div>
             </div>
             
             <div class="privacy-note">
@@ -435,10 +452,15 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </main>
     
     <script>
-        function handleSignup() {
+        // Google Apps Script Web App URL - Connected to Ben's Google Sheet
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8k2jYF5TwCPguQRvoEiZGVmD_-jSAmm0dkHNxjTC5dKXbVoaohj5xrRzGhJwlq78U/exec';
+        
+        async function handleSignup() {
             // Get form values
             const firstName = document.getElementById('first_name').value.trim();
             const email = document.getElementById('email').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingMsg = document.getElementById('loadingMsg');
             
             // Validate
             if (!firstName) {
@@ -461,6 +483,11 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 return;
             }
             
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            loadingMsg.style.display = 'block';
+            
             // Store user data in localStorage
             localStorage.setItem('userTier', 'free');
             localStorage.setItem('signupComplete', 'true');
@@ -477,8 +504,33 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 console.log('Analytics tracking failed:', e);
             }
             
-            // Redirect to app picker
-            window.location.href = 'welcome-free-picker.html';
+            // Send data to Google Sheets
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Apps Script
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstName: firstName,
+                        email: email,
+                        tier: 'Free',
+                        source: 'Website Signup'
+                    })
+                });
+                
+                console.log('Data sent to Google Sheets');
+                
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                // Continue to redirect even if Google Sheets fails
+            }
+            
+            // Wait a moment then redirect
+            setTimeout(() => {
+                window.location.href = 'welcome-free-picker.html';
+            }, 1000);
         }
         
         // Allow Enter key to submit
