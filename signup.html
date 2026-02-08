@@ -34,7 +34,7 @@ window.addEventListener('load', function() {
   window.cookieconsent.initialise({
     palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
     theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "../privacy-policy.html" },
     onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
     onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
   });
@@ -46,7 +46,7 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
 </script>
 
     <meta charset="UTF-8">
@@ -59,8 +59,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
     
     <style>
         :root {
@@ -242,7 +240,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         
         .benefits ul {
             list-style: none;
-            padding: 0;
         }
         
         .benefits li {
@@ -260,7 +257,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             font-size: 1.2rem;
         }
         
-        .ck-form {
+        .signup-form {
             width: 100%;
         }
         
@@ -314,10 +311,15 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             letter-spacing: 1px;
         }
         
-        .submit-btn:hover,
-        .submit-btn:focus {
+        .submit-btn:hover:not(:disabled),
+        .submit-btn:focus:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         
         .privacy-note {
@@ -349,6 +351,14 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             font-size: 1.1rem;
         }
         
+        .loading-message {
+            text-align: center;
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .signup-container {
                 padding: 2rem;
@@ -373,12 +383,12 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     
     <header>
         <div class="header-content">
-            <a href="index.html" class="logo-container">
+            <a href="../index.html" class="logo-container">
                 <div class="logo-text">
                     <h1>Keys, Codes & Modes</h1>
                 </div>
             </a>
-            <a href="index.html" class="back-link">← Back to Home</a>
+            <a href="../index.html" class="back-link">← Back to Home</a>
         </div>
     </header>
     
@@ -400,49 +410,38 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 </ul>
             </div>
             
-            <!-- CONVERTKIT FORM - REPLACE YOUR_FORM_ID AND YOUR_UID -->
-            <form action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions" 
-                  class="ck-form" 
-                  method="post" 
-                  data-sv-form="YOUR_FORM_ID" 
-                  data-uid="YOUR_UID"
-                  data-format="inline" 
-                  data-version="5"
-                  onsubmit="return handleSubmit(event)">
-                
+            <!-- SIGNUP FORM -->
+            <div class="signup-form">
                 <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input 
                         type="text" 
-                        name="fields[first_name]" 
                         id="first_name" 
                         placeholder="Enter your first name" 
-                        required
-                        aria-required="true">
+                        required>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input 
                         type="email" 
-                        name="email_address" 
                         id="email" 
                         placeholder="you@example.com" 
-                        required
-                        aria-required="true">
+                        required>
                 </div>
                 
-                <input type="hidden" name="api_key" value="XaP0KF0w8YJALwAuhliZ6A">
-                <input type="hidden" name="tags[]" value="Free Tier">
-                
-                <button type="submit" class="submit-btn">
+                <button type="button" class="submit-btn" id="submitBtn" onclick="handleSignup()">
                     Get Free Access Now →
                 </button>
-            </form>
+                
+                <div class="loading-message" id="loadingMsg">
+                    Saving your information...
+                </div>
+            </div>
             
             <div class="privacy-note">
                 <p>We respect your privacy. No spam, ever. 
-                   <a href="terms.html">Terms</a> | <a href="privacy.html">Privacy Policy</a>
+                   <a href="../terms.html">Terms</a> | <a href="../privacy-policy.html">Privacy Policy</a>
                 </p>
             </div>
             
@@ -453,29 +452,99 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </main>
     
     <script>
-        function handleSubmit(event) {
+        // Google Apps Script Web App URL - Connected to Ben's Google Sheet
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8k2jYF5TwCPguQRvoEiZGVmD_-jSAmm0dkHNxjTC5dKXbVoaohj5xrRzGhJwlq78U/exec';
+        
+        async function handleSignup() {
+            // Get form values
+            const firstName = document.getElementById('first_name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingMsg = document.getElementById('loadingMsg');
+            
+            // Validate
+            if (!firstName) {
+                alert('Please enter your first name');
+                document.getElementById('first_name').focus();
+                return;
+            }
+            
+            if (!email) {
+                alert('Please enter your email address');
+                document.getElementById('email').focus();
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                document.getElementById('email').focus();
+                return;
+            }
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            loadingMsg.style.display = 'block';
+            
+            // Store user data in localStorage
             localStorage.setItem('userTier', 'free');
             localStorage.setItem('signupComplete', 'true');
-            
-            const form = event.target;
-            const formData = new FormData(form);
-            const email = formData.get('email_address');
-            const firstName = formData.get('fields[first_name]');
-            
             localStorage.setItem('userEmail', email);
             localStorage.setItem('userName', firstName);
             
+            // Track with analytics if consent given
+            try {
+                trackEvent('form_submit', {
+                    'event_category': 'signup',
+                    'event_label': 'free_tier'
+                });
+            } catch(e) {
+                console.log('Analytics tracking failed:', e);
+            }
+            
+            // Send data to Google Sheets
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Apps Script
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstName: firstName,
+                        email: email,
+                        tier: 'Free',
+                        source: 'Website Signup'
+                    })
+                });
+                
+                console.log('Data sent to Google Sheets');
+                
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                // Continue to redirect even if Google Sheets fails
+            }
+            
+            // Wait a moment then redirect
             setTimeout(() => {
                 window.location.href = 'welcome-free-picker.html';
-            }, 500);
-            
-            return true;
+            }, 1000);
         }
         
-        if (window.location.search.includes('success')) {
-            alert('Welcome! Check your email for confirmation.');
-            window.location.href = 'welcome-free-picker.html';
-        }
+        // Allow Enter key to submit
+        document.getElementById('email').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSignup();
+            }
+        });
+        
+        document.getElementById('first_name').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSignup();
+            }
+        });
     </script>
 </body>
 </html>
