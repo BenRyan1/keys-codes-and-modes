@@ -513,13 +513,13 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 
                 if (response.ok) {
                     // Success! Show message and redirect
-                    formStatus.textContent = '✅ Success! Taking you to access code entry...';
+                    formStatus.textContent = '✅ Success! Taking you to your apps...';
                     formStatus.className = 'success';
                     formStatus.style.display = 'block';
                     
-                    // Redirect to access code page after 1 second
+                    // Redirect after 1 second
                     setTimeout(function() {
-                        window.location.href = 'access-code-entry.html';
+                        window.location.href = 'welcome-free-picker.html';
                     }, 1000);
                 } else {
                     // Error handling

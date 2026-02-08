@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+    <title>Access Code | Keys, Codes & Modes</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 20s ease infinite;
+        }
+        
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+        }
+        
+        .code-container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .code-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .code-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .code-header p {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .welcome-message {
+            background: rgba(244, 208, 63, 0.1);
+            border-left: 4px solid var(--primary-gold);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+        
+        .welcome-message h2 {
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .code-form {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .submit-btn,
+        .skip-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
+            color: var(--dark-bg);
+            box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4);
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .skip-btn {
+            background: transparent;
+            border: 2px solid var(--primary-teal);
+            color: var(--primary-teal);
+        }
+        
+        .skip-btn:hover {
+            background: var(--primary-teal);
+            color: white;
+        }
+        
+        .error-message,
+        .success-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .error-message {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+        
+        .success-message {
+            background: rgba(244, 208, 63, 0.2);
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+        }
+        
+        .tier-info {
+            background: rgba(139, 107, 163, 0.1);
+            border: 2px solid var(--primary-purple);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tier-info h3 {
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .tier-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .tier-info li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #ccc;
+        }
+        
+        .tier-info li:before {
+            content: "🔑";
+            position: absolute;
+            left: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .code-container {
+                padding: 2rem;
+            }
+            
+            .code-header h1 {
+                font-size: 2rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="code-container">
+        <div class="code-header">
+            <h1>Welcome Aboard!</h1>
+            <p>Have an access code? Enter it below to unlock premium features</p>
+        </div>
+        
+        <div class="welcome-message" id="welcomeMsg">
+            <h2>Hi there! 👋</h2>
+            <p>Your account has been created. Enter your access code to unlock your tier.</p>
+        </div>
+        
+        <form class="code-form" id="codeForm">
+            <div class="form-group">
+                <label for="accessCode">Access Code</label>
+                <input 
+                    type="text" 
+                    id="accessCode" 
+                    name="accessCode"
+                    placeholder="Enter your code"
+                    autocomplete="off">
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="submit-btn" id="submitBtn">Verify Code</button>
+                <button type="button" class="skip-btn" onclick="skipToFreeTier()">Continue Free</button>
+            </div>
+            
+            <div class="error-message" id="errorMsg"></div>
+            <div class="success-message" id="successMsg"></div>
+        </form>
+        
+        <div class="tier-info">
+            <h3>Access Code Tiers:</h3>
+            <ul>
+                <li><strong>Premium:</strong> All 20+ apps, annual/monthly</li>
+                <li><strong>Founder:</strong> Lifetime access + special badge</li>
+                <li><strong>Beta Tester:</strong> All apps until June 1, 2026</li>
+                <li><strong>Press Access:</strong> All apps for review (until June 1)</li>
+                <li><strong>Friend of Ben:</strong> All apps + VIP event invites</li>
+                <li><strong>Demo Access:</strong> All apps until June 1, 2026</li>
+                <li><strong>Free Tier:</strong> Pick any 3 apps</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Valid access codes configuration
+        const ACCESS_CODES = {
+            'KCM2026PREMIUM!': {
+                tier: 'Premium',
+                access: 'all_apps',
+                duration: 'subscription',
+                description: 'All 20+ apps with annual/monthly subscription'
+            },
+            'KCM2026FOUNDER!': {
+                tier: 'Founder',
+                access: 'all_apps',
+                duration: 'lifetime',
+                badge: true,
+                description: 'Lifetime access to all apps + Founder badge'
+            },
+            'BETATESTER2026!': {
+                tier: 'Beta Tester',
+                access: 'all_apps',
+                duration: 'until_2026-06-01',
+                description: 'All apps until June 1, 2026'
+            },
+            'PRESSACCESS2026!': {
+                tier: 'Press',
+                access: 'all_apps',
+                duration: 'until_2026-06-01',
+                description: 'All apps for review until June 1, 2026'
+            },
+            'FRIENDOFBEN2026!': {
+                tier: 'VIP',
+                access: 'all_apps',
+                duration: 'lifetime',
+                vip: true,
+                description: 'All apps + VIP event access'
+            },
+            'DEMOACCESS2026!': {
+                tier: 'Demo',
+                access: 'all_apps',
+                duration: 'until_2026-06-01',
+                description: 'All apps until June 1, 2026'
+            }
+        };
+        
+        // Get user name from localStorage
+        const userName = localStorage.getItem('userName');
+        if (userName) {
+            document.getElementById('welcomeMsg').querySelector('h2').textContent = `Hi ${userName}! 👋`;
+        }
+        
+        // Handle form submission
+        document.getElementById('codeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const codeInput = document.getElementById('accessCode');
+            const code = codeInput.value.trim().toUpperCase();
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            
+            // Clear previous messages
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            if (!code) {
+                showError('Please enter an access code');
+                return;
+            }
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifying...';
+            
+            // Check if code is valid
+            if (ACCESS_CODES[code]) {
+                const codeData = ACCESS_CODES[code];
+                
+                // Store tier information
+                localStorage.setItem('userTier', codeData.tier.toLowerCase());
+                localStorage.setItem('accessLevel', codeData.access);
+                localStorage.setItem('accessDuration', codeData.duration);
+                localStorage.setItem('accessCode', code);
+                if (codeData.badge) localStorage.setItem('founderBadge', 'true');
+                if (codeData.vip) localStorage.setItem('vipAccess', 'true');
+                
+                // Send notification to Formspree
+                const userEmail = localStorage.getItem('userEmail') || 'unknown';
+                const userName = localStorage.getItem('userName') || 'unknown';
+                
+                try {
+                    await fetch('https://formspree.io/f/mbdaljdv', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            _subject: 'Access Code Used - ' + codeData.tier,
+                            name: userName,
+                            email: userEmail,
+                            accessCode: code,
+                            tier: codeData.tier,
+                            access: codeData.access,
+                            duration: codeData.duration,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+                } catch (error) {
+                    console.log('Notification failed:', error);
+                }
+                
+                // Show success message
+                successMsg.textContent = `✅ ${codeData.tier} Access Activated! ${codeData.description}`;
+                successMsg.style.display = 'block';
+                
+                // Redirect based on tier
+                setTimeout(function() {
+                    if (codeData.access === 'all_apps') {
+                        window.location.href = 'my-apps-premium.html'; // Premium dashboard
+                    } else {
+                        window.location.href = 'welcome-free-picker.html';
+                    }
+                }, 2000);
+                
+            } else {
+                // Invalid code
+                showError('Invalid access code. Please try again or continue with free tier.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify Code';
+                codeInput.value = '';
+                codeInput.focus();
+            }
+        });
+        
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.textContent = '❌ ' + message;
+            errorMsg.style.display = 'block';
+        }
+        
+        function skipToFreeTier() {
+            localStorage.setItem('userTier', 'free');
+            localStorage.setItem('accessLevel', 'pick_3');
+            window.location.href = 'welcome-free-picker.html';
+        }
+    </script>
+</body>
+</html>
