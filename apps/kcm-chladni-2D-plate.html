@@ -162,6 +162,46 @@
     font-size: 1.2em;
   }
 
+  .midi-button {
+    width: 100%;
+    padding: 12px;
+    margin: 0 0 10px 0;
+    background: linear-gradient(135deg, var(--mystic-purple) 0%, var(--ocean-blue) 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(139, 107, 163, 0.4);
+  }
+
+  .midi-button:hover {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--mystic-purple) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 107, 163, 0.6);
+  }
+
+  .midi-button.connected {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  }
+
+  .midi-status {
+    font-size: 0.85em;
+    color: var(--light-yellow);
+    padding: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .midi-status.connected {
+    color: #2ecc71;
+    font-weight: bold;
+  }
+
   .frequency-display {
     background: rgba(0,0,0,0.6);
     padding: 12px;
@@ -319,7 +359,18 @@
     </div>
 
     <div class="section">
-      <button class="play-button" onclick="playCurrentNote()">
+      <h3>🎹 MIDI Input</h3>
+      <button class="midi-button" id="midi-connect-btn" onclick="connectMIDI()">
+        Connect MIDI Device
+      </button>
+      <div id="midi-status" class="midi-status">No MIDI device connected</div>
+      <select id="midi-input-select" style="display:none;">
+        <option value="">Select MIDI Input...</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <button class="play-button" id="play-btn" onmousedown="startPlayingNote()" onmouseup="stopPlayingNote()" onmouseleave="stopPlayingNote()" ontouchstart="startPlayingNote()" ontouchend="stopPlayingNote()">
         <span class="play-icon">▶</span> PLAY NOTE
       </button>
     </div>
@@ -440,6 +491,16 @@ let plateRadius = 5;
 let audioContext;
 let oscillators = [];
 let gainNode;
+
+// MIDI variables
+let midiAccess = null;
+let midiInput = null;
+let activeNotes = new Map(); // Track currently playing MIDI notes
+
+// Play button state
+let isPlayButtonHeld = false;
+let playButtonTimeout = null;
+let sustainedOscillators = [];
 
 // ============================================
 // AUDIO SYSTEM
@@ -715,22 +776,166 @@ function changeNote() {
   updateDisplay();
 }
 
-function playCurrentNote() {
+// ============================================
+// PLAY BUTTON PRESS-AND-HOLD FUNCTIONALITY
+// ============================================
+
+function startPlayingNote() {
+  isPlayButtonHeld = true;
+  
+  // Visual feedback
+  const playBtn = document.getElementById('play-btn');
+  playBtn.style.transform = 'translateY(0)';
+  playBtn.style.boxShadow = '0 2px 8px rgba(46, 204, 113, 0.4)';
+  
+  // Start timeout to detect if this is a hold vs quick press
+  playButtonTimeout = setTimeout(() => {
+    // This is a HOLD - play sustained
+    playSustainedSound();
+  }, 150); // 150ms threshold to distinguish hold from click
+}
+
+function stopPlayingNote() {
+  // Visual feedback
+  const playBtn = document.getElementById('play-btn');
+  playBtn.style.transform = '';
+  playBtn.style.boxShadow = '';
+  
+  if (!isPlayButtonHeld) return;
+  
+  isPlayButtonHeld = false;
+  
+  // Check if timeout is still active (quick press)
+  if (playButtonTimeout) {
+    clearTimeout(playButtonTimeout);
+    playButtonTimeout = null;
+    
+    // This was a QUICK PRESS - play timed version
+    playTimedSound();
+  } else {
+    // This was a HOLD - stop sustained sound
+    stopSustainedSound();
+  }
+}
+
+function playTimedSound() {
   const intervalSelect = document.getElementById('interval-select');
   const chordSelect = document.getElementById('chord-select');
   
-  // Check what's currently selected
+  // Check what's currently selected and play for set duration
   if (chordSelect.value !== 'none') {
-    // Replay the current chord
     playChord();
   } else if (intervalSelect.value !== 'none') {
-    // Replay the current interval
     playInterval();
   } else {
-    // Play single note
     playTone(currentFrequency);
     createParticles();
   }
+}
+
+function playSustainedSound() {
+  initAudio();
+  stopSustainedSound(); // Clear any previous sustained sounds
+  playButtonTimeout = null; // Clear the timeout since we're now in hold mode
+  
+  const intervalSelect = document.getElementById('interval-select');
+  const chordSelect = document.getElementById('chord-select');
+  
+  let frequencies = [];
+  
+  // Determine which frequencies to play
+  if (chordSelect.value !== 'none') {
+    const chordIntervals = {
+      // Triads
+      'major': [0, 4, 7],
+      'minor': [0, 3, 7],
+      'diminished': [0, 3, 6],
+      'augmented': [0, 4, 8],
+      
+      // 7th Chords
+      'major7': [0, 4, 7, 11],
+      'minor7': [0, 3, 7, 10],
+      'dominant7': [0, 4, 7, 10],
+      'minor7b5': [0, 3, 6, 10],
+      'diminished7': [0, 3, 6, 9],
+      
+      // 9th Chords
+      'major9': [0, 4, 7, 11, 14],
+      'minor9': [0, 3, 7, 10, 14],
+      'dominant9': [0, 4, 7, 10, 14],
+      'add9': [0, 4, 7, 14],
+      
+      // 11th Chords
+      'major11': [0, 4, 7, 11, 14, 17],
+      'minor11': [0, 3, 7, 10, 14, 17],
+      'dominant11': [0, 4, 7, 10, 14, 17],
+      
+      // 13th Chords
+      'major13': [0, 4, 7, 11, 14, 21],
+      'minor13': [0, 3, 7, 10, 14, 21],
+      'dominant13': [0, 4, 7, 10, 14, 21]
+    };
+    
+    const rootIndex = chromaticNotes.indexOf(currentNote);
+    const intervals = chordIntervals[chordSelect.value];
+    
+    intervals.forEach(interval => {
+      const noteIndex = (rootIndex + interval) % 12;
+      const freq = getNoteFrequency(
+        chromaticNotes[noteIndex],
+        currentOctave + Math.floor((rootIndex + interval) / 12)
+      );
+      frequencies.push(freq);
+    });
+    
+  } else if (intervalSelect.value !== 'none') {
+    const intervalMap = {
+      'minor 2nd': 1,
+      'major 2nd': 2,
+      'minor 3rd': 3,
+      'major 3rd': 4,
+      'perfect 4th': 5,
+      'tritone': 6,
+      'perfect 5th': 7,
+      'octave': 12
+    };
+    
+    const rootFreq = getNoteFrequency(currentNote, currentOctave);
+    const rootIndex = chromaticNotes.indexOf(currentNote);
+    const intervalSemitones = intervalMap[intervalSelect.value];
+    const secondNoteIndex = (rootIndex + intervalSemitones) % 12;
+    const secondFreq = getNoteFrequency(
+      chromaticNotes[secondNoteIndex],
+      currentOctave + Math.floor((rootIndex + intervalSemitones) / 12)
+    );
+    
+    frequencies = [rootFreq, secondFreq];
+  } else {
+    frequencies = [currentFrequency];
+  }
+  
+  // Create sustained oscillators
+  frequencies.forEach(freq => {
+    const osc = audioContext.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+    osc.connect(gainNode);
+    osc.start();
+    sustainedOscillators.push(osc);
+  });
+  
+  // Update particles
+  createParticles();
+}
+
+function stopSustainedSound() {
+  // Stop all sustained oscillators with fade out
+  sustainedOscillators.forEach(osc => {
+    try {
+      osc.stop();
+    } catch(e) {}
+  });
+  sustainedOscillators = [];
 }
 
 function playInterval() {
@@ -875,6 +1080,153 @@ function updateDisplay() {
   freqDisplay.textContent = currentFrequency.toFixed(2) + ' Hz';
   currentNoteDisplay.textContent = currentNote + currentOctave;
   currentFreqOverlay.textContent = currentFrequency.toFixed(2) + ' Hz';
+}
+
+// ============================================
+// MIDI FUNCTIONALITY
+// ============================================
+
+async function connectMIDI() {
+  if (navigator.requestMIDIAccess) {
+    try {
+      midiAccess = await navigator.requestMIDIAccess();
+      const inputs = Array.from(midiAccess.inputs.values());
+      
+      if (inputs.length === 0) {
+        updateMIDIStatus('No MIDI devices found', false);
+        return;
+      }
+      
+      // Populate input select dropdown
+      const inputSelect = document.getElementById('midi-input-select');
+      inputSelect.innerHTML = '<option value="">Select MIDI Input...</option>';
+      
+      inputs.forEach((input, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = input.name || `MIDI Input ${index + 1}`;
+        inputSelect.appendChild(option);
+      });
+      
+      // If only one device, auto-connect
+      if (inputs.length === 1) {
+        setupMIDIInput(inputs[0]);
+        updateMIDIStatus(`Connected: ${inputs[0].name || 'MIDI Device'}`, true);
+      } else {
+        inputSelect.style.display = 'block';
+        inputSelect.onchange = (e) => {
+          const selectedInput = inputs[parseInt(e.target.value)];
+          setupMIDIInput(selectedInput);
+          updateMIDIStatus(`Connected: ${selectedInput.name || 'MIDI Device'}`, true);
+        };
+        updateMIDIStatus('Select a MIDI input device', false);
+      }
+      
+    } catch (err) {
+      console.error('MIDI Access Error:', err);
+      updateMIDIStatus('MIDI access denied', false);
+    }
+  } else {
+    updateMIDIStatus('MIDI not supported in this browser', false);
+  }
+}
+
+function setupMIDIInput(input) {
+  // Remove previous listeners
+  if (midiInput) {
+    midiInput.onmidimessage = null;
+  }
+  
+  midiInput = input;
+  midiInput.onmidimessage = handleMIDIMessage;
+  
+  const connectBtn = document.getElementById('midi-connect-btn');
+  connectBtn.classList.add('connected');
+  connectBtn.textContent = 'MIDI Connected ✓';
+}
+
+function handleMIDIMessage(message) {
+  const [status, note, velocity] = message.data;
+  const command = status & 0xf0;
+  
+  // Note On (144-159) with velocity > 0
+  if (command === 144 && velocity > 0) {
+    playMIDINote(note, velocity);
+  }
+  // Note Off (128-143) or Note On with velocity 0
+  else if (command === 128 || (command === 144 && velocity === 0)) {
+    stopMIDINote(note);
+  }
+}
+
+function playMIDINote(midiNote, velocity) {
+  initAudio();
+  
+  // Convert MIDI note to frequency
+  const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+  
+  // Convert MIDI note to note name
+  const noteIndex = midiNote % 12;
+  const octave = Math.floor(midiNote / 12) - 1;
+  const noteName = chromaticNotes[noteIndex];
+  
+  // Update current state
+  currentNote = noteName;
+  currentOctave = octave;
+  currentFrequency = frequency;
+  updateDisplay();
+  
+  // Create oscillator for this note
+  const osc = audioContext.createOscillator();
+  const noteGain = audioContext.createGain();
+  
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
+  
+  // Velocity-sensitive volume
+  const volume = (velocity / 127) * 0.2;
+  noteGain.gain.setValueAtTime(volume, audioContext.currentTime);
+  
+  osc.connect(noteGain);
+  noteGain.connect(audioContext.destination);
+  osc.start();
+  
+  // Store the oscillator and gain for this note
+  activeNotes.set(midiNote, { osc, noteGain });
+  
+  // Update visualization
+  createParticles();
+}
+
+function stopMIDINote(midiNote) {
+  const noteData = activeNotes.get(midiNote);
+  
+  if (noteData) {
+    const { osc, noteGain } = noteData;
+    
+    // Fade out
+    noteGain.gain.setValueAtTime(noteGain.gain.value, audioContext.currentTime);
+    noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+    
+    setTimeout(() => {
+      try {
+        osc.stop();
+      } catch (e) {}
+    }, 100);
+    
+    activeNotes.delete(midiNote);
+  }
+}
+
+function updateMIDIStatus(message, isConnected) {
+  const statusDiv = document.getElementById('midi-status');
+  statusDiv.textContent = message;
+  
+  if (isConnected) {
+    statusDiv.classList.add('connected');
+  } else {
+    statusDiv.classList.remove('connected');
+  }
 }
 
 // ============================================
