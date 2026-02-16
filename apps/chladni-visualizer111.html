@@ -1,19 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Accessibility -->
-    <html lang="en">
-    <meta name="theme-color" content="#008080">
-    <meta name="description" content="Interactive Chladni Plate Cymatics Visualizer - Accessible music theory and physics education tool">
-    
-    <!-- Accessibility Meta -->
-    <meta name="theme-color" content="#0f0f1e">
-    <meta name="color-scheme" content="dark light">
     
     <!-- SEO Meta Tags -->
     <title>Chladni Plate Cymatics Visualizer | Interactive Sound & Music Theory | Keys, Codes & Modes</title>
@@ -29,7 +20,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Chladni Plate Cymatics Visualizer | Keys, Codes & Modes">
     <meta property="og:description" content="Interactive cymatics visualizer showing how sound frequencies create geometric patterns. 10,000+ particles, MIDI support, extended chords, real-time physics simulation.">
-    <meta property="og:url" content="https://www.keyscodesandmodes.com/chladni-visualizer">
+    <meta property="og:url" content="https://keyscodesandmodes.com/keys-codes-and-modes/index.html">
     <meta property="og:site_name" content="Keys, Codes & Modes">
     <meta property="og:locale" content="en_US">
     
@@ -42,7 +33,7 @@
     <!-- Additional SEO -->
     <meta name="application-name" content="Chladni Plate Visualizer">
     <meta name="apple-mobile-web-app-title" content="Cymatics">
-    <link rel="canonical" href="https://www.keyscodesandmodes.com/chladni-visualizer">
+    <link rel="canonical" href="https://keyscodesandmodes.com/keys-codes-and-modes/index.html">
     
     <!-- Schema.org Structured Data for Google -->
     <script type="application/ld+json">
@@ -51,7 +42,7 @@
       "@type": "WebApplication",
       "name": "Chladni Plate Cymatics Visualizer",
       "description": "Interactive cymatics visualizer demonstrating how sound frequencies create geometric patterns through particle physics simulation",
-      "url": "https://www.keyscodesandmodes.com/chladni-visualizer",
+      "url": "https://keyscodesandmodes.com/keys-codes-and-modes/index.html",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -1281,11 +1272,10 @@
 </head>
 <body>
     <!-- HEADER -->
-    <header class="app-header" role="banner">
+    <header class="app-header">
         <div class="app-header-content">
             <div class="app-logo-section">
-                <svg class="app-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keys, Codes & Modes Logo">
-                    <title>Keys, Codes & Modes Logo</title>
+                <svg class="app-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="50" cy="50" r="45" fill="none" stroke="#F4D03F" stroke-width="3"/>
                     <circle cx="50" cy="50" r="35" fill="none" stroke="#008080" stroke-width="2"/>
                     <circle cx="50" cy="50" r="25" fill="none" stroke="#8B6BA3" stroke-width="2"/>
@@ -1297,56 +1287,42 @@
                     <p class="app-subtitle">Chladni Plate Cymatics Visualizer</p>
                 </div>
             </div>
-            <nav class="app-nav-links" role="navigation" aria-label="Main navigation">
-                <a href="../index.html" aria-label="Go to homepage">Home</a>
-                <a href="../about.html" aria-label="Learn about Keys, Codes & Modes">About</a>
-                <a href="../insights.html" aria-label="Explore our music theory tools">Tools</a>
-                <a href="../pricing.html" class="upgrade-link" aria-label="View premium pricing plans">Upgrade Pro</a>
+            <nav class="app-nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#tools">Tools</a>
+                <a href="../index.html#pricing" class="upgrade-link">Upgrade Pro</a>
             </nav>
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="app-main" role="main">
+    <main class="app-main">
         <div class="app-container">
             <!-- DISPLAY AREA -->
-            <section class="display-area" role="region" aria-label="Chladni Plate Visualization Display">
+            <section class="display-area">
                 <h2 class="display-title">Chladni Plate Visualization</h2>
                 <div class="display-content">
-                    <canvas id="cymatics-canvas" role="img" aria-label="Interactive 3D Chladni plate particle visualization showing sound wave patterns"></canvas>
+                    <canvas id="cymatics-canvas"></canvas>
                     
-                    <div class="overlay-info" aria-live="polite" aria-atomic="true">
-                        <div class="current-note" id="current-note" aria-label="Current musical note">C4</div>
-                        <div class="current-freq" id="current-freq-overlay" aria-label="Current frequency in Hertz">261.63 Hz</div>
+                    <div class="overlay-info">
+                        <div class="current-note" id="current-note">C4</div>
+                        <div class="current-freq" id="current-freq-overlay">261.63 Hz</div>
                     </div>
                 </div>
-                <div class="viewing-mode-label" role="status" aria-live="polite">Viewing Mode: Chladni Plate</div>
+                <div class="viewing-mode-label">Viewing Mode: Chladni Plate</div>
             </section>
 
             <!-- CONTROL PANEL -->
-            <aside class="control-panel" role="complementary" aria-label="Sound and visualization controls">
-                <!-- Play Button -->
-                <div class="control-section">
-                    <button class="play-button" id="play-btn" 
-                        onmousedown="startPlayingNote()" 
-                        onmouseup="stopPlayingNote()" 
-                        onmouseleave="stopPlayingNote()" 
-                        ontouchstart="event.preventDefault(); startPlayingNote()" 
-                        ontouchend="event.preventDefault(); stopPlayingNote()"
-                        aria-label="Play current note. Click to play briefly, or hold to sustain sound"
-                        aria-pressed="false">
-                        <span class="play-icon" aria-hidden="true">▶</span> Play Note
-                    </button>
-                </div>
-                
+            <aside class="control-panel">
                 <h2 class="control-title">Sound Controls</h2>
                 
                 <!-- Note Selection -->
                 <div class="control-section">
-                    <label for="note-select" class="section-label">
+                    <div class="section-label">
                         Select Note
-                    </label>
-                    <select id="note-select" class="key-dropdown" onchange="changeNote()" aria-label="Select musical note from C to B">
+                    </div>
+                    <select id="note-select" class="key-dropdown" onchange="changeNote()">
                         <option value="C">C</option>
                         <option value="C#">C# / D♭</option>
                         <option value="D">D</option>
@@ -1364,10 +1340,10 @@
 
                 <!-- Octave Selection -->
                 <div class="control-section">
-                    <label for="octave-select" class="section-label">
+                    <div class="section-label">
                         Octave
-                    </label>
-                    <select id="octave-select" class="key-dropdown" onchange="changeNote()" aria-label="Select octave from 1 to 7">
+                    </div>
+                    <select id="octave-select" class="key-dropdown" onchange="changeNote()">
                         <option value="1">Octave 1 (Very Low)</option>
                         <option value="2">Octave 2 (Low)</option>
                         <option value="3">Octave 3</option>
@@ -1380,30 +1356,42 @@
 
                 <!-- MIDI Connection -->
                 <div class="control-section">
-                    <label class="section-label">
+                    <div class="section-label">
                         MIDI Input
-                    </label>
-                    <button class="midi-button" id="midi-connect-btn" onclick="connectMIDI()" aria-label="Connect MIDI keyboard or controller device">
+                    </div>
+                    <button class="midi-button" id="midi-connect-btn" onclick="connectMIDI()">
                         Connect MIDI Device
                     </button>
-                    <div id="midi-status" class="midi-status" role="status" aria-live="polite" aria-atomic="true">No MIDI device connected</div>
-                    <select id="midi-input-select" class="key-dropdown" style="display:none;" aria-label="Select MIDI input device">
+                    <div id="midi-status" class="midi-status">No MIDI device connected</div>
+                    <select id="midi-input-select" class="key-dropdown" style="display:none;">
                         <option value="">Select MIDI Input...</option>
                     </select>
                 </div>
 
+                <!-- Play Button -->
+                <div class="control-section">
+                    <button class="play-button" id="play-btn" 
+                        onmousedown="startPlayingNote()" 
+                        onmouseup="stopPlayingNote()" 
+                        onmouseleave="stopPlayingNote()" 
+                        ontouchstart="event.preventDefault(); startPlayingNote()" 
+                        ontouchend="event.preventDefault(); stopPlayingNote()">
+                        <span class="play-icon">▶</span> Play Note
+                    </button>
+                </div>
+
                 <!-- Frequency Display -->
-                <div class="frequency-display" role="status" aria-live="polite" aria-atomic="true">
-                    <div class="label" id="freq-label">Current Frequency</div>
-                    <div class="value" id="freq-display" aria-labelledby="freq-label">261.63 Hz</div>
+                <div class="frequency-display">
+                    <div class="label">Current Frequency</div>
+                    <div class="value" id="freq-display">261.63 Hz</div>
                 </div>
 
                 <!-- Intervals -->
                 <div class="control-section">
-                    <label for="interval-select" class="section-label">
+                    <div class="section-label">
                         Intervals
-                    </label>
-                    <select id="interval-select" class="key-dropdown" onchange="playInterval()" aria-label="Select musical interval to play two notes simultaneously">
+                    </div>
+                    <select id="interval-select" class="key-dropdown" onchange="playInterval()">
                         <option value="none">Single Note</option>
                         <option value="minor 2nd">Minor 2nd (m2)</option>
                         <option value="major 2nd">Major 2nd (M2)</option>
@@ -1418,10 +1406,10 @@
 
                 <!-- Chords -->
                 <div class="control-section">
-                    <label for="chord-select" class="section-label">
+                    <div class="section-label">
                         Chords
-                    </label>
-                    <select id="chord-select" class="key-dropdown" onchange="playChord()" aria-label="Select chord type from triads to extended 13th chords">
+                    </div>
+                    <select id="chord-select" class="key-dropdown" onchange="playChord()">
                         <option value="none">Single Note</option>
                         <optgroup label="Triads">
                             <option value="major">Major Triad</option>
@@ -1457,10 +1445,10 @@
 
                 <!-- Plate Shape -->
                 <div class="control-section">
-                    <label for="shape-select" class="section-label">
+                    <div class="section-label">
                         Plate Shape
-                    </label>
-                    <select id="shape-select" class="key-dropdown" onchange="changePlateShape()" aria-label="Select Chladni plate shape: circle or square">
+                    </div>
+                    <select id="shape-select" class="key-dropdown" onchange="changePlateShape()">
                         <option value="circle" selected>Circle</option>
                         <option value="square">Square</option>
                     </select>
@@ -1479,23 +1467,6 @@
                     </select>
                 </div>
 
-                <!-- Color Mode -->
-                <div class="control-section">
-                    <div class="section-label">
-                        Color Mode
-                    </div>
-                    <select id="color-select" class="key-dropdown" onchange="changeColorMode()">
-                        <option value="chromatic" selected>Chromatic Wheel</option>
-                        <option value="rainbow">Full Spectrum</option>
-                        <option value="white">Classic White</option>
-                        <option value="ocean-blue">Ocean Blue</option>
-                        <option value="golden-yellow">Golden Yellow</option>
-                        <option value="mystic-purple">Mystic Purple</option>
-                        <option value="standard-teal">Standard Teal</option>
-                        <option value="warm-copper">Warm Copper</option>
-                    </select>
-                </div>
-
                 <!-- Info Box -->
                 <div class="info-box">
                     <p><strong>Chladni Plates:</strong> Watch sand particles migrate to nodes (areas of no vibration) creating intricate geometric patterns. Each frequency produces a unique design!</p>
@@ -1505,16 +1476,15 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="app-footer" role="contentinfo">
+    <footer class="app-footer">
         <div class="footer-content">
             <p class="footer-text">© 2026 Keys, Codes & Modes | Visual Music Theory Education</p>
-            <nav class="footer-links" role="navigation" aria-label="Footer navigation">
-                <a href="../privacy.html" aria-label="Read our privacy policy">Privacy Policy</a>
-                <a href="../terms.html" aria-label="Read our terms of service">Terms of Service</a>
-                <a href="../refund-policy.html" aria-label="Read our refund policy">Refund Policy</a>
-                <a href="../contact.html" aria-label="Contact us for questions">Contact</a>
-                <a href="../contact.html" aria-label="Get support and help">Support</a>
-            </nav>
+            <div class="footer-links">
+                <a href="../privacy.html">Privacy Policy</a>
+                <a href="../terms.html">Terms of Service</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../contact.html">Support</a>
+            </div>
         </div>
     </footer>
 
@@ -1533,7 +1503,6 @@ let currentNote = 'C';
 let currentOctave = 4;
 let plateType = 'circle';
 let particleCount = 10000;
-let colorMode = 'chromatic';
 let animationId;
 let plateRadius = 5;
 
@@ -1670,82 +1639,14 @@ function createParticles() {
   particles.forEach(p => scene.remove(p));
   particles = [];
   
-  // Chromatic color mapping - each note has its own color
-  const chromaticColors = {
-    'C': 0xFFFF00,   // Yellow
-    'C#': 0xFFC400,  // Yellow-Orange
-    'D': 0xFF8000,   // Orange
-    'D#': 0xFF4000,  // Red-Orange
-    'E': 0xFF0000,   // Red
-    'F': 0xC4007F,   // Red-Purple
-    'F#': 0x8000FF,  // Purple
-    'G': 0x4000FF,   // Blue-Purple
-    'G#': 0x0000FF,  // Blue
-    'A': 0x007FFF,   // Blue-Green
-    'A#': 0x00FF80,  // Green
-    'B': 0x80FF00    // Yellow-Green
-  };
-  
-  // Calculate color based on selected mode
-  let particleColor;
-  
-  switch(colorMode) {
-    case 'chromatic':
-      // Use the chromatic color wheel based on current note
-      particleColor = new THREE.Color(chromaticColors[currentNote] || 0xFFFF00);
-      break;
-      
-    case 'white':
-      particleColor = new THREE.Color(0xe0e0e0);
-      break;
-      
-    case 'ocean-blue':
-      particleColor = new THREE.Color(0x4A7BA7); // Official Ocean Blue
-      break;
-      
-    case 'golden-yellow':
-      particleColor = new THREE.Color(0xF4D03F); // Official Golden Yellow
-      break;
-      
-    case 'mystic-purple':
-      particleColor = new THREE.Color(0x8B6BA3); // Official Mystic Purple
-      break;
-      
-    case 'standard-teal':
-      particleColor = new THREE.Color(0x008080); // Official Standard Teal
-      break;
-      
-    case 'warm-copper':
-      particleColor = new THREE.Color(0xCF7A5A); // Official Warm Copper
-      break;
-      
-    case 'rainbow':
-      // Will cycle through chromatic colors below
-      particleColor = null;
-      break;
-      
-    default:
-      particleColor = new THREE.Color(chromaticColors[currentNote] || 0xFFFF00);
-  }
-  
   const particleGeometry = new THREE.SphereGeometry(0.02, 4, 4);
+  const particleMaterial = new THREE.MeshStandardMaterial({
+    color: 0xe0e0e0,
+    roughness: 0.9,
+    metalness: 0.1
+  });
   
   for (let i = 0; i < particleCount; i++) {
-    // Rainbow mode: cycle through chromatic color wheel
-    let finalColor = particleColor;
-    if (colorMode === 'rainbow') {
-      const colorValues = Object.values(chromaticColors);
-      finalColor = new THREE.Color(colorValues[i % colorValues.length]);
-    }
-    
-    const particleMaterial = new THREE.MeshStandardMaterial({
-      color: finalColor,
-      roughness: colorMode === 'white' ? 0.9 : 0.6,
-      metalness: colorMode === 'white' ? 0.1 : 0.4,
-      emissive: colorMode === 'white' ? new THREE.Color(0x000000) : finalColor,
-      emissiveIntensity: colorMode === 'white' ? 0 : 0.4
-    });
-    
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     
     let x, z;
@@ -2171,20 +2072,6 @@ function changeDensity() {
   if (typeof trackEvent === 'function') {
     trackEvent('particle_density_changed', {
       particle_count: particleCount
-    });
-  }
-  
-  createParticles();
-}
-
-function changeColorMode() {
-  const colorSelect = document.getElementById('color-select');
-  colorMode = colorSelect.value;
-  
-  // Analytics tracking
-  if (typeof trackEvent === 'function') {
-    trackEvent('color_mode_changed', {
-      color_mode: colorMode
     });
   }
   
