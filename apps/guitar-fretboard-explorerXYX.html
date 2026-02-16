@@ -314,17 +314,6 @@
             transform: scale(1.35);
         }
 
-        .string-label.playing {
-            animation: labelPulse 0.3s ease-in-out;
-            text-shadow: 0 0 20px currentColor, 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        @keyframes labelPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.5); }
-            100% { transform: scale(1.4); }
-        }
-
         .chord-btn {
             padding: 8px 16px;
             background: rgba(0, 128, 128, 0.2);
@@ -596,9 +585,8 @@
                 <div class="control-item">
                     <label>Fretboard Display</label>
                     <div class="fret-toggle">
-                        <button id="fret4Btn" class="active" onclick="setFretCount(4)">4 Frets</button>
                         <button id="fret5Btn" onclick="setFretCount(5)">5 Frets</button>
-                        <button id="fret12Btn" onclick="setFretCount(12)">12 Frets</button>
+                        <button id="fret12Btn" class="active" onclick="setFretCount(12)">12 Frets</button>
                     </div>
                 </div>
 
@@ -669,7 +657,7 @@
 
             <!-- CENTER PANEL: FRETBOARD -->
             <div class="fretboard-container">
-                <div class="fretboard frets-4" id="fretboard"></div>
+                <div class="fretboard frets-12" id="fretboard"></div>
             </div>
 
             <!-- RIGHT PANEL: GUITAR TAB -->
@@ -726,7 +714,7 @@
     <script>
         // Audio context
         let audioContext;
-        let currentFretCount = 4; // Default to 4 frets
+        let currentFretCount = 12;
         let currentRoot = 0;
         let currentScale = 'all';
         let currentChord = null;
@@ -1013,20 +1001,15 @@
         // Set fret count
         function setFretCount(count) {
             currentFretCount = count;
-            const fret4Btn = document.getElementById('fret4Btn');
             const fret5Btn = document.getElementById('fret5Btn');
             const fret12Btn = document.getElementById('fret12Btn');
             
-            fret4Btn.classList.remove('active');
-            fret5Btn.classList.remove('active');
-            fret12Btn.classList.remove('active');
-            
-            if (count === 4) {
-                fret4Btn.classList.add('active');
-            } else if (count === 5) {
+            if (count === 5) {
                 fret5Btn.classList.add('active');
+                fret12Btn.classList.remove('active');
             } else {
                 fret12Btn.classList.add('active');
+                fret5Btn.classList.remove('active');
             }
             
             createGuitar();
@@ -1429,7 +1412,7 @@ E|─────────────────
                     GUITAR_TUNING[5] + (baseOctaves[5] * 12)  // E4 = 4 + 48 = 52
                 ];
 
-                const fretHeight = currentFretCount === 12 ? 50 : currentFretCount === 5 ? 80 : 100; // 4 frets = 100px each
+                const fretHeight = currentFretCount === 12 ? 50 : 80;
                 const totalHeight = currentFretCount * fretHeight;
                 fb.style.height = totalHeight + 'px';
                 fb.style.width = '180px';
@@ -1460,7 +1443,7 @@ E|─────────────────
                 }
 
                 // Create fret markers
-                const markerFrets = currentFretCount === 12 ? [3, 5, 7, 9, 12] : currentFretCount === 5 ? [3, 5] : [3];
+                const markerFrets = currentFretCount === 12 ? [3, 5, 7, 9, 12] : [3, 5];
                 markerFrets.forEach(fret => {
                     if (fret <= currentFretCount) {
                         if (fret === 12) {
@@ -1493,7 +1476,7 @@ E|─────────────────
                     }
                 });
 
-                // Create note dots - FRETS 1-12 ONLY (no open strings on fretboard)
+                // Create note dots
                 for (let s = 0; s < 6; s++) {
                     for (let f = 1; f <= currentFretCount; f++) {
                         const absolutePitch = baseAbsolutePitch[s] + f;
@@ -1517,7 +1500,7 @@ E|─────────────────
                         dot.dataset.noteValue = n;
                         dot.dataset.octave = calculatedOctave;
                         
-                        // Dim notes not in pattern
+                        // Dim notes not in pattern - make them much more subdued
                         if (!inPattern) {
                             dot.style.opacity = '0.15';
                             dot.style.filter = 'grayscale(100%) brightness(0.5)';
@@ -1528,49 +1511,23 @@ E|─────────────────
                             dot.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.8)';
                             dot.style.borderWidth = '3px';
                         } else {
+                            // In pattern but not specifically fingered
                             dot.style.opacity = '1';
                             dot.style.filter = 'none';
                         }
                         
                         dot.onclick = function() {
                             playNote(n, calculatedOctave, 0.8);
+                            
+                            // Update notation displays
                             updateNotation(n, calculatedOctave, s, f);
+                            
                             this.classList.add('playing');
                             setTimeout(() => this.classList.remove('playing'), 300);
                         };
                         fb.appendChild(dot);
                     }
                 }
-
-                // Style string labels based on pattern (open strings)
-                const stringLabels = fb.querySelectorAll('.string-label');
-                stringLabels.forEach((lbl, s) => {
-                    const openNoteValue = GUITAR_TUNING[s];
-                    const openOctave = baseOctaves[s];
-                    const inPattern = isNoteInPattern(openNoteValue);
-                    const inFingering = isNoteInChordFingering(s, 0);
-                    
-                    // Set color based on chromatic note color
-                    lbl.style.color = colors[openNoteValue];
-                    
-                    // Highlight if in pattern
-                    if (inPattern || inFingering) {
-                        lbl.style.fontWeight = 'bold';
-                        lbl.style.opacity = '1';
-                        lbl.style.filter = 'none';
-                        lbl.style.textShadow = `0 0 10px ${colors[openNoteValue]}, 2px 2px 4px rgba(0,0,0,0.8)`;
-                    } else {
-                        lbl.style.opacity = '0.3';
-                        lbl.style.filter = 'grayscale(100%)';
-                        lbl.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
-                    }
-                    
-                    // Store data for pattern playback
-                    lbl.dataset.string = s;
-                    lbl.dataset.fret = 0;
-                    lbl.dataset.noteValue = openNoteValue;
-                    lbl.dataset.octave = openOctave;
-                });
 
                 // Add X marks for muted strings in chords
                 if (currentChord) {
@@ -1669,16 +1626,8 @@ E|─────────────────
 
             // Chord buttons
             document.querySelectorAll('.chord-btn').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const chordKey = btn.dataset.chord;
-                    console.log('Chord button clicked:', chordKey);
-                    
-                    if (!CHORDS[chordKey]) {
-                        console.error('Chord not found in CHORDS object:', chordKey);
-                        return;
-                    }
-                    
-                    currentChord = chordKey;
+                btn.addEventListener('click', () => {
+                    currentChord = btn.dataset.chord;
                     currentScale = 'chords'; // Set scale mode to chords
                     
                     // Update UI
@@ -1689,11 +1638,6 @@ E|─────────────────
                     // Update chord info and fretboard
                     updateChordInfo();
                     createGuitar();
-                    
-                    console.log('Chord set to:', currentChord, CHORDS[currentChord]);
-                    
-                    // Auto-play the chord when selected
-                    await playChord();
                 });
             });
         });
