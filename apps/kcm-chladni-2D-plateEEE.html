@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keys, Codes & Modes - Chladni Plate Cymatics Visualizer</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --ocean-blue: #4A7BA7;
+    --deep-navy: #2a4d6f;
+    --golden-yellow: #F4D03F;
+    --light-yellow: #E8D77F;
+    --mystic-purple: #8B6BA3;
+    --teal: #6FA5A5;
+    --coral: #CF7A5A;
+    --sage-green: #9AAF7A;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: white;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(90deg, var(--deep-navy) 0%, var(--ocean-blue) 100%);
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  h1 {
+    color: var(--golden-yellow);
+    font-size: 1.8em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .subtitle {
+    color: var(--light-yellow);
+    font-size: 0.95em;
+    margin-top: 3px;
+  }
+
+  /* Main Layout */
+  .main-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: calc(100vh - 95px);
+    gap: 0;
+  }
+
+  /* Control Panel */
+  .control-panel {
+    background: rgba(42, 77, 111, 0.95);
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  .section {
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--golden-yellow);
+  }
+
+  .section h3 {
+    color: var(--golden-yellow);
+    margin-bottom: 10px;
+    font-size: 1em;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background: var(--deep-navy);
+    color: white;
+    border: 2px solid var(--ocean-blue);
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  select:hover {
+    border-color: var(--golden-yellow);
+    background: rgba(74, 123, 167, 0.8);
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--golden-yellow);
+    box-shadow: 0 0 10px rgba(244, 208, 63, 0.3);
+  }
+
+  optgroup {
+    background: var(--deep-navy);
+    color: var(--golden-yellow);
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  option {
+    background: var(--deep-navy);
+    color: white;
+    padding: 8px;
+  }
+
+  .play-button {
+    width: 100%;
+    padding: 16px;
+    margin: 0;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .play-button:hover {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 204, 113, 0.6);
+  }
+
+  .play-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.4);
+  }
+
+  .play-icon {
+    font-size: 1.2em;
+  }
+
+  .midi-button {
+    width: 100%;
+    padding: 12px;
+    margin: 0 0 10px 0;
+    background: linear-gradient(135deg, var(--mystic-purple) 0%, var(--ocean-blue) 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(139, 107, 163, 0.4);
+  }
+
+  .midi-button:hover {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--mystic-purple) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 107, 163, 0.6);
+  }
+
+  .midi-button.connected {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  }
+
+  .midi-status {
+    font-size: 0.85em;
+    color: var(--light-yellow);
+    padding: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .midi-status.connected {
+    color: #2ecc71;
+    font-weight: bold;
+  }
+
+  .frequency-display {
+    background: rgba(0,0,0,0.6);
+    padding: 12px;
+    border-radius: 6px;
+    border: 2px solid var(--ocean-blue);
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .frequency-display .label {
+    color: var(--light-yellow);
+    font-size: 0.85em;
+    margin-bottom: 5px;
+  }
+
+  .frequency-display .value {
+    color: var(--golden-yellow);
+    font-size: 1.4em;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(244, 208, 63, 0.5);
+  }
+
+  .info-box {
+    background: rgba(74, 123, 167, 0.2);
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--ocean-blue);
+    margin-top: 10px;
+  }
+
+  .info-box p {
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: var(--light-yellow);
+  }
+
+  /* Cymatics Visualization Area */
+  .cymatics-container {
+    position: relative;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #cymatics-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .overlay-info {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(42, 77, 111, 0.9);
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 2px solid var(--golden-yellow);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    z-index: 10;
+  }
+
+  .overlay-info .current-note {
+    color: var(--golden-yellow);
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .overlay-info .current-freq {
+    color: var(--light-yellow);
+    font-size: 1em;
+  }
+
+  .pattern-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.8);
+    padding: 12px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--teal);
+    z-index: 10;
+  }
+
+  .pattern-info .label {
+    color: var(--teal);
+    font-size: 0.85em;
+    margin-bottom: 3px;
+  }
+
+  .pattern-info .value {
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-container">
+    <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="#F4D03F" stroke-width="3"/>
+      <circle cx="50" cy="50" r="35" fill="none" stroke="#4A7BA7" stroke-width="2"/>
+      <circle cx="50" cy="50" r="25" fill="none" stroke="#8B6BA3" stroke-width="2"/>
+      <path d="M 50 15 L 50 85" stroke="#F4D03F" stroke-width="2"/>
+      <path d="M 15 50 L 85 50" stroke="#F4D03F" stroke-width="2"/>
+    </svg>
+    <div>
+      <h1>Keys, Codes & Modes</h1>
+      <div class="subtitle">Chladni Plate Cymatics Visualizer</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="main-container">
+  <!-- CONTROL PANEL -->
+  <div class="control-panel">
+    
+    <div class="section">
+      <h3>🎵 Select Note</h3>
+      <select id="note-select" onchange="changeNote()">
+        <option value="C">C</option>
+        <option value="C#">C# / D♭</option>
+        <option value="D">D</option>
+        <option value="D#">D# / E♭</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="F#">F# / G♭</option>
+        <option value="G">G</option>
+        <option value="G#">G# / A♭</option>
+        <option value="A">A</option>
+        <option value="A#">A# / B♭</option>
+        <option value="B">B</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🎹 Octave</h3>
+      <select id="octave-select" onchange="changeNote()">
+        <option value="1">Octave 1 (Very Low)</option>
+        <option value="2">Octave 2 (Low)</option>
+        <option value="3">Octave 3</option>
+        <option value="4" selected>Octave 4 (Middle C)</option>
+        <option value="5">Octave 5</option>
+        <option value="6">Octave 6 (High)</option>
+        <option value="7">Octave 7 (Very High)</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🎹 MIDI Input</h3>
+      <button class="midi-button" id="midi-connect-btn" onclick="connectMIDI()">
+        Connect MIDI Device
+      </button>
+      <div id="midi-status" class="midi-status">No MIDI device connected</div>
+      <select id="midi-input-select" style="display:none;">
+        <option value="">Select MIDI Input...</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <button class="play-button" id="play-btn" onmousedown="startPlayingNote()" onmouseup="stopPlayingNote()" onmouseleave="stopPlayingNote()" ontouchstart="startPlayingNote()" ontouchend="stopPlayingNote()">
+        <span class="play-icon">▶</span> PLAY NOTE
+      </button>
+    </div>
+
+    <div class="frequency-display">
+      <div class="label">Current Frequency</div>
+      <div class="value" id="freq-display">261.63 Hz</div>
+    </div>
+
+    <div class="section">
+      <h3>🎸 Intervals</h3>
+      <select id="interval-select" onchange="playInterval()">
+        <option value="none">Single Note</option>
+        <option value="minor 2nd">Minor 2nd (m2)</option>
+        <option value="major 2nd">Major 2nd (M2)</option>
+        <option value="minor 3rd">Minor 3rd (m3)</option>
+        <option value="major 3rd">Major 3rd (M3)</option>
+        <option value="perfect 4th">Perfect 4th (P4)</option>
+        <option value="tritone">Tritone (TT)</option>
+        <option value="perfect 5th">Perfect 5th (P5)</option>
+        <option value="octave">Octave (P8)</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🎼 Chords</h3>
+      <select id="chord-select" onchange="playChord()">
+        <option value="none">Single Note</option>
+        <optgroup label="Triads">
+          <option value="major">Major Triad</option>
+          <option value="minor">Minor Triad</option>
+          <option value="diminished">Diminished</option>
+          <option value="augmented">Augmented</option>
+        </optgroup>
+        <optgroup label="7th Chords">
+          <option value="major7">Major 7th</option>
+          <option value="minor7">Minor 7th</option>
+          <option value="dominant7">Dominant 7th</option>
+          <option value="minor7b5">Minor 7♭5 (Half-Dim)</option>
+          <option value="diminished7">Diminished 7th</option>
+        </optgroup>
+        <optgroup label="9th Chords">
+          <option value="major9">Major 9th</option>
+          <option value="minor9">Minor 9th</option>
+          <option value="dominant9">Dominant 9th</option>
+          <option value="add9">Add 9</option>
+        </optgroup>
+        <optgroup label="11th Chords">
+          <option value="major11">Major 11th</option>
+          <option value="minor11">Minor 11th</option>
+          <option value="dominant11">Dominant 11th</option>
+        </optgroup>
+        <optgroup label="13th Chords">
+          <option value="major13">Major 13th</option>
+          <option value="minor13">Minor 13th</option>
+          <option value="dominant13">Dominant 13th</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>⚙️ Plate Shape</h3>
+      <select id="shape-select" onchange="changePlateShape()">
+        <option value="circle" selected>Circle</option>
+        <option value="square">Square</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🎨 Particle Density</h3>
+      <select id="density-select" onchange="changeDensity()">
+        <option value="5000">Low (5,000)</option>
+        <option value="10000" selected>Medium (10,000)</option>
+        <option value="15000">High (15,000)</option>
+        <option value="20000">Ultra (20,000)</option>
+      </select>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Chladni Plates:</strong> Watch sand particles migrate to nodes (areas of no vibration) creating intricate geometric patterns. Each frequency produces a unique design!</p>
+    </div>
+  </div>
+
+  <!-- CYMATICS VISUALIZATION -->
+  <div class="cymatics-container">
+    <canvas id="cymatics-canvas"></canvas>
+    
+    <div class="overlay-info">
+      <div class="current-note" id="current-note">C4</div>
+      <div class="current-freq" id="current-freq-overlay">261.63 Hz</div>
+    </div>
+    
+    <div class="pattern-info">
+      <div class="label">Viewing Mode</div>
+      <div class="value">Chladni Plate (Top-Angled)</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ============================================
+// CONFIGURATION & STATE
+// ============================================
+
+const chromaticNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+let scene, camera, renderer;
+let particles = [];
+let currentFrequency = 261.63;
+let currentNote = 'C';
+let currentOctave = 4;
+let plateType = 'circle';
+let particleCount = 10000;
+let animationId;
+let plateRadius = 5;
+
+let audioContext;
+let oscillators = [];
+let gainNode;
+
+// MIDI variables
+let midiAccess = null;
+let midiInput = null;
+let activeNotes = new Map(); // Track currently playing MIDI notes
+
+// Play button state
+let isPlayButtonHeld = false;
+let playButtonTimeout = null;
+let sustainedOscillators = [];
+
+// ============================================
+// AUDIO SYSTEM
+// ============================================
+
+function initAudio() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioContext.createGain();
+    gainNode.connect(audioContext.destination);
+    gainNode.gain.value = 0.15;
+  }
+}
+
+function getNoteFrequency(note, octave) {
+  const noteIndex = chromaticNotes.indexOf(note);
+  const A4 = 440;
+  const semitoneOffset = (octave - 4) * 12 + (noteIndex - 9);
+  return A4 * Math.pow(2, semitoneOffset / 12);
+}
+
+function stopAllOscillators() {
+  oscillators.forEach(osc => {
+    try {
+      osc.stop();
+    } catch(e) {}
+  });
+  oscillators = [];
+}
+
+function playTone(frequency, duration = 1000) {
+  initAudio();
+  stopAllOscillators();
+  
+  const osc = audioContext.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
+  osc.connect(gainNode);
+  osc.start();
+  oscillators.push(osc);
+  
+  setTimeout(() => {
+    try {
+      osc.stop();
+    } catch(e) {}
+  }, duration);
+}
+
+function playMultipleTones(frequencies, duration = 1500) {
+  initAudio();
+  stopAllOscillators();
+  
+  frequencies.forEach(freq => {
+    const osc = audioContext.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+    osc.connect(gainNode);
+    osc.start();
+    oscillators.push(osc);
+    
+    setTimeout(() => {
+      try {
+        osc.stop();
+      } catch(e) {}
+    }, duration);
+  });
+}
+
+// ============================================
+// THREE.JS VISUALIZATION
+// ============================================
+
+function initCymatics() {
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+  
+  const canvas = document.getElementById('cymatics-canvas');
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  
+  // Slightly angled top view like the reference image
+  camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera.position.set(0, 12, 8);
+  camera.lookAt(0, 0, 0);
+  
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+  
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(5, 10, 5);
+  scene.add(directionalLight);
+  
+  // Create dark plate base
+  const plateGeometry = plateType === 'circle' 
+    ? new THREE.CircleGeometry(plateRadius, 64)
+    : new THREE.PlaneGeometry(plateRadius * 2, plateRadius * 2);
+    
+  const plateMaterial = new THREE.MeshStandardMaterial({
+    color: 0x1a1a1a,
+    side: THREE.DoubleSide,
+    roughness: 0.8,
+    metalness: 0.2
+  });
+  
+  const plateMesh = new THREE.Mesh(plateGeometry, plateMaterial);
+  plateMesh.rotation.x = -Math.PI / 2;
+  scene.add(plateMesh);
+  
+  createParticles();
+  animate();
+  
+  window.addEventListener('resize', onWindowResize);
+}
+
+function createParticles() {
+  // Remove old particles
+  particles.forEach(p => scene.remove(p));
+  particles = [];
+  
+  // Create particle system like sand on Chladni plate
+  const particleGeometry = new THREE.SphereGeometry(0.02, 4, 4);
+  const particleMaterial = new THREE.MeshStandardMaterial({
+    color: 0xe0e0e0,
+    roughness: 0.9,
+    metalness: 0.1
+  });
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+    
+    // Random initial position on plate
+    let x, z;
+    if (plateType === 'circle') {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.sqrt(Math.random()) * plateRadius * 0.95;
+      x = Math.cos(angle) * radius;
+      z = Math.sin(angle) * radius;
+    } else {
+      x = (Math.random() - 0.5) * plateRadius * 1.9;
+      z = (Math.random() - 0.5) * plateRadius * 1.9;
+    }
+    
+    particle.position.set(x, 0.02, z);
+    particle.userData.homeX = x;
+    particle.userData.homeZ = z;
+    particle.userData.velocity = { x: 0, z: 0 };
+    
+    scene.add(particle);
+    particles.push(particle);
+  }
+  
+  updateParticlePositions();
+}
+
+function updateParticlePositions() {
+  // Chladni plate physics: particles move to nodal lines
+  // Nodal lines are where amplitude is zero (no vibration)
+  
+  const freqFactor = currentFrequency / 261.63;
+  
+  particles.forEach(particle => {
+    const x = particle.position.x;
+    const z = particle.position.z;
+    const distance = Math.sqrt(x * x + z * z);
+    const angle = Math.atan2(z, x);
+    
+    // Chladni pattern calculation
+    // Using combinations of sin/cos to create nodal lines
+    const m = Math.floor(freqFactor * 2 + 1); // radial modes
+    const n = Math.floor(freqFactor * 1.5 + 1); // angular modes
+    
+    // Calculate amplitude at this point
+    const radialComponent = Math.sin(distance * m * Math.PI / plateRadius);
+    const angularComponent = Math.cos(n * angle);
+    const amplitude = Math.abs(radialComponent * angularComponent);
+    
+    // Particles are attracted to areas of low amplitude (nodes)
+    const threshold = 0.15;
+    
+    if (amplitude < threshold) {
+      // This is a nodal area - particles settle here
+      particle.userData.velocity.x *= 0.85;
+      particle.userData.velocity.z *= 0.85;
+    } else {
+      // High amplitude area - particles move away
+      const force = (amplitude - threshold) * 0.05;
+      
+      // Calculate gradient (direction of steepest increase)
+      const gradX = Math.cos(distance * m * Math.PI / plateRadius) * m * Math.PI / plateRadius * (x / distance) * angularComponent;
+      const gradZ = Math.cos(distance * m * Math.PI / plateRadius) * m * Math.PI / plateRadius * (z / distance) * angularComponent;
+      
+      // Move perpendicular to gradient (toward nodes)
+      particle.userData.velocity.x -= gradX * force;
+      particle.userData.velocity.z -= gradZ * force;
+    }
+    
+    // Apply velocity
+    particle.position.x += particle.userData.velocity.x;
+    particle.position.z += particle.userData.velocity.z;
+    
+    // Keep particles on plate
+    const currentDist = Math.sqrt(
+      particle.position.x * particle.position.x + 
+      particle.position.z * particle.position.z
+    );
+    
+    if (plateType === 'circle' && currentDist > plateRadius * 0.95) {
+      const scaleFactor = (plateRadius * 0.95) / currentDist;
+      particle.position.x *= scaleFactor;
+      particle.position.z *= scaleFactor;
+      particle.userData.velocity.x *= -0.5;
+      particle.userData.velocity.z *= -0.5;
+    } else if (plateType === 'square') {
+      const limit = plateRadius * 0.95;
+      if (Math.abs(particle.position.x) > limit) {
+        particle.position.x = Math.sign(particle.position.x) * limit;
+        particle.userData.velocity.x *= -0.5;
+      }
+      if (Math.abs(particle.position.z) > limit) {
+        particle.position.z = Math.sign(particle.position.z) * limit;
+        particle.userData.velocity.z *= -0.5;
+      }
+    }
+    
+    // Add slight random motion (thermal vibration)
+    particle.userData.velocity.x += (Math.random() - 0.5) * 0.002;
+    particle.userData.velocity.z += (Math.random() - 0.5) * 0.002;
+    
+    // Damping
+    particle.userData.velocity.x *= 0.95;
+    particle.userData.velocity.z *= 0.95;
+  });
+}
+
+function animate() {
+  animationId = requestAnimationFrame(animate);
+  
+  updateParticlePositions();
+  renderer.render(scene, camera);
+}
+
+function onWindowResize() {
+  const canvas = document.getElementById('cymatics-canvas');
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  
+  renderer.setSize(width, height);
+}
+
+// ============================================
+// UI CONTROL FUNCTIONS
+// ============================================
+
+function changeNote() {
+  const noteSelect = document.getElementById('note-select');
+  const octaveSelect = document.getElementById('octave-select');
+  
+  currentNote = noteSelect.value;
+  currentOctave = parseInt(octaveSelect.value);
+  currentFrequency = getNoteFrequency(currentNote, currentOctave);
+  
+  document.getElementById('interval-select').value = 'none';
+  document.getElementById('chord-select').value = 'none';
+  
+  updateDisplay();
+}
+
+// ============================================
+// PLAY BUTTON PRESS-AND-HOLD FUNCTIONALITY
+// ============================================
+
+function startPlayingNote() {
+  isPlayButtonHeld = true;
+  
+  // Visual feedback
+  const playBtn = document.getElementById('play-btn');
+  playBtn.style.transform = 'translateY(0)';
+  playBtn.style.boxShadow = '0 2px 8px rgba(46, 204, 113, 0.4)';
+  
+  // Start timeout to detect if this is a hold vs quick press
+  playButtonTimeout = setTimeout(() => {
+    // This is a HOLD - play sustained
+    playSustainedSound();
+  }, 150); // 150ms threshold to distinguish hold from click
+}
+
+function stopPlayingNote() {
+  // Visual feedback
+  const playBtn = document.getElementById('play-btn');
+  playBtn.style.transform = '';
+  playBtn.style.boxShadow = '';
+  
+  if (!isPlayButtonHeld) return;
+  
+  isPlayButtonHeld = false;
+  
+  // Check if timeout is still active (quick press)
+  if (playButtonTimeout) {
+    clearTimeout(playButtonTimeout);
+    playButtonTimeout = null;
+    
+    // This was a QUICK PRESS - play timed version
+    playTimedSound();
+  } else {
+    // This was a HOLD - stop sustained sound
+    stopSustainedSound();
+  }
+}
+
+function playTimedSound() {
+  const intervalSelect = document.getElementById('interval-select');
+  const chordSelect = document.getElementById('chord-select');
+  
+  // Check what's currently selected and play for set duration
+  if (chordSelect.value !== 'none') {
+    playChord();
+  } else if (intervalSelect.value !== 'none') {
+    playInterval();
+  } else {
+    playTone(currentFrequency);
+    createParticles();
+  }
+}
+
+function playSustainedSound() {
+  initAudio();
+  stopSustainedSound(); // Clear any previous sustained sounds
+  playButtonTimeout = null; // Clear the timeout since we're now in hold mode
+  
+  const intervalSelect = document.getElementById('interval-select');
+  const chordSelect = document.getElementById('chord-select');
+  
+  let frequencies = [];
+  
+  // Determine which frequencies to play
+  if (chordSelect.value !== 'none') {
+    const chordIntervals = {
+      // Triads
+      'major': [0, 4, 7],
+      'minor': [0, 3, 7],
+      'diminished': [0, 3, 6],
+      'augmented': [0, 4, 8],
+      
+      // 7th Chords
+      'major7': [0, 4, 7, 11],
+      'minor7': [0, 3, 7, 10],
+      'dominant7': [0, 4, 7, 10],
+      'minor7b5': [0, 3, 6, 10],
+      'diminished7': [0, 3, 6, 9],
+      
+      // 9th Chords
+      'major9': [0, 4, 7, 11, 14],
+      'minor9': [0, 3, 7, 10, 14],
+      'dominant9': [0, 4, 7, 10, 14],
+      'add9': [0, 4, 7, 14],
+      
+      // 11th Chords
+      'major11': [0, 4, 7, 11, 14, 17],
+      'minor11': [0, 3, 7, 10, 14, 17],
+      'dominant11': [0, 4, 7, 10, 14, 17],
+      
+      // 13th Chords
+      'major13': [0, 4, 7, 11, 14, 21],
+      'minor13': [0, 3, 7, 10, 14, 21],
+      'dominant13': [0, 4, 7, 10, 14, 21]
+    };
+    
+    const rootIndex = chromaticNotes.indexOf(currentNote);
+    const intervals = chordIntervals[chordSelect.value];
+    
+    intervals.forEach(interval => {
+      const noteIndex = (rootIndex + interval) % 12;
+      const freq = getNoteFrequency(
+        chromaticNotes[noteIndex],
+        currentOctave + Math.floor((rootIndex + interval) / 12)
+      );
+      frequencies.push(freq);
+    });
+    
+  } else if (intervalSelect.value !== 'none') {
+    const intervalMap = {
+      'minor 2nd': 1,
+      'major 2nd': 2,
+      'minor 3rd': 3,
+      'major 3rd': 4,
+      'perfect 4th': 5,
+      'tritone': 6,
+      'perfect 5th': 7,
+      'octave': 12
+    };
+    
+    const rootFreq = getNoteFrequency(currentNote, currentOctave);
+    const rootIndex = chromaticNotes.indexOf(currentNote);
+    const intervalSemitones = intervalMap[intervalSelect.value];
+    const secondNoteIndex = (rootIndex + intervalSemitones) % 12;
+    const secondFreq = getNoteFrequency(
+      chromaticNotes[secondNoteIndex],
+      currentOctave + Math.floor((rootIndex + intervalSemitones) / 12)
+    );
+    
+    frequencies = [rootFreq, secondFreq];
+  } else {
+    frequencies = [currentFrequency];
+  }
+  
+  // Create sustained oscillators
+  frequencies.forEach(freq => {
+    const osc = audioContext.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+    osc.connect(gainNode);
+    osc.start();
+    sustainedOscillators.push(osc);
+  });
+  
+  // Update particles
+  createParticles();
+}
+
+function stopSustainedSound() {
+  // Stop all sustained oscillators with fade out
+  sustainedOscillators.forEach(osc => {
+    try {
+      osc.stop();
+    } catch(e) {}
+  });
+  sustainedOscillators = [];
+}
+
+function playInterval() {
+  const intervalSelect = document.getElementById('interval-select');
+  const interval = intervalSelect.value;
+  
+  if (interval === 'none') {
+    changeNote();
+    return;
+  }
+  
+  document.getElementById('chord-select').value = 'none';
+  
+  const intervalMap = {
+    'minor 2nd': 1,
+    'major 2nd': 2,
+    'minor 3rd': 3,
+    'major 3rd': 4,
+    'perfect 4th': 5,
+    'tritone': 6,
+    'perfect 5th': 7,
+    'octave': 12
+  };
+  
+  const rootFreq = getNoteFrequency(currentNote, currentOctave);
+  const rootIndex = chromaticNotes.indexOf(currentNote);
+  const intervalSemitones = intervalMap[interval];
+  const secondNoteIndex = (rootIndex + intervalSemitones) % 12;
+  const secondFreq = getNoteFrequency(
+    chromaticNotes[secondNoteIndex],
+    currentOctave + Math.floor((rootIndex + intervalSemitones) / 12)
+  );
+  
+  currentFrequency = (rootFreq + secondFreq) / 2;
+  updateDisplay();
+  playMultipleTones([rootFreq, secondFreq]);
+  createParticles();
+}
+
+function playChord() {
+  const chordSelect = document.getElementById('chord-select');
+  const chordType = chordSelect.value;
+  
+  if (chordType === 'none') {
+    changeNote();
+    return;
+  }
+  
+  document.getElementById('interval-select').value = 'none';
+  
+  const chordIntervals = {
+    // Triads
+    'major': [0, 4, 7],
+    'minor': [0, 3, 7],
+    'diminished': [0, 3, 6],
+    'augmented': [0, 4, 8],
+    
+    // 7th Chords
+    'major7': [0, 4, 7, 11],
+    'minor7': [0, 3, 7, 10],
+    'dominant7': [0, 4, 7, 10],
+    'minor7b5': [0, 3, 6, 10],
+    'diminished7': [0, 3, 6, 9],
+    
+    // 9th Chords
+    'major9': [0, 4, 7, 11, 14],
+    'minor9': [0, 3, 7, 10, 14],
+    'dominant9': [0, 4, 7, 10, 14],
+    'add9': [0, 4, 7, 14],
+    
+    // 11th Chords
+    'major11': [0, 4, 7, 11, 14, 17],
+    'minor11': [0, 3, 7, 10, 14, 17],
+    'dominant11': [0, 4, 7, 10, 14, 17],
+    
+    // 13th Chords
+    'major13': [0, 4, 7, 11, 14, 21],
+    'minor13': [0, 3, 7, 10, 14, 21],
+    'dominant13': [0, 4, 7, 10, 14, 21]
+  };
+  
+  const rootIndex = chromaticNotes.indexOf(currentNote);
+  const intervals = chordIntervals[chordType];
+  const frequencies = [];
+  
+  intervals.forEach(interval => {
+    const noteIndex = (rootIndex + interval) % 12;
+    const freq = getNoteFrequency(
+      chromaticNotes[noteIndex],
+      currentOctave + Math.floor((rootIndex + interval) / 12)
+    );
+    frequencies.push(freq);
+  });
+  
+  currentFrequency = frequencies.reduce((a, b) => a + b, 0) / frequencies.length;
+  updateDisplay();
+  playMultipleTones(frequencies, 2000);
+  createParticles();
+}
+
+function changePlateShape() {
+  const shapeSelect = document.getElementById('shape-select');
+  plateType = shapeSelect.value;
+  
+  // Recreate scene with new plate shape
+  scene.children.forEach(child => {
+    if (child instanceof THREE.Mesh && child.geometry instanceof THREE.PlaneGeometry ||
+        child instanceof THREE.Mesh && child.geometry instanceof THREE.CircleGeometry) {
+      scene.remove(child);
+    }
+  });
+  
+  const plateGeometry = plateType === 'circle' 
+    ? new THREE.CircleGeometry(plateRadius, 64)
+    : new THREE.PlaneGeometry(plateRadius * 2, plateRadius * 2);
+    
+  const plateMaterial = new THREE.MeshStandardMaterial({
+    color: 0x1a1a1a,
+    side: THREE.DoubleSide,
+    roughness: 0.8,
+    metalness: 0.2
+  });
+  
+  const plateMesh = new THREE.Mesh(plateGeometry, plateMaterial);
+  plateMesh.rotation.x = -Math.PI / 2;
+  scene.add(plateMesh);
+  
+  createParticles();
+}
+
+function changeDensity() {
+  const densitySelect = document.getElementById('density-select');
+  particleCount = parseInt(densitySelect.value);
+  createParticles();
+}
+
+function updateDisplay() {
+  const freqDisplay = document.getElementById('freq-display');
+  const currentNoteDisplay = document.getElementById('current-note');
+  const currentFreqOverlay = document.getElementById('current-freq-overlay');
+  
+  freqDisplay.textContent = currentFrequency.toFixed(2) + ' Hz';
+  currentNoteDisplay.textContent = currentNote + currentOctave;
+  currentFreqOverlay.textContent = currentFrequency.toFixed(2) + ' Hz';
+}
+
+// ============================================
+// MIDI FUNCTIONALITY
+// ============================================
+
+async function connectMIDI() {
+  if (navigator.requestMIDIAccess) {
+    try {
+      midiAccess = await navigator.requestMIDIAccess();
+      const inputs = Array.from(midiAccess.inputs.values());
+      
+      if (inputs.length === 0) {
+        updateMIDIStatus('No MIDI devices found', false);
+        return;
+      }
+      
+      // Populate input select dropdown
+      const inputSelect = document.getElementById('midi-input-select');
+      inputSelect.innerHTML = '<option value="">Select MIDI Input...</option>';
+      
+      inputs.forEach((input, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = input.name || `MIDI Input ${index + 1}`;
+        inputSelect.appendChild(option);
+      });
+      
+      // If only one device, auto-connect
+      if (inputs.length === 1) {
+        setupMIDIInput(inputs[0]);
+        updateMIDIStatus(`Connected: ${inputs[0].name || 'MIDI Device'}`, true);
+      } else {
+        inputSelect.style.display = 'block';
+        inputSelect.onchange = (e) => {
+          const selectedInput = inputs[parseInt(e.target.value)];
+          setupMIDIInput(selectedInput);
+          updateMIDIStatus(`Connected: ${selectedInput.name || 'MIDI Device'}`, true);
+        };
+        updateMIDIStatus('Select a MIDI input device', false);
+      }
+      
+    } catch (err) {
+      console.error('MIDI Access Error:', err);
+      updateMIDIStatus('MIDI access denied', false);
+    }
+  } else {
+    updateMIDIStatus('MIDI not supported in this browser', false);
+  }
+}
+
+function setupMIDIInput(input) {
+  // Remove previous listeners
+  if (midiInput) {
+    midiInput.onmidimessage = null;
+  }
+  
+  midiInput = input;
+  midiInput.onmidimessage = handleMIDIMessage;
+  
+  const connectBtn = document.getElementById('midi-connect-btn');
+  connectBtn.classList.add('connected');
+  connectBtn.textContent = 'MIDI Connected ✓';
+}
+
+function handleMIDIMessage(message) {
+  const [status, note, velocity] = message.data;
+  const command = status & 0xf0;
+  
+  // Note On (144-159) with velocity > 0
+  if (command === 144 && velocity > 0) {
+    playMIDINote(note, velocity);
+  }
+  // Note Off (128-143) or Note On with velocity 0
+  else if (command === 128 || (command === 144 && velocity === 0)) {
+    stopMIDINote(note);
+  }
+}
+
+function playMIDINote(midiNote, velocity) {
+  initAudio();
+  
+  // Convert MIDI note to frequency
+  const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+  
+  // Convert MIDI note to note name
+  const noteIndex = midiNote % 12;
+  const octave = Math.floor(midiNote / 12) - 1;
+  const noteName = chromaticNotes[noteIndex];
+  
+  // Update current state
+  currentNote = noteName;
+  currentOctave = octave;
+  currentFrequency = frequency;
+  updateDisplay();
+  
+  // Create oscillator for this note
+  const osc = audioContext.createOscillator();
+  const noteGain = audioContext.createGain();
+  
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
+  
+  // Velocity-sensitive volume
+  const volume = (velocity / 127) * 0.2;
+  noteGain.gain.setValueAtTime(volume, audioContext.currentTime);
+  
+  osc.connect(noteGain);
+  noteGain.connect(audioContext.destination);
+  osc.start();
+  
+  // Store the oscillator and gain for this note
+  activeNotes.set(midiNote, { osc, noteGain });
+  
+  // Update visualization
+  createParticles();
+}
+
+function stopMIDINote(midiNote) {
+  const noteData = activeNotes.get(midiNote);
+  
+  if (noteData) {
+    const { osc, noteGain } = noteData;
+    
+    // Fade out
+    noteGain.gain.setValueAtTime(noteGain.gain.value, audioContext.currentTime);
+    noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+    
+    setTimeout(() => {
+      try {
+        osc.stop();
+      } catch (e) {}
+    }, 100);
+    
+    activeNotes.delete(midiNote);
+  }
+}
+
+function updateMIDIStatus(message, isConnected) {
+  const statusDiv = document.getElementById('midi-status');
+  statusDiv.textContent = message;
+  
+  if (isConnected) {
+    statusDiv.classList.add('connected');
+  } else {
+    statusDiv.classList.remove('connected');
+  }
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+window.addEventListener('DOMContentLoaded', () => {
+  initCymatics();
+  updateDisplay();
+});
+
+</script>
+
+</body>
+</html>

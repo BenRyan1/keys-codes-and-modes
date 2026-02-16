@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guitar Fretboard Explorer Pro | Keys, Codes & Modes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#008080">
+    <title>Guitar Fretboard Explorer Pro | Interactive Music Theory | Keys, Codes & Modes</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Learn guitar fretboard notes, scales, modes, and chords with interactive visual tools. Master music theory with real-time staff notation, TAB, and audio playback.">
+    <meta name="keywords" content="guitar fretboard, music theory, learn guitar, guitar scales, guitar chords, music education, interactive learning, staff notation, guitar tabs, chromatic scale, modes, pentatonic scale">
+    <meta name="author" content="Ben Ryan - Keys, Codes & Modes">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Guitar Fretboard Explorer Pro | Keys, Codes & Modes">
+    <meta property="og:description" content="Master guitar fretboard with interactive scales, chords, and real-time notation. Free music theory education tool.">
+    <meta property="og:url" content="https://keyscodesandmodes.com/guitar-fretboard-explorer">
+    <meta property="og:site_name" content="Keys, Codes & Modes">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Guitar Fretboard Explorer Pro">
+    <meta name="twitter:description" content="Interactive guitar learning with scales, chords, and real-time notation">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://keyscodesandmodes.com/guitar-fretboard-explorer">
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Analytics - Replace GA_MEASUREMENT_ID with your actual ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <!-- Structured Data (Schema.org) for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Guitar Fretboard Explorer Pro",
+        "description": "Interactive guitar fretboard learning tool with scales, chords, and real-time music notation",
+        "url": "https://keyscodesandmodes.com/guitar-fretboard-explorer",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Person",
+            "name": "Ben Ryan"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Keys, Codes & Modes",
+            "url": "https://keyscodesandmodes.com"
+        }
+    }
+    </script>
     
     <style>
         :root {
@@ -21,6 +84,36 @@
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        /* Accessibility: Focus Styles for Keyboard Navigation */
+        *:focus {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+        }
+        
+        *:focus:not(:focus-visible) {
+            outline: none;
+        }
+        
+        *:focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+        }
+        
+        /* Improve button focus visibility */
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible,
+        a:focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(244, 208, 63, 0.2);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%; /* Prevent iOS text size adjustment */
+        }
+        
         body {
             font-family: var(--font-body);
             background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
@@ -28,6 +121,10 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased; /* Better font rendering on Mac/iOS */
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
         }
         
         /* HEADER */
@@ -106,7 +203,7 @@
         main {
             flex: 1;
             padding: 2rem;
-            max-width: 1400px;
+            max-width: 1800px;
             width: 100%;
             margin: 0 auto;
         }
@@ -218,6 +315,16 @@
             border: 2px solid rgba(0, 128, 128, 0.3);
             box-shadow: 0 8px 32px rgba(0, 128, 128, 0.2);
             backdrop-filter: blur(10px);
+            min-height: 500px;
+        }
+        
+        .three-panels-grid {
+            display: grid;
+            grid-template-columns: minmax(250px, 1fr) minmax(300px, 2fr) minmax(250px, 1fr);
+            gap: 20px;
+            align-items: start;
+            margin-bottom: 20px;
+            width: 100%;
         }
         
         .fretboard {
@@ -430,8 +537,9 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            align-items: start;
         }
         
         .footer-section h3 {
@@ -471,7 +579,45 @@
             color: rgba(232, 232, 232, 0.6);
         }
 
-        @media (max-width: 768px) {
+        /* ========================================
+           RESPONSIVE DESIGN - ALL PLATFORMS
+           ======================================== */
+        
+        /* Large Desktop (1920px+) */
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1800px;
+            }
+            
+            .fretboard {
+                width: 200px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Desktop/Laptop (1200px - 1919px) - Default styles apply */
+        
+        /* Tablet Landscape (992px - 1199px) */
+        @media (max-width: 1199px) {
+            .three-panels-grid {
+                grid-template-columns: minmax(200px, 1fr) minmax(250px, 2fr) minmax(200px, 1fr);
+                gap: 15px;
+            }
+            
+            .fretboard {
+                width: 160px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        /* Tablet Portrait (768px - 991px) */
+        @media (max-width: 991px) {
             .app-header-content {
                 flex-direction: column;
                 gap: 1rem;
@@ -480,10 +626,46 @@
             .app-nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
+                gap: 1rem;
+            }
+            
+            /* Keep three columns side-by-side on tablet */
+            .three-panels-grid {
+                grid-template-columns: minmax(200px, 1fr) minmax(220px, 1.5fr) minmax(200px, 1fr);
+                gap: 15px;
+            }
+            
+            .fretboard {
+                width: 160px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+        }
+        
+        /* Mobile (up to 767px) - Stack vertically */
+        @media (max-width: 767px) {
+            .app-header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .app-nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                font-size: 0.9rem;
+                gap: 0.75rem;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .app-title {
+                font-size: 1.5rem;
             }
             
             .control-group {
@@ -492,8 +674,154 @@
             }
             
             /* Stack panels vertically on mobile */
-            main > div[style*="grid-template-columns"] {
+            .three-panels-grid {
                 grid-template-columns: 1fr !important;
+            }
+            
+            .fretboard {
+                width: 100%;
+                max-width: 280px;
+                margin: 0 auto;
+            }
+            
+            /* Adjust fretboard height for mobile */
+            .fretboard.frets-4 {
+                height: 320px;
+            }
+            
+            .fretboard.frets-5 {
+                height: 360px;
+            }
+            
+            .fretboard.frets-12 {
+                height: 500px;
+            }
+            
+            .notation-panel {
+                padding: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .copyright {
+                font-size: 0.85rem;
+            }
+            
+            .copyright p {
+                line-height: 1.8;
+            }
+            
+            /* Cookie banner mobile optimization */
+            #cookieConsent > div {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            #cookieConsent button {
+                width: 100%;
+            }
+        }
+        
+        /* Small Mobile (up to 480px) */
+        @media (max-width: 480px) {
+            .app-header {
+                padding: 1rem;
+            }
+            
+            h1, .app-title {
+                font-size: 1.3rem;
+            }
+            
+            .app-logo-svg {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .control-group label {
+                font-size: 0.85rem;
+            }
+            
+            select, button {
+                font-size: 0.9rem;
+                padding: 0.6rem;
+            }
+            
+            .chord-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            
+            .note-dot {
+                width: 25px;
+                height: 25px;
+                font-size: 10px;
+            }
+            
+            .fretboard {
+                width: 100%;
+                max-width: 240px;
+            }
+            
+            .string-label {
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* Landscape orientation optimization for mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .app-header {
+                padding: 0.5rem;
+            }
+            
+            .fretboard.frets-12 {
+                height: 400px;
+            }
+            
+            .three-panels-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            /* Larger touch targets for mobile */
+            button, select, .chord-btn, .note-dot {
+                min-height: 44px; /* iOS recommendation */
+            }
+            
+            .note-dot {
+                width: 35px;
+                height: 35px;
+            }
+            
+            /* Remove hover effects on touch devices */
+            .note-dot:hover {
+                transform: translate(-15px, -15px);
+            }
+        }
+        
+        /* Print optimization */
+        @media print {
+            .app-header,
+            footer,
+            .control-group,
+            #cookieConsent,
+            button {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .fretboard {
+                border: 2px solid black;
             }
         }
 
@@ -516,11 +844,19 @@
     </style>
 </head>
 <body>
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; z-index: 10001;" 
+       onfocus="this.style.left='0'; this.style.width='auto'; this.style.height='auto'; this.style.overflow='visible'; this.style.padding='10px'; this.style.background='var(--primary-teal)'; this.style.color='white';"
+       onblur="this.style.left='-10000px'; this.style.width='1px'; this.style.height='1px'; this.style.overflow='hidden'; this.style.padding='0';">
+        Skip to main content
+    </a>
+    
     <!-- HEADER -->
-    <header class="app-header">
+    <header class="app-header" role="banner">
         <div class="app-header-content">
             <div class="app-logo-section">
-                <svg class="app-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <svg class="app-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keys, Codes & Modes Logo">
+                    <title>Keys, Codes & Modes Logo</title>
                     <circle cx="50" cy="50" r="45" fill="none" stroke="#F4D03F" stroke-width="3"/>
                     <circle cx="50" cy="50" r="35" fill="none" stroke="#008080" stroke-width="2"/>
                     <path d="M 50 15 L 50 50 L 75 50" stroke="#8B6BA3" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -528,20 +864,20 @@
                 </svg>
                 <h1 class="app-title">KEYS, CODES & MODES</h1>
             </div>
-            <nav class="app-nav-links">
-                <a href="#home">Home</a>
-                <a href="#apps">Apps</a>
-                <a href="#learn">Learn</a>
-                <a href="#about">About</a>
+            <nav class="app-nav-links" role="navigation" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="insights.html">Apps</a>
+                <a href="contact.html">Contact</a>
+                <a href="about.html">About</a>
             </nav>
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main>
+    <main id="main-content" role="main">
         <h1>Guitar Fretboard Explorer Pro</h1>
 
-        <div class="controls">
+        <div class="controls" role="region" aria-label="Fretboard controls">
             <div class="control-group">
                 <div class="control-item">
                     <label for="rootNote">Root Note</label>
@@ -612,12 +948,6 @@
                 </div>
             </div>
 
-            <div class="control-group" style="margin-top: 15px; justify-content: center;">
-                <button class="play-btn" id="playPatternBtn">▶ Play Scale Pattern</button>
-                <button class="play-btn" id="stopPatternBtn" disabled>⏹ Stop</button>
-                <button class="play-btn" id="playChordBtn" style="display: none;">🎸 Strum Chord</button>
-            </div>
-
             <div class="control-group" style="margin-top: 10px; justify-content: center;">
                 <div class="control-item">
                     <label>Playback Direction</label>
@@ -627,6 +957,12 @@
                         <button id="bothBtn" onclick="setPlayDirection('both')">▲▼ Both</button>
                     </div>
                 </div>
+            </div>
+
+            <div class="control-group" style="margin-top: 15px; justify-content: center;">
+                <button class="play-btn" id="playPatternBtn" aria-label="Play scale pattern">▶ Play Scale Pattern</button>
+                <button class="play-btn" id="stopPatternBtn" disabled aria-label="Stop playback">⏹ Stop</button>
+                <button class="play-btn" id="playChordBtn" style="display: none;" aria-label="Strum chord">🎸 Strum Chord</button>
             </div>
 
             <div id="chordSelector" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0, 128, 128, 0.3);">
@@ -657,14 +993,25 @@
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px; align-items: start; margin-bottom: 20px;">
+        <div class="three-panels-grid">
             
             <!-- LEFT PANEL: STAFF NOTATION -->
             <div style="background: rgba(0, 128, 128, 0.1); border-radius: 15px; padding: 20px; border: 2px solid rgba(0, 128, 128, 0.3); backdrop-filter: blur(10px);">
                 <h3 style="color: var(--primary-gold); text-align: center; margin-bottom: 15px; font-size: 1.1rem;">Staff Notation</h3>
-                <svg id="staffSvg" width="100%" height="300" viewBox="0 0 300 300" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
-                    <!-- Staff lines will be drawn here -->
-                </svg>
+                
+                <!-- Treble Clef Staff -->
+                <div style="margin-bottom: 20px;">
+                    <svg id="trebleStaffSvg" width="100%" height="200" viewBox="0 0 300 200" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                        <!-- Treble staff lines will be drawn here -->
+                    </svg>
+                </div>
+                
+                <!-- Bass Clef Staff -->
+                <div>
+                    <svg id="bassStaffSvg" width="100%" height="200" viewBox="0 0 300 200" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                        <!-- Bass staff lines will be drawn here -->
+                    </svg>
+                </div>
             </div>
 
             <!-- CENTER PANEL: FRETBOARD -->
@@ -681,7 +1028,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(0, 128, 128, 0.1); border-radius: 10px; border: 1px solid rgba(0, 128, 128, 0.3);">
-            <div style="color: var(--primary-gold); font-size: 0.9em; font-weight: 600;" id="patternInfo">
+            <div style="color: var(--primary-gold); font-size: 0.9em; font-weight: 600;" id="patternInfo" role="status" aria-live="polite" aria-atomic="true">
                 Select a scale or chord pattern to begin
             </div>
             <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.85em; margin-top: 5px;">
@@ -691,37 +1038,77 @@
     </main>
 
     <!-- FOOTER -->
-    <footer>
+    <footer role="contentinfo">
         <div class="footer-content">
             <div class="footer-section">
                 <h3>About Keys, Codes & Modes</h3>
-                <p>Interactive music theory education platform designed to make learning music intuitive and visual.</p>
+                <p>Interactive music theory education<br>
+                platform designed to make learning<br>
+                music intuitive and visual.</p>
             </div>
             
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#apps">Interactive Apps</a></li>
-                    <li><a href="#learn">Learning Resources</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <ul class="footer-links">
-                    <li><a href="#subscribe">Subscribe</a></li>
-                    <li><a href="#support">Support</a></li>
-                    <li><a href="#feedback">Feedback</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="insights.html">Interactive Apps</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
-            <p>&copy; 2025 Keys, Codes & Modes | Created by Ben Ryan | All Rights Reserved</p>
+            <p>&copy; 2026 Keys, Codes & Modes | Created by Ben Ryan | All Rights Reserved</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85em;">
+                <a href="privacy.html" style="color: rgba(232, 232, 232, 0.6); text-decoration: none; margin: 0 0.75rem;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: rgba(232, 232, 232, 0.6); text-decoration: none; margin: 0 0.75rem;">Terms of Service</a> | 
+                <a href="cookie-policy.html" style="color: rgba(232, 232, 232, 0.6); text-decoration: none; margin: 0 0.75rem;">Cookie Policy</a> | 
+                <a href="refund-policy.html" style="color: rgba(232, 232, 232, 0.6); text-decoration: none; margin: 0 0.75rem;">Refund Policy</a>
+            </p>
         </div>
     </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15, 15, 30, 0.98); border-top: 2px solid var(--primary-teal); padding: 1.5rem; z-index: 10000; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="flex: 1; min-width: 300px;">
+                <p style="color: var(--light-text); margin: 0; line-height: 1.6;">
+                    🍪 We use cookies to enhance your experience and analyze site traffic. By continuing to use this site, you consent to our use of cookies. 
+                    <a href="cookie-policy.html" style="color: var(--primary-gold); text-decoration: underline;">Learn more</a>
+                </p>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="acceptCookies()" style="background: var(--primary-teal); color: white; border: none; padding: 0.75rem 2rem; border-radius: 5px; cursor: pointer; font-weight: 600; font-family: var(--font-body);">Accept</button>
+                <button onclick="declineCookies()" style="background: transparent; color: var(--light-text); border: 1px solid rgba(232, 232, 232, 0.3); padding: 0.75rem 2rem; border-radius: 5px; cursor: pointer; font-weight: 600; font-family: var(--font-body);">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie Consent Management
+        function checkCookieConsent() {
+            const consent = localStorage.getItem('cookieConsent');
+            if (!consent) {
+                document.getElementById('cookieConsent').style.display = 'block';
+            }
+        }
+        
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieConsent').style.display = 'none';
+            // Initialize analytics or other tracking here
+            console.log('Cookies accepted');
+        }
+        
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieConsent').style.display = 'none';
+            console.log('Cookies declined');
+        }
+        
+        // Check consent on page load
+        checkCookieConsent();
+    </script>
 
     <script>
         // Audio context
@@ -910,14 +1297,27 @@
                     const octave = Math.floor(absolutePitch / 12);
                     playNote(noteValue, octave, 1.5);
                     
-                    // Highlight the note being played
-                    const targetDot = document.querySelector(
-                        `.note-dot[data-string="${pos.string}"][data-fret="${pos.fret}"]`
-                    );
+                    // Update staff notation and TAB for each note as it plays
+                    updateNotation(noteValue, octave, pos.string, pos.fret);
                     
-                    if (targetDot) {
-                        targetDot.classList.add('playing');
-                        setTimeout(() => targetDot.classList.remove('playing'), 500);
+                    // Highlight the note being played
+                    if (pos.fret === 0) {
+                        // Open string - highlight the label
+                        const stringLabel = document.querySelectorAll('.string-label')[pos.string];
+                        if (stringLabel) {
+                            stringLabel.classList.add('playing');
+                            setTimeout(() => stringLabel.classList.remove('playing'), 500);
+                        }
+                    } else {
+                        // Fretted note - highlight the dot
+                        const targetDot = document.querySelector(
+                            `.note-dot[data-string="${pos.string}"][data-fret="${pos.fret}"]`
+                        );
+                        
+                        if (targetDot) {
+                            targetDot.classList.add('playing');
+                            setTimeout(() => targetDot.classList.remove('playing'), 500);
+                        }
                     }
                 }
                 
@@ -979,14 +1379,24 @@
                 // Update staff notation and TAB
                 updateNotation(note.noteValue, note.octave, note.string, note.fret);
                 
-                // Find and highlight the specific note dot
-                const targetDot = document.querySelector(
-                    `.note-dot[data-string="${note.string}"][data-fret="${note.fret}"]`
-                );
-                
-                if (targetDot) {
-                    targetDot.classList.add('playing');
-                    setTimeout(() => targetDot.classList.remove('playing'), speed - 50);
+                // Highlight the note - check if it's an open string or fretted note
+                if (note.fret === 0) {
+                    // Open string - highlight the string label
+                    const stringLabel = document.querySelectorAll('.string-label')[note.string];
+                    if (stringLabel) {
+                        stringLabel.classList.add('playing');
+                        setTimeout(() => stringLabel.classList.remove('playing'), speed - 50);
+                    }
+                } else {
+                    // Fretted note - highlight the note dot
+                    const targetDot = document.querySelector(
+                        `.note-dot[data-string="${note.string}"][data-fret="${note.fret}"]`
+                    );
+                    
+                    if (targetDot) {
+                        targetDot.classList.add('playing');
+                        setTimeout(() => targetDot.classList.remove('playing'), speed - 50);
+                    }
                 }
                 
                 await new Promise(resolve => setTimeout(resolve, speed));
@@ -1203,7 +1613,13 @@
 
         // Initialize Staff Notation
         function initStaff() {
-            const svg = document.getElementById('staffSvg');
+            initTrebleStaff();
+            initBassStaff();
+        }
+
+        // Initialize Treble Clef Staff
+        function initTrebleStaff() {
+            const svg = document.getElementById('trebleStaffSvg');
             if (!svg) return;
             
             svg.innerHTML = '';
@@ -1223,7 +1639,7 @@
                 svg.appendChild(line);
             }
             
-            // Draw treble clef - clean and elegant
+            // Draw treble clef
             const clef = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             clef.setAttribute('x', '30');
             clef.setAttribute('y', '125');
@@ -1235,12 +1651,77 @@
             svg.appendChild(clef);
         }
 
-        // Update Staff Notation with current note
-        function updateStaff(noteValue, octave) {
-            const svg = document.getElementById('staffSvg');
+        // Initialize Bass Clef Staff  
+        function initBassStaff() {
+            const svg = document.getElementById('bassStaffSvg');
             if (!svg) return;
             
-            // Clear previous notes
+            svg.innerHTML = '';
+            
+            // Draw 5 staff lines
+            // Lines from BOTTOM to TOP: G2(130), B2(110), D3(90), F3(70), A3(50)
+            const staffLinePositions = [130, 110, 90, 70, 50];
+            
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', '20');
+                line.setAttribute('x2', '280');
+                line.setAttribute('y1', staffLinePositions[i]);
+                line.setAttribute('y2', staffLinePositions[i]);
+                line.setAttribute('stroke', 'rgba(0, 128, 128, 0.6)');
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
+            }
+            
+            // Draw bass clef
+            const clef = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            clef.setAttribute('x', '30');
+            clef.setAttribute('y', '115');
+            clef.setAttribute('font-size', '70');
+            clef.setAttribute('font-family', 'serif');
+            clef.setAttribute('fill', 'var(--primary-gold)');
+            clef.setAttribute('opacity', '0.9');
+            clef.textContent = '𝄢';
+            svg.appendChild(clef);
+        }
+
+        // Update Staff Notation with current note - chooses treble or bass clef
+        function updateStaff(noteValue, octave) {
+            console.log('updateStaff called:', { noteValue, octave });
+            // Guitar notes: E2-E5
+            // Bass clef range: typically E2-C4
+            // Treble clef range: typically C4-E5+
+            
+            if (octave <= 3) {
+                console.log('Using BASS clef');
+                updateBassStaff(noteValue, octave);
+                clearTrebleStaff();
+            } else {
+                console.log('Using TREBLE clef');
+                updateTrebleStaff(noteValue, octave);
+                clearBassStaff();
+            }
+        }
+
+        function clearTrebleStaff() {
+            const svg = document.getElementById('trebleStaffSvg');
+            if (!svg) return;
+            const existingNotes = svg.querySelectorAll('.staff-note');
+            existingNotes.forEach(n => n.remove());
+        }
+
+        function clearBassStaff() {
+            const svg = document.getElementById('bassStaffSvg');
+            if (!svg) return;
+            const existingNotes = svg.querySelectorAll('.staff-note');
+            existingNotes.forEach(n => n.remove());
+        }
+
+        // Update Treble Staff
+        function updateTrebleStaff(noteValue, octave) {
+            const svg = document.getElementById('trebleStaffSvg');
+            if (!svg) return;
+            
             const existingNotes = svg.querySelectorAll('.staff-note');
             existingNotes.forEach(n => n.remove());
             
@@ -1249,36 +1730,18 @@
             const baseLetter = fullNoteName.replace('#', '');
             const isSharp = fullNoteName.includes('#');
             
-            // TREBLE CLEF STAFF - Lines: E4, G4, B4, D5, F5 | Spaces: F4, A4, C5, E5
-            // Staff lines at y: 130, 110, 90, 70, 50 (20px apart)
-            
-            // Use explicit position mapping for accuracy
+            // Treble clef positions (E4 at y=130)
             const positions = {
-                // Octave 2
-                'C2': 270, 'D2': 260, 'E2': 250, 'F2': 240, 'G2': 230, 'A2': 220, 'B2': 210,
-                // Octave 3
-                'C3': 200, 'D3': 190, 'E3': 180, 'F3': 170, 'G3': 160, 'A3': 150, 'B3': 140,
-                // Octave 4
+                'C2': 210, 'D2': 200, 'E2': 190, 'F2': 180, 'G2': 170, 'A2': 160, 'B2': 150,
+                'C3': 140, 'D3': 130, 'E3': 120, 'F3': 110, 'G3': 100, 'A3': 90, 'B3': 80,
                 'C4': 150, 'D4': 140, 'E4': 130, 'F4': 120, 'G4': 110, 'A4': 100, 'B4': 90,
-                // Octave 5
                 'C5': 80, 'D5': 70, 'E5': 60, 'F5': 50, 'G5': 40, 'A5': 30, 'B5': 20,
-                // Octave 6
-                'C6': 10, 'D6': 0
+                'C6': 10
             };
             
             const noteKey = baseLetter + octave;
-            let yPos = positions[noteKey];
+            let yPos = positions[noteKey] || 110;
             
-            // Fallback calculation if note not in map
-            if (yPos === undefined) {
-                const noteOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-                const letterIndex = noteOrder.indexOf(baseLetter);
-                // E4 at y=130, each step = 10px
-                const stepsFromE4 = (letterIndex - 2) + ((octave - 4) * 7);
-                yPos = 130 - (stepsFromE4 * 10);
-            }
-            
-            // Draw note head
             const note = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
             note.setAttribute('class', 'staff-note');
             note.setAttribute('cx', '150');
@@ -1290,7 +1753,6 @@
             note.setAttribute('stroke-width', '2');
             svg.appendChild(note);
             
-            // Add sharp symbol if needed
             if (isSharp) {
                 const sharp = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                 sharp.setAttribute('class', 'staff-note');
@@ -1303,9 +1765,8 @@
                 svg.appendChild(sharp);
             }
             
-            // Add ledger lines below staff (C4 and below at y > 130)
+            // Ledger lines if needed
             if (yPos > 130) {
-                // Ledger lines at C4 (150), A3 (170), etc.
                 for (let y = 150; y <= yPos; y += 20) {
                     const ledger = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     ledger.setAttribute('class', 'staff-note');
@@ -1318,10 +1779,58 @@
                     svg.appendChild(ledger);
                 }
             }
+        }
+
+        // Update Bass Staff
+        function updateBassStaff(noteValue, octave) {
+            const svg = document.getElementById('bassStaffSvg');
+            if (!svg) return;
             
-            // Add ledger lines above staff (A5 and above at y < 50)
-            if (yPos < 50) {
-                for (let y = 40; y >= yPos; y -= 20) {
+            const existingNotes = svg.querySelectorAll('.staff-note');
+            existingNotes.forEach(n => n.remove());
+            
+            const noteLetters = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const fullNoteName = noteLetters[noteValue];
+            const baseLetter = fullNoteName.replace('#', '');
+            const isSharp = fullNoteName.includes('#');
+            
+            // Bass clef positions (G2 at y=130)
+            const positions = {
+                'E1': 210, 'F1': 200, 'G1': 190, 'A1': 180, 'B1': 170,
+                'C2': 160, 'D2': 150, 'E2': 140, 'F2': 130, 'G2': 130, 'A2': 110, 'B2': 110,
+                'C3': 90, 'D3': 90, 'E3': 70, 'F3': 70, 'G3': 50, 'A3': 50, 'B3': 30,
+                'C4': 20
+            };
+            
+            const noteKey = baseLetter + octave;
+            let yPos = positions[noteKey] || 130;
+            
+            const note = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+            note.setAttribute('class', 'staff-note');
+            note.setAttribute('cx', '150');
+            note.setAttribute('cy', yPos);
+            note.setAttribute('rx', '8');
+            note.setAttribute('ry', '6');
+            note.setAttribute('fill', colors[noteValue]);
+            note.setAttribute('stroke', 'white');
+            note.setAttribute('stroke-width', '2');
+            svg.appendChild(note);
+            
+            if (isSharp) {
+                const sharp = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                sharp.setAttribute('class', 'staff-note');
+                sharp.setAttribute('x', '128');
+                sharp.setAttribute('y', yPos + 6);
+                sharp.setAttribute('font-size', '24');
+                sharp.setAttribute('fill', 'var(--primary-gold)');
+                sharp.setAttribute('font-weight', 'bold');
+                sharp.textContent = '♯';
+                svg.appendChild(sharp);
+            }
+            
+            // Ledger lines if needed
+            if (yPos > 130) {
+                for (let y = 140; y <= yPos; y += 20) {
                     const ledger = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     ledger.setAttribute('class', 'staff-note');
                     ledger.setAttribute('x1', '135');
@@ -1393,6 +1902,7 @@ E|─────────────────
 
         // Update both staff and TAB for pattern playback
         function updateNotation(noteValue, octave, string, fret) {
+            console.log('updateNotation called:', { noteValue, octave, string, fret });
             updateStaff(noteValue, octave);
             updateTab(string, fret);
         }
@@ -1447,7 +1957,15 @@ E|─────────────────
                     lbl.className = 'string-label';
                     lbl.textContent = names[s];
                     lbl.style.left = (30 * s - 5) + 'px';
-                    lbl.onclick = () => playNote(GUITAR_TUNING[s], baseOctaves[s], 0.8);
+                    
+                    // Add click handler with notation sync
+                    lbl.onclick = () => {
+                        playNote(GUITAR_TUNING[s], baseOctaves[s], 0.8);
+                        updateNotation(GUITAR_TUNING[s], baseOctaves[s], s, 0);
+                        lbl.classList.add('playing');
+                        setTimeout(() => lbl.classList.remove('playing'), 300);
+                    };
+                    
                     fb.appendChild(lbl);
                 }
 
@@ -1625,6 +2143,8 @@ E|─────────────────
                 
                 if (currentScale === 'chords') {
                     chordSelector.style.display = 'block';
+                    // Make sure staff is initialized
+                    initStaff();
                 } else {
                     chordSelector.style.display = 'none';
                     playChordBtn.style.display = 'none';

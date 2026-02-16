@@ -1,477 +1,1512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keys, Codes & Modes - Chladni Plate Cymatics Visualizer</title>
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  :root {
-    --ocean-blue: #4A7BA7;
-    --deep-navy: #2a4d6f;
-    --golden-yellow: #F4D03F;
-    --light-yellow: #E8D77F;
-    --mystic-purple: #8B6BA3;
-    --teal: #6FA5A5;
-    --coral: #CF7A5A;
-    --sage-green: #9AAF7A;
-  }
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #000;
-    color: white;
-    overflow: hidden;
-  }
-
-  /* Header */
-  .header {
-    background: linear-gradient(90deg, var(--deep-navy) 0%, var(--ocean-blue) 100%);
-    padding: 15px 20px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  }
-
-  .logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  .logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  h1 {
-    color: var(--golden-yellow);
-    font-size: 1.8em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  }
-
-  .subtitle {
-    color: var(--light-yellow);
-    font-size: 0.95em;
-    margin-top: 3px;
-  }
-
-  /* Main Layout */
-  .main-container {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    height: calc(100vh - 95px);
-    gap: 0;
-  }
-
-  /* Control Panel */
-  .control-panel {
-    background: rgba(42, 77, 111, 0.95);
-    padding: 20px;
-    overflow-y: auto;
-    box-shadow: 4px 0 20px rgba(0,0,0,0.5);
-  }
-
-  .section {
-    margin-bottom: 20px;
-    padding: 12px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 8px;
-    border-left: 4px solid var(--golden-yellow);
-  }
-
-  .section h3 {
-    color: var(--golden-yellow);
-    margin-bottom: 10px;
-    font-size: 1em;
-  }
-
-  select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    background: var(--deep-navy);
-    color: white;
-    border: 2px solid var(--ocean-blue);
-    border-radius: 6px;
-    font-size: 0.95em;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  select:hover {
-    border-color: var(--golden-yellow);
-    background: rgba(74, 123, 167, 0.8);
-  }
-
-  select:focus {
-    outline: none;
-    border-color: var(--golden-yellow);
-    box-shadow: 0 0 10px rgba(244, 208, 63, 0.3);
-  }
-
-  optgroup {
-    background: var(--deep-navy);
-    color: var(--golden-yellow);
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  option {
-    background: var(--deep-navy);
-    color: white;
-    padding: 8px;
-  }
-
-  .play-button {
-    width: 100%;
-    padding: 16px;
-    margin: 0;
-    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .play-button:hover {
-    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(46, 204, 113, 0.6);
-  }
-
-  .play-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.4);
-  }
-
-  .play-icon {
-    font-size: 1.2em;
-  }
-
-  .midi-button {
-    width: 100%;
-    padding: 12px;
-    margin: 0 0 10px 0;
-    background: linear-gradient(135deg, var(--mystic-purple) 0%, var(--ocean-blue) 100%);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.95em;
-    font-weight: 600;
-    transition: all 0.3s;
-    box-shadow: 0 2px 8px rgba(139, 107, 163, 0.4);
-  }
-
-  .midi-button:hover {
-    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--mystic-purple) 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 107, 163, 0.6);
-  }
-
-  .midi-button.connected {
-    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-  }
-
-  .midi-status {
-    font-size: 0.85em;
-    color: var(--light-yellow);
-    padding: 8px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 4px;
-    text-align: center;
-    margin-top: 8px;
-  }
-
-  .midi-status.connected {
-    color: #2ecc71;
-    font-weight: bold;
-  }
-
-  .frequency-display {
-    background: rgba(0,0,0,0.6);
-    padding: 12px;
-    border-radius: 6px;
-    border: 2px solid var(--ocean-blue);
-    margin: 10px 0;
-    text-align: center;
-  }
-
-  .frequency-display .label {
-    color: var(--light-yellow);
-    font-size: 0.85em;
-    margin-bottom: 5px;
-  }
-
-  .frequency-display .value {
-    color: var(--golden-yellow);
-    font-size: 1.4em;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(244, 208, 63, 0.5);
-  }
-
-  .info-box {
-    background: rgba(74, 123, 167, 0.2);
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid var(--ocean-blue);
-    margin-top: 10px;
-  }
-
-  .info-box p {
-    font-size: 0.8em;
-    line-height: 1.4;
-    color: var(--light-yellow);
-  }
-
-  /* Cymatics Visualization Area */
-  .cymatics-container {
-    position: relative;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  #cymatics-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  .overlay-info {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(42, 77, 111, 0.9);
-    padding: 15px 20px;
-    border-radius: 8px;
-    border: 2px solid var(--golden-yellow);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.7);
-    z-index: 10;
-  }
-
-  .overlay-info .current-note {
-    color: var(--golden-yellow);
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .overlay-info .current-freq {
-    color: var(--light-yellow);
-    font-size: 1em;
-  }
-
-  .pattern-info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(0,0,0,0.8);
-    padding: 12px 18px;
-    border-radius: 6px;
-    border: 1px solid var(--teal);
-    z-index: 10;
-  }
-
-  .pattern-info .label {
-    color: var(--teal);
-    font-size: 0.85em;
-    margin-bottom: 3px;
-  }
-
-  .pattern-info .value {
-    color: white;
-    font-size: 1em;
-    font-weight: bold;
-  }
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- SEO Meta Tags -->
+    <title>Chladni Plate Cymatics Visualizer | Interactive Sound & Music Theory | Keys, Codes & Modes</title>
+    <meta name="description" content="Experience the beauty of sound with our interactive Chladni Plate Cymatics Visualizer. Watch 10,000+ particles form stunning geometric patterns as sound frequencies create visual art. Explore music theory, intervals, chords, and harmony through real-time physics simulation. Perfect for musicians, educators, students, and sound enthusiasts.">
+    <meta name="keywords" content="chladni plate, cymatics, sound visualization, music theory visualizer, interactive music education, frequency patterns, sound geometry, harmonic patterns, music intervals, chord visualizer, MIDI keyboard, physics of sound, cymatic patterns, standing waves, nodal patterns, music education tool, visual learning music, sound waves, acoustic physics, music theory app, interactive sound art, frequency visualization, harmonic resonance, sacred geometry, sound design tool, audio visualization, music teacher resources, stem education, physics demonstration, ben ryan, keys codes modes">
+    <meta name="author" content="Ben Ryan, Keys Codes & Modes">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="category" content="Music Education, Science, Technology, Interactive Learning">
+    
+    <!-- Open Graph Meta Tags (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Chladni Plate Cymatics Visualizer | Keys, Codes & Modes">
+    <meta property="og:description" content="Interactive cymatics visualizer showing how sound frequencies create geometric patterns. 10,000+ particles, MIDI support, extended chords, real-time physics simulation.">
+    <meta property="og:url" content="https://www.keyscodesandmodes.com/chladni-visualizer">
+    <meta property="og:site_name" content="Keys, Codes & Modes">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chladni Plate Cymatics Visualizer | Interactive Sound & Music">
+    <meta name="twitter:description" content="Watch sound create art. Interactive cymatics with MIDI, extended chords, real-time physics simulation.">
+    <meta name="twitter:creator" content="@keyscodesandmodes">
+    
+    <!-- Additional SEO -->
+    <meta name="application-name" content="Chladni Plate Visualizer">
+    <meta name="apple-mobile-web-app-title" content="Cymatics">
+    <link rel="canonical" href="https://www.keyscodesandmodes.com/chladni-visualizer">
+    
+    <!-- Schema.org Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Chladni Plate Cymatics Visualizer",
+      "description": "Interactive cymatics visualizer demonstrating how sound frequencies create geometric patterns through particle physics simulation",
+      "url": "https://www.keyscodesandmodes.com/chladni-visualizer",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Ben Ryan",
+        "jobTitle": "Music Educator & Visual Systems Designer"
+      },
+      "keywords": "cymatics, chladni plate, music theory, sound visualization, physics education, interactive learning",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student, teacher, musician, researcher"
+      }
+    }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MMQVHC40B9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MMQVHC40B9', {
+        'page_title': 'Chladni Plate Visualizer',
+        'page_location': window.location.href,
+        'send_page_view': true
+      });
+      
+      // Custom event tracking
+      function trackEvent(eventName, eventParams) {
+        gtag('event', eventName, eventParams);
+      }
+    </script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "vhyrbjp63x");
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --accent-blue: #4A7BA7;
+            --dark-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(26, 26, 46, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-teal);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.2);
+        }
+        
+        .app-header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .app-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .app-logo-svg {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 2px 8px rgba(244, 208, 63, 0.3));
+            transition: transform 0.3s ease;
+        }
+        
+        .app-logo-section:hover .app-logo-svg {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            line-height: 1.2;
+            letter-spacing: 2px;
+        }
+        
+        .app-subtitle {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: rgba(232, 232, 232, 0.7);
+            margin-top: 0.25rem;
+        }
+        
+        .app-nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .app-nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .app-nav-links a:hover {
+            color: var(--primary-gold);
+            background: rgba(0, 128, 128, 0.1);
+        }
+        
+        .upgrade-link {
+            background: linear-gradient(135deg, var(--primary-teal), #006666) !important;
+            color: white !important;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 128, 128, 0.3);
+        }
+        
+        .upgrade-link:hover {
+            background: linear-gradient(135deg, #006666, var(--primary-teal)) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 128, 128, 0.5);
+        }
+        
+        /* MAIN CONTENT */
+        .app-main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            min-height: 600px;
+        }
+        
+        /* DISPLAY AREA - CHLADNI PLATE */
+        .display-area {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1), rgba(139, 107, 163, 0.1));
+            border: 3px solid rgba(0, 128, 128, 0.4);
+            border-radius: 25px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0, 128, 128, 0.2);
+            position: relative;
+        }
+        
+        .display-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .display-content {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            height: 70vh;
+            min-height: 500px;
+        }
+        
+        #cymatics-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .overlay-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 15, 30, 0.9);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary-gold);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            z-index: 10;
+        }
+        
+        .overlay-info .current-note {
+            color: var(--primary-gold);
+            font-size: 1.5em;
+            font-weight: bold;
+            font-family: var(--font-display);
+            margin-bottom: 5px;
+        }
+        
+        .overlay-info .current-freq {
+            color: var(--primary-teal);
+            font-size: 1em;
+        }
+        
+        .pattern-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary-teal);
+            z-index: 10;
+        }
+        
+        .pattern-info .label {
+            color: var(--primary-teal);
+            font-size: 0.8em;
+            margin-bottom: 3px;
+        }
+        
+        .pattern-info .value {
+            color: white;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+        
+        .viewing-mode-label {
+            text-align: center;
+            color: var(--primary-teal);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: rgba(0, 128, 128, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        /* CONTROL PANEL */
+        .control-panel {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.15), rgba(139, 107, 163, 0.15));
+            border: 3px solid rgba(0, 128, 128, 0.5);
+            border-radius: 25px;
+            padding: 1.5rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 50px rgba(0, 128, 128, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .control-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-teal) 25%, var(--primary-purple) 50%, var(--primary-coral) 75%, #6FA5A5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease infinite;
+            letter-spacing: 2px;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        
+        .control-section {
+            padding: 0.9rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 128, 128, 0.2);
+        }
+        
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.65rem;
+            text-align: center;
+        }
+        
+        .key-dropdown {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2), rgba(139, 107, 163, 0.2));
+            border: 2px solid rgba(0, 128, 128, 0.4);
+            border-radius: 12px;
+            color: var(--light-text);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23F4D03F' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            padding-right: 2.5rem;
+            text-align: center;
+        }
+        
+        .key-dropdown:hover {
+            border-color: var(--primary-teal);
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.3), rgba(139, 107, 163, 0.3));
+            box-shadow: 0 0 20px rgba(0, 128, 128, 0.3);
+        }
+        
+        .key-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 25px rgba(244, 208, 63, 0.4);
+        }
+        
+        .key-dropdown option {
+            background: var(--dark-bg);
+            color: var(--light-text);
+            padding: 0.75rem;
+        }
+        
+        .key-dropdown optgroup {
+            background: rgba(0, 128, 128, 0.1);
+            color: var(--primary-gold);
+            font-weight: 700;
+        }
+        
+        /* FREQUENCY DISPLAY */
+        .frequency-display {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.85rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary-teal);
+            text-align: center;
+        }
+        
+        .frequency-display .label {
+            color: rgba(232, 232, 232, 0.7);
+            font-size: 0.7rem;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-align: center;
+        }
+        
+        .frequency-display .value {
+            color: var(--primary-gold);
+            font-size: 1.4em;
+            font-weight: bold;
+            font-family: var(--font-display);
+            text-shadow: 0 0 10px rgba(244, 208, 63, 0.5);
+            text-align: center;
+        }
+        
+        /* PLAY BUTTON */
+        .play-button {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            font-family: var(--font-body);
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        
+        .play-icon {
+            font-size: 1.1em;
+        }
+        
+        .play-button:hover {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 204, 113, 0.6);
+        }
+        
+        .play-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(46, 204, 113, 0.4);
+        }
+        
+        .play-icon {
+            font-size: 1.3em;
+        }
+        
+        /* MIDI BUTTON */
+        .midi-button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(139, 107, 163, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-align: center;
+        }
+        
+        .midi-button:hover {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary-purple) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 107, 163, 0.6);
+        }
+        
+        .midi-button.connected {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+        
+        .midi-status {
+            font-size: 0.75rem;
+            color: rgba(232, 232, 232, 0.7);
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        
+        .midi-status.connected {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        
+        /* INFO BOX */
+        .info-box {
+            background: rgba(74, 123, 167, 0.15);
+            padding: 0.9rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        .info-box p {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: rgba(232, 232, 232, 0.8);
+            text-align: center;
+        }
+        
+        .info-box strong {
+            color: var(--primary-gold);
+        }
+        
+        /* FOOTER */
+        .app-footer {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(26, 26, 46, 0.95));
+            border-top: 2px solid rgba(0, 128, 128, 0.3);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .footer-text {
+            color: rgba(232, 232, 232, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-gold);
+        }
+        
+        /* SCROLLBAR */
+        .control-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .control-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .control-panel::-webkit-scrollbar-thumb {
+            background: var(--primary-teal);
+            border-radius: 10px;
+        }
+        
+        .control-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-gold);
+        }
+        
+        /* ==============================================
+           RESPONSIVE DESIGN - ALL DEVICES
+           ============================================== */
+        
+        /* LARGE DESKTOPS (1920px+) */
+        @media screen and (min-width: 1920px) {
+            .app-main {
+                max-width: 1800px;
+            }
+            
+            .app-container {
+                grid-template-columns: 2.5fr 1fr;
+                gap: 2.5rem;
+            }
+            
+            .display-content {
+                height: 75vh;
+            }
+            
+            .control-panel {
+                max-height: 85vh;
+            }
+        }
+        
+        /* STANDARD DESKTOPS & LAPTOPS (1200px - 1919px) */
+        @media screen and (min-width: 1200px) and (max-width: 1919px) {
+            .app-main {
+                max-width: 1400px;
+            }
+            
+            .app-container {
+                grid-template-columns: 2fr 1fr;
+                gap: 2rem;
+            }
+            
+            .display-content {
+                height: 70vh;
+            }
+        }
+        
+        /* SMALL LAPTOPS & TABLETS LANDSCAPE (992px - 1199px) */
+        @media screen and (min-width: 992px) and (max-width: 1199px) {
+            .app-main {
+                max-width: 1100px;
+                padding: 1.5rem;
+            }
+            
+            .app-container {
+                grid-template-columns: 1.8fr 1fr;
+                gap: 1.5rem;
+            }
+            
+            .display-area {
+                padding: 1.5rem;
+            }
+            
+            .display-title {
+                font-size: 1.8rem;
+            }
+            
+            .display-content {
+                height: 65vh;
+                min-height: 450px;
+            }
+            
+            .control-panel {
+                padding: 1.25rem;
+                gap: 0.9rem;
+            }
+            
+            .control-title {
+                font-size: 1.3rem;
+            }
+            
+            .section-label {
+                font-size: 0.78rem;
+            }
+            
+            .key-dropdown {
+                font-size: 0.83rem;
+                padding: 0.68rem 0.85rem;
+            }
+        }
+        
+        /* TABLETS PORTRAIT & SMALL LAPTOPS (768px - 991px) */
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+            .app-header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .app-logo-svg {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .app-title {
+                font-size: 1.3rem;
+            }
+            
+            .app-nav-links a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .upgrade-link {
+                padding: 0.6rem 1.2rem !important;
+            }
+            
+            .app-main {
+                padding: 1.5rem;
+            }
+            
+            .app-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .display-area {
+                padding: 1.5rem;
+            }
+            
+            .display-title {
+                font-size: 1.7rem;
+            }
+            
+            .display-content {
+                height: 55vh;
+                min-height: 400px;
+            }
+            
+            .overlay-info {
+                top: 15px;
+                right: 15px;
+                padding: 0.9rem 1.2rem;
+            }
+            
+            .overlay-info .current-note {
+                font-size: 1.3em;
+            }
+            
+            .viewing-mode-label {
+                font-size: 0.88rem;
+            }
+            
+            .control-panel {
+                padding: 1.25rem;
+                gap: 0.85rem;
+                max-height: none;
+            }
+            
+            .control-title {
+                font-size: 1.3rem;
+            }
+            
+            .control-section {
+                padding: 0.85rem;
+            }
+            
+            .section-label {
+                font-size: 0.78rem;
+            }
+            
+            .key-dropdown {
+                padding: 0.7rem 0.85rem;
+                font-size: 0.83rem;
+            }
+            
+            .play-button {
+                padding: 0.88rem;
+                font-size: 0.88rem;
+            }
+            
+            .midi-button {
+                padding: 0.78rem;
+                font-size: 0.83rem;
+            }
+            
+            .frequency-display .value {
+                font-size: 1.35em;
+            }
+        }
+        
+        /* LARGE PHONES / SMALL TABLETS (576px - 767px) */
+        @media screen and (min-width: 576px) and (max-width: 767px) {
+            .app-header {
+                padding: 0.85rem 1.2rem;
+            }
+            
+            .app-logo-svg {
+                width: 42px;
+                height: 42px;
+            }
+            
+            .app-title {
+                font-size: 1.15rem;
+            }
+            
+            .app-subtitle {
+                font-size: 0.78rem;
+            }
+            
+            .app-nav-links {
+                display: none;
+            }
+            
+            .app-main {
+                padding: 1.2rem;
+            }
+            
+            .app-container {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            
+            .display-area {
+                padding: 1.2rem;
+            }
+            
+            .display-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .display-content {
+                height: 50vh;
+                min-height: 380px;
+            }
+            
+            .overlay-info {
+                top: 12px;
+                right: 12px;
+                padding: 0.8rem 1.1rem;
+            }
+            
+            .overlay-info .current-note {
+                font-size: 1.25em;
+            }
+            
+            .overlay-info .current-freq {
+                font-size: 0.92em;
+            }
+            
+            .viewing-mode-label {
+                font-size: 0.87rem;
+                margin-top: 0.8rem;
+                padding: 0.45rem;
+            }
+            
+            .control-panel {
+                padding: 1.1rem;
+                gap: 0.8rem;
+            }
+            
+            .control-title {
+                font-size: 1.25rem;
+            }
+            
+            .control-section {
+                padding: 0.8rem;
+            }
+            
+            .section-label {
+                font-size: 0.76rem;
+            }
+            
+            .key-dropdown {
+                padding: 0.68rem 0.82rem;
+                font-size: 0.82rem;
+            }
+            
+            .play-button {
+                padding: 0.85rem;
+                font-size: 0.86rem;
+            }
+            
+            .midi-button {
+                padding: 0.77rem;
+                font-size: 0.82rem;
+            }
+            
+            .frequency-display {
+                padding: 0.78rem;
+            }
+            
+            .frequency-display .label {
+                font-size: 0.68rem;
+            }
+            
+            .frequency-display .value {
+                font-size: 1.32em;
+            }
+            
+            .info-box {
+                padding: 0.8rem;
+            }
+            
+            .info-box p {
+                font-size: 0.78rem;
+            }
+        }
+        
+        /* STANDARD PHONES (375px - 575px) */
+        @media screen and (min-width: 375px) and (max-width: 575px) {
+            .app-header {
+                padding: 0.75rem 1rem;
+            }
+            
+            .app-logo-svg {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .app-title {
+                font-size: 1.1rem;
+            }
+            
+            .app-subtitle {
+                font-size: 0.75rem;
+            }
+            
+            .app-nav-links {
+                display: none;
+            }
+            
+            .app-main {
+                padding: 1rem;
+            }
+            
+            .app-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .display-area {
+                padding: 1rem;
+            }
+            
+            .display-title {
+                font-size: 1.4rem;
+                margin-bottom: 0.9rem;
+            }
+            
+            .display-content {
+                height: 48vh;
+                min-height: 360px;
+            }
+            
+            .overlay-info {
+                top: 10px;
+                right: 10px;
+                padding: 0.7rem 1rem;
+            }
+            
+            .overlay-info .current-note {
+                font-size: 1.2em;
+            }
+            
+            .overlay-info .current-freq {
+                font-size: 0.9em;
+            }
+            
+            .viewing-mode-label {
+                font-size: 0.85rem;
+                margin-top: 0.75rem;
+                padding: 0.4rem;
+            }
+            
+            .control-panel {
+                padding: 1rem;
+                gap: 0.75rem;
+            }
+            
+            .control-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .control-section {
+                padding: 0.75rem;
+            }
+            
+            .section-label {
+                font-size: 0.74rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .key-dropdown {
+                padding: 0.65rem 0.8rem;
+                font-size: 0.8rem;
+                background-position: right 0.8rem center;
+            }
+            
+            .play-button {
+                padding: 0.83rem;
+                font-size: 0.84rem;
+            }
+            
+            .play-icon {
+                font-size: 1.05em;
+            }
+            
+            .midi-button {
+                padding: 0.75rem;
+                font-size: 0.8rem;
+            }
+            
+            .midi-status {
+                font-size: 0.73rem;
+            }
+            
+            .frequency-display {
+                padding: 0.75rem;
+            }
+            
+            .frequency-display .label {
+                font-size: 0.66rem;
+            }
+            
+            .frequency-display .value {
+                font-size: 1.3em;
+            }
+            
+            .info-box {
+                padding: 0.75rem;
+            }
+            
+            .info-box p {
+                font-size: 0.76rem;
+                line-height: 1.45;
+            }
+            
+            .app-footer {
+                padding: 1.5rem 1rem;
+            }
+            
+            .footer-text {
+                font-size: 0.8rem;
+            }
+            
+            .footer-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* SMALL PHONES - iPhone SE, etc (320px - 374px) */
+        @media screen and (max-width: 374px) {
+            .app-header {
+                padding: 0.65rem 0.85rem;
+            }
+            
+            .app-logo-svg {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .app-title {
+                font-size: 1rem;
+                letter-spacing: 1.5px;
+            }
+            
+            .app-subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .app-nav-links {
+                display: none;
+            }
+            
+            .app-main {
+                padding: 0.85rem;
+            }
+            
+            .app-container {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+            
+            .display-area {
+                padding: 0.9rem;
+            }
+            
+            .display-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .display-content {
+                height: 45vh;
+                min-height: 320px;
+            }
+            
+            .overlay-info {
+                top: 8px;
+                right: 8px;
+                padding: 0.6rem 0.85rem;
+            }
+            
+            .overlay-info .current-note {
+                font-size: 1.1em;
+            }
+            
+            .overlay-info .current-freq {
+                font-size: 0.85em;
+            }
+            
+            .viewing-mode-label {
+                font-size: 0.8rem;
+                margin-top: 0.65rem;
+                padding: 0.35rem;
+            }
+            
+            .control-panel {
+                padding: 0.9rem;
+                gap: 0.7rem;
+            }
+            
+            .control-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .control-section {
+                padding: 0.7rem;
+            }
+            
+            .section-label {
+                font-size: 0.7rem;
+                margin-bottom: 0.45rem;
+                letter-spacing: 0.7px;
+            }
+            
+            .key-dropdown {
+                padding: 0.6rem 0.75rem;
+                font-size: 0.75rem;
+                background-position: right 0.75rem center;
+            }
+            
+            .play-button {
+                padding: 0.8rem;
+                font-size: 0.8rem;
+                letter-spacing: 0.6px;
+            }
+            
+            .play-icon {
+                font-size: 1em;
+            }
+            
+            .midi-button {
+                padding: 0.7rem;
+                font-size: 0.75rem;
+                letter-spacing: 0.6px;
+            }
+            
+            .midi-status {
+                font-size: 0.7rem;
+                padding: 0.45rem;
+            }
+            
+            .frequency-display {
+                padding: 0.7rem;
+            }
+            
+            .frequency-display .label {
+                font-size: 0.62rem;
+                margin-bottom: 0.35rem;
+            }
+            
+            .frequency-display .value {
+                font-size: 1.2em;
+            }
+            
+            .info-box {
+                padding: 0.7rem;
+            }
+            
+            .info-box p {
+                font-size: 0.72rem;
+                line-height: 1.4;
+            }
+            
+            .app-footer {
+                padding: 1.2rem 0.85rem;
+            }
+            
+            .footer-text {
+                font-size: 0.75rem;
+            }
+            
+            .footer-links {
+                gap: 0.85rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* LANDSCAPE MODE - PHONES & TABLETS */
+        @media screen and (max-width: 991px) and (orientation: landscape) {
+            .app-header {
+                padding: 0.6rem 1rem;
+            }
+            
+            .app-main {
+                padding: 1rem;
+            }
+            
+            .app-container {
+                grid-template-columns: 1.6fr 1fr;
+                gap: 1rem;
+            }
+            
+            .display-area {
+                padding: 1rem;
+            }
+            
+            .display-title {
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .display-content {
+                height: 70vh;
+                min-height: 280px;
+            }
+            
+            .viewing-mode-label {
+                margin-top: 0.6rem;
+                padding: 0.35rem;
+                font-size: 0.8rem;
+            }
+            
+            .control-panel {
+                max-height: 72vh;
+                overflow-y: auto;
+                padding: 1rem;
+                gap: 0.7rem;
+            }
+            
+            .control-title {
+                font-size: 1.15rem;
+            }
+            
+            .control-section {
+                padding: 0.7rem;
+            }
+            
+            .app-footer {
+                display: none;
+            }
+        }
+        
+        /* TOUCH DEVICE OPTIMIZATIONS */
+        @media (hover: none) and (pointer: coarse) {
+            .key-dropdown,
+            .play-button,
+            .midi-button {
+                min-height: 44px; /* Apple's recommended touch target size */
+            }
+            
+            .control-section {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="app-header-content">
+            <div class="app-logo-section">
+                <svg class="app-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#F4D03F" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#008080" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="#8B6BA3" stroke-width="2"/>
+                    <path d="M 50 15 L 50 85" stroke="#F4D03F" stroke-width="2"/>
+                    <path d="M 15 50 L 85 50" stroke="#F4D03F" stroke-width="2"/>
+                </svg>
+                <div>
+                    <h1 class="app-title">Keys, Codes & Modes</h1>
+                    <p class="app-subtitle">Chladni Plate Cymatics Visualizer</p>
+                </div>
+            </div>
+            <nav class="app-nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#tools">Tools</a>
+                <a href="../index.html#pricing" class="upgrade-link">Upgrade Pro</a>
+            </nav>
+        </div>
+    </header>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo-container">
-    <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="50" cy="50" r="45" fill="none" stroke="#F4D03F" stroke-width="3"/>
-      <circle cx="50" cy="50" r="35" fill="none" stroke="#4A7BA7" stroke-width="2"/>
-      <circle cx="50" cy="50" r="25" fill="none" stroke="#8B6BA3" stroke-width="2"/>
-      <path d="M 50 15 L 50 85" stroke="#F4D03F" stroke-width="2"/>
-      <path d="M 15 50 L 85 50" stroke="#F4D03F" stroke-width="2"/>
-    </svg>
-    <div>
-      <h1>Keys, Codes & Modes</h1>
-      <div class="subtitle">Chladni Plate Cymatics Visualizer</div>
-    </div>
-  </div>
-</div>
+    <!-- MAIN CONTENT -->
+    <main class="app-main">
+        <div class="app-container">
+            <!-- DISPLAY AREA -->
+            <section class="display-area">
+                <h2 class="display-title">Chladni Plate Visualization</h2>
+                <div class="display-content">
+                    <canvas id="cymatics-canvas"></canvas>
+                    
+                    <div class="overlay-info">
+                        <div class="current-note" id="current-note">C4</div>
+                        <div class="current-freq" id="current-freq-overlay">261.63 Hz</div>
+                    </div>
+                </div>
+                <div class="viewing-mode-label">Viewing Mode: Chladni Plate</div>
+            </section>
 
-<!-- MAIN CONTAINER -->
-<div class="main-container">
-  <!-- CONTROL PANEL -->
-  <div class="control-panel">
-    
-    <div class="section">
-      <h3>🎵 Select Note</h3>
-      <select id="note-select" onchange="changeNote()">
-        <option value="C">C</option>
-        <option value="C#">C# / D♭</option>
-        <option value="D">D</option>
-        <option value="D#">D# / E♭</option>
-        <option value="E">E</option>
-        <option value="F">F</option>
-        <option value="F#">F# / G♭</option>
-        <option value="G">G</option>
-        <option value="G#">G# / A♭</option>
-        <option value="A">A</option>
-        <option value="A#">A# / B♭</option>
-        <option value="B">B</option>
-      </select>
-    </div>
+            <!-- CONTROL PANEL -->
+            <aside class="control-panel">
+                <!-- Play Button -->
+                <div class="control-section">
+                    <button class="play-button" id="play-btn" 
+                        onmousedown="startPlayingNote()" 
+                        onmouseup="stopPlayingNote()" 
+                        onmouseleave="stopPlayingNote()" 
+                        ontouchstart="event.preventDefault(); startPlayingNote()" 
+                        ontouchend="event.preventDefault(); stopPlayingNote()">
+                        <span class="play-icon">▶</span> Play Note
+                    </button>
+                </div>
+                
+                <h2 class="control-title">Sound Controls</h2>
+                
+                <!-- Note Selection -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Select Note
+                    </div>
+                    <select id="note-select" class="key-dropdown" onchange="changeNote()">
+                        <option value="C">C</option>
+                        <option value="C#">C# / D♭</option>
+                        <option value="D">D</option>
+                        <option value="D#">D# / E♭</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="F#">F# / G♭</option>
+                        <option value="G">G</option>
+                        <option value="G#">G# / A♭</option>
+                        <option value="A">A</option>
+                        <option value="A#">A# / B♭</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
 
-    <div class="section">
-      <h3>🎹 Octave</h3>
-      <select id="octave-select" onchange="changeNote()">
-        <option value="1">Octave 1 (Very Low)</option>
-        <option value="2">Octave 2 (Low)</option>
-        <option value="3">Octave 3</option>
-        <option value="4" selected>Octave 4 (Middle C)</option>
-        <option value="5">Octave 5</option>
-        <option value="6">Octave 6 (High)</option>
-        <option value="7">Octave 7 (Very High)</option>
-      </select>
-    </div>
+                <!-- Octave Selection -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Octave
+                    </div>
+                    <select id="octave-select" class="key-dropdown" onchange="changeNote()">
+                        <option value="1">Octave 1 (Very Low)</option>
+                        <option value="2">Octave 2 (Low)</option>
+                        <option value="3">Octave 3</option>
+                        <option value="4" selected>Octave 4 (Middle C)</option>
+                        <option value="5">Octave 5</option>
+                        <option value="6">Octave 6 (High)</option>
+                        <option value="7">Octave 7 (Very High)</option>
+                    </select>
+                </div>
 
-    <div class="section">
-      <h3>🎹 MIDI Input</h3>
-      <button class="midi-button" id="midi-connect-btn" onclick="connectMIDI()">
-        Connect MIDI Device
-      </button>
-      <div id="midi-status" class="midi-status">No MIDI device connected</div>
-      <select id="midi-input-select" style="display:none;">
-        <option value="">Select MIDI Input...</option>
-      </select>
-    </div>
+                <!-- MIDI Connection -->
+                <div class="control-section">
+                    <div class="section-label">
+                        MIDI Input
+                    </div>
+                    <button class="midi-button" id="midi-connect-btn" onclick="connectMIDI()">
+                        Connect MIDI Device
+                    </button>
+                    <div id="midi-status" class="midi-status">No MIDI device connected</div>
+                    <select id="midi-input-select" class="key-dropdown" style="display:none;">
+                        <option value="">Select MIDI Input...</option>
+                    </select>
+                </div>
 
-    <div class="section">
-      <button class="play-button" id="play-btn" onmousedown="startPlayingNote()" onmouseup="stopPlayingNote()" onmouseleave="stopPlayingNote()" ontouchstart="startPlayingNote()" ontouchend="stopPlayingNote()">
-        <span class="play-icon">▶</span> PLAY NOTE
-      </button>
-    </div>
+                <!-- Frequency Display -->
+                <div class="frequency-display">
+                    <div class="label">Current Frequency</div>
+                    <div class="value" id="freq-display">261.63 Hz</div>
+                </div>
 
-    <div class="frequency-display">
-      <div class="label">Current Frequency</div>
-      <div class="value" id="freq-display">261.63 Hz</div>
-    </div>
+                <!-- Intervals -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Intervals
+                    </div>
+                    <select id="interval-select" class="key-dropdown" onchange="playInterval()">
+                        <option value="none">Single Note</option>
+                        <option value="minor 2nd">Minor 2nd (m2)</option>
+                        <option value="major 2nd">Major 2nd (M2)</option>
+                        <option value="minor 3rd">Minor 3rd (m3)</option>
+                        <option value="major 3rd">Major 3rd (M3)</option>
+                        <option value="perfect 4th">Perfect 4th (P4)</option>
+                        <option value="tritone">Tritone (TT)</option>
+                        <option value="perfect 5th">Perfect 5th (P5)</option>
+                        <option value="octave">Octave (P8)</option>
+                    </select>
+                </div>
 
-    <div class="section">
-      <h3>🎸 Intervals</h3>
-      <select id="interval-select" onchange="playInterval()">
-        <option value="none">Single Note</option>
-        <option value="minor 2nd">Minor 2nd (m2)</option>
-        <option value="major 2nd">Major 2nd (M2)</option>
-        <option value="minor 3rd">Minor 3rd (m3)</option>
-        <option value="major 3rd">Major 3rd (M3)</option>
-        <option value="perfect 4th">Perfect 4th (P4)</option>
-        <option value="tritone">Tritone (TT)</option>
-        <option value="perfect 5th">Perfect 5th (P5)</option>
-        <option value="octave">Octave (P8)</option>
-      </select>
-    </div>
+                <!-- Chords -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Chords
+                    </div>
+                    <select id="chord-select" class="key-dropdown" onchange="playChord()">
+                        <option value="none">Single Note</option>
+                        <optgroup label="Triads">
+                            <option value="major">Major Triad</option>
+                            <option value="minor">Minor Triad</option>
+                            <option value="diminished">Diminished</option>
+                            <option value="augmented">Augmented</option>
+                        </optgroup>
+                        <optgroup label="7th Chords">
+                            <option value="major7">Major 7th</option>
+                            <option value="minor7">Minor 7th</option>
+                            <option value="dominant7">Dominant 7th</option>
+                            <option value="minor7b5">Minor 7♭5 (Half-Dim)</option>
+                            <option value="diminished7">Diminished 7th</option>
+                        </optgroup>
+                        <optgroup label="9th Chords">
+                            <option value="major9">Major 9th</option>
+                            <option value="minor9">Minor 9th</option>
+                            <option value="dominant9">Dominant 9th</option>
+                            <option value="add9">Add 9</option>
+                        </optgroup>
+                        <optgroup label="11th Chords">
+                            <option value="major11">Major 11th</option>
+                            <option value="minor11">Minor 11th</option>
+                            <option value="dominant11">Dominant 11th</option>
+                        </optgroup>
+                        <optgroup label="13th Chords">
+                            <option value="major13">Major 13th</option>
+                            <option value="minor13">Minor 13th</option>
+                            <option value="dominant13">Dominant 13th</option>
+                        </optgroup>
+                    </select>
+                </div>
 
-    <div class="section">
-      <h3>🎼 Chords</h3>
-      <select id="chord-select" onchange="playChord()">
-        <option value="none">Single Note</option>
-        <optgroup label="Triads">
-          <option value="major">Major Triad</option>
-          <option value="minor">Minor Triad</option>
-          <option value="diminished">Diminished</option>
-          <option value="augmented">Augmented</option>
-        </optgroup>
-        <optgroup label="7th Chords">
-          <option value="major7">Major 7th</option>
-          <option value="minor7">Minor 7th</option>
-          <option value="dominant7">Dominant 7th</option>
-          <option value="minor7b5">Minor 7♭5 (Half-Dim)</option>
-          <option value="diminished7">Diminished 7th</option>
-        </optgroup>
-        <optgroup label="9th Chords">
-          <option value="major9">Major 9th</option>
-          <option value="minor9">Minor 9th</option>
-          <option value="dominant9">Dominant 9th</option>
-          <option value="add9">Add 9</option>
-        </optgroup>
-        <optgroup label="11th Chords">
-          <option value="major11">Major 11th</option>
-          <option value="minor11">Minor 11th</option>
-          <option value="dominant11">Dominant 11th</option>
-        </optgroup>
-        <optgroup label="13th Chords">
-          <option value="major13">Major 13th</option>
-          <option value="minor13">Minor 13th</option>
-          <option value="dominant13">Dominant 13th</option>
-        </optgroup>
-      </select>
-    </div>
+                <!-- Plate Shape -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Plate Shape
+                    </div>
+                    <select id="shape-select" class="key-dropdown" onchange="changePlateShape()">
+                        <option value="circle" selected>Circle</option>
+                        <option value="square">Square</option>
+                    </select>
+                </div>
 
-    <div class="section">
-      <h3>⚙️ Plate Shape</h3>
-      <select id="shape-select" onchange="changePlateShape()">
-        <option value="circle" selected>Circle</option>
-        <option value="square">Square</option>
-      </select>
-    </div>
+                <!-- Particle Density -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Particle Density
+                    </div>
+                    <select id="density-select" class="key-dropdown" onchange="changeDensity()">
+                        <option value="5000">Low (5,000)</option>
+                        <option value="10000" selected>Medium (10,000)</option>
+                        <option value="15000">High (15,000)</option>
+                        <option value="20000">Ultra (20,000)</option>
+                    </select>
+                </div>
 
-    <div class="section">
-      <h3>🎨 Particle Density</h3>
-      <select id="density-select" onchange="changeDensity()">
-        <option value="5000">Low (5,000)</option>
-        <option value="10000" selected>Medium (10,000)</option>
-        <option value="15000">High (15,000)</option>
-        <option value="20000">Ultra (20,000)</option>
-      </select>
-    </div>
+                <!-- Color Mode -->
+                <div class="control-section">
+                    <div class="section-label">
+                        Color Mode
+                    </div>
+                    <select id="color-select" class="key-dropdown" onchange="changeColorMode()">
+                        <option value="chromatic" selected>Chromatic Wheel</option>
+                        <option value="rainbow">Full Spectrum</option>
+                        <option value="white">Classic White</option>
+                        <option value="ocean-blue">Ocean Blue</option>
+                        <option value="golden-yellow">Golden Yellow</option>
+                        <option value="mystic-purple">Mystic Purple</option>
+                        <option value="standard-teal">Standard Teal</option>
+                        <option value="warm-copper">Warm Copper</option>
+                    </select>
+                </div>
 
-    <div class="info-box">
-      <p><strong>Chladni Plates:</strong> Watch sand particles migrate to nodes (areas of no vibration) creating intricate geometric patterns. Each frequency produces a unique design!</p>
-    </div>
-  </div>
+                <!-- Info Box -->
+                <div class="info-box">
+                    <p><strong>Chladni Plates:</strong> Watch sand particles migrate to nodes (areas of no vibration) creating intricate geometric patterns. Each frequency produces a unique design!</p>
+                </div>
+            </aside>
+        </div>
+    </main>
 
-  <!-- CYMATICS VISUALIZATION -->
-  <div class="cymatics-container">
-    <canvas id="cymatics-canvas"></canvas>
-    
-    <div class="overlay-info">
-      <div class="current-note" id="current-note">C4</div>
-      <div class="current-freq" id="current-freq-overlay">261.63 Hz</div>
-    </div>
-    
-    <div class="pattern-info">
-      <div class="label">Viewing Mode</div>
-      <div class="value">Chladni Plate (Top-Angled)</div>
-    </div>
-  </div>
-</div>
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <p class="footer-text">© 2026 Keys, Codes & Modes | Visual Music Theory Education</p>
+            <div class="footer-links">
+                <a href="../privacy.html">Privacy Policy</a>
+                <a href="../terms.html">Terms of Service</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../contact.html">Support</a>
+            </div>
+        </div>
+    </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
 // ============================================
 // CONFIGURATION & STATE
 // ============================================
@@ -485,6 +1520,7 @@ let currentNote = 'C';
 let currentOctave = 4;
 let plateType = 'circle';
 let particleCount = 10000;
+let colorMode = 'chromatic';
 let animationId;
 let plateRadius = 5;
 
@@ -495,7 +1531,7 @@ let gainNode;
 // MIDI variables
 let midiAccess = null;
 let midiInput = null;
-let activeNotes = new Map(); // Track currently playing MIDI notes
+let activeNotes = new Map();
 
 // Play button state
 let isPlayButtonHeld = false;
@@ -581,7 +1617,6 @@ function initCymatics() {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   
-  // Slightly angled top view like the reference image
   camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   camera.position.set(0, 12, 8);
   camera.lookAt(0, 0, 0);
@@ -590,7 +1625,6 @@ function initCymatics() {
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
   
-  // Lighting
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
   
@@ -598,7 +1632,6 @@ function initCymatics() {
   directionalLight.position.set(5, 10, 5);
   scene.add(directionalLight);
   
-  // Create dark plate base
   const plateGeometry = plateType === 'circle' 
     ? new THREE.CircleGeometry(plateRadius, 64)
     : new THREE.PlaneGeometry(plateRadius * 2, plateRadius * 2);
@@ -621,22 +1654,87 @@ function initCymatics() {
 }
 
 function createParticles() {
-  // Remove old particles
   particles.forEach(p => scene.remove(p));
   particles = [];
   
-  // Create particle system like sand on Chladni plate
+  // Chromatic color mapping - each note has its own color
+  const chromaticColors = {
+    'C': 0xFFFF00,   // Yellow
+    'C#': 0xFFC400,  // Yellow-Orange
+    'D': 0xFF8000,   // Orange
+    'D#': 0xFF4000,  // Red-Orange
+    'E': 0xFF0000,   // Red
+    'F': 0xC4007F,   // Red-Purple
+    'F#': 0x8000FF,  // Purple
+    'G': 0x4000FF,   // Blue-Purple
+    'G#': 0x0000FF,  // Blue
+    'A': 0x007FFF,   // Blue-Green
+    'A#': 0x00FF80,  // Green
+    'B': 0x80FF00    // Yellow-Green
+  };
+  
+  // Calculate color based on selected mode
+  let particleColor;
+  
+  switch(colorMode) {
+    case 'chromatic':
+      // Use the chromatic color wheel based on current note
+      particleColor = new THREE.Color(chromaticColors[currentNote] || 0xFFFF00);
+      break;
+      
+    case 'white':
+      particleColor = new THREE.Color(0xe0e0e0);
+      break;
+      
+    case 'ocean-blue':
+      particleColor = new THREE.Color(0x4A7BA7); // Official Ocean Blue
+      break;
+      
+    case 'golden-yellow':
+      particleColor = new THREE.Color(0xF4D03F); // Official Golden Yellow
+      break;
+      
+    case 'mystic-purple':
+      particleColor = new THREE.Color(0x8B6BA3); // Official Mystic Purple
+      break;
+      
+    case 'standard-teal':
+      particleColor = new THREE.Color(0x008080); // Official Standard Teal
+      break;
+      
+    case 'warm-copper':
+      particleColor = new THREE.Color(0xCF7A5A); // Official Warm Copper
+      break;
+      
+    case 'rainbow':
+      // Will cycle through chromatic colors below
+      particleColor = null;
+      break;
+      
+    default:
+      particleColor = new THREE.Color(chromaticColors[currentNote] || 0xFFFF00);
+  }
+  
   const particleGeometry = new THREE.SphereGeometry(0.02, 4, 4);
-  const particleMaterial = new THREE.MeshStandardMaterial({
-    color: 0xe0e0e0,
-    roughness: 0.9,
-    metalness: 0.1
-  });
   
   for (let i = 0; i < particleCount; i++) {
+    // Rainbow mode: cycle through chromatic color wheel
+    let finalColor = particleColor;
+    if (colorMode === 'rainbow') {
+      const colorValues = Object.values(chromaticColors);
+      finalColor = new THREE.Color(colorValues[i % colorValues.length]);
+    }
+    
+    const particleMaterial = new THREE.MeshStandardMaterial({
+      color: finalColor,
+      roughness: colorMode === 'white' ? 0.9 : 0.6,
+      metalness: colorMode === 'white' ? 0.1 : 0.4,
+      emissive: colorMode === 'white' ? new THREE.Color(0x000000) : finalColor,
+      emissiveIntensity: colorMode === 'white' ? 0 : 0.4
+    });
+    
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     
-    // Random initial position on plate
     let x, z;
     if (plateType === 'circle') {
       const angle = Math.random() * Math.PI * 2;
@@ -661,9 +1759,6 @@ function createParticles() {
 }
 
 function updateParticlePositions() {
-  // Chladni plate physics: particles move to nodal lines
-  // Nodal lines are where amplitude is zero (no vibration)
-  
   const freqFactor = currentFrequency / 261.63;
   
   particles.forEach(particle => {
@@ -672,41 +1767,31 @@ function updateParticlePositions() {
     const distance = Math.sqrt(x * x + z * z);
     const angle = Math.atan2(z, x);
     
-    // Chladni pattern calculation
-    // Using combinations of sin/cos to create nodal lines
-    const m = Math.floor(freqFactor * 2 + 1); // radial modes
-    const n = Math.floor(freqFactor * 1.5 + 1); // angular modes
+    const m = Math.floor(freqFactor * 2 + 1);
+    const n = Math.floor(freqFactor * 1.5 + 1);
     
-    // Calculate amplitude at this point
     const radialComponent = Math.sin(distance * m * Math.PI / plateRadius);
     const angularComponent = Math.cos(n * angle);
     const amplitude = Math.abs(radialComponent * angularComponent);
     
-    // Particles are attracted to areas of low amplitude (nodes)
     const threshold = 0.15;
     
     if (amplitude < threshold) {
-      // This is a nodal area - particles settle here
       particle.userData.velocity.x *= 0.85;
       particle.userData.velocity.z *= 0.85;
     } else {
-      // High amplitude area - particles move away
       const force = (amplitude - threshold) * 0.05;
       
-      // Calculate gradient (direction of steepest increase)
       const gradX = Math.cos(distance * m * Math.PI / plateRadius) * m * Math.PI / plateRadius * (x / distance) * angularComponent;
       const gradZ = Math.cos(distance * m * Math.PI / plateRadius) * m * Math.PI / plateRadius * (z / distance) * angularComponent;
       
-      // Move perpendicular to gradient (toward nodes)
       particle.userData.velocity.x -= gradX * force;
       particle.userData.velocity.z -= gradZ * force;
     }
     
-    // Apply velocity
     particle.position.x += particle.userData.velocity.x;
     particle.position.z += particle.userData.velocity.z;
     
-    // Keep particles on plate
     const currentDist = Math.sqrt(
       particle.position.x * particle.position.x + 
       particle.position.z * particle.position.z
@@ -730,11 +1815,9 @@ function updateParticlePositions() {
       }
     }
     
-    // Add slight random motion (thermal vibration)
     particle.userData.velocity.x += (Math.random() - 0.5) * 0.002;
     particle.userData.velocity.z += (Math.random() - 0.5) * 0.002;
     
-    // Damping
     particle.userData.velocity.x *= 0.95;
     particle.userData.velocity.z *= 0.95;
   });
@@ -774,6 +1857,15 @@ function changeNote() {
   document.getElementById('chord-select').value = 'none';
   
   updateDisplay();
+  
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('note_selected', {
+      note: currentNote,
+      octave: currentOctave,
+      frequency: currentFrequency.toFixed(2)
+    });
+  }
 }
 
 // ============================================
@@ -783,20 +1875,16 @@ function changeNote() {
 function startPlayingNote() {
   isPlayButtonHeld = true;
   
-  // Visual feedback
   const playBtn = document.getElementById('play-btn');
   playBtn.style.transform = 'translateY(0)';
   playBtn.style.boxShadow = '0 2px 8px rgba(46, 204, 113, 0.4)';
   
-  // Start timeout to detect if this is a hold vs quick press
   playButtonTimeout = setTimeout(() => {
-    // This is a HOLD - play sustained
     playSustainedSound();
-  }, 150); // 150ms threshold to distinguish hold from click
+  }, 150);
 }
 
 function stopPlayingNote() {
-  // Visual feedback
   const playBtn = document.getElementById('play-btn');
   playBtn.style.transform = '';
   playBtn.style.boxShadow = '';
@@ -805,15 +1893,11 @@ function stopPlayingNote() {
   
   isPlayButtonHeld = false;
   
-  // Check if timeout is still active (quick press)
   if (playButtonTimeout) {
     clearTimeout(playButtonTimeout);
     playButtonTimeout = null;
-    
-    // This was a QUICK PRESS - play timed version
     playTimedSound();
   } else {
-    // This was a HOLD - stop sustained sound
     stopSustainedSound();
   }
 }
@@ -822,7 +1906,14 @@ function playTimedSound() {
   const intervalSelect = document.getElementById('interval-select');
   const chordSelect = document.getElementById('chord-select');
   
-  // Check what's currently selected and play for set duration
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('play_button_clicked', {
+      type: chordSelect.value !== 'none' ? 'chord' : (intervalSelect.value !== 'none' ? 'interval' : 'note'),
+      selection: chordSelect.value !== 'none' ? chordSelect.value : (intervalSelect.value !== 'none' ? intervalSelect.value : currentNote)
+    });
+  }
+  
   if (chordSelect.value !== 'none') {
     playChord();
   } else if (intervalSelect.value !== 'none') {
@@ -835,42 +1926,32 @@ function playTimedSound() {
 
 function playSustainedSound() {
   initAudio();
-  stopSustainedSound(); // Clear any previous sustained sounds
-  playButtonTimeout = null; // Clear the timeout since we're now in hold mode
+  stopSustainedSound();
+  playButtonTimeout = null;
   
   const intervalSelect = document.getElementById('interval-select');
   const chordSelect = document.getElementById('chord-select');
   
   let frequencies = [];
   
-  // Determine which frequencies to play
   if (chordSelect.value !== 'none') {
     const chordIntervals = {
-      // Triads
       'major': [0, 4, 7],
       'minor': [0, 3, 7],
       'diminished': [0, 3, 6],
       'augmented': [0, 4, 8],
-      
-      // 7th Chords
       'major7': [0, 4, 7, 11],
       'minor7': [0, 3, 7, 10],
       'dominant7': [0, 4, 7, 10],
       'minor7b5': [0, 3, 6, 10],
       'diminished7': [0, 3, 6, 9],
-      
-      // 9th Chords
       'major9': [0, 4, 7, 11, 14],
       'minor9': [0, 3, 7, 10, 14],
       'dominant9': [0, 4, 7, 10, 14],
       'add9': [0, 4, 7, 14],
-      
-      // 11th Chords
       'major11': [0, 4, 7, 11, 14, 17],
       'minor11': [0, 3, 7, 10, 14, 17],
       'dominant11': [0, 4, 7, 10, 14, 17],
-      
-      // 13th Chords
       'major13': [0, 4, 7, 11, 14, 21],
       'minor13': [0, 3, 7, 10, 14, 21],
       'dominant13': [0, 4, 7, 10, 14, 21]
@@ -914,7 +1995,6 @@ function playSustainedSound() {
     frequencies = [currentFrequency];
   }
   
-  // Create sustained oscillators
   frequencies.forEach(freq => {
     const osc = audioContext.createOscillator();
     osc.type = 'sine';
@@ -924,12 +2004,10 @@ function playSustainedSound() {
     sustainedOscillators.push(osc);
   });
   
-  // Update particles
   createParticles();
 }
 
 function stopSustainedSound() {
-  // Stop all sustained oscillators with fade out
   sustainedOscillators.forEach(osc => {
     try {
       osc.stop();
@@ -986,32 +2064,32 @@ function playChord() {
   
   document.getElementById('interval-select').value = 'none';
   
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('chord_played', {
+      chord_type: chordType,
+      root_note: currentNote,
+      octave: currentOctave
+    });
+  }
+  
   const chordIntervals = {
-    // Triads
     'major': [0, 4, 7],
     'minor': [0, 3, 7],
     'diminished': [0, 3, 6],
     'augmented': [0, 4, 8],
-    
-    // 7th Chords
     'major7': [0, 4, 7, 11],
     'minor7': [0, 3, 7, 10],
     'dominant7': [0, 4, 7, 10],
     'minor7b5': [0, 3, 6, 10],
     'diminished7': [0, 3, 6, 9],
-    
-    // 9th Chords
     'major9': [0, 4, 7, 11, 14],
     'minor9': [0, 3, 7, 10, 14],
     'dominant9': [0, 4, 7, 10, 14],
     'add9': [0, 4, 7, 14],
-    
-    // 11th Chords
     'major11': [0, 4, 7, 11, 14, 17],
     'minor11': [0, 3, 7, 10, 14, 17],
     'dominant11': [0, 4, 7, 10, 14, 17],
-    
-    // 13th Chords
     'major13': [0, 4, 7, 11, 14, 21],
     'minor13': [0, 3, 7, 10, 14, 21],
     'dominant13': [0, 4, 7, 10, 14, 21]
@@ -1040,10 +2118,16 @@ function changePlateShape() {
   const shapeSelect = document.getElementById('shape-select');
   plateType = shapeSelect.value;
   
-  // Recreate scene with new plate shape
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('plate_shape_changed', {
+      shape: plateType
+    });
+  }
+  
   scene.children.forEach(child => {
-    if (child instanceof THREE.Mesh && child.geometry instanceof THREE.PlaneGeometry ||
-        child instanceof THREE.Mesh && child.geometry instanceof THREE.CircleGeometry) {
+    if (child instanceof THREE.Mesh && (child.geometry instanceof THREE.PlaneGeometry ||
+        child.geometry instanceof THREE.CircleGeometry)) {
       scene.remove(child);
     }
   });
@@ -1069,6 +2153,28 @@ function changePlateShape() {
 function changeDensity() {
   const densitySelect = document.getElementById('density-select');
   particleCount = parseInt(densitySelect.value);
+  
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('particle_density_changed', {
+      particle_count: particleCount
+    });
+  }
+  
+  createParticles();
+}
+
+function changeColorMode() {
+  const colorSelect = document.getElementById('color-select');
+  colorMode = colorSelect.value;
+  
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('color_mode_changed', {
+      color_mode: colorMode
+    });
+  }
+  
   createParticles();
 }
 
@@ -1097,7 +2203,6 @@ async function connectMIDI() {
         return;
       }
       
-      // Populate input select dropdown
       const inputSelect = document.getElementById('midi-input-select');
       inputSelect.innerHTML = '<option value="">Select MIDI Input...</option>';
       
@@ -1108,7 +2213,6 @@ async function connectMIDI() {
         inputSelect.appendChild(option);
       });
       
-      // If only one device, auto-connect
       if (inputs.length === 1) {
         setupMIDIInput(inputs[0]);
         updateMIDIStatus(`Connected: ${inputs[0].name || 'MIDI Device'}`, true);
@@ -1132,7 +2236,6 @@ async function connectMIDI() {
 }
 
 function setupMIDIInput(input) {
-  // Remove previous listeners
   if (midiInput) {
     midiInput.onmidimessage = null;
   }
@@ -1143,17 +2246,22 @@ function setupMIDIInput(input) {
   const connectBtn = document.getElementById('midi-connect-btn');
   connectBtn.classList.add('connected');
   connectBtn.textContent = 'MIDI Connected ✓';
+  
+  // Analytics tracking
+  if (typeof trackEvent === 'function') {
+    trackEvent('midi_connected', {
+      device_name: input.name || 'Unknown MIDI Device'
+    });
+  }
 }
 
 function handleMIDIMessage(message) {
   const [status, note, velocity] = message.data;
   const command = status & 0xf0;
   
-  // Note On (144-159) with velocity > 0
   if (command === 144 && velocity > 0) {
     playMIDINote(note, velocity);
   }
-  // Note Off (128-143) or Note On with velocity 0
   else if (command === 128 || (command === 144 && velocity === 0)) {
     stopMIDINote(note);
   }
@@ -1162,28 +2270,23 @@ function handleMIDIMessage(message) {
 function playMIDINote(midiNote, velocity) {
   initAudio();
   
-  // Convert MIDI note to frequency
   const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
   
-  // Convert MIDI note to note name
   const noteIndex = midiNote % 12;
   const octave = Math.floor(midiNote / 12) - 1;
   const noteName = chromaticNotes[noteIndex];
   
-  // Update current state
   currentNote = noteName;
   currentOctave = octave;
   currentFrequency = frequency;
   updateDisplay();
   
-  // Create oscillator for this note
   const osc = audioContext.createOscillator();
   const noteGain = audioContext.createGain();
   
   osc.type = 'sine';
   osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
   
-  // Velocity-sensitive volume
   const volume = (velocity / 127) * 0.2;
   noteGain.gain.setValueAtTime(volume, audioContext.currentTime);
   
@@ -1191,10 +2294,8 @@ function playMIDINote(midiNote, velocity) {
   noteGain.connect(audioContext.destination);
   osc.start();
   
-  // Store the oscillator and gain for this note
   activeNotes.set(midiNote, { osc, noteGain });
   
-  // Update visualization
   createParticles();
 }
 
@@ -1204,7 +2305,6 @@ function stopMIDINote(midiNote) {
   if (noteData) {
     const { osc, noteGain } = noteData;
     
-    // Fade out
     noteGain.gain.setValueAtTime(noteGain.gain.value, audioContext.currentTime);
     noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
     
@@ -1238,7 +2338,6 @@ window.addEventListener('DOMContentLoaded', () => {
   updateDisplay();
 });
 
-</script>
-
+    </script>
 </body>
 </html>
