@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Geometry Lab | Keys, Codes & Modes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --accent-blue: #4A7BA7;
+            --dark-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===================== HEADER ===================== */
+        .app-header {
+            background: linear-gradient(135deg, rgba(15,15,30,0.97), rgba(26,26,46,0.97));
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-teal);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,128,128,0.2);
+        }
+        .app-header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        .app-logo-svg {
+            width: 50px; height: 50px;
+            filter: drop-shadow(0 2px 8px rgba(244,208,63,0.3));
+            transition: transform 0.3s ease;
+        }
+        .app-logo-section:hover .app-logo-svg { transform: scale(1.1) rotate(5deg); }
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        .app-subtitle {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: rgba(244,208,63,0.6);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .app-nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .app-nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .app-nav-links a:hover { color: var(--primary-gold); background: rgba(0,128,128,0.1); }
+        .upgrade-link {
+            background: linear-gradient(135deg, var(--primary-teal), #006666) !important;
+            color: white !important;
+            padding: 0.6rem 1.4rem !important;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,128,128,0.3);
+        }
+        .upgrade-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,128,128,0.5);
+        }
+
+        /* ===================== MAIN LAYOUT ===================== */
+        .app-main {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-title-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-tagline {
+            font-size: 0.85rem;
+            color: rgba(232,232,232,0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            min-height: 580px;
+        }
+
+        /* ===================== DISPLAY AREA ===================== */
+        .display-area {
+            background: linear-gradient(135deg, rgba(0,128,128,0.08), rgba(139,107,163,0.08));
+            border: 2px solid rgba(0,128,128,0.4);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0,128,128,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #rhythmCanvas {
+            width: 100%;
+            max-width: 540px;
+            height: auto;
+            cursor: crosshair;
+            border-radius: 12px;
+        }
+
+        .canvas-info-bar {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .info-chip {
+            background: rgba(0,128,128,0.15);
+            border: 1px solid rgba(0,128,128,0.3);
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.8rem;
+            color: rgba(232,232,232,0.7);
+        }
+        .info-chip strong { color: var(--primary-gold); }
+
+        /* ===================== CONTROL PANEL ===================== */
+        .control-panel {
+            background: linear-gradient(135deg, rgba(0,128,128,0.12), rgba(139,107,163,0.12));
+            border: 2px solid rgba(0,128,128,0.5);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 50px rgba(0,128,128,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .panel-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(0,128,128,0.2);
+        }
+        .panel-section-title {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid rgba(244,208,63,0.2);
+        }
+
+        /* TRANSPORT */
+        .transport-row {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: var(--font-body);
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.85rem;
+            padding: 0.55rem 1.1rem;
+        }
+
+        .btn-play {
+            background: linear-gradient(135deg, var(--primary-teal), #006666);
+            color: white;
+            flex: 1;
+            min-width: 80px;
+            font-size: 1rem;
+            padding: 0.7rem;
+            box-shadow: 0 4px 15px rgba(0,128,128,0.3);
+        }
+        .btn-play:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,128,128,0.5); }
+        .btn-play.active { background: linear-gradient(135deg, var(--primary-coral), #a05a38); }
+
+        .btn-stop {
+            background: rgba(207,122,90,0.2);
+            color: var(--primary-coral);
+            border: 1px solid rgba(207,122,90,0.4);
+        }
+        .btn-stop:hover { background: rgba(207,122,90,0.35); }
+
+        .btn-reset {
+            background: rgba(139,107,163,0.2);
+            color: var(--primary-purple);
+            border: 1px solid rgba(139,107,163,0.4);
+        }
+        .btn-reset:hover { background: rgba(139,107,163,0.35); }
+
+        /* TEMPO */
+        .tempo-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .tempo-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            line-height: 1;
+        }
+        .tempo-unit { font-size: 0.75rem; color: rgba(232,232,232,0.5); margin-left: 4px; }
+
+        .tempo-presets { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .tempo-preset-btn {
+            background: rgba(0,128,128,0.15);
+            border: 1px solid rgba(0,128,128,0.3);
+            color: var(--light-text);
+            border-radius: 8px;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+        .tempo-preset-btn:hover, .tempo-preset-btn.active {
+            background: rgba(0,128,128,0.4);
+            border-color: var(--primary-teal);
+            color: var(--primary-gold);
+        }
+
+        /* SLIDERS */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.6rem;
+        }
+        .slider-label {
+            font-size: 0.78rem;
+            color: rgba(232,232,232,0.6);
+            min-width: 55px;
+        }
+        .slider-val {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            color: var(--primary-gold);
+            min-width: 28px;
+            text-align: right;
+        }
+        input[type=range] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(0,128,128,0.3);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: var(--primary-teal);
+            box-shadow: 0 0 8px rgba(0,128,128,0.6);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        /* LAYERS */
+        .layer-card {
+            border-radius: 10px;
+            padding: 0.8rem;
+            margin-bottom: 0.7rem;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .layer-card:last-child { margin-bottom: 0; }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+        }
+        .layer-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            box-shadow: 0 0 8px currentColor;
+            flex-shrink: 0;
+        }
+        .layer-name {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            flex: 1;
+        }
+        .layer-mute-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(232,232,232,0.6);
+            border-radius: 6px;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+        .layer-mute-btn.muted {
+            background: rgba(207,122,90,0.3);
+            border-color: var(--primary-coral);
+            color: var(--primary-coral);
+        }
+        .layer-del-btn {
+            background: transparent;
+            border: none;
+            color: rgba(207,122,90,0.4);
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0.1rem 0.3rem;
+            transition: color 0.2s;
+        }
+        .layer-del-btn:hover { color: var(--primary-coral); }
+
+        .layer-sliders { display: flex; flex-direction: column; gap: 0.4rem; }
+
+        .btn-add-layer {
+            width: 100%;
+            background: rgba(0,128,128,0.1);
+            border: 1px dashed rgba(0,128,128,0.4);
+            color: var(--primary-teal);
+            border-radius: 10px;
+            padding: 0.6rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .btn-add-layer:hover { background: rgba(0,128,128,0.2); border-style: solid; }
+
+        /* PRESETS */
+        .preset-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .preset-btn {
+            background: rgba(139,107,163,0.15);
+            border: 1px solid rgba(139,107,163,0.3);
+            color: var(--light-text);
+            border-radius: 8px;
+            padding: 0.35rem 0.7rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+        .preset-btn:hover { background: rgba(139,107,163,0.35); border-color: var(--primary-purple); }
+
+        .preset-save-row { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+        .preset-name-input {
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,128,128,0.3);
+            border-radius: 8px;
+            color: var(--light-text);
+            padding: 0.4rem 0.7rem;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+        }
+        .preset-name-input:focus { outline: none; border-color: var(--primary-teal); }
+
+        /* MIDI */
+        .midi-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .midi-status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(207,122,90,0.6);
+            flex-shrink: 0;
+        }
+        .midi-status-dot.connected { background: #4CAF50; box-shadow: 0 0 8px #4CAF50; }
+        .midi-status-text { font-size: 0.75rem; color: rgba(232,232,232,0.5); }
+        .btn-midi {
+            background: rgba(74,123,167,0.2);
+            border: 1px solid rgba(74,123,167,0.4);
+            color: #4A7BA7;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-midi:hover { background: rgba(74,123,167,0.35); }
+        .btn-midi.connected { border-color: #4CAF50; color: #4CAF50; background: rgba(76,175,80,0.1); }
+
+        .btn-export {
+            background: rgba(244,208,63,0.1);
+            border: 1px solid rgba(244,208,63,0.3);
+            color: var(--primary-gold);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            transition: all 0.2s;
+            flex: 1;
+        }
+        .btn-export:hover { background: rgba(244,208,63,0.2); }
+
+        /* DISPLAY MODES */
+        .mode-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
+        .mode-tab {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,128,128,0.2);
+            color: rgba(232,232,232,0.5);
+            border-radius: 8px;
+            padding: 0.35rem 0.8rem;
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .mode-tab.active {
+            background: rgba(0,128,128,0.25);
+            border-color: var(--primary-teal);
+            color: var(--primary-gold);
+        }
+
+        /* FRETBOARD */
+        .fretboard-canvas-wrap {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        /* STEP INDICATOR */
+        .step-bar {
+            display: flex;
+            gap: 3px;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .step-pip {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(0,128,128,0.2);
+            border: 1px solid rgba(0,128,128,0.3);
+            transition: all 0.1s;
+        }
+        .step-pip.active-step { background: var(--primary-gold); box-shadow: 0 0 6px var(--primary-gold); }
+
+        /* VISUAL TOGGLE */
+        .visual-toggle-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .visual-toggle-btn {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,128,128,0.2);
+            color: rgba(232,232,232,0.5);
+            border-radius: 8px;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+        .visual-toggle-btn.on { background: rgba(0,128,128,0.2); border-color: var(--primary-teal); color: var(--primary-teal); }
+
+        /* ===================== FOOTER ===================== */
+        .app-footer {
+            background: linear-gradient(135deg, rgba(15,15,30,0.97), rgba(26,26,46,0.97));
+            backdrop-filter: blur(10px);
+            border-top: 3px solid var(--primary-teal);
+            padding: 2rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .app-footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .app-social-section { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .app-social-title {
+            font-family: var(--font-display);
+            color: var(--primary-gold);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .app-social-links { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+        .app-social-links a {
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0,128,128,0.15), rgba(139,107,163,0.15));
+            border: 1px solid rgba(0,128,128,0.3);
+            border-radius: 50%;
+            color: var(--primary-gold);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .app-social-links a:hover {
+            background: linear-gradient(135deg, rgba(0,128,128,0.35), rgba(139,107,163,0.35));
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,128,128,0.4);
+        }
+        .app-social-links svg { width: 20px; height: 20px; fill: currentColor; }
+        .app-footer-divider {
+            width: 100%;
+            max-width: 500px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,128,128,0.3), transparent);
+        }
+        .app-copyright {
+            text-align: center;
+            color: rgba(232,232,232,0.5);
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+        .app-copyright strong { color: var(--primary-gold); }
+        .app-copyright p { margin: 0.3rem 0; }
+        .app-legal-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        .app-legal-links a { color: rgba(232,232,232,0.4); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+        .app-legal-links a:hover { color: var(--primary-gold); }
+
+        /* ===================== RESPONSIVE ===================== */
+        @media (max-width: 900px) {
+            .app-container { grid-template-columns: 1fr; }
+            .control-panel { max-height: none; }
+            .app-title { font-size: 1.1rem; }
+        }
+        @media (max-width: 600px) {
+            .app-main { padding: 1rem; }
+            .app-header { padding: 0.8rem 1rem; }
+            .page-title { font-size: 1.4rem; }
+        }
+
+        /* SCROLLBAR */
+        .control-panel::-webkit-scrollbar { width: 4px; }
+        .control-panel::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        .control-panel::-webkit-scrollbar-thumb { background: rgba(0,128,128,0.4); border-radius: 2px; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, rgba(0,128,128,0.9), rgba(0,102,102,0.9));
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: transform 0.4s ease;
+            z-index: 9999;
+            border: 1px solid var(--primary-teal);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* SWING BADGE */
+        .swing-badge {
+            display: inline-block;
+            background: rgba(244,208,63,0.15);
+            border: 1px solid rgba(244,208,63,0.3);
+            border-radius: 6px;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            color: var(--primary-gold);
+            margin-left: 0.4rem;
+        }
+
+        /* HELP TIP */
+        .help-tip {
+            font-size: 0.72rem;
+            color: rgba(232,232,232,0.35);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="app-header" role="banner">
+    <div class="app-header-content">
+        <div class="app-logo-section" onclick="window.location.href='../index.html'">
+            <svg class="app-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+                <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+                <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+                <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+            </svg>
+            <div>
+                <h1 class="app-title">KEYS, CODES & MODES</h1>
+                <div class="app-subtitle">Rhythm Geometry Lab</div>
+            </div>
+        </div>
+        <nav class="app-nav-links" role="navigation">
+            <a href="../auth/offerings.html">Control Panel</a>
+            <a href="../pricing.html" class="upgrade-link">Upgrade</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===================== MAIN ===================== -->
+<main class="app-main">
+    <div class="page-title-bar">
+        <div>
+            <div class="page-title">Rhythm Geometry Lab</div>
+            <div class="page-tagline">See Time · Shape Rhythm · Hear Geometry</div>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+            <div id="stepBar" class="step-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- LEFT: DISPLAY -->
+        <div class="display-area">
+            <div class="mode-tabs">
+                <button class="mode-tab active" onclick="setMode('geometry')" id="tab-geometry">Geometry</button>
+                <button class="mode-tab" onclick="setMode('spiral')" id="tab-spiral">Spiral Time</button>
+                <button class="mode-tab" onclick="setMode('fretboard')" id="tab-fretboard">Fretboard</button>
+            </div>
+
+            <div class="visual-toggle-row">
+                <button class="visual-toggle-btn on" id="tog-polygon" onclick="toggleVis('polygon')">Polygons</button>
+                <button class="visual-toggle-btn on" id="tog-spiral" onclick="toggleVis('spiral')">Spiral</button>
+                <button class="visual-toggle-btn on" id="tog-labels" onclick="toggleVis('labels')">Labels</button>
+                <button class="visual-toggle-btn on" id="tog-playhead" onclick="toggleVis('playhead')">Playhead</button>
+            </div>
+
+            <canvas id="rhythmCanvas" width="540" height="540"></canvas>
+
+            <div class="canvas-info-bar">
+                <div class="info-chip">Steps: <strong id="infoSteps">16</strong></div>
+                <div class="info-chip">Tempo: <strong id="infoTempo">110</strong> BPM</div>
+                <div class="info-chip">Layers: <strong id="infoLayers">2</strong></div>
+                <div class="info-chip">Step: <strong id="infoCurrent">0</strong></div>
+            </div>
+            <div class="help-tip">Click canvas to toggle beats on Layer 1 · Shift+Click to add to Layer 2</div>
+        </div>
+
+        <!-- RIGHT: CONTROLS -->
+        <div class="control-panel">
+
+            <!-- TRANSPORT -->
+            <div class="panel-section">
+                <div class="panel-section-title">Transport</div>
+                <div class="transport-row">
+                    <button class="btn btn-play" id="playBtn" onclick="togglePlay()">▶ Play</button>
+                    <button class="btn btn-stop" onclick="stopReset()">■ Stop</button>
+                    <button class="btn btn-reset" onclick="resetRotation()">↺</button>
+                </div>
+            </div>
+
+            <!-- TEMPO -->
+            <div class="panel-section">
+                <div class="panel-section-title">Tempo</div>
+                <div class="tempo-display">
+                    <div>
+                        <span class="tempo-value" id="tempoDisplay">110</span>
+                        <span class="tempo-unit">BPM</span>
+                    </div>
+                    <div style="font-size:0.75rem;color:rgba(232,232,232,0.4)" id="tempoNote">♩ = 110</div>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label">BPM</span>
+                    <input type="range" id="tempoSlider" min="40" max="240" value="110" oninput="setTempo(this.value)">
+                    <span class="slider-val" id="tempoVal">110</span>
+                </div>
+                <div class="tempo-presets">
+                    <button class="tempo-preset-btn" onclick="setTempoPreset(60,'Largo')">60<br><span style="font-size:0.65rem">Largo</span></button>
+                    <button class="tempo-preset-btn" onclick="setTempoPreset(80,'Adagio')">80<br><span style="font-size:0.65rem">Adagio</span></button>
+                    <button class="tempo-preset-btn active" onclick="setTempoPreset(110,'Moderato')">110<br><span style="font-size:0.65rem">Moderato</span></button>
+                    <button class="tempo-preset-btn" onclick="setTempoPreset(140,'Allegro')">140<br><span style="font-size:0.65rem">Allegro</span></button>
+                    <button class="tempo-preset-btn" onclick="setTempoPreset(180,'Presto')">180<br><span style="font-size:0.65rem">Presto</span></button>
+                </div>
+            </div>
+
+            <!-- GLOBAL -->
+            <div class="panel-section">
+                <div class="panel-section-title">Global Settings</div>
+                <div class="slider-row">
+                    <span class="slider-label">Steps</span>
+                    <input type="range" id="globalStepsSlider" min="4" max="32" value="16" step="1" oninput="setGlobalSteps(this.value)">
+                    <span class="slider-val" id="globalStepsVal">16</span>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label">Swing</span>
+                    <input type="range" id="swingSlider" min="0" max="50" value="0" oninput="setSwing(this.value)">
+                    <span class="slider-val" id="swingVal">0%</span>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label">Rotation</span>
+                    <input type="range" id="rotSpeedSlider" min="0" max="100" value="30" oninput="setRotSpeed(this.value)">
+                    <span class="slider-val" id="rotSpeedVal">30</span>
+                </div>
+            </div>
+
+            <!-- LAYERS -->
+            <div class="panel-section">
+                <div class="panel-section-title">Rhythm Layers</div>
+                <div id="layerCards"></div>
+                <button class="btn-add-layer" onclick="addLayer()">+ Add Layer</button>
+            </div>
+
+            <!-- SOUND -->
+            <div class="panel-section">
+                <div class="panel-section-title">Sound</div>
+                <div class="slider-row">
+                    <span class="slider-label">Volume</span>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="75" oninput="setVolume(this.value)">
+                    <span class="slider-val" id="volumeVal">75</span>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label">Reverb</span>
+                    <input type="range" id="reverbSlider" min="0" max="100" value="20" oninput="setReverb(this.value)">
+                    <span class="slider-val" id="reverbVal">20</span>
+                </div>
+            </div>
+
+            <!-- PRESETS -->
+            <div class="panel-section">
+                <div class="panel-section-title">Presets</div>
+                <div class="preset-row" id="presetButtons">
+                    <button class="preset-btn" onclick="loadBuiltinPreset('clave')">Clave</button>
+                    <button class="preset-btn" onclick="loadBuiltinPreset('bossa')">Bossa Nova</button>
+                    <button class="preset-btn" onclick="loadBuiltinPreset('afro')">Afro Bell</button>
+                    <button class="preset-btn" onclick="loadBuiltinPreset('tresillo')">Tresillo</button>
+                    <button class="preset-btn" onclick="loadBuiltinPreset('fourFour')">4/4 Rock</button>
+                    <button class="preset-btn" onclick="loadBuiltinPreset('poly32')">Poly 3:2</button>
+                </div>
+                <div class="preset-save-row">
+                    <input type="text" class="preset-name-input" id="presetNameInput" placeholder="My Preset…">
+                    <button class="btn-export" onclick="saveUserPreset()">Save</button>
+                    <button class="btn-export" onclick="loadUserPreset()">Load</button>
+                </div>
+            </div>
+
+            <!-- MIDI & EXPORT -->
+            <div class="panel-section">
+                <div class="panel-section-title">MIDI & Export</div>
+                <div class="midi-row">
+                    <div class="midi-status-dot" id="midiDot"></div>
+                    <span class="midi-status-text" id="midiStatusText">No MIDI</span>
+                    <button class="btn-midi" id="midiBtn" onclick="connectMIDI()">Connect MIDI</button>
+                </div>
+                <div class="midi-row" style="margin-top:0.6rem;">
+                    <button class="btn-export" onclick="exportMIDI()">⬇ Export MIDI</button>
+                    <button class="btn-export" onclick="exportPattern()">⬇ Export JSON</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="app-footer" role="contentinfo">
+    <div class="app-footer-content">
+        <div class="app-social-section">
+            <h3 class="app-social-title">Connect With Us</h3>
+            <div class="app-social-links">
+                <a href="https://x.com/keyscodesandmodes" target="_blank" rel="noopener noreferrer" aria-label="X">
+                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/KeysCodesModes" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://www.tiktok.com/@keyscodesandmodes" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/keyscodesandmodes/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="app-footer-divider"></div>
+        <div class="app-copyright">
+            <p>&copy; 2026 <strong>Keys, Codes &amp; Modes™</strong> | Created by <strong>Benjamin Ryan</strong> | All Rights Reserved</p>
+            <p>Based on <em>"Keys, Codes, and Modes: A Visual Approach to Understanding Music"</em></p>
+            <p>Santa Barbara, California</p>
+        </div>
+        <div class="app-legal-links">
+            <a href="../privacy.html">Privacy Policy</a>
+            <a href="../terms.html">Terms of Service</a>
+            <a href="../contact.html">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const State = {
+    playing: false,
+    currentStep: 0,
+    tempo: 110,
+    globalSteps: 16,
+    swing: 0,
+    rotationOffset: 0,
+    rotationSpeed: 0.008,
+    volume: 0.75,
+    reverbAmount: 0.2,
+    displayMode: 'geometry',
+    visToggles: { polygon: true, spiral: true, labels: true, playhead: true },
+    layers: [],
+    midiAccess: null,
+    midiConnected: false,
+    audioCtx: null,
+    reverbNode: null,
+    masterGain: null,
+    schedulerTimer: null,
+    animFrame: null,
+    nextNoteTime: 0,
+    scheduleAheadTime: 0.1,
+    lookAhead: 25,
+    userPresets: {}
+};
+
+// ============================================================
+// AUDIO ENGINE
+// ============================================================
+function initAudio() {
+    if (State.audioCtx) return;
+    State.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    State.masterGain = State.audioCtx.createGain();
+    State.masterGain.gain.value = State.volume;
+
+    // Simple reverb via convolution
+    const bufferSize = State.audioCtx.sampleRate * 1.5;
+    const buffer = State.audioCtx.createBuffer(2, bufferSize, State.audioCtx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+        const data = buffer.getChannelData(ch);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2.5);
+        }
+    }
+    State.reverbNode = State.audioCtx.createConvolver();
+    State.reverbNode.buffer = buffer;
+
+    const reverbGain = State.audioCtx.createGain();
+    reverbGain.gain.value = State.reverbAmount;
+
+    const dryGain = State.audioCtx.createGain();
+    dryGain.gain.value = 1 - State.reverbAmount;
+
+    State.masterGain.connect(dryGain);
+    State.masterGain.connect(State.reverbNode);
+    State.reverbNode.connect(reverbGain);
+    dryGain.connect(State.audioCtx.destination);
+    reverbGain.connect(State.audioCtx.destination);
+}
+
+function playSound(type, freq, when, layer) {
+    if (!State.audioCtx) return;
+    const ctx = State.audioCtx;
+    const now = when || ctx.currentTime;
+
+    if (type === 'click' || type === 'rim') {
+        // Percussion click
+        const buf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.012));
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const g = ctx.createGain();
+        g.gain.value = type === 'rim' ? 0.5 : 0.8;
+        src.connect(g); g.connect(State.masterGain);
+        src.start(now);
+    } else if (type === 'kick') {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.frequency.setValueAtTime(freq || 150, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.12);
+        g.gain.setValueAtTime(1, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.connect(g); g.connect(State.masterGain);
+        osc.start(now); osc.stop(now + 0.22);
+    } else if (type === 'tone') {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.frequency.value = freq || 440;
+        osc.type = 'sine';
+        g.gain.setValueAtTime(0.4, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(g); g.connect(State.masterGain);
+        osc.start(now); osc.stop(now + 0.17);
+    } else if (type === 'wood') {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.frequency.value = freq || 800;
+        osc.type = 'square';
+        const filt = ctx.createBiquadFilter();
+        filt.type = 'bandpass';
+        filt.frequency.value = freq || 800;
+        filt.Q.value = 4;
+        g.gain.setValueAtTime(0.6, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.connect(filt); filt.connect(g); g.connect(State.masterGain);
+        osc.start(now); osc.stop(now + 0.1);
+    } else if (type === 'hihat') {
+        const buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.01));
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const filt = ctx.createBiquadFilter();
+        filt.type = 'highpass';
+        filt.frequency.value = 8000;
+        const g = ctx.createGain();
+        g.gain.value = 0.4;
+        src.connect(filt); filt.connect(g); g.connect(State.masterGain);
+        src.start(now);
+    }
+}
+
+// ============================================================
+// TRUE BJORKLUND EUCLIDEAN GENERATOR
+// ============================================================
+function bjorklund(steps, pulses) {
+    if (pulses <= 0) return new Array(steps).fill(0);
+    if (pulses >= steps) return new Array(steps).fill(1);
+
+    let pattern = [];
+    let counts = [];
+    let remainders = [];
+    let divisor = steps - pulses;
+    remainders.push(pulses);
+    let level = 0;
+
+    while (true) {
+        counts.push(Math.floor(divisor / remainders[level]));
+        remainders.push(divisor % remainders[level]);
+        divisor = remainders[level];
+        level++;
+        if (remainders[level] <= 1) break;
+    }
+    counts.push(divisor);
+
+    function build(lv) {
+        if (lv === -1) pattern.push(0);
+        else if (lv === -2) pattern.push(1);
+        else {
+            for (let i = 0; i < counts[lv]; i++) build(lv - 1);
+            if (remainders[lv] !== 0) build(lv - 2);
+        }
+    }
+    build(level);
+    return pattern.reverse();
+}
+
+// ============================================================
+// LAYER MANAGEMENT
+// ============================================================
+const LAYER_COLORS = ['#F4D03F','#008080','#CF7A5A','#8B6BA3','#4A7BA7','#9AAF7A','#E8D77F','#FF6B6B'];
+const LAYER_SOUNDS = ['click','kick','tone','hihat','wood','rim'];
+const LAYER_FREQS  = [1200, 80, 440, 800, 600, 1000, 300, 550];
+
+let layerIdCounter = 0;
+
+function createLayer(steps, pulses, colorIdx, soundType) {
+    const id = ++layerIdCounter;
+    const color = LAYER_COLORS[colorIdx % LAYER_COLORS.length];
+    return {
+        id,
+        steps: steps || State.globalSteps,
+        pulses: pulses || 4,
+        pattern: bjorklund(steps || State.globalSteps, pulses || 4),
+        color,
+        rotationSpeed: 1.0,
+        soundType: soundType || 'click',
+        midiNote: 36 + colorIdx * 2,
+        muted: false,
+        volume: 0.8
+    };
+}
+
+function addLayer() {
+    if (State.layers.length >= 6) { showToast('Max 6 layers'); return; }
+    const idx = State.layers.length;
+    const defaults = [[16,5],[16,3],[16,7],[12,4],[8,3],[16,2]];
+    const [s, p] = defaults[idx] || [16, 4];
+    State.layers.push(createLayer(s, p, idx, LAYER_SOUNDS[idx % LAYER_SOUNDS.length]));
+    renderLayerCards();
+    updateInfoBar();
+}
+
+function removeLayer(id) {
+    State.layers = State.layers.filter(l => l.id !== id);
+    renderLayerCards();
+    updateInfoBar();
+}
+
+function muteLayer(id) {
+    const l = State.layers.find(l => l.id === id);
+    if (l) { l.muted = !l.muted; renderLayerCards(); }
+}
+
+function updateLayerSteps(id, val) {
+    const l = State.layers.find(l => l.id === id);
+    if (l) {
+        l.steps = parseInt(val);
+        l.pattern = bjorklund(l.steps, Math.min(l.pulses, l.steps));
+        document.getElementById(`lsv-${id}`).textContent = l.steps;
+    }
+}
+
+function updateLayerPulses(id, val) {
+    const l = State.layers.find(l => l.id === id);
+    if (l) {
+        l.pulses = parseInt(val);
+        l.pattern = bjorklund(l.steps, Math.min(l.pulses, l.steps));
+        document.getElementById(`lpv-${id}`).textContent = l.pulses;
+    }
+}
+
+function updateLayerRotSpeed(id, val) {
+    const l = State.layers.find(l => l.id === id);
+    if (l) {
+        l.rotationSpeed = parseFloat(val) / 50;
+        document.getElementById(`lrv-${id}`).textContent = parseFloat(val).toFixed(0);
+    }
+}
+
+function updateLayerSound(id, val) {
+    const l = State.layers.find(l => l.id === id);
+    if (l) l.soundType = val;
+}
+
+function renderLayerCards() {
+    const container = document.getElementById('layerCards');
+    container.innerHTML = '';
+    State.layers.forEach((layer, idx) => {
+        const card = document.createElement('div');
+        card.className = 'layer-card';
+        card.style.background = `linear-gradient(135deg, ${layer.color}18, ${layer.color}08)`;
+        card.style.borderColor = layer.muted ? 'rgba(255,255,255,0.1)' : `${layer.color}55`;
+
+        const soundOptions = LAYER_SOUNDS.map(s =>
+            `<option value="${s}" ${layer.soundType === s ? 'selected' : ''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+        ).join('');
+
+        card.innerHTML = `
+            <div class="layer-header">
+                <div class="layer-dot" style="background:${layer.color};color:${layer.color}"></div>
+                <span class="layer-name" style="color:${layer.color}">Layer ${idx+1}</span>
+                <button class="layer-mute-btn ${layer.muted?'muted':''}" onclick="muteLayer(${layer.id})">${layer.muted?'Muted':'Mute'}</button>
+                <button class="layer-del-btn" onclick="removeLayer(${layer.id})">✕</button>
+            </div>
+            <div class="layer-sliders">
+                <div class="slider-row">
+                    <span class="slider-label" style="font-size:0.72rem">Steps</span>
+                    <input type="range" min="4" max="32" value="${layer.steps}" step="1"
+                        oninput="updateLayerSteps(${layer.id},this.value)" style="accent-color:${layer.color}">
+                    <span class="slider-val" id="lsv-${layer.id}" style="color:${layer.color}">${layer.steps}</span>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label" style="font-size:0.72rem">Pulses</span>
+                    <input type="range" min="1" max="${layer.steps}" value="${layer.pulses}" step="1"
+                        oninput="updateLayerPulses(${layer.id},this.value)" style="accent-color:${layer.color}">
+                    <span class="slider-val" id="lpv-${layer.id}" style="color:${layer.color}">${layer.pulses}</span>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label" style="font-size:0.72rem">Spin</span>
+                    <input type="range" min="0" max="100" value="${Math.round(layer.rotationSpeed*50)}" step="1"
+                        oninput="updateLayerRotSpeed(${layer.id},this.value)" style="accent-color:${layer.color}">
+                    <span class="slider-val" id="lrv-${layer.id}" style="color:${layer.color}">${Math.round(layer.rotationSpeed*50)}</span>
+                </div>
+                <div class="slider-row">
+                    <span class="slider-label" style="font-size:0.72rem">Sound</span>
+                    <select onchange="updateLayerSound(${layer.id},this.value)"
+                        style="flex:1;background:rgba(0,0,0,0.3);border:1px solid ${layer.color}44;color:${layer.color};border-radius:6px;padding:0.2rem 0.4rem;font-family:var(--font-body);font-size:0.75rem;outline:none">
+                        ${soundOptions}
+                    </select>
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// ============================================================
+// PLAYBACK ENGINE — Web Audio Scheduler
+// ============================================================
+function scheduler() {
+    while (State.nextNoteTime < State.audioCtx.currentTime + State.scheduleAheadTime) {
+        scheduleNote(State.currentStep, State.nextNoteTime);
+        advanceStep();
+    }
+    State.schedulerTimer = setTimeout(scheduler, State.lookAhead);
+}
+
+function scheduleNote(step, time) {
+    State.layers.forEach(layer => {
+        if (layer.muted) return;
+        const layerStep = step % layer.steps;
+        if (layer.pattern[layerStep] === 1) {
+            playSound(layer.soundType, LAYER_FREQS[LAYER_SOUNDS.indexOf(layer.soundType)] || 440, time, layer);
+            sendMIDINote(layer.midiNote, time);
+        }
+    });
+}
+
+function advanceStep() {
+    const secondsPerBeat = 60.0 / State.tempo;
+    const swingOffset = (State.currentStep % 2 === 1) ? (secondsPerBeat * State.swing / 200) : 0;
+    State.nextNoteTime += (secondsPerBeat / 4) + swingOffset;
+    State.currentStep = (State.currentStep + 1) % State.globalSteps;
+}
+
+function togglePlay() {
+    initAudio();
+    if (!State.playing) {
+        if (State.audioCtx.state === 'suspended') State.audioCtx.resume();
+        State.playing = true;
+        State.nextNoteTime = State.audioCtx.currentTime;
+        scheduler();
+        document.getElementById('playBtn').textContent = '⏸ Pause';
+        document.getElementById('playBtn').classList.add('active');
+    } else {
+        State.playing = false;
+        clearTimeout(State.schedulerTimer);
+        document.getElementById('playBtn').textContent = '▶ Play';
+        document.getElementById('playBtn').classList.remove('active');
+    }
+}
+
+function stopReset() {
+    State.playing = false;
+    State.currentStep = 0;
+    clearTimeout(State.schedulerTimer);
+    document.getElementById('playBtn').textContent = '▶ Play';
+    document.getElementById('playBtn').classList.remove('active');
+}
+
+function resetRotation() { State.rotationOffset = 0; }
+
+// ============================================================
+// PARAMETER CONTROLS
+// ============================================================
+function setTempo(val) {
+    State.tempo = parseInt(val);
+    document.getElementById('tempoDisplay').textContent = val;
+    document.getElementById('tempoVal').textContent = val;
+    document.getElementById('tempoNote').textContent = `♩ = ${val}`;
+    document.getElementById('infoTempo').textContent = val;
+    document.querySelectorAll('.tempo-preset-btn').forEach(b => b.classList.remove('active'));
+}
+function setTempoPreset(bpm, name) {
+    State.tempo = bpm;
+    document.getElementById('tempoSlider').value = bpm;
+    document.getElementById('tempoDisplay').textContent = bpm;
+    document.getElementById('tempoVal').textContent = bpm;
+    document.getElementById('tempoNote').textContent = `♩ = ${bpm}`;
+    document.getElementById('infoTempo').textContent = bpm;
+    document.querySelectorAll('.tempo-preset-btn').forEach(b => {
+        b.classList.toggle('active', parseInt(b.textContent) === bpm);
+    });
+}
+function setGlobalSteps(val) {
+    State.globalSteps = parseInt(val);
+    document.getElementById('globalStepsVal').textContent = val;
+    document.getElementById('infoSteps').textContent = val;
+    buildStepBar();
+}
+function setSwing(val) {
+    State.swing = parseInt(val);
+    document.getElementById('swingVal').textContent = val + '%';
+}
+function setRotSpeed(val) {
+    State.rotationSpeed = parseInt(val) / 3000;
+    document.getElementById('rotSpeedVal').textContent = val;
+}
+function setVolume(val) {
+    State.volume = parseInt(val) / 100;
+    document.getElementById('volumeVal').textContent = val;
+    if (State.masterGain) State.masterGain.gain.value = State.volume;
+}
+function setReverb(val) {
+    State.reverbAmount = parseInt(val) / 100;
+    document.getElementById('reverbVal').textContent = val + '%';
+}
+
+// ============================================================
+// STEP BAR
+// ============================================================
+function buildStepBar() {
+    const bar = document.getElementById('stepBar');
+    bar.innerHTML = '';
+    for (let i = 0; i < State.globalSteps; i++) {
+        const pip = document.createElement('div');
+        pip.className = 'step-pip';
+        pip.id = `pip-${i}`;
+        bar.appendChild(pip);
+    }
+}
+
+function updateStepBar(step) {
+    document.querySelectorAll('.step-pip').forEach((p, i) => {
+        p.classList.toggle('active-step', i === step);
+    });
+    document.getElementById('infoCurrent').textContent = step;
+}
+
+// ============================================================
+// VISUAL DISPLAY MODES
+// ============================================================
+function setMode(mode) {
+    State.displayMode = mode;
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(`tab-${mode}`).classList.add('active');
+}
+
+function toggleVis(key) {
+    State.visToggles[key] = !State.visToggles[key];
+    const btn = document.getElementById(`tog-${key}`);
+    btn.classList.toggle('on', State.visToggles[key]);
+}
+
+// ============================================================
+// CANVAS RENDERING
+// ============================================================
+const canvas = document.getElementById('rhythmCanvas');
+const ctx2d = canvas.getContext('2d');
+
+const CX = 270, CY = 270, R_OUTER = 220, R_INNER = 80;
+
+function draw() {
+    ctx2d.clearRect(0, 0, 540, 540);
+
+    // Background glow
+    const bgGrad = ctx2d.createRadialGradient(CX, CY, 0, CX, CY, 270);
+    bgGrad.addColorStop(0, 'rgba(0,128,128,0.04)');
+    bgGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx2d.fillStyle = bgGrad;
+    ctx2d.fillRect(0, 0, 540, 540);
+
+    if (State.displayMode === 'geometry') drawGeometry();
+    else if (State.displayMode === 'spiral') drawSpiralMode();
+    else if (State.displayMode === 'fretboard') drawFretboardMode();
+
+    updateStepBar(State.currentStep % State.globalSteps);
+    updateInfoBar();
+
+    State.animFrame = requestAnimationFrame(draw);
+
+    // Advance rotation
+    if (State.playing) {
+        State.rotationOffset += State.rotationSpeed;
+    } else {
+        State.rotationOffset += State.rotationSpeed * 0.15; // idle drift
+    }
+}
+
+function drawGeometry() {
+    // Outer grid circle
+    ctx2d.strokeStyle = 'rgba(0,128,128,0.25)';
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    ctx2d.arc(CX, CY, R_OUTER, 0, Math.PI * 2);
+    ctx2d.stroke();
+
+    // Inner circle
+    ctx2d.strokeStyle = 'rgba(0,128,128,0.12)';
+    ctx2d.beginPath();
+    ctx2d.arc(CX, CY, R_INNER, 0, Math.PI * 2);
+    ctx2d.stroke();
+
+    // Global step ticks
+    for (let i = 0; i < State.globalSteps; i++) {
+        const angle = (i / State.globalSteps) * Math.PI * 2 - Math.PI / 2;
+        const x1 = CX + Math.cos(angle) * (R_OUTER - 6);
+        const y1 = CY + Math.sin(angle) * (R_OUTER - 6);
+        const x2 = CX + Math.cos(angle) * (R_OUTER + 6);
+        const y2 = CY + Math.sin(angle) * (R_OUTER + 6);
+        ctx2d.strokeStyle = 'rgba(0,128,128,0.3)';
+        ctx2d.lineWidth = 1;
+        ctx2d.beginPath();
+        ctx2d.moveTo(x1, y1);
+        ctx2d.lineTo(x2, y2);
+        ctx2d.stroke();
+    }
+
+    // Draw each layer
+    State.layers.forEach((layer, layerIdx) => {
+        if (layer.muted) return;
+        const radius = R_OUTER - layerIdx * 20;
+        const beatPoints = [];
+        const currentLayerStep = State.currentStep % layer.steps;
+
+        for (let i = 0; i < layer.steps; i++) {
+            const baseAngle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2;
+            const angle = baseAngle + State.rotationOffset * layer.rotationSpeed;
+            const x = CX + Math.cos(angle) * radius;
+            const y = CY + Math.sin(angle) * radius;
+
+            if (layer.pattern[i] === 1) {
+                beatPoints.push({ x, y, i, angle });
+
+                // Beat node
+                const isCurrentBeat = (i === currentLayerStep && State.playing);
+                const nodeR = isCurrentBeat ? 11 : 7;
+
+                const grad = ctx2d.createRadialGradient(x, y, 0, x, y, nodeR * 2.5);
+                grad.addColorStop(0, layer.color);
+                grad.addColorStop(1, 'transparent');
+                ctx2d.fillStyle = grad;
+                ctx2d.beginPath();
+                ctx2d.arc(x, y, nodeR * 2.5, 0, Math.PI * 2);
+                ctx2d.fill();
+
+                ctx2d.fillStyle = isCurrentBeat ? '#fff' : layer.color;
+                ctx2d.beginPath();
+                ctx2d.arc(x, y, nodeR, 0, Math.PI * 2);
+                ctx2d.fill();
+
+                if (isCurrentBeat) {
+                    ctx2d.strokeStyle = layer.color;
+                    ctx2d.lineWidth = 2;
+                    ctx2d.beginPath();
+                    ctx2d.arc(x, y, nodeR + 5, 0, Math.PI * 2);
+                    ctx2d.stroke();
+                }
+            } else {
+                // Rest node
+                ctx2d.fillStyle = 'rgba(0,128,128,0.12)';
+                ctx2d.beginPath();
+                ctx2d.arc(x, y, 3, 0, Math.PI * 2);
+                ctx2d.fill();
+            }
+
+            // Step labels
+            if (State.visToggles.labels && layer.steps <= 24) {
+                const lx = CX + Math.cos(angle) * (radius + 16);
+                const ly = CY + Math.sin(angle) * (radius + 16);
+                ctx2d.fillStyle = 'rgba(232,232,232,0.2)';
+                ctx2d.font = '9px Montserrat, sans-serif';
+                ctx2d.textAlign = 'center';
+                ctx2d.textBaseline = 'middle';
+                ctx2d.fillText(i + 1, lx, ly);
+            }
+        }
+
+        // Polygon connecting beats
+        if (State.visToggles.polygon && beatPoints.length > 1) {
+            ctx2d.strokeStyle = layer.color + '70';
+            ctx2d.lineWidth = State.playing ? 1.5 : 1;
+            ctx2d.beginPath();
+            ctx2d.moveTo(beatPoints[0].x, beatPoints[0].y);
+            for (let p = 1; p < beatPoints.length; p++) {
+                ctx2d.lineTo(beatPoints[p].x, beatPoints[p].y);
+            }
+            ctx2d.closePath();
+            ctx2d.stroke();
+
+            // Fill polygon with translucent color
+            ctx2d.fillStyle = layer.color + '0D';
+            ctx2d.beginPath();
+            ctx2d.moveTo(beatPoints[0].x, beatPoints[0].y);
+            for (let p = 1; p < beatPoints.length; p++) {
+                ctx2d.lineTo(beatPoints[p].x, beatPoints[p].y);
+            }
+            ctx2d.closePath();
+            ctx2d.fill();
+        }
+    });
+
+    // Playhead line
+    if (State.visToggles.playhead) {
+        const playAngle = (State.currentStep / State.globalSteps) * Math.PI * 2 - Math.PI / 2;
+        const grad = ctx2d.createLinearGradient(CX, CY,
+            CX + Math.cos(playAngle) * R_OUTER,
+            CY + Math.sin(playAngle) * R_OUTER);
+        grad.addColorStop(0, 'rgba(244,208,63,0.0)');
+        grad.addColorStop(0.5, 'rgba(244,208,63,0.5)');
+        grad.addColorStop(1, 'rgba(244,208,63,0.9)');
+        ctx2d.strokeStyle = grad;
+        ctx2d.lineWidth = 2;
+        ctx2d.beginPath();
+        ctx2d.moveTo(CX, CY);
+        ctx2d.lineTo(
+            CX + Math.cos(playAngle) * R_OUTER,
+            CY + Math.sin(playAngle) * R_OUTER
+        );
+        ctx2d.stroke();
+    }
+
+    // Center dot
+    const cGrad = ctx2d.createRadialGradient(CX, CY, 0, CX, CY, 12);
+    cGrad.addColorStop(0, '#F4D03F');
+    cGrad.addColorStop(1, 'rgba(244,208,63,0)');
+    ctx2d.fillStyle = cGrad;
+    ctx2d.beginPath();
+    ctx2d.arc(CX, CY, 12, 0, Math.PI * 2);
+    ctx2d.fill();
+    ctx2d.fillStyle = '#F4D03F';
+    ctx2d.beginPath();
+    ctx2d.arc(CX, CY, 5, 0, Math.PI * 2);
+    ctx2d.fill();
+
+    // Spiral time overlay
+    if (State.visToggles.spiral) drawSpiralOverlay();
+}
+
+function drawSpiralOverlay() {
+    ctx2d.save();
+    ctx2d.globalAlpha = 0.15;
+    ctx2d.strokeStyle = '#8B6BA3';
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    for (let i = 0; i < 180; i++) {
+        const angle = i * 0.15 + State.rotationOffset * 0.5;
+        const rad = 5 + i * 1.0;
+        if (rad > R_OUTER) break;
+        const x = CX + Math.cos(angle) * rad;
+        const y = CY + Math.sin(angle) * rad;
+        if (i === 0) ctx2d.moveTo(x, y);
+        else ctx2d.lineTo(x, y);
+    }
+    ctx2d.stroke();
+    ctx2d.restore();
+}
+
+function drawSpiralMode() {
+    // Full spiral time visualization
+    ctx2d.save();
+    const rings = 6;
+    for (let ring = 0; ring < rings; ring++) {
+        const r = 30 + ring * 35;
+        ctx2d.strokeStyle = `hsla(${160 + ring * 25}, 60%, 50%, 0.2)`;
+        ctx2d.lineWidth = 1;
+        ctx2d.beginPath();
+        ctx2d.arc(CX, CY, r, 0, Math.PI * 2);
+        ctx2d.stroke();
+    }
+
+    // Spiral path
+    ctx2d.strokeStyle = '#8B6BA3';
+    ctx2d.lineWidth = 2;
+    ctx2d.beginPath();
+    for (let i = 0; i < 400; i++) {
+        const angle = i * 0.1 + State.rotationOffset;
+        const rad = 5 + i * 0.55;
+        if (rad > 260) break;
+        const x = CX + Math.cos(angle) * rad;
+        const y = CY + Math.sin(angle) * rad;
+        if (i === 0) ctx2d.moveTo(x, y);
+        else ctx2d.lineTo(x, y);
+    }
+    ctx2d.stroke();
+
+    // Layer beat marks on spiral
+    State.layers.forEach(layer => {
+        if (layer.muted) return;
+        for (let i = 0; i < layer.steps; i++) {
+            if (layer.pattern[i] === 1) {
+                const spiralPos = (i / layer.steps) * 180 + State.rotationOffset * 50;
+                const angle = spiralPos * 0.1 + State.rotationOffset;
+                const rad = 5 + spiralPos * 0.55;
+                if (rad > 260) continue;
+                const x = CX + Math.cos(angle) * rad;
+                const y = CY + Math.sin(angle) * rad;
+                ctx2d.fillStyle = layer.color;
+                ctx2d.beginPath();
+                ctx2d.arc(x, y, 5, 0, Math.PI * 2);
+                ctx2d.fill();
+            }
+        }
+    });
+    ctx2d.restore();
+}
+
+function drawFretboardMode() {
+    // Guitar fretboard visualization
+    const fbY = 80, fbH = 100, fbX = 20, fbW = 500;
+    const numStrings = 6, numFrets = 12;
+    const fretW = fbW / numFrets;
+    const stringSpacing = fbH / (numStrings - 1);
+
+    // Fretboard background
+    const fbGrad = ctx2d.createLinearGradient(fbX, fbY, fbX, fbY + fbH);
+    fbGrad.addColorStop(0, 'rgba(74,50,20,0.8)');
+    fbGrad.addColorStop(1, 'rgba(50,30,10,0.8)');
+    ctx2d.fillStyle = fbGrad;
+    ctx2d.roundRect(fbX, fbY, fbW, fbH, 8);
+    ctx2d.fill();
+
+    // Fret lines
+    for (let f = 0; f <= numFrets; f++) {
+        ctx2d.strokeStyle = f === 0 ? 'rgba(244,208,63,0.8)' : 'rgba(200,180,150,0.4)';
+        ctx2d.lineWidth = f === 0 ? 3 : 1;
+        ctx2d.beginPath();
+        ctx2d.moveTo(fbX + f * fretW, fbY);
+        ctx2d.lineTo(fbX + f * fretW, fbY + fbH);
+        ctx2d.stroke();
+    }
+
+    // Strings
+    for (let s = 0; s < numStrings; s++) {
+        const sy = fbY + s * stringSpacing;
+        const sGrad = ctx2d.createLinearGradient(fbX, sy, fbX + fbW, sy);
+        sGrad.addColorStop(0, 'rgba(200,200,180,0.7)');
+        sGrad.addColorStop(0.5, 'rgba(220,220,200,0.9)');
+        sGrad.addColorStop(1, 'rgba(200,200,180,0.7)');
+        ctx2d.strokeStyle = sGrad;
+        ctx2d.lineWidth = s < 2 ? 2.5 : s < 4 ? 2 : 1.5;
+        ctx2d.beginPath();
+        ctx2d.moveTo(fbX, sy);
+        ctx2d.lineTo(fbX + fbW, sy);
+        ctx2d.stroke();
+    }
+
+    // Fret markers (3, 5, 7, 9, 12)
+    [2, 4, 6, 8, 11].forEach(fret => {
+        const mx = fbX + (fret + 0.5) * fretW;
+        const my = fbY + fbH / 2;
+        ctx2d.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx2d.beginPath();
+        ctx2d.arc(mx, my, 7, 0, Math.PI * 2);
+        ctx2d.fill();
+    });
+
+    // Beat highlights from layers
+    State.layers.forEach(layer => {
+        if (layer.muted) return;
+        const currentLayerStep = State.currentStep % layer.steps;
+        for (let i = 0; i < layer.steps; i++) {
+            if (layer.pattern[i] === 1) {
+                const fret = i % numFrets;
+                const string = i % numStrings;
+                const fx = fbX + fret * fretW + fretW / 2;
+                const sy2 = fbY + string * stringSpacing;
+                const isActive = (i === currentLayerStep && State.playing);
+
+                const ng = ctx2d.createRadialGradient(fx, sy2, 0, fx, sy2, isActive ? 16 : 10);
+                ng.addColorStop(0, layer.color);
+                ng.addColorStop(1, 'transparent');
+                ctx2d.fillStyle = ng;
+                ctx2d.beginPath();
+                ctx2d.arc(fx, sy2, isActive ? 16 : 10, 0, Math.PI * 2);
+                ctx2d.fill();
+
+                ctx2d.fillStyle = isActive ? '#fff' : layer.color;
+                ctx2d.beginPath();
+                ctx2d.arc(fx, sy2, isActive ? 9 : 6, 0, Math.PI * 2);
+                ctx2d.fill();
+            }
+        }
+    });
+
+    // String names
+    const noteNames = ['E', 'B', 'G', 'D', 'A', 'E'];
+    for (let s = 0; s < numStrings; s++) {
+        const sy = fbY + s * stringSpacing;
+        ctx2d.fillStyle = 'rgba(244,208,63,0.7)';
+        ctx2d.font = 'bold 11px Montserrat, sans-serif';
+        ctx2d.textAlign = 'center';
+        ctx2d.textBaseline = 'middle';
+        ctx2d.fillText(noteNames[s], fbX - 12, sy);
+    }
+
+    // Rhythm circle below fretboard
+    const miniCX = CX, miniCY = 360, miniR = 130;
+
+    ctx2d.strokeStyle = 'rgba(0,128,128,0.2)';
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    ctx2d.arc(miniCX, miniCY, miniR, 0, Math.PI * 2);
+    ctx2d.stroke();
+
+    State.layers.forEach((layer, li) => {
+        if (layer.muted) return;
+        const r = miniR - li * 15;
+        const beatPoints = [];
+        for (let i = 0; i < layer.steps; i++) {
+            const angle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2 + State.rotationOffset * layer.rotationSpeed;
+            const x = miniCX + Math.cos(angle) * r;
+            const y = miniCY + Math.sin(angle) * r;
+            if (layer.pattern[i] === 1) {
+                beatPoints.push({ x, y });
+                ctx2d.fillStyle = layer.color;
+                ctx2d.beginPath();
+                ctx2d.arc(x, y, 5, 0, Math.PI * 2);
+                ctx2d.fill();
+            }
+        }
+        if (beatPoints.length > 1) {
+            ctx2d.strokeStyle = layer.color + '55';
+            ctx2d.lineWidth = 1;
+            ctx2d.beginPath();
+            ctx2d.moveTo(beatPoints[0].x, beatPoints[0].y);
+            beatPoints.forEach(p => ctx2d.lineTo(p.x, p.y));
+            ctx2d.closePath();
+            ctx2d.stroke();
+        }
+    });
+}
+
+// ============================================================
+// CANVAS CLICK — Toggle Beats
+// ============================================================
+canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top) * scaleY;
+
+    const targetLayerIdx = e.shiftKey ? 1 : 0;
+    const targetLayer = State.layers[targetLayerIdx];
+    if (!targetLayer) return;
+
+    const dx = mx - CX, dy = my - CY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 30) return; // too center
+
+    let angle = Math.atan2(dy, dx) + Math.PI / 2 - State.rotationOffset * targetLayer.rotationSpeed;
+    if (angle < 0) angle += Math.PI * 2;
+    if (angle >= Math.PI * 2) angle -= Math.PI * 2;
+
+    const stepIdx = Math.round(angle / (Math.PI * 2) * targetLayer.steps) % targetLayer.steps;
+    targetLayer.pattern[stepIdx] ^= 1;
+
+    // Visual feedback
+    initAudio();
+    if (targetLayer.pattern[stepIdx] === 1) {
+        playSound(targetLayer.soundType, LAYER_FREQS[LAYER_SOUNDS.indexOf(targetLayer.soundType)] || 440);
+    }
+});
+
+// ============================================================
+// INFO BAR
+// ============================================================
+function updateInfoBar() {
+    document.getElementById('infoLayers').textContent = State.layers.length;
+}
+
+// ============================================================
+// PRESETS
+// ============================================================
+const BUILTIN_PRESETS = {
+    clave: {
+        tempo: 120,
+        layers: [
+            { steps: 16, pulses: 5, colorIdx: 0, sound: 'wood' },
+            { steps: 16, pulses: 3, colorIdx: 1, sound: 'click' }
+        ]
+    },
+    bossa: {
+        tempo: 130,
+        layers: [
+            { steps: 16, pulses: 5, colorIdx: 0, sound: 'wood' },
+            { steps: 16, pulses: 3, colorIdx: 1, sound: 'hihat' },
+            { steps: 16, pulses: 2, colorIdx: 3, sound: 'kick' }
+        ]
+    },
+    afro: {
+        tempo: 100,
+        layers: [
+            { steps: 12, pulses: 7, colorIdx: 0, sound: 'tone' },
+            { steps: 12, pulses: 5, colorIdx: 2, sound: 'click' }
+        ]
+    },
+    tresillo: {
+        tempo: 110,
+        layers: [
+            { steps: 8, pulses: 3, colorIdx: 0, sound: 'kick' },
+            { steps: 8, pulses: 4, colorIdx: 1, sound: 'hihat' }
+        ]
+    },
+    fourFour: {
+        tempo: 120,
+        layers: [
+            { steps: 16, pulses: 4, colorIdx: 3, sound: 'kick' },
+            { steps: 16, pulses: 8, colorIdx: 1, sound: 'hihat' },
+            { steps: 16, pulses: 2, colorIdx: 2, sound: 'wood' }
+        ]
+    },
+    poly32: {
+        tempo: 90,
+        layers: [
+            { steps: 16, pulses: 3, colorIdx: 0, sound: 'click' },
+            { steps: 16, pulses: 2, colorIdx: 1, sound: 'tone' }
+        ]
+    }
+};
+
+function loadBuiltinPreset(name) {
+    const preset = BUILTIN_PRESETS[name];
+    if (!preset) return;
+
+    State.layers = [];
+    layerIdCounter = 0;
+
+    preset.layers.forEach(ldef => {
+        const layer = createLayer(ldef.steps, ldef.pulses, ldef.colorIdx, ldef.sound);
+        State.layers.push(layer);
+    });
+
+    setTempoPreset(preset.tempo, '');
+    document.getElementById('tempoSlider').value = preset.tempo;
+
+    renderLayerCards();
+    updateInfoBar();
+    showToast(`Loaded: ${name.charAt(0).toUpperCase() + name.slice(1)}`);
+}
+
+function saveUserPreset() {
+    const name = document.getElementById('presetNameInput').value.trim();
+    if (!name) { showToast('Enter a preset name'); return; }
+
+    const data = {
+        tempo: State.tempo,
+        globalSteps: State.globalSteps,
+        swing: State.swing,
+        layers: State.layers.map(l => ({
+            steps: l.steps, pulses: l.pulses, pattern: l.pattern,
+            color: l.color, colorIdx: LAYER_COLORS.indexOf(l.color),
+            rotationSpeed: l.rotationSpeed, soundType: l.soundType,
+            midiNote: l.midiNote, muted: l.muted
+        }))
+    };
+
+    State.userPresets[name] = data;
+    try { localStorage.setItem('kcm_rhythm_presets', JSON.stringify(State.userPresets)); } catch(e) {}
+    showToast(`Saved: "${name}"`);
+}
+
+function loadUserPreset() {
+    const name = document.getElementById('presetNameInput').value.trim();
+    try {
+        const stored = localStorage.getItem('kcm_rhythm_presets');
+        if (stored) State.userPresets = JSON.parse(stored);
+    } catch(e) {}
+
+    if (!name || !State.userPresets[name]) {
+        // Show available
+        const keys = Object.keys(State.userPresets);
+        if (keys.length) showToast('Available: ' + keys.join(', '));
+        else showToast('No saved presets');
+        return;
+    }
+
+    const data = State.userPresets[name];
+    State.layers = [];
+    layerIdCounter = 0;
+
+    data.layers.forEach(ldef => {
+        const l = createLayer(ldef.steps, ldef.pulses, ldef.colorIdx, ldef.soundType);
+        l.pattern = ldef.pattern;
+        l.muted = ldef.muted;
+        l.rotationSpeed = ldef.rotationSpeed;
+        State.layers.push(l);
+    });
+
+    setTempoPreset(data.tempo, '');
+    document.getElementById('tempoSlider').value = data.tempo;
+    document.getElementById('globalStepsSlider').value = data.globalSteps || 16;
+    document.getElementById('globalStepsVal').textContent = data.globalSteps || 16;
+    State.globalSteps = data.globalSteps || 16;
+
+    renderLayerCards();
+    updateInfoBar();
+    buildStepBar();
+    showToast(`Loaded: "${name}"`);
+}
+
+// ============================================================
+// MIDI
+// ============================================================
+async function connectMIDI() {
+    if (!navigator.requestMIDIAccess) {
+        showToast('Web MIDI not supported in this browser');
+        return;
+    }
+    try {
+        State.midiAccess = await navigator.requestMIDIAccess();
+        State.midiConnected = true;
+        document.getElementById('midiDot').classList.add('connected');
+        document.getElementById('midiStatusText').textContent = 'MIDI Ready';
+        document.getElementById('midiBtn').classList.add('connected');
+        document.getElementById('midiBtn').textContent = '✓ MIDI Connected';
+
+        // Log available outputs
+        let outputNames = [];
+        for (let out of State.midiAccess.outputs.values()) outputNames.push(out.name);
+        showToast(outputNames.length ? `MIDI: ${outputNames[0]}` : 'MIDI connected (no outputs)');
+    } catch (err) {
+        showToast('MIDI access denied');
+    }
+}
+
+function sendMIDINote(note, time) {
+    if (!State.midiConnected || !State.midiAccess) return;
+    for (let out of State.midiAccess.outputs.values()) {
+        out.send([0x90, note, 100]);
+        out.send([0x80, note, 0], window.performance.now() + 100);
+    }
+}
+
+// ============================================================
+// MIDI EXPORT
+// ============================================================
+function exportMIDI() {
+    // Build a minimal MIDI file in memory
+    const tracks = State.layers.map(layer => ({ layer }));
+    const ticksPerBeat = 480;
+    const tempo = Math.round(60000000 / State.tempo);
+
+    function int32BE(val) {
+        return [(val >> 24) & 0xFF, (val >> 16) & 0xFF, (val >> 8) & 0xFF, val & 0xFF];
+    }
+    function int16BE(val) {
+        return [(val >> 8) & 0xFF, val & 0xFF];
+    }
+    function varLen(val) {
+        if (val < 128) return [val];
+        const result = [];
+        let v = val;
+        result.unshift(v & 0x7F);
+        v >>= 7;
+        while (v > 0) { result.unshift((v & 0x7F) | 0x80); v >>= 7; }
+        return result;
+    }
+
+    // Header chunk
+    const header = [
+        0x4D, 0x54, 0x68, 0x64, // MThd
+        0, 0, 0, 6,             // chunk length = 6
+        0, 1,                   // format 1
+        ...int16BE(State.layers.length + 1), // num tracks
+        ...int16BE(ticksPerBeat)
+    ];
+
+    // Tempo track
+    const tempoData = [
+        0x00, 0xFF, 0x51, 0x03, // Set tempo meta event
+        ...[(tempo >> 16) & 0xFF, (tempo >> 8) & 0xFF, tempo & 0xFF],
+        0x00, 0xFF, 0x2F, 0x00  // End of track
+    ];
+    const tempoTrackHeader = [0x4D, 0x54, 0x72, 0x6B, ...int32BE(tempoData.length)];
+
+    // Note tracks
+    const noteTrackChunks = State.layers.map((layer, li) => {
+        const events = [];
+        const stepsPerBeat = 4;
+        const ticksPerStep = ticksPerBeat / stepsPerBeat;
+
+        for (let i = 0; i < layer.steps; i++) {
+            if (layer.pattern[i] === 1) {
+                const tick = Math.round(i * ticksPerStep);
+                events.push({ tick, type: 'on', note: layer.midiNote });
+                events.push({ tick: tick + Math.round(ticksPerStep * 0.8), type: 'off', note: layer.midiNote });
+            }
+        }
+        events.sort((a, b) => a.tick - b.tick);
+
+        const trackData = [];
+        let lastTick = 0;
+        events.forEach(ev => {
+            const delta = ev.tick - lastTick;
+            trackData.push(...varLen(delta));
+            if (ev.type === 'on') trackData.push(0x90, ev.note, 90);
+            else trackData.push(0x80, ev.note, 0);
+            lastTick = ev.tick;
+        });
+        trackData.push(0x00, 0xFF, 0x2F, 0x00); // End of track
+
+        return [0x4D, 0x54, 0x72, 0x6B, ...int32BE(trackData.length), ...trackData];
+    });
+
+    const allBytes = [
+        ...header,
+        ...tempoTrackHeader,
+        ...tempoData,
+        ...noteTrackChunks.flat()
+    ];
+
+    const blob = new Blob([new Uint8Array(allBytes)], { type: 'audio/midi' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'kcm-rhythm.mid';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('MIDI exported!');
+}
+
+// ============================================================
+// PATTERN JSON EXPORT
+// ============================================================
+function exportPattern() {
+    const data = {
+        created: new Date().toISOString(),
+        tempo: State.tempo,
+        globalSteps: State.globalSteps,
+        swing: State.swing,
+        layers: State.layers.map(l => ({
+            steps: l.steps,
+            pulses: l.pulses,
+            pattern: l.pattern,
+            soundType: l.soundType,
+            midiNote: l.midiNote
+        }))
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'kcm-pattern.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Pattern exported!');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+    // Load default preset — Clave
+    State.layers = [];
+    layerIdCounter = 0;
+
+    // Layer 1 — Gold / click (5 in 16)
+    State.layers.push(createLayer(16, 5, 0, 'click'));
+    // Layer 2 — Teal / kick (3 in 16)
+    State.layers.push(createLayer(16, 3, 1, 'kick'));
+
+    renderLayerCards();
+    buildStepBar();
+    updateInfoBar();
+
+    // Load user presets from storage
+    try {
+        const stored = localStorage.getItem('kcm_rhythm_presets');
+        if (stored) State.userPresets = JSON.parse(stored);
+    } catch(e) {}
+
+    // Start animation loop
+    draw();
+
+    // Init audio on first interaction
+    document.addEventListener('click', () => { initAudio(); }, { once: true });
+}
+
+init();
+</script>
+</body>
+</html>
