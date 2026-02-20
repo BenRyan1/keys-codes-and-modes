@@ -3,8 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rhythm Geometry Lab | Keys, Codes & Modes</title>
+    <title>Rhythm Geometry Lab - Interactive Euclidean Rhythm Visualizer | Keys, Codes & Modes</title>
+    <meta name="description" content="Create stunning polyrhythmic patterns with our interactive Euclidean rhythm generator. Visualize geometric rhythms, explore note values, and master timing through beautiful mathematical patterns.">
+    <meta name="keywords" content="euclidean rhythm, polyrhythm generator, rhythm visualizer, music geometry, Björklund algorithm, rhythm education, timing patterns, musical geometry">
+    <meta name="author" content="Benjamin Ryan">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.keyscodesandmodes.com/apps/rhythm-geometry-lab.html">
+    <meta property="og:title" content="Rhythm Geometry Lab - Interactive Euclidean Rhythm Visualizer">
+    <meta property="og:description" content="Create stunning polyrhythmic patterns with our interactive Euclidean rhythm generator. Visualize geometric rhythms, explore note values, and master timing.">
+    <meta property="og:image" content="https://www.keyscodesandmodes.com/assets/images/rhythm-geometry-og.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.keyscodesandmodes.com/apps/rhythm-geometry-lab.html">
+    <meta property="twitter:title" content="Rhythm Geometry Lab - Interactive Euclidean Rhythm Visualizer">
+    <meta property="twitter:description" content="Create stunning polyrhythmic patterns with our interactive Euclidean rhythm generator.">
+    <meta property="twitter:image" content="https://www.keyscodesandmodes.com/assets/images/rhythm-geometry-og.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.keyscodesandmodes.com/apps/rhythm-geometry-lab.html">
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MMQVHC40B9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MMQVHC40B9');
+    </script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "p9q3h8r7vx");
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Rhythm Geometry Lab",
+        "applicationCategory": "MusicApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Person",
+            "name": "Benjamin Ryan"
+        },
+        "description": "Interactive Euclidean rhythm visualizer for creating polyrhythmic patterns and exploring musical geometry.",
+        "url": "https://www.keyscodesandmodes.com/apps/rhythm-geometry-lab.html"
+    }
+    </script>
     <style>
         :root {
             --primary-teal: #008080;
@@ -439,47 +501,6 @@
             transform: scale(1.05);
         }
 
-        /* HORIZONTAL NOTE BUTTONS */
-        .picker-btn-horizontal {
-            background: rgba(0,0,0,0.5);
-            border: 2px solid rgba(0,128,128,0.3);
-            color: rgba(232,232,232,0.7);
-            border-radius: 8px;
-            padding: 0.5rem 0.6rem;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-        }
-
-        .picker-btn-horizontal:hover {
-            background: rgba(0,128,128,0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,128,128,0.3);
-        }
-
-        .picker-btn-horizontal.active {
-            background: linear-gradient(135deg, rgba(0,128,128,0.5), rgba(139,107,163,0.5));
-            border-color: var(--primary-teal);
-            color: var(--primary-gold);
-            box-shadow: 0 4px 15px rgba(0,128,128,0.5);
-        }
-
-        .picker-icon-small {
-            flex-shrink: 0;
-        }
-
-        .picker-label-inline {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
         .picker-icon {
             font-size: 2rem;
             line-height: 1;
@@ -741,15 +762,41 @@
             background: linear-gradient(180deg, var(--primary-teal), var(--primary-purple));
             border-radius: 3px;
         }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus visible for keyboard navigation */
+        *:focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 3px;
+        }
     </style>
 </head>
 <body>
 
 <!-- HEADER -->
-<header class="app-header">
+<header class="app-header" role="banner">
     <div class="app-header-content">
-        <div class="app-logo-section" onclick="window.location.href='../index.html'">
-            <svg class="app-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <div class="app-logo-section" onclick="window.location.href='../index.html'" role="button" tabindex="0" aria-label="Go to homepage">
+            <svg class="app-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
                 <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
                 <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
@@ -759,9 +806,9 @@
             </svg>
             <h1 class="app-title">KEYS, CODES & MODES — Rhythm Geometry Lab</h1>
         </div>
-        <nav class="app-nav-links">
-            <a href="../auth/offerings.html">Control Panel</a>
-            <a href="../pricing.html" class="upgrade-link">Upgrade</a>
+        <nav class="app-nav-links" role="navigation" aria-label="Main navigation">
+            <a href="../insights.html" aria-label="View all applications">All Apps</a>
+            <a href="../pricing.html" class="upgrade-link" aria-label="Upgrade to premium membership">Upgrade</a>
         </nav>
     </div>
 </header>
@@ -770,33 +817,39 @@
 <div class="workspace">
 
     <!-- TOP CONTROL BAR - Everything in One Place -->
-    <div class="control-bar">
+    <div class="control-bar" role="region" aria-label="Global controls">
         <div class="transport-section">
-            <button class="btn-transport" id="playBtn" onclick="togglePlay()">▶ Play</button>
-            <button class="btn-transport btn-small" onclick="stopReset()">■ Stop</button>
-            <button class="btn-transport btn-small" onclick="resetRot()">↻ Reset</button>
+            <button class="btn-transport" id="playBtn" onclick="togglePlay()" aria-label="Play or pause rhythm">▶ Play</button>
+            <button class="btn-transport btn-small" onclick="stopReset()" aria-label="Stop and reset to beginning">■ Stop</button>
+            <button class="btn-transport btn-small" onclick="resetRot()" aria-label="Reset rotation to starting position">↻ Reset</button>
         </div>
 
-        <div class="tempo-section">
-            <div class="tempo-display">
-                <div class="tempo-value" id="tempoDisplay">110</div>
+        <div class="tempo-section" role="group" aria-label="Tempo control">
+            <div class="tempo-display" aria-live="polite" aria-atomic="true">
+                <div class="tempo-value" id="tempoDisplay" aria-label="Current tempo">110</div>
                 <div class="tempo-label">BPM</div>
             </div>
             <div class="quick-control">
-                <input type="range" id="tempoSlider" min="40" max="240" value="110" oninput="setTempo(this.value)">
+                <label for="tempoSlider" class="sr-only">Tempo slider</label>
+                <input type="range" id="tempoSlider" min="40" max="240" value="110" oninput="setTempo(this.value)" 
+                       aria-label="Adjust tempo from 40 to 240 beats per minute" aria-valuemin="40" aria-valuemax="240" aria-valuenow="110">
             </div>
         </div>
 
-        <div class="quick-control">
-            <span class="quick-label">Steps</span>
-            <input type="range" id="stepsSlider" min="4" max="32" value="16" oninput="setSteps(this.value)">
-            <span class="quick-value" id="stepsVal">16</span>
+        <div class="quick-control" role="group" aria-label="Steps control">
+            <span class="quick-label" id="stepsLabel">Steps</span>
+            <label for="stepsSlider" class="sr-only">Number of steps</label>
+            <input type="range" id="stepsSlider" min="4" max="32" value="16" oninput="setSteps(this.value)" 
+                   aria-label="Adjust number of steps from 4 to 32" aria-valuemin="4" aria-valuemax="32" aria-valuenow="16" aria-describedby="stepsLabel">
+            <span class="quick-value" id="stepsVal" aria-live="polite">16</span>
         </div>
 
-        <div class="quick-control">
-            <span class="quick-label">Volume</span>
-            <input type="range" id="volumeSlider" min="0" max="100" value="70" oninput="setVolume(this.value)">
-            <span class="quick-value" id="volumeVal">70</span>
+        <div class="quick-control" role="group" aria-label="Volume control">
+            <span class="quick-label" id="volumeLabel">Volume</span>
+            <label for="volumeSlider" class="sr-only">Master volume</label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="70" oninput="setVolume(this.value)" 
+                   aria-label="Adjust master volume from 0 to 100 percent" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" aria-describedby="volumeLabel">
+            <span class="quick-value" id="volumeVal" aria-live="polite">70</span>
         </div>
     </div>
 
@@ -804,183 +857,138 @@
     <div class="main-workspace">
 
         <!-- LEFT: VISUAL DISPLAY -->
-        <div class="visual-zone">
-            <div class="mode-tabs">
-                <button class="mode-tab active" onclick="setMode('geometry')" id="tab-geo">⬢ Geometry</button>
-                <button class="mode-tab" onclick="setMode('dots')" id="tab-dots">● Dots</button>
-                <button class="mode-tab" onclick="setMode('notation')" id="tab-note">♪ Notes</button>
-                <button class="mode-tab" onclick="setMode('spiral')" id="tab-spiral">🌀 Spiral</button>
+        <div class="visual-zone" role="region" aria-label="Visual rhythm display">
+            <div class="mode-tabs" role="tablist" aria-label="Display mode selection">
+                <button class="mode-tab active" onclick="setMode('geometry')" id="tab-geo" role="tab" aria-selected="true" aria-controls="canvas">⬢ Geometry</button>
+                <button class="mode-tab" onclick="setMode('dots')" id="tab-dots" role="tab" aria-selected="false" aria-controls="canvas">● Dots</button>
+                <button class="mode-tab" onclick="setMode('notation')" id="tab-note" role="tab" aria-selected="false" aria-controls="canvas">♪ Notes</button>
+                <button class="mode-tab" onclick="setMode('spiral')" id="tab-spiral" role="tab" aria-selected="false" aria-controls="canvas">🌀 Spiral</button>
             </div>
 
-            <div class="canvas-area">
-                <canvas id="canvas" width="650" height="650"></canvas>
+            <div class="canvas-area" role="img" aria-label="Interactive rhythm visualization canvas">
+                <canvas id="canvas" width="650" height="650" aria-label="Click to toggle rhythm beats. Shift-click for layer 2, Control-click for layer 3."></canvas>
             </div>
 
-            <div class="layer-legend">
+            <div class="layer-legend" role="status" aria-label="Active rhythm layers" aria-live="polite">
                 <div class="legend-item">
-                    <div class="legend-dot" style="background:#F4D03F;color:#F4D03F"></div>
+                    <div class="legend-dot" style="background:#F4D03F;color:#F4D03F" aria-hidden="true"></div>
                     <span class="legend-text" id="info1">Layer 1: 5 in 16</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-dot" style="background:#008080;color:#008080"></div>
+                    <div class="legend-dot" style="background:#008080;color:#008080" aria-hidden="true"></div>
                     <span class="legend-text" id="info2">Layer 2: 3 in 16</span>
                 </div>
             </div>
 
-            <div class="help-hint">
+            <div class="help-hint" role="note">
                 💡 Click canvas to toggle beats • Shift+Click for Layer 2 • Ctrl+Click for Layer 3
             </div>
         </div>
 
         <!-- RIGHT: CONTROL PANEL -->
-        <div class="control-zone">
+        <div class="control-zone" role="complementary" aria-label="Rhythm controls">
 
-            <!-- NOTE VALUES & RESTS -->
-            <div class="control-group">
-                <div class="group-title">
-                    <span class="group-icon">♪</span>
-                    Note Values & Rests
+            <!-- NOTE VALUES -->
+            <div class="control-group" role="group" aria-labelledby="note-values-title">
+                <div class="group-title" id="note-values-title">
+                    <span class="group-icon" aria-hidden="true">♪</span>
+                    Note Values
                 </div>
-                
-                <!-- Row 1: Whole -->
-                <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;align-items:center;">
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('whole')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <ellipse cx="20" cy="45" rx="10" ry="7" fill="none" stroke="currentColor" stroke-width="2.5"/>
-                        </svg>
-                        <span class="picker-label-inline">Whole</span>
+                <div class="picker-grid-2" role="radiogroup" aria-label="Select note value subdivision">
+                    <button class="picker-btn" onclick="setNoteValue('whole')" role="radio" aria-checked="false" aria-label="Whole note, 4 beats">
+                        <div class="picker-icon" aria-hidden="true">𝅝</div>
+                        <div class="picker-label">Whole</div>
                     </button>
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('whole-rest')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <rect x="12" y="25" width="16" height="6" fill="currentColor"/>
-                        </svg>
-                        <span class="picker-label-inline">W Rest</span>
+                    <button class="picker-btn" onclick="setNoteValue('half')" role="radio" aria-checked="false" aria-label="Half note, 2 beats">
+                        <div class="picker-icon" aria-hidden="true">𝅗𝅥</div>
+                        <div class="picker-label">Half</div>
                     </button>
-                </div>
-                
-                <!-- Row 2: Half -->
-                <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;align-items:center;">
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('half')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <ellipse cx="15" cy="50" rx="10" ry="7" fill="none" stroke="currentColor" stroke-width="2.5"/>
-                            <line x1="25" y1="50" x2="25" y2="15" stroke="currentColor" stroke-width="2.5"/>
-                        </svg>
-                        <span class="picker-label-inline">Half</span>
+                    <button class="picker-btn active" onclick="setNoteValue('quarter')" role="radio" aria-checked="true" aria-label="Quarter note, 1 beat, currently selected">
+                        <div class="picker-icon" aria-hidden="true">♩</div>
+                        <div class="picker-label">Quarter</div>
                     </button>
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('half-rest')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <rect x="12" y="32" width="16" height="6" fill="currentColor"/>
-                        </svg>
-                        <span class="picker-label-inline">H Rest</span>
+                    <button class="picker-btn" onclick="setNoteValue('eighth')" role="radio" aria-checked="false" aria-label="Eighth note, half beat">
+                        <div class="picker-icon" aria-hidden="true">♪</div>
+                        <div class="picker-label">Eighth</div>
                     </button>
-                </div>
-                
-                <!-- Row 3: Quarter -->
-                <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;align-items:center;">
-                    <button class="picker-btn-horizontal active" onclick="setNoteValue('quarter')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <ellipse cx="15" cy="50" rx="10" ry="7" fill="currentColor"/>
-                            <line x1="25" y1="50" x2="25" y2="15" stroke="currentColor" stroke-width="2.5"/>
-                        </svg>
-                        <span class="picker-label-inline">Quarter</span>
+                    <button class="picker-btn" onclick="setNoteValue('16th')" role="radio" aria-checked="false" aria-label="Sixteenth note, quarter beat">
+                        <div class="picker-icon" aria-hidden="true">𝅘𝅥𝅯</div>
+                        <div class="picker-label">16th</div>
                     </button>
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('quarter-rest')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <path d="M15,15 Q18,25 15,35 Q12,45 15,55" stroke="currentColor" stroke-width="2.5" fill="none"/>
-                            <circle cx="18" cy="20" r="2.5" fill="currentColor"/>
-                            <circle cx="12" cy="50" r="2.5" fill="currentColor"/>
-                        </svg>
-                        <span class="picker-label-inline">Q Rest</span>
-                    </button>
-                </div>
-                
-                <!-- Row 4: Eighth -->
-                <div style="display:flex;gap:0.4rem;align-items:center;">
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('eighth')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <ellipse cx="15" cy="50" rx="10" ry="7" fill="currentColor"/>
-                            <line x1="25" y1="50" x2="25" y2="15" stroke="currentColor" stroke-width="2.5"/>
-                            <path d="M25,15 Q30,17 28,22" stroke="currentColor" stroke-width="2.5" fill="none"/>
-                        </svg>
-                        <span class="picker-label-inline">Eighth</span>
-                    </button>
-                    <button class="picker-btn-horizontal" onclick="setNoteValue('eighth-rest')" style="flex:1;">
-                        <svg class="picker-icon-small" viewBox="0 0 40 60" style="width:28px;height:42px;">
-                            <path d="M18,28 Q22,32 18,36" stroke="currentColor" stroke-width="2.5" fill="none"/>
-                            <circle cx="21" cy="30" r="2.5" fill="currentColor"/>
-                        </svg>
-                        <span class="picker-label-inline">8th Rest</span>
+                    <button class="picker-btn" onclick="setNoteValue('32nd')" role="radio" aria-checked="false" aria-label="Thirty-second note, eighth beat">
+                        <div class="picker-icon" aria-hidden="true">𝅘𝅥𝅰</div>
+                        <div class="picker-label">32nd</div>
                     </button>
                 </div>
             </div>
 
             <!-- POLYGON SHAPES -->
-            <div class="control-group">
-                <div class="group-title">
-                    <span class="group-icon">⬢</span>
+            <div class="control-group" role="group" aria-labelledby="polygon-shapes-title">
+                <div class="group-title" id="polygon-shapes-title">
+                    <span class="group-icon" aria-hidden="true">⬢</span>
                     Polygon Shapes
                 </div>
-                <div class="picker-grid">
-                    <button class="picker-btn" onclick="setPolygon(2)">
-                        <div class="picker-icon">●—●</div>
+                <div class="picker-grid" role="radiogroup" aria-label="Select polygon shape">
+                    <button class="picker-btn" onclick="setPolygon(2)" role="radio" aria-checked="false" aria-label="2-sided line">
+                        <div class="picker-icon" aria-hidden="true">●—●</div>
                         <div class="picker-label">2</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(3)">
-                        <div class="picker-icon">△</div>
+                    <button class="picker-btn" onclick="setPolygon(3)" role="radio" aria-checked="false" aria-label="3-sided triangle">
+                        <div class="picker-icon" aria-hidden="true">△</div>
                         <div class="picker-label">3</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(4)">
-                        <div class="picker-icon">◻</div>
+                    <button class="picker-btn" onclick="setPolygon(4)" role="radio" aria-checked="false" aria-label="4-sided square">
+                        <div class="picker-icon" aria-hidden="true">◻</div>
                         <div class="picker-label">4</div>
                     </button>
-                    <button class="picker-btn active" onclick="setPolygon(5)">
-                        <div class="picker-icon">⬟</div>
+                    <button class="picker-btn active" onclick="setPolygon(5)" role="radio" aria-checked="true" aria-label="5-sided pentagon, currently selected">
+                        <div class="picker-icon" aria-hidden="true">⬟</div>
                         <div class="picker-label">5</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(6)">
-                        <div class="picker-icon">⬡</div>
+                    <button class="picker-btn" onclick="setPolygon(6)" role="radio" aria-checked="false" aria-label="6-sided hexagon">
+                        <div class="picker-icon" aria-hidden="true">⬡</div>
                         <div class="picker-label">6</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(7)">
-                        <div class="picker-icon">⬢</div>
+                    <button class="picker-btn" onclick="setPolygon(7)" role="radio" aria-checked="false" aria-label="7-sided heptagon">
+                        <div class="picker-icon" aria-hidden="true">⬢</div>
                         <div class="picker-label">7</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(8)">
-                        <div class="picker-icon">⯃</div>
+                    <button class="picker-btn" onclick="setPolygon(8)" role="radio" aria-checked="false" aria-label="8-sided octagon">
+                        <div class="picker-icon" aria-hidden="true">⯃</div>
                         <div class="picker-label">8</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(9)">
-                        <div class="picker-icon">◉</div>
+                    <button class="picker-btn" onclick="setPolygon(9)" role="radio" aria-checked="false" aria-label="9-point polygon">
+                        <div class="picker-icon" aria-hidden="true">◉</div>
                         <div class="picker-label">9</div>
                     </button>
-                    <button class="picker-btn" onclick="setPolygon(10)">
-                        <div class="picker-icon">✦</div>
+                    <button class="picker-btn" onclick="setPolygon(10)" role="radio" aria-checked="false" aria-label="10-point polygon">
+                        <div class="picker-icon" aria-hidden="true">✦</div>
                         <div class="picker-label">10</div>
                     </button>
                 </div>
             </div>
 
             <!-- LAYERS -->
-            <div class="control-group">
-                <div class="group-title">
-                    <span class="group-icon">🎚️</span>
+            <div class="control-group" role="group" aria-labelledby="layers-title">
+                <div class="group-title" id="layers-title">
+                    <span class="group-icon" aria-hidden="true">🎚️</span>
                     Rhythm Layers
                 </div>
-                <div class="layer-list" id="layerList"></div>
-                <button class="btn-add" onclick="addLayer()">+ Add Layer</button>
+                <div class="layer-list" id="layerList" role="list" aria-label="Active rhythm layers"></div>
+                <button class="btn-add" onclick="addLayer()" aria-label="Add new rhythm layer">+ Add Layer</button>
             </div>
 
             <!-- PRESETS -->
-            <div class="control-group">
-                <div class="group-title">
-                    <span class="group-icon">💾</span>
+            <div class="control-group" role="group" aria-labelledby="presets-title">
+                <div class="group-title" id="presets-title">
+                    <span class="group-icon" aria-hidden="true">💾</span>
                     Presets
                 </div>
-                <div class="preset-grid">
-                    <button class="preset-btn" onclick="loadPreset('clave')">Clave</button>
-                    <button class="preset-btn" onclick="loadPreset('bossa')">Bossa</button>
-                    <button class="preset-btn" onclick="loadPreset('afro')">Afro</button>
-                    <button class="preset-btn" onclick="loadPreset('poly32')">Poly 3:2</button>
+                <div class="preset-grid" role="group" aria-label="Preset rhythm patterns">
+                    <button class="preset-btn" onclick="loadPreset('clave')" aria-label="Load Clave preset pattern">Clave</button>
+                    <button class="preset-btn" onclick="loadPreset('bossa')" aria-label="Load Bossa Nova preset pattern">Bossa</button>
+                    <button class="preset-btn" onclick="loadPreset('afro')" aria-label="Load Afro Bell preset pattern">Afro</button>
+                    <button class="preset-btn" onclick="loadPreset('poly32')" aria-label="Load Polyrhythm 3 against 2 preset">Poly 3:2</button>
                 </div>
             </div>
 
@@ -990,36 +998,36 @@
 </div>
 
 <!-- FOOTER -->
-<footer class="app-footer">
+<footer class="app-footer" role="contentinfo">
     <div class="app-footer-content">
-        <div class="app-social-links">
-            <a href="https://x.com/keyscodesandmodes" target="_blank" rel="noopener" aria-label="X">
-                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <div class="app-social-links" role="navigation" aria-label="Social media links">
+            <a href="https://x.com/keyscodesandmodes" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X (formerly Twitter)">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
-            <a href="https://www.facebook.com/KeysCodesModes" target="_blank" rel="noopener" aria-label="Facebook">
-                <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <a href="https://www.facebook.com/KeysCodesModes" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
-            <a href="https://www.tiktok.com/@keyscodesandmodes" target="_blank" rel="noopener" aria-label="TikTok">
-                <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+            <a href="https://www.tiktok.com/@keyscodesandmodes" target="_blank" rel="noopener noreferrer" aria-label="Follow us on TikTok">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
             </a>
-            <a href="https://www.instagram.com/keyscodesandmodes/" target="_blank" rel="noopener" aria-label="Instagram">
-                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <a href="https://www.instagram.com/keyscodesandmodes/" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             </a>
-            <a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/" target="_blank" rel="noopener" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/" target="_blank" rel="noopener noreferrer" aria-label="Connect with us on LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             </a>
         </div>
-        <div class="app-divider"></div>
+        <div class="app-divider" role="separator"></div>
         <div class="app-copyright">
             <p>&copy; 2026 <strong>Keys, Codes & Modes™</strong> | Created by <strong>Benjamin Ryan</strong></p>
             <p>Based on "Keys, Codes, and Modes: A Visual Approach to Understanding Music" | Santa Barbara, California</p>
         </div>
-        <div class="app-legal-links">
-            <a href="../privacy.html">Privacy</a>
-            <a href="../terms.html">Terms</a>
-            <a href="../refund-policy.html">Refund Policy</a>
-            <a href="../contact.html">Contact</a>
-        </div>
+        <nav class="app-legal-links" role="navigation" aria-label="Legal and support links">
+            <a href="../privacy.html" aria-label="Read our privacy policy">Privacy Policy</a>
+            <a href="../terms.html" aria-label="Read our terms of service">Terms of Service</a>
+            <a href="../refund-policy.html" aria-label="Read our refund policy">Refund Policy</a>
+            <a href="../contact.html" aria-label="Contact us">Contact</a>
+        </nav>
     </div>
 </footer>
 
@@ -1036,7 +1044,6 @@ const State = {
     selectedPolygon: 5,
     rotationOffset: 0,
     rotationSpeed: 0.006,
-    playheadAngle: -Math.PI / 2,  // Start at top (12 o'clock)
     volume: 0.7,
     displayMode: 'geometry',
     layers: [],
@@ -1046,8 +1053,7 @@ const State = {
     animFrame: null,
     nextNoteTime: 0,
     scheduleAheadTime: 0.1,
-    lookAhead: 25,
-    activeBeats: new Set()  // Track which beats just fired for visual feedback
+    lookAhead: 25
 };
 
 const LAYER_COLORS = ['#F4D03F','#008080','#CF7A5A','#8B6BA3','#4A7BA7','#9AAF7A'];
@@ -1219,32 +1225,16 @@ function scheduler() {
 }
 
 function scheduleNote(step, time) {
-    State.layers.forEach((layer, layerIdx) => {
+    State.layers.forEach(layer => {
         if (layer.muted) return;
         const layerStep = step % layer.steps;
-        if (layer.pattern[layerStep] === 1) {
-            playSound(layer.soundType, time);
-            
-            // Calculate when this note will actually play
-            const delayMs = (time - State.audioCtx.currentTime) * 1000;
-            
-            // Mark this beat as active at the RIGHT TIME
-            const beatKey = `${layerIdx}-${layerStep}`;
-            setTimeout(() => {
-                State.activeBeats.add(beatKey);
-                // Clear after 150ms
-                setTimeout(() => State.activeBeats.delete(beatKey), 150);
-            }, Math.max(0, delayMs));
-        }
+        if (layer.pattern[layerStep] === 1) playSound(layer.soundType, time);
     });
 }
 
 function advanceStep() {
     const secondsPerBeat = 60.0 / State.tempo;
-    const noteValueMultiplier = { 
-        'whole': 4, 'half': 2, 'quarter': 1, 'eighth': 0.5, '16th': 0.25, '32nd': 0.125,
-        'whole-rest': 4, 'half-rest': 2, 'quarter-rest': 1, 'eighth-rest': 0.5
-    };
+    const noteValueMultiplier = { 'whole': 4, 'half': 2, 'quarter': 1, 'eighth': 0.5, '16th': 0.25, '32nd': 0.125 };
     State.nextNoteTime += (secondsPerBeat / 4) * noteValueMultiplier[State.noteValue];
     State.currentStep = (State.currentStep + 1) % State.globalSteps;
 }
@@ -1271,18 +1261,13 @@ function togglePlay() {
 function stopReset() {
     State.playing = false;
     State.currentStep = 0;
-    State.playheadAngle = -Math.PI / 2;  // Reset to 12 o'clock
     clearTimeout(State.schedulerTimer);
     document.getElementById('playBtn').textContent = '▶ Play';
     document.getElementById('playBtn').classList.remove('playing');
-    showToast('■ Stopped & Reset');
+    showToast('■ Stopped');
 }
 
-function resetRot() { 
-    State.rotationOffset = 0; 
-    State.playheadAngle = -Math.PI / 2;  // Reset playhead
-    showToast('↻ Reset'); 
-}
+function resetRot() { State.rotationOffset = 0; showToast('↻ Reset'); }
 
 // UI CONTROLS
 function setTempo(val) {
@@ -1303,11 +1288,9 @@ function setVolume(val) {
 
 function setNoteValue(val) {
     State.noteValue = val;
-    // Remove active from both old grid-2 buttons and new horizontal buttons
-    document.querySelectorAll('.picker-btn, .picker-btn-horizontal').forEach(b => b.classList.remove('active'));
-    event.target.closest('button').classList.add('active');
-    const isRest = val.includes('rest');
-    showToast((isRest ? '𝄽 ' : '♪ ') + val.replace('-', ' ').toUpperCase());
+    document.querySelectorAll('.picker-grid-2 .picker-btn').forEach(b => b.classList.remove('active'));
+    event.target.closest('.picker-btn').classList.add('active');
+    showToast('♪ ' + val.toUpperCase());
 }
 
 function setPolygon(num) {
@@ -1343,143 +1326,79 @@ function draw() {
     else if (State.displayMode === 'notation') drawNotation();
     else if (State.displayMode === 'spiral') drawSpiral();
 
-    // SYNC PLAYHEAD TO CURRENT STEP with smooth interpolation
-    if (State.playing && State.audioCtx) {
-        // Calculate how far through the current beat we are
-        const secondsPerBeat = 60.0 / State.tempo;
-        const noteValueMultiplier = { 
-            'whole': 4, 'half': 2, 'quarter': 1, 'eighth': 0.5, '16th': 0.25, '32nd': 0.125,
-            'whole-rest': 4, 'half-rest': 2, 'quarter-rest': 1, 'eighth-rest': 0.5
-        };
-        const beatDuration = (secondsPerBeat / 4) * noteValueMultiplier[State.noteValue];
-        const currentTime = State.audioCtx.currentTime;
-        const timeSinceLastBeat = currentTime - (State.nextNoteTime - beatDuration);
-        const progress = Math.min(timeSinceLastBeat / beatDuration, 1);
-        
-        // Interpolate between current step and next step
-        const currentAngle = (State.currentStep / State.globalSteps) * Math.PI * 2 - Math.PI / 2;
-        const nextStep = (State.currentStep + 1) % State.globalSteps;
-        const nextAngle = (nextStep / State.globalSteps) * Math.PI * 2 - Math.PI / 2;
-        
-        // Handle wrap-around at 360 degrees
-        let angleDiff = nextAngle - currentAngle;
-        if (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-        if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-        
-        State.playheadAngle = currentAngle + angleDiff * progress;
-    }
-
     State.animFrame = requestAnimationFrame(draw);
-    State.rotationOffset += State.rotationSpeed;  // Keep for spiral mode
+    State.rotationOffset += State.rotationSpeed;
 }
 
 function drawGeometry() {
-    // STATIONARY CLOCK FACE
-    // Outer circle
-    ctx.strokeStyle = 'rgba(0,128,128,0.35)';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(CX, CY, R, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Concentric guide rings
-    for (let r = 60; r < R; r += 60) {
-        ctx.strokeStyle = 'rgba(0,128,128,0.08)';
-        ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(0,128,128,0.15)';
+    ctx.lineWidth = 1;
+    for (let r = 50; r <= R; r += 50) {
         ctx.beginPath();
         ctx.arc(CX, CY, r, 0, Math.PI * 2);
         ctx.stroke();
     }
-
-    // Step tick marks (STATIONARY)
     for (let i = 0; i < State.globalSteps; i++) {
         const angle = (i / State.globalSteps) * Math.PI * 2 - Math.PI / 2;
-        const x1 = CX + Math.cos(angle) * (R - 12);
-        const y1 = CY + Math.sin(angle) * (R - 12);
-        const x2 = CX + Math.cos(angle) * (R + 12);
-        const y2 = CY + Math.sin(angle) * (R + 12);
-        ctx.strokeStyle = 'rgba(0,128,128,0.3)';
-        ctx.lineWidth = 2;
+        const x1 = CX + Math.cos(angle) * (R - 8);
+        const y1 = CY + Math.sin(angle) * (R - 8);
+        const x2 = CX + Math.cos(angle) * (R + 8);
+        const y2 = CY + Math.sin(angle) * (R + 8);
+        ctx.strokeStyle = 'rgba(0,128,128,0.25)';
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
-
-    // Draw beat dots for each layer (STATIONARY - NO ROTATION!)
     State.layers.forEach((layer, layerIdx) => {
         if (layer.muted) return;
-        const radius = R - 35 - layerIdx * 42;
-        
+        const radius = R - layerIdx * 45;
+        const beatPoints = [];
         for (let i = 0; i < layer.steps; i++) {
-            // STATIONARY angle - no rotation offset!
-            const angle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2;
+            const baseAngle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2;
+            const angle = baseAngle + State.rotationOffset * layer.rotationSpeed;
             const x = CX + Math.cos(angle) * radius;
             const y = CY + Math.sin(angle) * radius;
-            
             if (layer.pattern[i] === 1) {
-                // Check if this beat is currently active (just fired)
-                const beatKey = `${layerIdx}-${i}`;
-                const isActive = State.activeBeats.has(beatKey);
-                
-                // GLOW when active
-                if (isActive) {
-                    const grad = ctx.createRadialGradient(x, y, 0, x, y, 28);
-                    grad.addColorStop(0, '#FFFFFF');
-                    grad.addColorStop(0.3, layer.color);
-                    grad.addColorStop(1, 'transparent');
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(x, y, 28, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                
-                // Beat dot - WHITE when active, colored when inactive
-                ctx.fillStyle = isActive ? '#FFFFFF' : layer.color;
+                beatPoints.push({ x, y });
+                const grad = ctx.createRadialGradient(x, y, 0, x, y, 20);
+                grad.addColorStop(0, layer.color);
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(x, y, isActive ? 11 : 9, 0, Math.PI * 2);
+                ctx.arc(x, y, 20, 0, Math.PI * 2);
                 ctx.fill();
-                
-                // Ring around dot
-                ctx.strokeStyle = isActive ? layer.color : 'rgba(255,255,255,0.4)';
-                ctx.lineWidth = isActive ? 3 : 2;
+                ctx.fillStyle = layer.color;
+                ctx.beginPath();
+                ctx.arc(x, y, 9, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.lineWidth = 2;
                 ctx.stroke();
             } else {
-                // Empty step marker
-                ctx.fillStyle = 'rgba(0,128,128,0.15)';
+                ctx.fillStyle = 'rgba(0,128,128,0.1)';
                 ctx.beginPath();
                 ctx.arc(x, y, 4, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
+        if (beatPoints.length > 1) {
+            ctx.strokeStyle = layer.color + '70';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(beatPoints[0].x, beatPoints[0].y);
+            beatPoints.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fillStyle = layer.color + '12';
+            ctx.beginPath();
+            ctx.moveTo(beatPoints[0].x, beatPoints[0].y);
+            beatPoints.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.closePath();
+            ctx.fill();
+        }
     });
-
-    // ROTATING PLAYHEAD (like clock hand)
-    const playheadLength = R - 25;
-    const playheadX = CX + Math.cos(State.playheadAngle) * playheadLength;
-    const playheadY = CY + Math.sin(State.playheadAngle) * playheadLength;
-    
-    // Playhead line with glow
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = '#F4D03F';
-    ctx.strokeStyle = '#F4D03F';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(CX, CY);
-    ctx.lineTo(playheadX, playheadY);
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    
-    // Playhead tip
-    ctx.fillStyle = '#F4D03F';
-    ctx.beginPath();
-    ctx.arc(playheadX, playheadY, 9, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    
-    // Center hub
     const cGrad = ctx.createRadialGradient(CX, CY, 0, CX, CY, 18);
     cGrad.addColorStop(0, '#F4D03F');
     cGrad.addColorStop(1, 'rgba(244,208,63,0)');
@@ -1489,11 +1408,8 @@ function drawGeometry() {
     ctx.fill();
     ctx.fillStyle = '#F4D03F';
     ctx.beginPath();
-    ctx.arc(CX, CY, 8, 0, Math.PI * 2);
+    ctx.arc(CX, CY, 7, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 2;
-    ctx.stroke();
 }
 
 function drawDots() {

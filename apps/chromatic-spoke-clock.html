@@ -1,0 +1,2872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Spoke Clock - Interactive Music Theory & Ear Training | Keys, Codes & Modes</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Master music theory with our interactive Chromatic Spoke Clock. Learn 57+ scales, modes, chords with visual aids and ear training games. Free online music education tool.">
+    <meta name="keywords" content="music theory, ear training, chromatic circle, circle of fifths, scales, modes, chords, intervals, music education, learn music online, interactive music theory">
+    <meta name="author" content="Benjamin Ryan - Keys, Codes & Modes">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="General">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://keyscodesandmodes.com/">
+    <meta property="og:title" content="Chromatic Spoke Clock - Interactive Music Theory Tool">
+    <meta property="og:description" content="Master music theory with interactive visualizations, ear training games, and 57+ scales, modes, and chords.">
+    <meta property="og:image" content="https://keyscodesandmodes.com/assets/og-chromatic-clock.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Keys, Codes & Modes">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://keyscodesandmodes.com/">
+    <meta name="twitter:title" content="Chromatic Spoke Clock - Interactive Music Theory">
+    <meta name="twitter:description" content="Master music theory with interactive visualizations and ear training games.">
+    <meta name="twitter:image" content="https://keyscodesandmodes.com/assets/twitter-chromatic-clock.jpg">
+    <meta name="twitter:site" content="@keyscodesmodes">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://keyscodesandmodes.com/">
+    <meta name="theme-color" content="#008080">
+    
+    <!-- Performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.clarity.ms">
+    
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Chromatic Spoke Clock",
+      "applicationCategory": "EducationalApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Benjamin Ryan"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Keys, Codes & Modes",
+        "url": "https://keyscodesandmodes.com"
+      },
+      "description": "Interactive music theory learning tool featuring chromatic circle visualization, ear training games, and comprehensive scale/mode/chord explorer. Learn 57+ patterns with visual and audio feedback.",
+      "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript. Modern browser recommended.",
+      "featureList": "Interactive chromatic circle, 57+ scales and modes, ear training games, interval inversions, MIDI keyboard support, tempo control, key selector, strum chords",
+      "isAccessibleForFree": true,
+      "educationalUse": "Music Theory Education",
+      "inLanguage": "en-US"
+    }
+    </script>
+    
+    <!-- Google Analytics 4 (loads after consent) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MMQVHC40B9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      function initializeAnalytics() {
+        gtag('js', new Date());
+        gtag('config', 'G-MMQVHC40B9', {
+          'anonymize_ip': true,
+          'cookie_flags': 'SameSite=None;Secure'
+        });
+      }
+    </script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vhyrbjp63x");
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========================================== */
+        /* CSS VARIABLES (REQUIRED) */
+        /* ========================================== */
+        :root {
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        
+        /* ========================================== */
+        /* BASE STYLES */
+        /* ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ========================================== */
+        /* ACCESSIBILITY STYLES (WCAG 2.1 AA) */
+        /* ========================================== */
+        
+        /* All interactive elements - Touch-friendly */
+        button, select, a, input, .app-card {
+            -webkit-tap-highlight-color: rgba(244, 208, 63, 0.3);
+            touch-action: manipulation;
+            min-height: 44px; /* Apple's recommended minimum touch target */
+        }
+        
+        /* Skip to main content link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 10px;
+            background: var(--primary-teal);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            z-index: 10001;
+            transition: top 0.3s ease;
+        }
+        
+        .skip-to-main:focus {
+            top: 10px;
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+        }
+        
+        /* Enhanced focus indicators for all interactive elements */
+        *:focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+        }
+        
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible,
+        a:focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 2px;
+        }
+        
+        /* Ensure sufficient color contrast (WCAG AA: 4.5:1) */
+        /* All text already meets contrast requirements */
+        
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            /* Touch-friendly improvements */
+            -webkit-tap-highlight-color: rgba(244, 208, 63, 0.3);
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+        
+        /* ========================================== */
+        /* HEADER STYLES */
+        /* ========================================== */
+        .app-header {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(26, 26, 46, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-teal);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.2);
+        }
+        
+        .app-header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .app-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .app-logo-svg {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 2px 8px rgba(244, 208, 63, 0.3));
+            transition: transform 0.3s ease;
+        }
+        
+        .app-logo-section:hover .app-logo-svg {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        
+        .app-nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .app-nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .app-nav-links a:hover {
+            color: var(--primary-gold);
+            background: rgba(0, 128, 128, 0.1);
+        }
+        
+        .upgrade-link {
+            background: linear-gradient(135deg, var(--primary-teal), #006666) !important;
+            color: white !important;
+            padding: 0.75rem 1.5rem !important;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 128, 128, 0.3);
+        }
+        
+        .upgrade-link:hover {
+            background: linear-gradient(135deg, #006666, var(--primary-teal)) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 128, 128, 0.5);
+        }
+        
+        /* ========================================== */
+        /* MAIN LAYOUT STRUCTURE */
+        /* ========================================== */
+        main {
+            flex: 1;
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* ========================================== */
+        /* DISPLAY AREA (LEFT SIDE - 66%) */
+        /* ========================================== */
+        .display-area {
+            flex: 2;
+            min-height: 700px;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.05), rgba(139, 107, 163, 0.05));
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 40px rgba(0, 128, 128, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .display-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .display-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        canvas {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 128, 128, 0.2);
+            cursor: pointer;
+        }
+        
+        #info {
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: rgba(0, 128, 128, 0.1);
+            border: 1px solid rgba(0, 128, 128, 0.3);
+            border-radius: 10px;
+            color: var(--light-text);
+            font-size: 1rem;
+            text-align: center;
+            min-width: 350px;
+            transition: all 0.3s ease;
+        }
+        
+        #info.active {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.3), rgba(139, 107, 163, 0.3));
+            border-color: var(--primary-gold);
+            transform: scale(1.05);
+        }
+        
+        /* ========================================== */
+        /* CONTROL PANEL (RIGHT SIDE - 33%) */
+        /* ========================================== */
+        .control-panel {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.1), rgba(139, 107, 163, 0.1));
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 40px rgba(0, 128, 128, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .control-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 128, 128, 0.3);
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .control-label {
+            font-family: var(--font-display);
+            color: var(--primary-teal);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        select, input[type="range"] {
+            padding: 0.75rem;
+            background: rgba(0, 128, 128, 0.1);
+            border: 1px solid rgba(0, 128, 128, 0.3);
+            border-radius: 10px;
+            color: var(--light-text);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        select:hover, select:focus {
+            border-color: var(--primary-gold);
+            background: rgba(0, 128, 128, 0.2);
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23F4D03F' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 3rem;
+        }
+        
+        /* Range slider styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            padding: 0;
+            background: linear-gradient(to right, 
+                rgba(0, 128, 128, 0.3) 0%, 
+                rgba(244, 208, 63, 0.5) 50%, 
+                rgba(207, 122, 90, 0.5) 100%);
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0, 128, 128, 0.4);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0, 128, 128, 0.4);
+        }
+        
+        input[type="range"]:hover::-webkit-slider-thumb {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(244, 208, 63, 0.6);
+        }
+        
+        input[type="range"]:hover::-moz-range-thumb {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(244, 208, 63, 0.6);
+        }
+        
+        .start-button {
+            background: linear-gradient(135deg, var(--primary-teal), #006666);
+            color: white;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(0, 128, 128, 0.4);
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+        
+        .start-button:hover {
+            background: linear-gradient(135deg, #006666, var(--primary-teal));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 128, 128, 0.6);
+        }
+        
+        .start-button.pause {
+            background: linear-gradient(135deg, var(--primary-coral), #b86647);
+        }
+        
+        .strum-button {
+            background: linear-gradient(135deg, var(--primary-purple), #6a4d7a);
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139, 107, 163, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .strum-button:hover {
+            background: linear-gradient(135deg, #6a4d7a, var(--primary-purple));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(139, 107, 163, 0.6);
+        }
+        
+        .strum-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(139, 107, 163, 0.8);
+        }
+        
+        .control-info {
+            background: rgba(244, 208, 63, 0.1);
+            border: 1px solid rgba(244, 208, 63, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: rgba(232, 232, 232, 0.8);
+            line-height: 1.6;
+        }
+        
+        /* ========================================== */
+        /* EAR TRAINING STYLES */
+        /* ========================================== */
+        
+        .ear-training-toggle {
+            background: linear-gradient(135deg, #8B6BA3, #6a4d7a);
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139, 107, 163, 0.4);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .ear-training-toggle:hover {
+            background: linear-gradient(135deg, #6a4d7a, #8B6BA3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(139, 107, 163, 0.6);
+        }
+        
+        .ear-training-toggle.active {
+            background: linear-gradient(135deg, var(--primary-gold), #d4b030);
+        }
+        
+        .ear-training-panel {
+            background: linear-gradient(135deg, rgba(139, 107, 163, 0.15), rgba(0, 128, 128, 0.15));
+            border: 2px solid rgba(139, 107, 163, 0.4);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .game-status {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .score-display {
+            display: flex;
+            justify-content: space-around;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .score-display strong {
+            color: var(--primary-gold);
+            font-size: 1.3rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-teal), var(--primary-gold));
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        
+        .question-counter {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(232, 232, 232, 0.6);
+            margin: 0;
+        }
+        
+        .question-area {
+            background: rgba(0, 128, 128, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--light-text);
+        }
+        
+        .listen-button {
+            background: linear-gradient(135deg, var(--primary-gold), #d4b030);
+            color: var(--dark-bg);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(244, 208, 63, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .listen-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(244, 208, 63, 0.6);
+        }
+        
+        .listen-button:active {
+            transform: scale(0.95);
+        }
+        
+        .flip-button {
+            background: linear-gradient(135deg, var(--primary-purple), #6a4d7a);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 107, 163, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        
+        .flip-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 107, 163, 0.6);
+        }
+        
+        .flip-button:active {
+            transform: scale(0.95);
+        }
+        
+        .answer-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        
+        .answer-btn {
+            background: rgba(0, 128, 128, 0.2);
+            border: 2px solid rgba(0, 128, 128, 0.4);
+            color: var(--light-text);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-btn:hover {
+            background: rgba(0, 128, 128, 0.3);
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn.correct {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+            animation: correct-pulse 0.5s;
+        }
+        
+        .answer-btn.incorrect {
+            background: rgba(244, 67, 54, 0.3);
+            border-color: #F44336;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes correct-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .feedback-area {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .feedback-area.correct {
+            border: 2px solid #4CAF50;
+        }
+        
+        .feedback-area.incorrect {
+            border: 2px solid #F44336;
+        }
+        
+        .feedback-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feedback-text.correct {
+            color: #4CAF50;
+        }
+        
+        .feedback-text.incorrect {
+            color: #F44336;
+        }
+        
+        .game-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .game-button {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .game-settings {
+            margin-top: 1rem;
+        }
+        
+        /* ========================================== */
+        /* FOOTER STYLES */
+        /* ========================================== */
+        .app-footer {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(26, 26, 46, 0.95));
+            backdrop-filter: blur(10px);
+            border-top: 3px solid var(--primary-teal);
+            padding: 2.5rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .app-footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .app-social-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .app-social-title {
+            font-family: var(--font-display);
+            color: var(--primary-gold);
+            font-size: 1.3rem;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        .app-social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .app-social-links a {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.2), rgba(139, 107, 163, 0.2));
+            border: 2px solid rgba(0, 128, 128, 0.3);
+            border-radius: 50%;
+            color: var(--primary-gold);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            text-decoration: none;
+        }
+        
+        .app-social-links a:hover {
+            background: linear-gradient(135deg, rgba(0, 128, 128, 0.4), rgba(139, 107, 163, 0.4));
+            border-color: var(--primary-teal);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.5);
+        }
+        
+        .app-social-links svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        
+        .app-copyright {
+            text-align: center;
+            color: rgba(232, 232, 232, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        
+        .app-copyright strong {
+            color: var(--primary-gold);
+        }
+        
+        .app-copyright p {
+            margin: 0.5rem 0;
+        }
+        
+        .app-legal-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .app-legal-links a {
+            color: rgba(232, 232, 232, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .app-legal-links a:hover {
+            color: var(--primary-gold);
+        }
+        
+        .app-footer-divider {
+            width: 100%;
+            max-width: 600px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 128, 128, 0.3), transparent);
+            margin: 1rem 0;
+        }
+        
+        /* ========================================== */
+        /* MOBILE RESPONSIVE */
+        /* ========================================== */
+        /* ========================================== */
+        /* RESPONSIVE DESIGN - ALL DEVICES */
+        /* ========================================== */
+        
+        /* Large Desktop (1920px+) */
+        @media (min-width: 1920px) {
+            main {
+                max-width: 1800px;
+            }
+            
+            canvas {
+                max-width: 900px;
+                max-height: 900px;
+            }
+        }
+        
+        /* Desktop (1200px - 1919px) - Default styles work well */
+        
+        /* Laptop / Small Desktop (992px - 1199px) */
+        @media (max-width: 1199px) {
+            main {
+                padding: 1.5rem;
+            }
+            
+            canvas {
+                max-width: 600px;
+                max-height: 600px;
+            }
+            
+            .control-panel {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Tablet / iPad (768px - 991px) */
+        @media (max-width: 991px) {
+            main {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            
+            .display-area, .control-panel {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            canvas {
+                max-width: 500px;
+                max-height: 500px;
+                margin: 0 auto;
+            }
+            
+            .app-header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .app-nav-links {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+        
+        /* Mobile / Phone (up to 767px) */
+        @media (max-width: 767px) {
+            body {
+                padding: 0;
+            }
+            
+            main {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .app-header {
+                padding: 1rem;
+            }
+            
+            .app-header-content {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .app-logo-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .app-logo-svg {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .app-title {
+                font-size: 1rem;
+            }
+            
+            .app-nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .app-nav-links a {
+                font-size: 0.9rem;
+                padding: 0.5rem 1rem;
+            }
+            
+            .display-area, .control-panel {
+                min-height: auto;
+                padding: 1rem;
+            }
+            
+            canvas {
+                max-width: 100%;
+                max-height: 350px;
+                height: auto;
+            }
+            
+            .display-title, .control-title {
+                font-size: 1.3rem;
+            }
+            
+            .control-group {
+                margin-bottom: 1rem;
+            }
+            
+            .control-label {
+                font-size: 0.9rem;
+            }
+            
+            select, .tempo-value {
+                font-size: 0.95rem;
+            }
+            
+            .auto-play-btn, .strum-btn {
+                font-size: 1rem;
+                padding: 0.75rem;
+            }
+            
+            .tempo-slider {
+                height: 35px;
+            }
+            
+            .control-info {
+                font-size: 0.85rem;
+            }
+            
+            /* Ear Training Responsive */
+            .ear-training-toggle {
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+            }
+            
+            .ear-training-panel {
+                padding: 1rem;
+            }
+            
+            .game-status {
+                padding: 0.75rem;
+            }
+            
+            .score-display {
+                font-size: 0.95rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .question-text {
+                font-size: 1rem;
+            }
+            
+            .listen-button, .flip-button {
+                font-size: 1.1rem;
+                padding: 0.75rem 1.5rem;
+            }
+            
+            .answer-buttons {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .answer-btn {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+            
+            .app-footer {
+                padding: 2rem 1rem;
+            }
+            
+            .app-footer-links {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .app-legal-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+        
+        /* Extra Small Mobile (up to 480px) */
+        @media (max-width: 480px) {
+            .app-title {
+                font-size: 0.85rem;
+            }
+            
+            canvas {
+                max-height: 280px;
+            }
+            
+            .display-title, .control-title {
+                font-size: 1.1rem;
+            }
+            
+            .auto-play-btn, .strum-btn {
+                font-size: 0.9rem;
+                padding: 0.6rem;
+            }
+            
+            .answer-btn {
+                font-size: 0.85rem;
+                padding: 0.6rem;
+            }
+        }
+        
+        /* Landscape Orientation Fixes */
+        @media (max-height: 600px) and (orientation: landscape) {
+            canvas {
+                max-height: 300px;
+            }
+            
+            .control-panel {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility: Skip to Main Content -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    
+    <!-- ========================================== -->
+    <!-- HEADER -->
+    <!-- ========================================== -->
+    <header class="app-header" role="banner">
+        <div class="app-header-content">
+            <div class="app-logo-section">
+                <svg class="app-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+                    <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+                    <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                    <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                    <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                    <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                    <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+                    <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+                    <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+                </svg>
+                <h1 class="app-title">KEYS, CODES & MODES</h1>
+            </div>
+            <nav class="app-nav-links" role="navigation">
+                <a href="insights.html">Control Panel</a>
+                <a href="pricing.html" class="upgrade-link">Upgrade</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- ========================================== -->
+    <!-- MAIN CONTENT AREA -->
+    <!-- ========================================== -->
+    <main id="main-content">
+        <!-- DISPLAY AREA (LEFT SIDE) -->
+        <section class="display-area">
+            <h2 class="display-title">Chromatic Spoke Clock</h2>
+            <div class="display-content">
+                <canvas id="canvas" width="900" height="900"></canvas>
+                <div id="info">Drag center to rotate • Click or play MIDI keyboard</div>
+            </div>
+        </section>
+        
+        <!-- CONTROL PANEL (RIGHT SIDE) -->
+        <aside class="control-panel">
+            <h3 class="control-title">Controls</h3>
+            
+            <!-- Ear Training Toggle -->
+            <button class="ear-training-toggle" id="earTrainingToggle">
+                🎧 EAR TRAINING MODE
+            </button>
+            
+            <!-- Ear Training Game Panel (Hidden by default) -->
+            <div class="ear-training-panel" id="earTrainingPanel" style="display: none;">
+                <h3 class="control-title" style="margin-bottom: 1rem;">🎧 Ear Training</h3>
+                
+                <!-- Game Status Display -->
+                <div class="game-status">
+                    <div class="score-display">
+                        <span>Score: <strong id="gameScore">0</strong></span>
+                        <span>Streak: <strong id="gameStreak">🔥 0</strong></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="gameProgress"></div>
+                    </div>
+                    <p class="question-counter" id="questionCounter">Question 1 of 10</p>
+                </div>
+                
+                <!-- Question Display -->
+                <div class="question-area" id="questionArea">
+                    <p class="question-text" id="questionText">Press START to begin!</p>
+                    <button class="listen-button" id="listenButton" style="display: none;">
+                        🔊 LISTEN
+                    </button>
+                    <button class="flip-button" id="flipButton" style="display: none;">
+                        🔄 FLIP INTERVAL (Show Inversion)
+                    </button>
+                </div>
+                
+                <!-- Answer Buttons -->
+                <div class="answer-buttons" id="answerButtons">
+                    <!-- Dynamically generated -->
+                </div>
+                
+                <!-- Feedback Display -->
+                <div class="feedback-area" id="feedbackArea" style="display: none;">
+                    <!-- Shows correct/incorrect feedback -->
+                </div>
+                
+                <!-- Game Controls -->
+                <div class="game-controls">
+                    <button class="game-button start-button" id="startGameBtn">▶ START GAME</button>
+                    <button class="game-button" id="nextQuestionBtn" style="display: none;">NEXT →</button>
+                    <button class="game-button" id="exitGameBtn" style="display: none;">← EXIT GAME</button>
+                </div>
+                
+                <!-- Game Settings (shown before start) -->
+                <div class="game-settings" id="gameSettings">
+                    <div class="control-group">
+                        <label class="control-label">Difficulty:</label>
+                        <select id="gameDifficulty">
+                            <option value="beginner">Beginner (Simple Intervals)</option>
+                            <option value="intermediate">Intermediate (All Intervals)</option>
+                            <option value="advanced">Advanced (Chords & Scales)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Questions:</label>
+                        <select id="gameLength">
+                            <option value="5">Quick (5 questions)</option>
+                            <option value="10" selected>Standard (10 questions)</option>
+                            <option value="20">Challenge (20 questions)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Regular Controls (Hidden when in game mode) -->
+            <div id="regularControls">
+            
+            <!-- Stencil Selector -->
+            <div class="control-group">
+                <label class="control-label" for="stencilSelect">Scale / Mode / Chord:</label>
+                <select id="stencilSelect">
+                    <optgroup label="All Notes">
+                        <option value="chromatic" selected>Chromatic (All 12 Notes)</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 2 Notes - Intervals">
+                        <option value="interval_m2">Minor 2nd (Half Step)</option>
+                        <option value="interval_M2">Major 2nd (Whole Step)</option>
+                        <option value="interval_m3">Minor 3rd</option>
+                        <option value="interval_M3">Major 3rd</option>
+                        <option value="interval_P4">Perfect 4th</option>
+                        <option value="interval_tritone">Tritone (♯4 / ♭5)</option>
+                        <option value="interval_P5">Perfect 5th</option>
+                        <option value="interval_m6">Minor 6th</option>
+                        <option value="interval_M6">Major 6th</option>
+                        <option value="interval_m7">Minor 7th</option>
+                        <option value="interval_M7">Major 7th</option>
+                        <option value="interval_octave">Perfect Octave</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 3 Notes - Triads">
+                        <option value="major_triad">Major Triad</option>
+                        <option value="minor_triad">Minor Triad</option>
+                        <option value="diminished_triad">Diminished Triad</option>
+                        <option value="augmented_triad">Augmented Triad</option>
+                        <option value="sus2">Sus2 Triad</option>
+                        <option value="sus4">Sus4 Triad</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 4 Notes - 7th Chords">
+                        <option value="major_7th">Major 7th</option>
+                        <option value="dominant_7th">Dominant 7th</option>
+                        <option value="minor_7th">Minor 7th</option>
+                        <option value="diminished_7th">Diminished 7th</option>
+                        <option value="half_diminished_7th">Half-Diminished 7th (ø7)</option>
+                        <option value="minor_major_7th">Minor-Major 7th</option>
+                        <option value="add9">Add9 Chord</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 5 Notes - Pentatonic">
+                        <option value="pentatonic_major">Major Pentatonic</option>
+                        <option value="pentatonic_minor">Minor Pentatonic</option>
+                        <option value="japanese">Japanese (Hirajoshi)</option>
+                        <option value="chinese">Chinese Pentatonic</option>
+                        <option value="major_9th">Major 9th Chord</option>
+                        <option value="dominant_9th">Dominant 9th Chord</option>
+                        <option value="minor_9th">Minor 9th Chord</option>
+                        <option value="six_nine">6/9 Chord</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 6 Notes - Hexatonic">
+                        <option value="blues">Blues Scale</option>
+                        <option value="whole_tone">Whole Tone Scale</option>
+                        <option value="augmented">Augmented Scale</option>
+                        <option value="dominant_13th">Dominant 13th Chord</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 7 Notes - Heptatonic Scales">
+                        <option value="major">Major Scale (Ionian)</option>
+                        <option value="dorian">Dorian Mode</option>
+                        <option value="phrygian">Phrygian Mode</option>
+                        <option value="lydian">Lydian Mode</option>
+                        <option value="mixolydian">Mixolydian Mode</option>
+                        <option value="minor">Natural Minor (Aeolian)</option>
+                        <option value="locrian">Locrian Mode</option>
+                        <option value="harmonic_minor">Harmonic Minor</option>
+                        <option value="melodic_minor">Melodic Minor</option>
+                        <option value="phrygian_dominant">Phrygian Dominant</option>
+                        <option value="hungarian_minor">Hungarian Minor</option>
+                        <option value="neapolitan_minor">Neapolitan Minor</option>
+                        <option value="arabic">Arabic Scale</option>
+                        <option value="double_harmonic">Double Harmonic</option>
+                        <option value="enigmatic">Enigmatic Scale</option>
+                        <option value="altered">Altered Scale (Jazz)</option>
+                        <option value="lydian_dominant">Lydian Dominant</option>
+                    </optgroup>
+                    
+                    <optgroup label="▸ 8 Notes - Octatonic">
+                        <option value="diminished">Diminished Scale</option>
+                        <option value="bebop_major">Bebop Major</option>
+                        <option value="bebop_dominant">Bebop Dominant</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <!-- Key Selector (Root Note) -->
+            <div class="control-group">
+                <label class="control-label" for="keySelect">Root Note (Key):</label>
+                <select id="keySelect">
+                    <option value="0" selected>C</option>
+                    <option value="1">C♯ / D♭</option>
+                    <option value="2">D</option>
+                    <option value="3">D♯ / E♭</option>
+                    <option value="4">E</option>
+                    <option value="5">F</option>
+                    <option value="6">F♯ / G♭</option>
+                    <option value="7">G</option>
+                    <option value="8">G♯ / A♭</option>
+                    <option value="9">A</option>
+                    <option value="10">A♯ / B♭</option>
+                    <option value="11">B</option>
+                </select>
+            </div>
+            
+            <!-- Auto-Play Button (moved above Strum) -->
+            <button class="start-button" id="autoPlayBtn">▶ Auto-Play Scale</button>
+            
+            <!-- Strum Button -->
+            <button class="strum-button" id="strumBtn">
+                <span style="font-size: 1.5rem;">🎸</span> Strum Chord
+            </button>
+            
+            <!-- Tempo/Speed Controller -->
+            <div class="control-group">
+                <label class="control-label" for="tempoSlider">
+                    Tempo: <span id="tempoValue">120</span> BPM
+                </label>
+                <input type="range" id="tempoSlider" min="40" max="240" value="120" step="10">
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(232, 232, 232, 0.5); margin-top: 0.25rem;">
+                    <span>Slow</span>
+                    <span>Fast</span>
+                </div>
+            </div>
+            
+            <!-- Info Box -->
+            <div class="control-info">
+                <strong>How to use:</strong><br>
+                • Select a scale/mode/chord<br>
+                • Choose a root note (key)<br>
+                • Click Auto-Play to hear the pattern<br>
+                • Strum to play all notes together<br>
+                • Click individual notes to hear them<br>
+                • Adjust tempo for learning pace<br>
+                • Or drag center to rotate manually
+            </div>
+            
+            </div><!-- End regularControls -->
+            
+            <!-- START BUTTON -->
+            <button class="start-button" id="autoPlayBtn">▶ Auto-Play Scale</button>
+        </aside>
+    </main>
+    
+    <!-- ========================================== -->
+    <!-- FOOTER -->
+    <!-- ========================================== -->
+    <footer class="app-footer" role="contentinfo">
+        <div class="app-footer-content">
+            <div class="app-social-section">
+                <h3 class="app-social-title">Connect With Us</h3>
+                <div class="app-social-links">
+                    <a href="https://x.com/keyscodesmodes" target="_blank" rel="noopener noreferrer" aria-label="X">
+                        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/KeysCodesModes" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@keyscodesandmodes" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/keyscodesandmodes/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="app-footer-divider"></div>
+            <div class="app-copyright">
+                <p>&copy; 2026 <strong>Keys, Codes & Modes™</strong> | Created by <strong>Benjamin Ryan</strong> | All Rights Reserved</p>
+                <p>Based on the book <em>"Keys, Codes, and Modes: A Visual Approach to Understanding Music"</em></p>
+                <p>Santa Barbara, California</p>
+            </div>
+            <div class="app-legal-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="refund-policy.html">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================================== -->
+    <script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const info = document.getElementById("info");
+
+const CENTER = { x: 450, y: 450 };
+const SPOKES = 12;
+const RINGS = 12;
+
+const INNER_RADIUS = 85;
+const OUTER_RADIUS = 400;
+const RING_SPACING = (OUTER_RADIUS - INNER_RADIUS) / (RINGS - 1);
+
+const NOTE_RADIUS = 14;
+
+// Chromatic scale with proper sharps
+const NOTES = ["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
+
+// KEYS, CODES & MODES OFFICIAL CHROMATIC COLORS
+const COLORS = [
+  "#FFFF00", // C - Yellow
+  "#FFC400", // C# - Yellow-Orange
+  "#FF8000", // D - Orange
+  "#FF4000", // D# - Red-Orange
+  "#FF0000", // E - Red
+  "#C4007F", // F - Red-Purple
+  "#8000FF", // F# - Purple
+  "#4000FF", // G - Blue-Purple
+  "#0000FF", // G# - Blue
+  "#007FFF", // A - Blue-Green
+  "#00FF80", // A# - Green
+  "#80FF00"  // B - Yellow-Green
+];
+
+// MIDI note numbers starting at C4 (Middle C = 60)
+const MIDI_BASE = 60;
+
+// Audio context for sound generation
+let audioContext = null;
+let activeNodes = [];
+
+// MIDI support
+let midiAccess = null;
+let activeMidiNotes = new Set();
+
+// Initialize audio on first interaction
+function initAudio() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+// Play a note with given MIDI number
+function playNote(midiNumber, duration = 0.5) {
+  initAudio();
+  
+  // Calculate frequency from MIDI number: f = 440 * 2^((n-69)/12)
+  const frequency = 440 * Math.pow(2, (midiNumber - 69) / 12);
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.type = 'sine';
+  oscillator.frequency.value = frequency;
+  
+  // Envelope: attack and decay
+  const now = audioContext.currentTime;
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+  
+  oscillator.start(now);
+  oscillator.stop(now + duration);
+  
+  activeNodes.push({ oscillator, gainNode });
+  
+  // Clean up
+  setTimeout(() => {
+    const index = activeNodes.findIndex(n => n.oscillator === oscillator);
+    if (index > -1) activeNodes.splice(index, 1);
+  }, duration * 1000);
+}
+
+// Initialize MIDI
+async function initMIDI() {
+  if (navigator.requestMIDIAccess) {
+    try {
+      midiAccess = await navigator.requestMIDIAccess();
+      
+      // Listen to all MIDI inputs
+      for (let input of midiAccess.inputs.values()) {
+        input.onmidimessage = handleMIDIMessage;
+      }
+      
+      // Handle device connection/disconnection
+      midiAccess.onstatechange = (e) => {
+        if (e.port.type === 'input' && e.port.state === 'connected') {
+          e.port.onmidimessage = handleMIDIMessage;
+          // Optionally show a brief notification
+          console.log('MIDI device connected:', e.port.name);
+        }
+      };
+      
+      console.log('MIDI support enabled');
+      
+    } catch (err) {
+      // Silently handle MIDI not being available
+      // This is normal in some contexts (local files, sandboxed iframes, etc.)
+      // The app works fine without MIDI - it's just an optional enhancement
+      console.log('MIDI keyboard not available in this context (this is normal)');
+    }
+  } else {
+    // Browser doesn't support Web MIDI API at all
+    console.log('Web MIDI API not supported by this browser');
+  }
+}
+
+// Handle MIDI messages from keyboard
+function handleMIDIMessage(message) {
+  const [status, note, velocity] = message.data;
+  const command = status >> 4;
+  
+  // Note On (9) or Note Off (8)
+  if (command === 9 && velocity > 0) {
+    activeMidiNotes.add(note);
+    playNote(note, 2.0);
+    highlightMIDINote(note);
+  } else if (command === 8 || (command === 9 && velocity === 0)) {
+    activeMidiNotes.delete(note);
+    draw();
+  }
+}
+
+// Highlight note on the clock based on MIDI number
+function highlightMIDINote(midiNumber) {
+  const matchingNotes = notePositions.filter(n => n.midiNumber === midiNumber);
+  
+  if (matchingNotes.length > 0) {
+    draw(matchingNotes);
+    
+    const noteName = matchingNotes[0].note;
+    info.classList.add('active');
+    info.textContent = `Playing: ${noteName} (MIDI ${midiNumber})`;
+    
+    setTimeout(() => {
+      info.classList.remove('active');
+      if (activeMidiNotes.size === 0 && !isAutoPlaying) {
+        info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+      }
+    }, 100);
+  }
+}
+
+// Store note positions for click detection
+let notePositions = [];
+let hoveredNote = null;
+let activeNote = null;
+
+// Rotation control
+let rotationAngle = 0;
+let isDragging = false;
+let lastMouseAngle = 0;
+
+// Auto-play control
+let isAutoPlaying = false;
+let autoPlayInterval = null;
+let currentAutoPlayIndex = 0;
+let autoPlayDirection = 1;
+let currentTempo = 120; // BPM - adjustable via slider
+
+// Stencil system
+let currentStencil = 'chromatic';
+let stencilPatterns = {
+  // Chromatic
+  'chromatic': [0,1,2,3,4,5,6,7,8,9,10,11],
+  
+  // Intervals (just root + interval)
+  'interval_m2': [0,1],        // Minor 2nd
+  'interval_M2': [0,2],        // Major 2nd
+  'interval_m3': [0,3],        // Minor 3rd
+  'interval_M3': [0,4],        // Major 3rd
+  'interval_P4': [0,5],        // Perfect 4th
+  'interval_tritone': [0,6],   // Tritone
+  'interval_P5': [0,7],        // Perfect 5th
+  'interval_m6': [0,8],        // Minor 6th
+  'interval_M6': [0,9],        // Major 6th
+  'interval_m7': [0,10],       // Minor 7th
+  'interval_M7': [0,11],       // Major 7th
+  'interval_octave': [0],      // Octave (just root, rings will show octaves)
+  
+  // The 7 Modes
+  'major': [0,2,4,5,7,9,11],              // Ionian
+  'dorian': [0,2,3,5,7,9,10],             // Dorian
+  'phrygian': [0,1,3,5,7,8,10],           // Phrygian
+  'lydian': [0,2,4,6,7,9,11],             // Lydian
+  'mixolydian': [0,2,4,5,7,9,10],         // Mixolydian
+  'minor': [0,2,3,5,7,8,10],              // Aeolian (Natural Minor)
+  'locrian': [0,1,3,5,6,8,10],            // Locrian
+  
+  // Minor Scales
+  'harmonic_minor': [0,2,3,5,7,8,11],     // Harmonic Minor
+  'melodic_minor': [0,2,3,5,7,9,11],      // Melodic Minor
+  'phrygian_dominant': [0,1,4,5,7,8,10],  // Phrygian Dominant (Spanish)
+  'hungarian_minor': [0,2,3,6,7,8,11],    // Hungarian Minor
+  'neapolitan_minor': [0,1,3,5,7,8,11],   // Neapolitan Minor
+  
+  // Pentatonic
+  'pentatonic_major': [0,2,4,7,9],        // Major Pentatonic
+  'pentatonic_minor': [0,3,5,7,10],       // Minor Pentatonic
+  'blues': [0,3,5,6,7,10],                // Blues Scale
+  
+  // Symmetrical Scales
+  'whole_tone': [0,2,4,6,8,10],           // Whole Tone
+  'diminished': [0,2,3,5,6,8,9,11],       // Diminished (Octatonic)
+  'augmented': [0,3,4,7,8,11],            // Augmented (Hexatonic)
+  
+  // Jazz Scales
+  'bebop_major': [0,2,4,5,7,8,9,11],      // Bebop Major
+  'bebop_dominant': [0,2,4,5,7,9,10,11],  // Bebop Dominant
+  'altered': [0,1,3,4,6,8,10],            // Altered Scale (Super Locrian)
+  'lydian_dominant': [0,2,4,6,7,9,10],    // Lydian Dominant
+  
+  // World/Ethnic Scales
+  'arabic': [0,1,4,5,7,8,11],             // Arabic Scale
+  'japanese': [0,2,3,7,8],                // Japanese (Hirajoshi)
+  'chinese': [0,2,4,7,9],                 // Chinese Pentatonic
+  'double_harmonic': [0,1,4,5,7,8,11],    // Double Harmonic (Byzantine)
+  'enigmatic': [0,1,4,6,8,10,11],         // Enigmatic Scale
+  
+  // Triads
+  'major_triad': [0,4,7],                 // Major
+  'minor_triad': [0,3,7],                 // Minor
+  'diminished_triad': [0,3,6],            // Diminished
+  'augmented_triad': [0,4,8],             // Augmented
+  'sus2': [0,2,7],                        // Sus2
+  'sus4': [0,5,7],                        // Sus4
+  
+  // 7th Chords
+  'major_7th': [0,4,7,11],                // Major 7th
+  'dominant_7th': [0,4,7,10],             // Dominant 7th
+  'minor_7th': [0,3,7,10],                // Minor 7th
+  'diminished_7th': [0,3,6,9],            // Diminished 7th
+  'half_diminished_7th': [0,3,6,10],      // Half-Diminished 7th
+  'minor_major_7th': [0,3,7,11],          // Minor-Major 7th
+  
+  // Extended Chords
+  'major_9th': [0,4,7,11,14],             // Major 9th (14 = 2 + octave)
+  'dominant_9th': [0,4,7,10,14],          // Dominant 9th
+  'minor_9th': [0,3,7,10,14],             // Minor 9th
+  'dominant_13th': [0,4,7,10,14,21],      // Dominant 13th (21 = 9 + octave)
+  'add9': [0,4,7,14],                     // Add9
+  'six_nine': [0,4,7,9,14],               // 6/9 Chord
+};
+
+let wedgeWidth = 1;
+
+// Check if a note is in the current stencil
+function isNoteInStencil(noteIndex) {
+  const pattern = stencilPatterns[currentStencil];
+  return pattern.includes(noteIndex);
+}
+
+// Check if a note position is at 12 o'clock (within the wedge)
+// The wedge is FIXED at 12 o'clock, but the spokes rotate
+// We need to figure out which spoke index is currently at 12 o'clock
+function isNoteInWedge(spokeIndex) {
+  // When rotation = 0, spoke 0 is at 12 o'clock
+  // When we rotate CLOCKWISE (positive rotation), lower-numbered spokes move away
+  // and higher-numbered spokes move toward 12 o'clock
+  
+  const anglePerSpoke = (Math.PI * 2) / SPOKES;
+  
+  // Normalize rotation angle to 0-2π
+  let normalizedRotation = rotationAngle % (Math.PI * 2);
+  if (normalizedRotation < 0) normalizedRotation += Math.PI * 2;
+  
+  // Calculate which spoke is at 12 o'clock
+  // We SUBTRACT because clockwise rotation means earlier spokes move to 12 o'clock
+  const spokesRotated = Math.round(normalizedRotation / anglePerSpoke);
+  const spokeAt12OClock = (SPOKES - spokesRotated) % SPOKES;
+  
+  return spokeIndex === spokeAt12OClock;
+}
+
+function draw(highlightNotes = null) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  notePositions = [];
+  
+  const highlightArray = highlightNotes ? 
+    (Array.isArray(highlightNotes) ? highlightNotes : [highlightNotes]) : [];
+
+  // Concentric circles
+  ctx.strokeStyle = "rgba(0, 128, 128, 0.2)";
+  ctx.lineWidth = 1;
+  for (let r = 0; r < RINGS; r++) {
+    const radius = INNER_RADIUS + r * RING_SPACING;
+    ctx.beginPath();
+    ctx.arc(CENTER.x, CENTER.y, radius, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  
+  // Draw stencil wedge at 12 o'clock position with visible rays
+  if (currentStencil !== 'chromatic') {
+    const wedgeCenter = -Math.PI / 2;
+    const wedgeHalfAngle = (Math.PI / 12);
+    const wedgeAngleStart = wedgeCenter - wedgeHalfAngle;
+    const wedgeAngleEnd = wedgeCenter + wedgeHalfAngle;
+    
+    // Fill the wedge area
+    ctx.fillStyle = "rgba(244, 208, 63, 0.15)";
+    ctx.beginPath();
+    ctx.moveTo(CENTER.x, CENTER.y);
+    ctx.arc(CENTER.x, CENTER.y, OUTER_RADIUS, wedgeAngleStart, wedgeAngleEnd);
+    ctx.lineTo(CENTER.x, CENTER.y);
+    ctx.fill();
+    
+    // Draw the two rays
+    ctx.strokeStyle = "#F4D03F";
+    ctx.lineWidth = 3;
+    
+    // Left ray
+    ctx.beginPath();
+    ctx.moveTo(CENTER.x, CENTER.y);
+    ctx.lineTo(
+      CENTER.x + OUTER_RADIUS * Math.cos(wedgeAngleStart),
+      CENTER.y + OUTER_RADIUS * Math.sin(wedgeAngleStart)
+    );
+    ctx.stroke();
+    
+    // Right ray
+    ctx.beginPath();
+    ctx.moveTo(CENTER.x, CENTER.y);
+    ctx.lineTo(
+      CENTER.x + OUTER_RADIUS * Math.cos(wedgeAngleEnd),
+      CENTER.y + OUTER_RADIUS * Math.sin(wedgeAngleEnd)
+    );
+    ctx.stroke();
+    
+    // Outer arc
+    ctx.beginPath();
+    ctx.arc(CENTER.x, CENTER.y, OUTER_RADIUS, wedgeAngleStart, wedgeAngleEnd);
+    ctx.stroke();
+  }
+
+  for (let s = 0; s < SPOKES; s++) {
+    const angle = (s / SPOKES) * Math.PI * 2 - Math.PI / 2 + rotationAngle;
+
+    // Draw spoke
+    ctx.strokeStyle = "rgba(0, 128, 128, 0.15)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(CENTER.x, CENTER.y);
+    ctx.lineTo(
+      CENTER.x + OUTER_RADIUS * Math.cos(angle),
+      CENTER.y + OUTER_RADIUS * Math.sin(angle)
+    );
+    ctx.stroke();
+
+    for (let r = 0; r < RINGS; r++) {
+      const radius = INNER_RADIUS + r * RING_SPACING;
+
+      const noteIndex = (s + r) % 12;
+      const note = NOTES[noteIndex];
+      const midiNumber = MIDI_BASE + (s + r);
+
+      const x = CENTER.x + radius * Math.cos(angle);
+      const y = CENTER.y + radius * Math.sin(angle);
+
+      notePositions.push({ x, y, note, noteIndex, midiNumber, s, r });
+
+      const isHighlighted = highlightArray.some(h => h.s === s && h.r === r) ||
+                           activeMidiNotes.has(midiNumber);
+      
+      // Check if note is in the current stencil pattern
+      const inStencil = isNoteInStencil(noteIndex);
+      
+      // Check if this spoke is at 12 o'clock (in the wedge)
+      const inWedge = isNoteInWedge(s);
+      const isActive = inStencil && inWedge;
+      
+      const currentRadius = isHighlighted ? NOTE_RADIUS * 1.4 : NOTE_RADIUS;
+
+      // CRITICAL: ALL notes in the pattern show at full brightness (all are clickable/playable)
+      // Only notes NOT in the pattern are subdued
+      const baseColor = COLORS[noteIndex];
+      const shouldShowFull = currentStencil === 'chromatic' || inStencil;
+      ctx.fillStyle = shouldShowFull ? baseColor : `${baseColor}40`;
+      ctx.beginPath();
+      ctx.arc(x, y, currentRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Special golden ring ONLY for notes at 12 o'clock in the wedge
+      if (isActive && currentStencil !== 'chromatic') {
+        ctx.strokeStyle = "#F4D03F"; // Golden ring = "this is what auto-play/strum will use"
+        ctx.lineWidth = 3;
+      } else {
+        ctx.strokeStyle = isHighlighted ? "#fff" : "rgba(0,0,0,0.2)";
+        ctx.lineWidth = isHighlighted ? 3 : 1;
+      }
+      ctx.stroke();
+
+      // Text always upright
+      ctx.save();
+      ctx.translate(x, y);
+      
+      const lightColorIndices = [0, 1, 2, 10, 11];
+      const useBlackText = lightColorIndices.includes(noteIndex);
+      
+      const textColor = isHighlighted ? "#000" : (useBlackText ? "#000" : "#fff");
+      const outlineColor = useBlackText ? "#fff" : "#000";
+      
+      ctx.font = isHighlighted ? "bold 14px system-ui, sans-serif" : "bold 13px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      
+      ctx.strokeStyle = outlineColor;
+      ctx.lineWidth = 3;
+      ctx.strokeText(note, 0, 0);
+      
+      ctx.fillStyle = textColor;
+      ctx.fillText(note, 0, 0);
+      ctx.restore();
+    }
+  }
+  
+  // Draw center rotation handle
+  ctx.fillStyle = isDragging ? "#008080" : "rgba(0, 128, 128, 0.8)";
+  ctx.beginPath();
+  ctx.arc(CENTER.x, CENTER.y, 40, 0, Math.PI * 2);
+  ctx.fill();
+  
+  ctx.strokeStyle = "#F4D03F";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  
+  // Rotation icon
+  ctx.strokeStyle = "#F4D03F";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(CENTER.x, CENTER.y, 25, 0.5, Math.PI * 1.8);
+  ctx.stroke();
+  
+  const arrowAngle = Math.PI * 1.8;
+  const arrowX = CENTER.x + 25 * Math.cos(arrowAngle);
+  const arrowY = CENTER.y + 25 * Math.sin(arrowAngle);
+  ctx.beginPath();
+  ctx.moveTo(arrowX, arrowY);
+  ctx.lineTo(arrowX - 8 * Math.cos(arrowAngle - 0.3), arrowY - 8 * Math.sin(arrowAngle - 0.3));
+  ctx.moveTo(arrowX, arrowY);
+  ctx.lineTo(arrowX - 8 * Math.cos(arrowAngle + 0.3), arrowY - 8 * Math.sin(arrowAngle + 0.3));
+  ctx.stroke();
+}
+
+// Mouse interactions
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+  
+  const dx = mouseX - CENTER.x;
+  const dy = mouseY - CENTER.y;
+  const distanceFromCenter = Math.sqrt(dx * dx + dy * dy);
+  
+  if (isDragging) {
+    const currentAngle = Math.atan2(dy, dx);
+    const angleDelta = currentAngle - lastMouseAngle;
+    rotationAngle += angleDelta;
+    lastMouseAngle = currentAngle;
+    draw();
+    return;
+  }
+  
+  if (distanceFromCenter <= 50) {
+    canvas.style.cursor = 'grab';
+    info.textContent = 'Drag to rotate the clock';
+    return;
+  }
+  
+  let found = null;
+  for (let notePos of notePositions) {
+    const dx = mouseX - notePos.x;
+    const dy = mouseY - notePos.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    if (distance <= NOTE_RADIUS * 1.5) {
+      found = notePos;
+      break;
+    }
+  }
+  
+  if (found !== hoveredNote) {
+    hoveredNote = found;
+    canvas.style.cursor = found ? 'pointer' : 'default';
+    if (found) {
+      info.textContent = `${found.note} - MIDI ${found.midiNumber}`;
+    } else {
+      info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+    }
+  }
+});
+
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+  
+  const dx = mouseX - CENTER.x;
+  const dy = mouseY - CENTER.y;
+  const distanceFromCenter = Math.sqrt(dx * dx + dy * dy);
+  
+  if (distanceFromCenter <= 50) {
+    isDragging = true;
+    lastMouseAngle = Math.atan2(dy, dx);
+    canvas.style.cursor = 'grabbing';
+    e.preventDefault();
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'default';
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'default';
+  }
+});
+
+// Click to play note
+canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+  
+  for (let notePos of notePositions) {
+    const dx = mouseX - notePos.x;
+    const dy = mouseY - notePos.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    if (distance <= NOTE_RADIUS * 1.5) {
+      playNote(notePos.midiNumber);
+      
+      activeNote = notePos;
+      draw(activeNote);
+      info.classList.add('active');
+      info.textContent = `Playing: ${notePos.note} (MIDI ${notePos.midiNumber})`;
+      
+      setTimeout(() => {
+        activeNote = null;
+        draw();
+        info.classList.remove('active');
+        info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+      }, 500);
+      
+      break;
+    }
+  }
+});
+
+// Auto-play functionality
+function startAutoPlay() {
+  if (isAutoPlaying) return;
+  
+  isAutoPlaying = true;
+  currentAutoPlayIndex = 0;
+  autoPlayDirection = 1;
+  
+  const playButton = document.getElementById('autoPlayBtn');
+  playButton.textContent = '⏸ Pause';
+  playButton.classList.add('pause');
+  
+  // Function to calculate interval based on current tempo
+  function getTempoInterval() {
+    // BPM = beats per minute
+    // Interval in ms = (60 seconds / BPM) * 1000
+    return (60 / currentTempo) * 1000;
+  }
+  
+  function getNoteDuration() {
+    // Note duration should be slightly shorter than interval for clean separation
+    return Math.min(0.5, (60 / currentTempo) * 0.9);
+  }
+  
+  // Function to find and play the next note in the pattern
+  function playNextNote() {
+    if (!isAutoPlaying) return;
+    
+    // Keep searching rings until we find a note in the pattern
+    let attempts = 0;
+    while (attempts < RINGS * 2) { // Safety limit
+      // Get ALL notes at current ring position
+      const notesInCurrentRing = notePositions.filter(n => n.r === currentAutoPlayIndex);
+      
+      // Find which spoke is at 12 o'clock using corrected calculation
+      const anglePerSpoke = (Math.PI * 2) / SPOKES;
+      let normalizedRotation = rotationAngle % (Math.PI * 2);
+      if (normalizedRotation < 0) normalizedRotation += Math.PI * 2;
+      const spokesRotated = Math.round(normalizedRotation / anglePerSpoke);
+      const spokeAt12OClock = (SPOKES - spokesRotated) % SPOKES;
+      
+      // Get the note at 12 o'clock position in this ring
+      const noteAt12OClock = notesInCurrentRing.find(n => n.s === spokeAt12OClock);
+      
+      // Check if this note is in the stencil pattern
+      if (noteAt12OClock && isNoteInStencil(noteAt12OClock.noteIndex)) {
+        // FOUND A NOTE IN THE PATTERN - PLAY IT!
+        playNote(noteAt12OClock.midiNumber, getNoteDuration());
+        
+        draw([noteAt12OClock]);
+        info.classList.add('active');
+        info.textContent = `Playing: ${noteAt12OClock.note} (${currentTempo} BPM)`;
+        
+        setTimeout(() => {
+          info.classList.remove('active');
+        }, 100);
+        
+        // Move to next ring for next search
+        currentAutoPlayIndex += autoPlayDirection;
+        
+        if (currentAutoPlayIndex >= RINGS) {
+          currentAutoPlayIndex = RINGS - 2;
+          autoPlayDirection = -1;
+        } else if (currentAutoPlayIndex < 0) {
+          currentAutoPlayIndex = 1;
+          autoPlayDirection = 1;
+        }
+        
+        // Schedule next note play after tempo-based interval
+        setTimeout(playNextNote, getTempoInterval());
+        return; // Exit the while loop
+      }
+      
+      // This ring doesn't have a note in the pattern - skip it immediately
+      currentAutoPlayIndex += autoPlayDirection;
+      
+      if (currentAutoPlayIndex >= RINGS) {
+        currentAutoPlayIndex = RINGS - 2;
+        autoPlayDirection = -1;
+      } else if (currentAutoPlayIndex < 0) {
+        currentAutoPlayIndex = 1;
+        autoPlayDirection = 1;
+      }
+      
+      attempts++;
+    }
+    
+    // If we get here, we've gone through all rings - start over
+    setTimeout(playNextNote, getTempoInterval());
+  }
+  
+  // Start the sequence
+  playNextNote();
+}
+
+function stopAutoPlay() {
+  isAutoPlaying = false;
+  
+  // No need to clear interval anymore - the recursive setTimeout will stop when isAutoPlaying = false
+  
+  const playButton = document.getElementById('autoPlayBtn');
+  playButton.textContent = '▶ Auto-Play Scale';
+  playButton.classList.remove('pause');
+  
+  draw();
+  info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+}
+
+function toggleAutoPlay() {
+  if (isAutoPlaying) {
+    stopAutoPlay();
+  } else {
+    startAutoPlay();
+  }
+}
+
+// Stencil selector
+document.getElementById('stencilSelect').addEventListener('change', (e) => {
+  currentStencil = e.target.value;
+  draw();
+  
+  if (currentStencil === 'chromatic') {
+    info.textContent = 'All notes visible • Drag center to rotate';
+  } else {
+    const stencilName = e.target.options[e.target.selectedIndex].text;
+    info.textContent = `Stencil: ${stencilName} at 12 o'clock`;
+  }
+});
+
+// Tempo slider
+document.getElementById('tempoSlider').addEventListener('input', (e) => {
+  currentTempo = parseInt(e.target.value);
+  document.getElementById('tempoValue').textContent = currentTempo;
+  
+  // If currently playing, the new tempo will be used on the next note
+  if (isAutoPlaying) {
+    info.textContent = `Tempo changed to ${currentTempo} BPM`;
+    setTimeout(() => {
+      if (!info.classList.contains('active')) {
+        info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+      }
+    }, 1000);
+  }
+});
+
+// Key selector - rotates wheel to put selected note at 12 o'clock
+document.getElementById('keySelect').addEventListener('change', (e) => {
+  const selectedKey = parseInt(e.target.value);
+  const keyName = e.target.options[e.target.selectedIndex].text;
+  
+  // Calculate rotation needed to put this note at 12 o'clock
+  // Each semitone = 30 degrees (360 / 12)
+  const anglePerSpoke = (Math.PI * 2) / SPOKES;
+  
+  // To put spoke N at 12 o'clock, we need to rotate by N spokes
+  // Negative because we're rotating the clock, not the wedge
+  rotationAngle = -selectedKey * anglePerSpoke;
+  
+  draw();
+  
+  info.textContent = `Key set to: ${keyName}`;
+  setTimeout(() => {
+    info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+  }, 1500);
+});
+
+// Strum button - plays all notes in the current wedge/stencil
+document.getElementById('strumBtn').addEventListener('click', () => {
+  // Calculate which spoke is at 12 o'clock using same logic as isNoteInWedge
+  const anglePerSpoke = (Math.PI * 2) / SPOKES;
+  let normalizedRotation = rotationAngle % (Math.PI * 2);
+  if (normalizedRotation < 0) normalizedRotation += Math.PI * 2;
+  const spokesRotated = Math.round(normalizedRotation / anglePerSpoke);
+  const spokeAt12OClock = (SPOKES - spokesRotated) % SPOKES;
+  
+  // Get all notes at 12 o'clock position across all rings
+  const notesAt12OClock = notePositions.filter(n => n.s === spokeAt12OClock);
+  
+  // Filter to only notes in the stencil pattern
+  const notesToStrum = notesAt12OClock.filter(n => isNoteInStencil(n.noteIndex));
+  
+  if (notesToStrum.length > 0) {
+    // Play notes with slight stagger for strum effect (like guitar)
+    notesToStrum.forEach((notePos, index) => {
+      setTimeout(() => {
+        playNote(notePos.midiNumber, 1.5); // Longer sustain for chord
+      }, index * 30); // 30ms stagger between notes
+    });
+    
+    // Visual feedback
+    draw(notesToStrum);
+    info.classList.add('active');
+    
+    const noteNames = notesToStrum.map(n => n.note).join(' - ');
+    const chordName = currentStencil.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    info.textContent = `Strumming: ${noteNames} (${chordName})`;
+    
+    setTimeout(() => {
+      info.classList.remove('active');
+      draw();
+      info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+    }, 1500);
+  } else {
+    info.textContent = 'No notes in pattern at 12 o\'clock position';
+    setTimeout(() => {
+      info.textContent = 'Drag center to rotate • Click or play MIDI keyboard';
+    }, 1500);
+  }
+});
+
+// Auto-play button
+document.getElementById('autoPlayBtn').addEventListener('click', toggleAutoPlay);
+
+// Initial draw
+draw();
+
+// Initialize MIDI on load
+initMIDI();
+
+// Continuous redraw when MIDI notes are active
+setInterval(() => {
+  if (activeMidiNotes.size > 0) {
+    draw();
+  }
+}, 50);
+
+// ========================================
+// EAR TRAINING GAME SYSTEM
+// ========================================
+
+let gameState = {
+  isPlaying: false,
+  currentQuestion: 0,
+  totalQuestions: 10,
+  score: 0,
+  streak: 0,
+  difficulty: 'beginner',
+  questions: [],
+  currentAnswer: null,
+  showingInversion: false
+};
+
+// Interval inversion data
+const intervalInversions = {
+  'interval_m2': { inversion: 'interval_M7', name: 'Major 7th', semitones: 11 },
+  'interval_M2': { inversion: 'interval_m7', name: 'Minor 7th', semitones: 10 },
+  'interval_m3': { inversion: 'interval_M6', name: 'Major 6th', semitones: 9 },
+  'interval_M3': { inversion: 'interval_m6', name: 'Minor 6th', semitones: 8 },
+  'interval_P4': { inversion: 'interval_P5', name: 'Perfect 5th', semitones: 7 },
+  'interval_tritone': { inversion: 'interval_tritone', name: 'Tritone', semitones: 6 },
+  'interval_P5': { inversion: 'interval_P4', name: 'Perfect 4th', semitones: 5 },
+  'interval_m6': { inversion: 'interval_M3', name: 'Major 3rd', semitones: 4 },
+  'interval_M6': { inversion: 'interval_m3', name: 'Minor 3rd', semitones: 3 },
+  'interval_m7': { inversion: 'interval_M2', name: 'Major 2nd', semitones: 2 },
+  'interval_M7': { inversion: 'interval_m2', name: 'Minor 2nd', semitones: 1 },
+  'interval_octave': { inversion: 'interval_octave', name: 'Unison', semitones: 0 }
+};
+
+// Question banks for different difficulties
+const questionBanks = {
+  beginner: [
+    { pattern: 'interval_P5', name: 'Perfect 5th', category: 'interval' },
+    { pattern: 'interval_P4', name: 'Perfect 4th', category: 'interval' },
+    { pattern: 'interval_M3', name: 'Major 3rd', category: 'interval' },
+    { pattern: 'interval_m3', name: 'Minor 3rd', category: 'interval' },
+    { pattern: 'interval_M2', name: 'Major 2nd', category: 'interval' },
+    { pattern: 'major_triad', name: 'Major Chord', category: 'chord' },
+    { pattern: 'minor_triad', name: 'Minor Chord', category: 'chord' }
+  ],
+  intermediate: [
+    { pattern: 'interval_m2', name: 'Minor 2nd', category: 'interval' },
+    { pattern: 'interval_M2', name: 'Major 2nd', category: 'interval' },
+    { pattern: 'interval_m3', name: 'Minor 3rd', category: 'interval' },
+    { pattern: 'interval_M3', name: 'Major 3rd', category: 'interval' },
+    { pattern: 'interval_P4', name: 'Perfect 4th', category: 'interval' },
+    { pattern: 'interval_tritone', name: 'Tritone', category: 'interval' },
+    { pattern: 'interval_P5', name: 'Perfect 5th', category: 'interval' },
+    { pattern: 'interval_m6', name: 'Minor 6th', category: 'interval' },
+    { pattern: 'interval_M6', name: 'Major 6th', category: 'interval' },
+    { pattern: 'interval_m7', name: 'Minor 7th', category: 'interval' },
+    { pattern: 'interval_M7', name: 'Major 7th', category: 'interval' },
+    { pattern: 'interval_octave', name: 'Octave', category: 'interval' }
+  ],
+  advanced: [
+    { pattern: 'major_triad', name: 'Major Chord', category: 'chord' },
+    { pattern: 'minor_triad', name: 'Minor Chord', category: 'chord' },
+    { pattern: 'diminished_triad', name: 'Diminished Chord', category: 'chord' },
+    { pattern: 'augmented_triad', name: 'Augmented Chord', category: 'chord' },
+    { pattern: 'major_7th', name: 'Major 7th Chord', category: 'chord' },
+    { pattern: 'dominant_7th', name: 'Dominant 7th Chord', category: 'chord' },
+    { pattern: 'minor_7th', name: 'Minor 7th Chord', category: 'chord' },
+    { pattern: 'major', name: 'Major Scale', category: 'scale' },
+    { pattern: 'minor', name: 'Minor Scale', category: 'scale' },
+    { pattern: 'dorian', name: 'Dorian Mode', category: 'scale' },
+    { pattern: 'mixolydian', name: 'Mixolydian Mode', category: 'scale' }
+  ]
+};
+
+// Toggle ear training mode
+document.getElementById('earTrainingToggle').addEventListener('click', () => {
+  const panel = document.getElementById('earTrainingPanel');
+  const regularControls = document.getElementById('regularControls');
+  const toggleBtn = document.getElementById('earTrainingToggle');
+  
+  if (panel.style.display === 'none') {
+    // Enter game mode
+    panel.style.display = 'block';
+    regularControls.style.display = 'none';
+    toggleBtn.classList.add('active');
+    toggleBtn.textContent = '← BACK TO NORMAL MODE';
+  } else {
+    // Exit game mode
+    panel.style.display = 'none';
+    regularControls.style.display = 'block';
+    toggleBtn.classList.remove('active');
+    toggleBtn.textContent = '🎧 EAR TRAINING MODE';
+    resetGame();
+  }
+});
+
+// Start game
+document.getElementById('startGameBtn').addEventListener('click', () => {
+  const difficulty = document.getElementById('gameDifficulty').value;
+  const length = parseInt(document.getElementById('gameLength').value);
+  
+  startGame(difficulty, length);
+});
+
+// Listen button
+document.getElementById('listenButton').addEventListener('click', () => {
+  playCurrentQuestion();
+});
+
+// Flip button - shows interval inversion
+document.getElementById('flipButton').addEventListener('click', () => {
+  playInversion();
+});
+
+// Next question button
+document.getElementById('nextQuestionBtn').addEventListener('click', () => {
+  nextQuestion();
+});
+
+// Exit game button
+document.getElementById('exitGameBtn').addEventListener('click', () => {
+  if (confirm('Exit current game? Progress will be lost.')) {
+    document.getElementById('earTrainingToggle').click();
+  }
+});
+
+function startGame(difficulty, totalQuestions) {
+  gameState = {
+    isPlaying: true,
+    currentQuestion: 0,
+    totalQuestions: totalQuestions,
+    score: 0,
+    streak: 0,
+    difficulty: difficulty,
+    questions: generateQuestions(difficulty, totalQuestions),
+    currentAnswer: null
+  };
+  
+  // Hide settings, show game
+  document.getElementById('gameSettings').style.display = 'none';
+  document.getElementById('startGameBtn').style.display = 'none';
+  document.getElementById('exitGameBtn').style.display = 'inline-block';
+  
+  // Show first question
+  showQuestion();
+}
+
+function generateQuestions(difficulty, count) {
+  const bank = questionBanks[difficulty];
+  const questions = [];
+  
+  for (let i = 0; i < count; i++) {
+    // Pick random correct answer
+    const correctAnswer = bank[Math.floor(Math.random() * bank.length)];
+    
+    // Pick 3 random wrong answers from same category
+    const wrongAnswers = bank
+      .filter(q => q.pattern !== correctAnswer.pattern && q.category === correctAnswer.category)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+    
+    // If not enough wrong answers from same category, add from any category
+    while (wrongAnswers.length < 3) {
+      const randomOption = bank[Math.floor(Math.random() * bank.length)];
+      if (randomOption.pattern !== correctAnswer.pattern && 
+          !wrongAnswers.find(w => w.pattern === randomOption.pattern)) {
+        wrongAnswers.push(randomOption);
+      }
+    }
+    
+    // Combine and shuffle
+    const options = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+    
+    questions.push({
+      correct: correctAnswer,
+      options: options,
+      randomRoot: Math.floor(Math.random() * 12) // Random key
+    });
+  }
+  
+  return questions;
+}
+
+function showQuestion() {
+  const question = gameState.questions[gameState.currentQuestion];
+  gameState.currentAnswer = question.correct.pattern;
+  gameState.showingInversion = false;
+  
+  // Update UI
+  document.getElementById('questionCounter').textContent = 
+    `Question ${gameState.currentQuestion + 1} of ${gameState.totalQuestions}`;
+  document.getElementById('questionText').textContent = 'What are you hearing?';
+  document.getElementById('listenButton').style.display = 'inline-block';
+  document.getElementById('feedbackArea').style.display = 'none';
+  document.getElementById('nextQuestionBtn').style.display = 'none';
+  
+  // Show flip button ONLY for intervals (not chords or scales)
+  if (question.correct.category === 'interval' && intervalInversions[question.correct.pattern]) {
+    document.getElementById('flipButton').style.display = 'inline-block';
+  } else {
+    document.getElementById('flipButton').style.display = 'none';
+  }
+  
+  // Update progress bar
+  const progress = (gameState.currentQuestion / gameState.totalQuestions) * 100;
+  document.getElementById('gameProgress').style.width = progress + '%';
+  
+  // Generate answer buttons
+  const answerButtons = document.getElementById('answerButtons');
+  answerButtons.innerHTML = '';
+  
+  question.options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = option.name;
+    btn.onclick = () => checkAnswer(option.pattern, btn);
+    answerButtons.appendChild(btn);
+  });
+  
+  // Auto-play the question once
+  setTimeout(() => playCurrentQuestion(), 500);
+}
+
+function playInversion() {
+  const question = gameState.questions[gameState.currentQuestion];
+  const pattern = question.correct.pattern;
+  
+  if (question.correct.category !== 'interval' || !intervalInversions[pattern]) {
+    return; // Only works for intervals
+  }
+  
+  gameState.showingInversion = true;
+  
+  const inversion = intervalInversions[pattern];
+  const rootKey = question.randomRoot;
+  
+  // Get root note
+  const anglePerSpoke = (Math.PI * 2) / SPOKES;
+  rotationAngle = -rootKey * anglePerSpoke;
+  
+  const anglePerSpokeCalc = (Math.PI * 2) / SPOKES;
+  let normalizedRotation = rotationAngle % (Math.PI * 2);
+  if (normalizedRotation < 0) normalizedRotation += Math.PI * 2;
+  const spokesRotated = Math.round(normalizedRotation / anglePerSpokeCalc);
+  const spokeAt12OClock = (SPOKES - spokesRotated) % SPOKES;
+  
+  const rootNote = notePositions.find(n => 
+    n.s === spokeAt12OClock && n.r === 0 && n.noteIndex === 0
+  );
+  
+  if (rootNote) {
+    // Play ROOT NOTE FIRST
+    playNote(rootNote.midiNumber, 1.5);
+    
+    // Play INVERSION (descending interval)
+    // Going DOWN means subtracting semitones
+    const inversionMidiNumber = rootNote.midiNumber - inversion.semitones;
+    
+    setTimeout(() => {
+      playNote(inversionMidiNumber, 1.5);
+    }, 500);
+    
+    // Show info
+    const questionText = document.getElementById('questionText');
+    const originalName = question.correct.name;
+    questionText.innerHTML = `
+      <strong>INVERSION:</strong><br>
+      ${originalName} ASCENDING ⟷ ${inversion.name} DESCENDING<br>
+      <small>(Same interval, opposite direction!)</small>
+    `;
+  }
+}
+
+function playCurrentQuestion() {
+  const question = gameState.questions[gameState.currentQuestion];
+  const pattern = question.correct.pattern;
+  const rootKey = question.randomRoot;
+  
+  // Set rotation to the random root key
+  const anglePerSpoke = (Math.PI * 2) / SPOKES;
+  rotationAngle = -rootKey * anglePerSpoke;
+  
+  // Temporarily set stencil pattern
+  const originalStencil = currentStencil;
+  currentStencil = pattern;
+  
+  draw();
+  
+  // SPECIAL HANDLING FOR INTERVALS
+  if (question.correct.category === 'interval') {
+    // For intervals: ROOT NOTE FIRST, then interval note above it
+    const patternNotes = stencilPatterns[pattern];
+    
+    const anglePerSpokeCalc = (Math.PI * 2) / SPOKES;
+    let normalizedRotation = rotationAngle % (Math.PI * 2);
+    if (normalizedRotation < 0) normalizedRotation += Math.PI * 2;
+    const spokesRotated = Math.round(normalizedRotation / anglePerSpokeCalc);
+    const spokeAt12OClock = (SPOKES - spokesRotated) % SPOKES;
+    
+    // ALWAYS start with ROOT NOTE at ring 0 (the key we're in)
+    const rootNote = notePositions.find(n => 
+      n.s === spokeAt12OClock && n.r === 0 && n.noteIndex === 0
+    );
+    
+    if (rootNote) {
+      // Play ROOT NOTE FIRST
+      playNote(rootNote.midiNumber, 1.5);
+      
+      // Calculate MIDI number for the interval note
+      // Root MIDI + semitones = interval MIDI
+      const intervalSemitones = patternNotes.length > 1 ? patternNotes[1] : 12; // 12 for octave
+      const intervalMidiNumber = rootNote.midiNumber + intervalSemitones;
+      
+      // Play INTERVAL NOTE 500ms later (after root is established)
+      setTimeout(() => {
+        playNote(intervalMidiNumber, 1.5);
+      }, 500);
+      
+      // Visually show both notes on the clock
+      setTimeout(() => {
+        draw();
+      }, 100);
+    }
+    
+  } else {
+    // For chords and scales, play as before
+    const patternNotes = stencilPatterns[pattern];
+    const anglePerSpokeCalc = (Math.PI * 2) / SPOKES;
+    let normalizedRotation = rotationAngle % (Math.PI * 2);
+    if (normalizedRotation < 0) normalizedRotation += Math.PI * 2;
+    const spokesRotated = Math.round(normalizedRotation / anglePerSpokeCalc);
+    const spokeAt12OClock = (SPOKES - spokesRotated) % SPOKES;
+    
+    // Get notes at 12 o'clock
+    const notesToPlay = notePositions.filter(n => 
+      n.s === spokeAt12OClock && patternNotes.includes(n.noteIndex)
+    );
+    
+    if (question.correct.category === 'chord') {
+      // Play as chord (simultaneously with strum effect)
+      notesToPlay.forEach((notePos, index) => {
+        setTimeout(() => {
+          playNote(notePos.midiNumber, 1.5);
+        }, index * 30);
+      });
+    } else {
+      // Play as scale (sequentially)
+      notesToPlay.forEach((notePos, index) => {
+        setTimeout(() => {
+          playNote(notePos.midiNumber, 0.4);
+        }, index * 400);
+      });
+    }
+  }
+  
+  // Restore original stencil after playing
+  setTimeout(() => {
+    currentStencil = originalStencil;
+    draw();
+  }, 2500);
+}
+
+function checkAnswer(selectedPattern, buttonElement) {
+  const isCorrect = selectedPattern === gameState.currentAnswer;
+  
+  // Disable all buttons
+  document.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.disabled = true;
+    btn.style.cursor = 'not-allowed';
+  });
+  
+  // Mark correct/incorrect
+  if (isCorrect) {
+    buttonElement.classList.add('correct');
+    gameState.score++;
+    gameState.streak++;
+    showFeedback(true);
+  } else {
+    buttonElement.classList.add('incorrect');
+    gameState.streak = 0;
+    showFeedback(false, selectedPattern);
+    
+    // Highlight correct answer
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+      if (btn.textContent === gameState.questions[gameState.currentQuestion].correct.name) {
+        btn.classList.add('correct');
+      }
+    });
+  }
+  
+  // Update score display
+  updateScoreDisplay();
+}
+
+function showFeedback(isCorrect, selectedPattern) {
+  const feedbackArea = document.getElementById('feedbackArea');
+  const question = gameState.questions[gameState.currentQuestion];
+  
+  feedbackArea.style.display = 'block';
+  feedbackArea.className = 'feedback-area ' + (isCorrect ? 'correct' : 'incorrect');
+  
+  if (isCorrect) {
+    feedbackArea.innerHTML = `
+      <p class="feedback-text correct">✅ CORRECT!</p>
+      <p>That was a ${question.correct.name}</p>
+    `;
+  } else {
+    const selectedName = question.options.find(o => o.pattern === selectedPattern)?.name || 'Unknown';
+    feedbackArea.innerHTML = `
+      <p class="feedback-text incorrect">❌ Not quite!</p>
+      <p>You guessed: ${selectedName}</p>
+      <p>Correct answer: ${question.correct.name}</p>
+    `;
+  }
+  
+  // Show next button
+  document.getElementById('nextQuestionBtn').style.display = 'inline-block';
+}
+
+function updateScoreDisplay() {
+  document.getElementById('gameScore').textContent = gameState.score;
+  document.getElementById('gameStreak').textContent = '🔥 ' + gameState.streak;
+}
+
+function nextQuestion() {
+  gameState.currentQuestion++;
+  
+  if (gameState.currentQuestion >= gameState.totalQuestions) {
+    endGame();
+  } else {
+    showQuestion();
+  }
+}
+
+function endGame() {
+  const percentage = Math.round((gameState.score / gameState.totalQuestions) * 100);
+  const feedbackArea = document.getElementById('feedbackArea');
+  
+  feedbackArea.style.display = 'block';
+  feedbackArea.className = 'feedback-area';
+  feedbackArea.innerHTML = `
+    <h2 style="color: var(--primary-gold); margin-bottom: 1rem;">🎉 Game Complete!</h2>
+    <p style="font-size: 1.5rem; margin: 0.5rem 0;">
+      Score: ${gameState.score} / ${gameState.totalQuestions} (${percentage}%)
+    </p>
+    <p style="font-size: 1.2rem;">Best Streak: 🔥 ${Math.max(...gameState.questions.map((_, i) => i <= gameState.currentQuestion ? gameState.streak : 0))}</p>
+  `;
+  
+  document.getElementById('questionText').textContent = 'Great job!';
+  document.getElementById('listenButton').style.display = 'none';
+  document.getElementById('answerButtons').innerHTML = '';
+  document.getElementById('nextQuestionBtn').style.display = 'none';
+  
+  // Show play again button
+  const playAgainBtn = document.createElement('button');
+  playAgainBtn.className = 'game-button start-button';
+  playAgainBtn.textContent = '🔄 PLAY AGAIN';
+  playAgainBtn.onclick = () => {
+    resetGame();
+    document.getElementById('startGameBtn').click();
+  };
+  document.getElementById('answerButtons').appendChild(playAgainBtn);
+}
+
+function resetGame() {
+  gameState = {
+    isPlaying: false,
+    currentQuestion: 0,
+    totalQuestions: 10,
+    score: 0,
+    streak: 0,
+    difficulty: 'beginner',
+    questions: [],
+    currentAnswer: null
+  };
+  
+  document.getElementById('gameSettings').style.display = 'block';
+  document.getElementById('startGameBtn').style.display = 'inline-block';
+  document.getElementById('exitGameBtn').style.display = 'none';
+  document.getElementById('questionText').textContent = 'Press START to begin!';
+  document.getElementById('listenButton').style.display = 'none';
+  document.getElementById('feedbackArea').style.display = 'none';
+  document.getElementById('answerButtons').innerHTML = '';
+  document.getElementById('gameScore').textContent = '0';
+  document.getElementById('gameStreak').textContent = '🔥 0';
+  document.getElementById('gameProgress').style.width = '0%';
+  document.getElementById('questionCounter').textContent = 'Question 1 of 10';
+}
+    </script>
+    
+    <!-- Cookie Consent Banner (GDPR/CCPA Compliant) -->
+    <div id="cookieConsent" class="cookie-banner" style="display: none;">
+        <div class="cookie-content">
+            <h3 style="margin: 0 0 0.5rem 0; color: #F4D03F;">🍪 We Value Your Privacy</h3>
+            <p style="margin: 0 0 1rem 0;">This site uses cookies to enhance your experience and provide analytics. By continuing to use this site, you consent to our use of cookies in accordance with our Privacy Policy.</p>
+            <div class="cookie-buttons">
+                <button onclick="acceptCookies()" class="cookie-btn cookie-accept">Accept All Cookies</button>
+                <button onclick="rejectCookies()" class="cookie-btn cookie-reject">Reject Non-Essential</button>
+                <a href="privacy.html" class="cookie-link">Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    .cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, rgba(15, 15, 30, 0.98), rgba(0, 64, 64, 0.98));
+        border-top: 3px solid #F4D03F;
+        padding: 1.5rem;
+        z-index: 10000;
+        box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.8);
+        animation: slideUp 0.5s ease-out;
+    }
+    
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+    
+    .cookie-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        color: #E8E8E8;
+    }
+    
+    .cookie-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    
+    .cookie-btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    .cookie-accept {
+        background: linear-gradient(135deg, #008080, #006666);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4);
+    }
+    
+    .cookie-accept:hover {
+        background: linear-gradient(135deg, #006666, #008080);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 128, 128, 0.6);
+    }
+    
+    .cookie-reject {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .cookie-reject:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .cookie-link {
+        color: #F4D03F;
+        text-decoration: underline;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+    }
+    
+    .cookie-link:hover {
+        color: #fff;
+    }
+    
+    @media (max-width: 768px) {
+        .cookie-banner {
+            padding: 1rem;
+        }
+        .cookie-content h3 {
+            font-size: 1.1rem;
+        }
+        .cookie-content p {
+            font-size: 0.9rem;
+        }
+        .cookie-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+        .cookie-btn {
+            width: 100%;
+        }
+    }
+    </style>
+    
+    <script>
+    // Cookie Consent Management (GDPR/CCPA Compliant)
+    function checkCookieConsent() {
+        const consent = localStorage.getItem('cookieConsent');
+        const consentDate = localStorage.getItem('cookieConsentDate');
+        
+        // Check if consent is older than 1 year (re-consent required)
+        const oneYearAgo = new Date().getTime() - (365 * 24 * 60 * 60 * 1000);
+        
+        if (!consent || (consentDate && parseInt(consentDate) < oneYearAgo)) {
+            // Show banner
+            setTimeout(() => {
+                document.getElementById('cookieConsent').style.display = 'block';
+            }, 1000);
+        } else if (consent === 'accepted') {
+            initializeAnalytics();
+        }
+    }
+    
+    function acceptCookies() {
+        localStorage.setItem('cookieConsent', 'accepted');
+        localStorage.setItem('cookieConsentDate', new Date().getTime().toString());
+        document.getElementById('cookieConsent').style.display = 'none';
+        initializeAnalytics();
+        
+        // Track consent acceptance
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'cookie_consent', {
+                'event_category': 'Legal',
+                'event_label': 'Accepted'
+            });
+        }
+    }
+    
+    function rejectCookies() {
+        localStorage.setItem('cookieConsent', 'rejected');
+        localStorage.setItem('cookieConsentDate', new Date().getTime().toString());
+        document.getElementById('cookieConsent').style.display = 'none';
+        
+        // Don't initialize analytics
+        console.log('Analytics disabled by user preference');
+    }
+    
+    // Run consent check on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkCookieConsent);
+    } else {
+        checkCookieConsent();
+    }
+    </script>
+</body>
+</html>
