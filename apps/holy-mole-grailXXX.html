@@ -15,15 +15,6 @@
     <meta name="color-scheme" content="dark">
     <link rel="canonical" href="https://www.keyscodesandmodes.com/holy-grail">
 
-    <!-- FAVICON & APP ICONS -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23FFFF00'/><text y='.9em' font-size='80' x='10'>🎵</text></svg>">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.keyscodesandmodes.com/favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://www.keyscodesandmodes.com/favicon-16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://www.keyscodesandmodes.com/apple-touch-icon.png">
-    <link rel="manifest" href="https://www.keyscodesandmodes.com/site.webmanifest">
-    <meta name="msapplication-TileColor" content="#0f0e17">
-    <meta name="msapplication-config" content="https://www.keyscodesandmodes.com/browserconfig.xml">
-
     <!-- OPEN GRAPH -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Keys, Codes &amp; Modes">
@@ -77,10 +68,6 @@
     <!-- PRELOAD TONE.JS -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js" as="script" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js" crossorigin="anonymous"></script>
-    <!-- GOOGLE FONTS — Inter for UI clarity -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap">
     <style>
         * {
             margin: 0;
@@ -89,7 +76,7 @@
         }
         
         body {
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f0e17 0%, #1a1a2e 50%, #16213e 100%);
             color: #fff;
             min-height: 100vh;
@@ -133,7 +120,7 @@
         h1 {
             font-size: 2.5rem;
             font-weight: 900;
-            background: linear-gradient(90deg, #e94560, #a78bfa, #60a5fa);
+            background: linear-gradient(90deg, #e94560, #0f3460, #16213e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -151,14 +138,13 @@
         
         .container {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: 1fr 340px;
             gap: 1.5rem;
             padding: 1.5rem;
             max-width: 1600px;
             margin: 0 auto;
-            /* Fill viewport minus header — no fixed min-height */
-            height: calc(100vh - 160px);
-            min-height: 600px;
+            height: calc(100vh - 150px);
+            min-height: 700px;
         }
         
         .controls-panel {
@@ -355,23 +341,12 @@
         .section-title, .help-text { display: none; }
         .rotate-controls { display: none; }
         
-        /* Mobile swipe hint */
-        .swipe-hint {
-            display: none;
-            text-align: center;
-            font-size: 0.7rem;
-            color: rgba(233,69,96,0.6);
-            margin-top: 0.3rem;
-            letter-spacing: 0.5px;
-        }
-        @media (max-width: 899px) { .swipe-hint { display: block; } }
-
         /* LAYER 1: Panel container */
         .wheel-container {
             position: relative;
             width: 100%;
             height: 100%;
-            min-height: 520px;
+            min-height: 700px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -379,36 +354,36 @@
             border-radius: 24px;
             border: 3px solid #e94560;
             box-shadow: 0 0 40px rgba(233, 69, 96, 0.3);
-            overflow: hidden;
-            padding: 1rem;
+            overflow: visible;
+            padding: 0;
             margin: 0;
         }
         
-        /* LAYER 2: Subdued glow — scales with container */
+        /* LAYER 2: Subdued circle background */
         .wheel-container::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: min(90%, 90vh);
-            height: min(90%, 90vh);
+            width: 470px;
+            height: 470px;
             border-radius: 50%;
             background: radial-gradient(circle at 50% 50%, rgba(10, 15, 26, 0.9) 0%, rgba(26, 35, 50, 0.5) 100%);
             box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.5);
             z-index: 1;
         }
         
-        /* LAYER 3: SVG — fills container, scales on all devices */
+        /* LAYER 3: SVG with notes/spokes/wedges - ABSOLUTELY LOCKED */
         #holyGrailSVG {
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 2;
             display: block;
-            width: min(calc(100% - 2rem), calc(100vh - 200px));
-            height: min(calc(100% - 2rem), calc(100vh - 200px));
-            max-width: 700px;
-            max-height: 700px;
-            margin: auto;
+            margin: 0;
+            padding: 0;
         }
         
         .section-title {
@@ -616,77 +591,15 @@
         @media (forced-colors: active) {
             button, .pill, .cool-btn { border: 2px solid ButtonText; }
         }
-        /* ── DESKTOP LARGE (1400px+) ── */
-        @media (min-width: 1400px) {
-            .container { grid-template-columns: 1fr 360px; gap: 2rem; padding: 2rem; }
-            h1 { font-size: 2.8rem; }
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; height: auto; }
+            .wheel-container { min-height: 400px; }
+            h1 { font-size: 1.6rem; }
         }
-
-        /* ── TABLET LANDSCAPE / SMALL DESKTOP (900–1199px) ── */
-        @media (max-width: 1199px) {
-            .container { grid-template-columns: 1fr 300px; gap: 1.2rem; padding: 1.2rem; }
-            h1 { font-size: 2rem; }
-        }
-
-        /* ── TABLET PORTRAIT (600–899px) ── */
-        @media (max-width: 899px) {
-            .container {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto;
-                height: auto;
-                min-height: unset;
-                padding: 1rem;
-                gap: 1rem;
-            }
-            .wheel-container {
-                min-height: min(70vw, 480px);
-                height: min(80vw, 520px);
-                order: 1;
-            }
-            .controls-panel {
-                order: 2;
-                max-height: none;
-            }
-            /* On tablet, show pills in 3-col grid */
-            .pill-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-            h1 { font-size: 1.7rem; }
-            .hero-logo-img { width: 70px; height: 70px; }
-        }
-
-        /* ── PHONE LANDSCAPE (480–599px) ── */
-        @media (max-width: 599px) and (orientation: landscape) {
-            .container {
-                grid-template-columns: 1fr 260px;
-                height: calc(100vh - 120px);
-            }
-            header { padding: 0.5rem 1rem; }
-            .hero-logo-img { display: none; }
-            h1 { font-size: 1.3rem; }
-            .subtitle { display: none; }
-            #holyGrailSVG { max-width: calc(100vh - 140px); max-height: calc(100vh - 140px); }
-        }
-
-        /* ── PHONE PORTRAIT (≤479px) ── */
-        @media (max-width: 479px) {
-            header { padding: 0.75rem 1rem; }
-            .hero-brand { gap: 1rem; }
-            .hero-logo-img { width: 52px; height: 52px; }
-            h1 { font-size: 1.3rem; letter-spacing: 0; }
-            .subtitle { font-size: 0.8rem; }
-            .container { padding: 0.6rem; gap: 0.6rem; }
-            .wheel-container { min-height: min(88vw, 380px); height: min(90vw, 400px); padding: 0.5rem; }
-            .controls-panel { padding: 0.8rem; }
-            .pill { padding: 0.4rem 0.55rem; font-size: 0.7rem; }
-            .cool-btn { font-size: 0.72rem; padding: 0.5rem 0.3rem; }
-            .dd-header-left { font-size: 0.72rem; }
-            /* 2-col pills on phone */
-            .pill-grid { display: grid; grid-template-columns: 1fr 1fr; }
-        }
-
-        /* ── VERY SMALL PHONE (≤359px) ── */
-        @media (max-width: 359px) {
-            h1 { font-size: 1.1rem; }
-            .wheel-container { min-height: 280px; height: 85vw; }
+        @media (max-width: 480px) {
+            header { padding: 1rem; }
+            .hero-brand { flex-direction: column; gap: 1rem; }
+            .container { padding: 0.75rem; gap: 0.75rem; }
         }
         @media print {
             .controls-panel, #audioBtn, .footer-social { display: none; }
@@ -707,17 +620,6 @@
     </style>
 </head>
 <body>
-    <!-- Page loading overlay — removed by JS immediately -->
-    <div id="pageLoader" style="position:fixed;inset:0;background:#0f0e17;display:flex;align-items:center;justify-content:center;z-index:99998;transition:opacity 0.4s;">
-        <div style="text-align:center;">
-            <div style="font-size:3rem;animation:spin 1.2s linear infinite;display:inline-block;">🎡</div>
-            <div style="color:#e94560;font-weight:800;margin-top:0.8rem;letter-spacing:2px;font-size:0.9rem;">LOADING…</div>
-        </div>
-    </div>
-    <style>
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
-
     <!-- Skip Navigation - WCAG 2.4.1 -->
     <a href="#main-content" class="skip-nav">Skip to main content</a>
     <a href="#controls-panel" class="skip-nav" style="left:12rem;">Skip to controls</a>
@@ -740,7 +642,6 @@
                     <line x1="100" y1="20" x2="100" y2="180" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
                     <line x1="20" y1="100" x2="180" y2="100" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
                 </svg>
-            <p class="swipe-hint" aria-hidden="true">← swipe to rotate →</p>
             </div>
             <div class="brand-text">
                 <h1 itemprop="name">KEYS, CODES &amp; MODES</h1>
@@ -753,7 +654,7 @@
     <div class="container">
         <!-- WHEEL - LEFT -->
         <div class="wheel-container">
-            <svg id="holyGrailSVG" viewBox="0 0 450 450"></svg>
+            <svg id="holyGrailSVG" width="450" height="450" viewBox="0 0 450 450"></svg>
         </div>
 
         <!-- CONTROLS - RIGHT -->
@@ -785,12 +686,6 @@
                     <div class="key-display">
                         <span class="key-display-label">12 O'Clock ▸</span>
                         <span id="currentKeyText">C</span>
-                    </div>
-                    <div id="patternDisplay" style="text-align:center;font-size:0.72rem;color:#888;min-height:1.2rem;margin-top:0.2rem;">
-                        — no pattern selected —
-                    </div>
-                    <div id="noteCountDisplay" style="text-align:center;font-size:0.68rem;color:#555;margin-top:0.1rem;">
-                        0 notes selected
                     </div>
                 </div>
             </div>
@@ -954,14 +849,6 @@
     </footer>
     
     <script>
-        // Global error handler — catches uncaught JS errors gracefully
-        window.addEventListener('error', function(e) {
-            console.error('KCM Error:', e.message, e.filename, e.lineno);
-        });
-        window.addEventListener('unhandledrejection', function(e) {
-            console.error('KCM Unhandled Promise:', e.reason);
-        });
-
         const chromaticNotes = [
             { name: 'C', color: '#FFFF00', midi: 60 },      // 0: Yellow
             { name: 'C#', color: '#FFC400', midi: 61 },     // 1: Yellow-Orange
@@ -1040,8 +927,7 @@
         
         let synth = null;
         let activeNodes = new Set();
-        let currentRotation = -15;
-        let autoPlayMode = 'arpeggio'; // declared here — used throughout // C at 12 o'clock (original position)
+        let currentRotation = -15; // C at 12 o'clock (original position)
         let isAutoRotating = false;
         let rotationInterval = null;
         let currentPattern = null; // Track which pattern is active
@@ -1050,28 +936,28 @@
         // CLEAN, SMOOTH SOUND - Like Circle of Fifths
         document.getElementById('audioBtn').addEventListener('click', async function() {
             if (!synth) {
-                try {
-                    this.textContent = '⏳ Starting…';
-                    this.disabled = true;
-                    await Tone.start();
-                    synth = new Tone.PolySynth(Tone.Synth, {
-                        oscillator: { type: 'sine', partialCount: 0 },
-                        envelope: { attack: 0.005, decay: 0.1, sustain: 0.5, release: 0.8 },
-                        volume: -6
-                    }).toDestination();
-                    this.textContent = '🟢 AUDIO READY';
-                    this.classList.remove('danger');
-                    this.classList.add('success');
-                    this.disabled = false;
-                    this.setAttribute('aria-pressed', 'true');
-                    this.setAttribute('aria-label', 'Audio is active and ready');
-                    announce('Audio started. Click notes to play.', 'polite');
-                } catch(err) {
-                    this.textContent = '⚠️ Audio Failed — Tap Again';
-                    this.disabled = false;
-                    this.style.background = 'linear-gradient(135deg, #b7791f, #d97706)';
-                    announce('Audio failed to start. Please tap the button again.', 'assertive');
-                }
+                await Tone.start();
+                
+                // Enhanced synth with richer sound - like Circle of Fifths quality
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { 
+                        type: 'sine',
+                        partialCount: 0  // Pure sine wave
+                    },
+                    envelope: {
+                        attack: 0.005,   // Quick attack for clarity
+                        decay: 0.1,
+                        sustain: 0.5,    // Longer sustain for chords
+                        release: 0.8     // Gentle release
+                    },
+                    volume: -6  // Slightly louder for better audibility
+                }).toDestination();
+                
+                this.textContent = '🟢 AUDIO READY';
+                this.classList.remove('danger');
+                this.classList.add('success');
+                this.setAttribute('aria-pressed', 'true');
+                this.setAttribute('aria-label', 'Audio is active and ready');
             }
         });
         
@@ -1102,25 +988,20 @@
             svgDesc.textContent = 'Interactive circular diagram showing all 12 chromatic notes in color-coded spokes. C=Yellow, C#=Yellow-Orange, D=Orange, D#=Red-Orange, E=Red, F=Red-Purple, F#=Purple, G=Blue-Purple, G#=Blue, A=Blue-Green, A#=Green, B=Yellow-Green. Click any circle to select and play that note.';
             svg.appendChild(svgDesc);
             
-            // Dynamic sizing — reads actual rendered SVG dimensions
-            const svgRect = svg.getBoundingClientRect();
-            const svgSize = Math.min(svgRect.width || 450, svgRect.height || 450);
-            // All geometry in viewBox units (0–450 space), scaled by viewBox
+            // 450px wheel - centered at (225, 225)
             const centerX = 225;
             const centerY = 225;
             const circles = 13;
             const wedges = 12;
-            // Scale radii relative to how much space we have (bigger = more fill)
-            const scale = svgSize / 450;
-            const minRadius = 28;
-            const maxRadius = 213;   // fills to near edge of 450 viewBox
-            const radiusStep = (maxRadius - minRadius) / circles;
+            const minRadius = 30;  // Smaller center
+            const maxRadius = 210;  // Larger outer
+            const radiusStep = (maxRadius - minRadius) / circles;  // ~13.8px steps - BIGGER!
             
             // BACKGROUND CIRCLE - Makes the wheel visible and contained
             const backgroundCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             backgroundCircle.setAttribute('cx', centerX);
             backgroundCircle.setAttribute('cy', centerY);
-            backgroundCircle.setAttribute('r', maxRadius + 18);
+            backgroundCircle.setAttribute('r', maxRadius + 20);
             backgroundCircle.setAttribute('fill', '#000000'); // Pure black background
             backgroundCircle.setAttribute('stroke', '#e94560');
             backgroundCircle.setAttribute('stroke-width', '3');
@@ -1185,7 +1066,7 @@
                     const midRadius = radius + radiusStep / 2;
                     const circleX = centerX + midRadius * Math.cos(midAngle);
                     const circleY = centerY + midRadius * Math.sin(midAngle);
-                    const circleRadius = radiusStep * 0.46; // Larger circles — fill spoke
+                    const circleRadius = radiusStep * 0.42; // BIGGER circles - better fit!
                     
                     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                     circle.setAttribute('cx', circleX);
@@ -1226,7 +1107,7 @@
                     text.setAttribute('class', 'note-label');
                     text.setAttribute('fill', 'white');
                     text.setAttribute('font-weight', '900');
-                    text.setAttribute('font-size', isInPieWindowCircle ? '9' : '6.5');
+                    text.setAttribute('font-size', isInPieWindowCircle ? '7.5' : '5.5');
                     text.setAttribute('stroke', 'black');
                     text.setAttribute('stroke-width', '0.5');
                     text.setAttribute('opacity', opacity);
@@ -1389,8 +1270,6 @@
                 activeNodes.add(nodeId);
                 node.classList.add('active');
             }
-            const nc = document.getElementById('noteCountDisplay');
-            if (nc) nc.textContent = activeNodes.size === 1 ? '1 note selected' : `${activeNodes.size} notes selected`;
             
             if (synth) {
                 const midi = parseInt(node.getAttribute('data-midi'));
@@ -1420,11 +1299,11 @@
             // Clear previous blackout circles
             blackoutGroup.innerHTML = '';
             
-            // Calculate circle parameters (must match drawHolyGrail)
+            // Calculate circle parameters (same as in drawHolyGrail)
             const centerX = 225;
             const centerY = 225;
-            const minRadius = 28;
-            const maxRadius = 213;
+            const minRadius = 30;
+            const maxRadius = 210;
             const radiusStep = (maxRadius - minRadius) / 13;
             
             // For each position in the 12 o'clock wedge
@@ -1446,7 +1325,7 @@
                     const midRadius = radius + radiusStep / 2;
                     const circleX = centerX + midRadius * Math.cos(midAngle);
                     const circleY = centerY + midRadius * Math.sin(midAngle);
-                    const circleRadius = radiusStep * 0.46; // Match note circle size
+                    const circleRadius = radiusStep * 0.42; // Same size as note circles
                     
                     // Create black circle overlay
                     const blackCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -1582,10 +1461,6 @@
             });
             
             document.querySelectorAll('.stencil-btn').forEach(b => b.classList.remove('active'));
-            const pd = document.getElementById('patternDisplay');
-            if (pd) pd.textContent = '— no pattern selected —';
-            const nc = document.getElementById('noteCountDisplay');
-            if (nc) nc.textContent = '0 notes selected';
             
             // Apply subdued system (only 12 o'clock bright)
             updateWedgeOpacity();
@@ -1650,7 +1525,7 @@
             for (let wedgeIdx = 0; wedgeIdx < 12; wedgeIdx++) {
                 const isInPieWindow = wedgeIdx === wedgeAt12OClock;
                 const opacity = isInPieWindow ? '1' : '0.45'; // Lightened for visibility!
-                const fontSize = isInPieWindow ? '9' : '6.5';
+                const fontSize = isInPieWindow ? '7.5' : '5.5';
                 
                 for (let circleIdx = 0; circleIdx < 13; circleIdx++) {
                     const circle = document.querySelector(`[data-wedge="${wedgeIdx}"][data-circle="${circleIdx}"]`);
@@ -1730,6 +1605,8 @@
             }
         });
         
+        let autoPlayMode = 'arpeggio'; // 'chord' or 'arpeggio'
+        
         document.querySelectorAll('.stencil-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const patternName = this.getAttribute('data-pattern');
@@ -1741,9 +1618,6 @@
                 this.classList.add('active');
                 this.setAttribute('aria-pressed', 'true');
                 announce(`${this.textContent.trim()} pattern applied`);
-                const rootNote = chromaticNotes[getNoteAt12OClock()].name;
-                const pd = document.getElementById('patternDisplay');
-                if (pd) pd.textContent = `${rootNote} ${this.textContent.trim()}`;
                 
                 // Auto-detect playback mode based on pattern type
                 // Chords play as chords, scales/modes play as arpeggios
@@ -1765,44 +1639,24 @@
         });
         
         drawHolyGrail();
-        updateCurrentKeyDisplay();
-        // Hide loading screen
-        const loader = document.getElementById('pageLoader');
-        if (loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 450); }
-
-        // ── TOUCH SWIPE on wheel — swipe left/right to rotate ──
-        (function() {
-            const wc = document.querySelector('.wheel-container');
-            if (!wc) return;
-            let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
-            wc.addEventListener('touchstart', e => {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                touchStartTime = Date.now();
-            }, { passive: true });
-            wc.addEventListener('touchend', e => {
-                const dx = e.changedTouches[0].clientX - touchStartX;
-                const dy = e.changedTouches[0].clientY - touchStartY;
-                const dt = Date.now() - touchStartTime;
-                // Only register as swipe if fast & predominantly horizontal
-                if (dt < 400 && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-                    if (dx < 0) rotateRight(); else rotateLeft();
-                }
-            }, { passive: true });
-        })();
-
-        // Redraw on resize so wheel always fills its container
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                drawHolyGrail();
-                updateCurrentKeyDisplay();
-                if (currentPattern) applyStencil(currentPattern);
-                else updateWedgeOpacity();
-            }, 120);
+        updateCurrentKeyDisplay(); // Initialize the current key display
+        chromaticNotes.forEach((note, idx) => {
+            });
+        Object.entries(stencilPatterns).forEach(([name, intervals]) => {
+            if (['chromatic', 'major', 'minor', 'harmonic', 'melodic', 'pentatonic', 'blues'].includes(name)) {
+                const noteNames = intervals.map(i => chromaticNotes[i % 12].name).join('-');
+                    }
         });
-
+        Object.entries(stencilPatterns).forEach(([name, intervals]) => {
+            if (['ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian'].includes(name)) {
+                const noteNames = intervals.map(i => chromaticNotes[i % 12].name).join('-');
+                    }
+        });
+        Object.entries(stencilPatterns).forEach(([name, intervals]) => {
+            if (['major-chord', 'minor-chord', 'dim', 'aug', 'dom7', 'maj7'].includes(name)) {
+                const noteNames = intervals.map(i => chromaticNotes[i % 12].name).join('-');
+                    }
+        });
     </script>
     <!-- ═══ ARIA LIVE REGION — screen reader announcements ═══ -->
     <div id="aria-status" role="status" aria-live="polite" aria-atomic="true"
