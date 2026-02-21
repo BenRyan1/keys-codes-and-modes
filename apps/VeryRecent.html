@@ -1027,171 +1027,73 @@
     ═══════════════════════════════════════════ */
     #pianoKeyboard {
       display: block;
-      padding: clamp(16px,3vw,32px) clamp(8px,2vw,20px);
+      padding: clamp(16px,3vw,32px);
       text-align: center;
     }
     #pianoKeyboard h2 {
       font-family: var(--font-display);
       font-size: clamp(18px,2.5vw,26px);
       font-weight: 400;
-      margin: 0 0 16px;
+      margin: 0 0 20px;
       color: var(--accent-gold);
     }
-    /* Scroll wrapper — horizontal scroll on mobile */
-    .piano-scroll {
-      overflow-x: auto;
-      overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 16px;
-      /* Subtle scrollbar */
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-glow) transparent;
-    }
-    .piano-scroll::-webkit-scrollbar { height: 4px; }
-    .piano-scroll::-webkit-scrollbar-track { background: transparent; }
-    .piano-scroll::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 2px; }
-
-    /* Outer wrapper for all 3 octaves side by side */
+    .piano-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 10px; }
     .piano-container {
       position: relative;
+      height: clamp(140px, 22vw, 200px);
       display: inline-flex;
-      align-items: flex-start;
       min-width: max-content;
-      gap: 0;
     }
-
-    /* Each individual octave block */
-    .piano-octave {
-      position: relative;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    /* Octave label — sits above the keys */
-    .octave-label {
-      width: 100%;
-      text-align: left;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-teal);
-      padding: 0 0 5px 3px;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    /* The keys row for one octave */
-    .piano-keys-row {
-      position: relative;
-      height: clamp(130px, 20vw, 185px);
-      display: inline-flex;
-    }
-
-    /* Divider between octaves */
-    .octave-divider {
-      width: 2px;
-      height: clamp(130px, 20vw, 185px);
-      background: var(--accent-teal);
-      opacity: 0.4;
-      align-self: flex-end;
-      flex-shrink: 0;
-      margin-top: auto;
-    }
-
     .white-key {
-      width: 42px;
+      width: clamp(36px, 6vw, 52px);
       height: 100%;
-      background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%);
-      border: 1.5px solid #555;
-      border-top: none;
-      border-radius: 0 0 7px 7px;
+      background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+      border: 2px solid #444;
+      border-radius: 0 0 6px 6px;
       cursor: pointer;
       position: relative;
       transition: var(--transition);
       touch-action: manipulation;
-      flex-shrink: 0;
     }
-    .white-key:hover {
-      background: linear-gradient(to bottom, #fffbe6 0%, #f5e87a 100%);
-      transform: translateY(-2px);
-      z-index: 1;
-    }
+    .white-key:hover { background: linear-gradient(to bottom, #f0f0f0 0%, #ddd 100%); transform: translateY(-2px); }
     .white-key.playing {
       transform: translateY(3px) !important;
       box-shadow: inset 0 4px 8px rgba(0,0,0,0.3) !important;
       animation: key-flash 0.25s ease;
     }
     .black-key {
-      width: 26px;
+      width: clamp(22px, 4vw, 34px);
       height: 60%;
-      background: linear-gradient(180deg, #2a2a2a 0%, #000 100%);
-      border: 1.5px solid #000;
-      border-top: none;
+      background: linear-gradient(180deg, #222 0%, #000 100%);
+      border: 2px solid #000;
       border-radius: 0 0 5px 5px;
       cursor: pointer;
       position: absolute;
       z-index: 2;
       transition: var(--transition);
       touch-action: manipulation;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.7);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
     }
-    .black-key:hover {
-      background: linear-gradient(180deg, #444 0%, #111 100%);
-      transform: translateY(-2px);
-    }
+    .black-key:hover { background: linear-gradient(180deg, #333 0%, #111 100%); transform: translateY(-2px); }
     .black-key.playing {
       transform: translateY(3px) !important;
       animation: key-flash 0.25s ease;
     }
     @keyframes key-flash {
       0%, 100% { filter: brightness(1); }
-      50%       { filter: brightness(1.6); }
+      50% { filter: brightness(1.4); }
     }
-    /* Note name label on white keys */
     .key-label {
       position: absolute;
       bottom: 7px;
       width: 100%;
       text-align: center;
-      font-size: 9px;
+      font-size: clamp(8px,1.2vw,11px);
       font-weight: 700;
       pointer-events: none;
-      color: #444;
-      letter-spacing: 0.02em;
+      color: #333;
     }
-    /* C note gets a special marker — easy orientation */
-    .white-key.key-c .key-label {
-      color: #000;
-      font-size: 10px;
-    }
-    .white-key.key-c::before {
-      content: '';
-      position: absolute;
-      bottom: 22px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-teal);
-      opacity: 0.6;
-    }
-    .black-key .key-label {
-      color: rgba(255,255,255,0.7);
-      bottom: 4px;
-      font-size: 7px;
-    }
-
-    /* Scroll hint text */
-    .piano-scroll-hint {
-      font-size: 10px;
-      color: var(--text-secondary);
-      text-align: center;
-      margin-top: 6px;
-      opacity: 0.6;
-    }
+    .black-key .key-label { color: rgba(255,255,255,0.8); bottom: 4px; font-size: 8px; }
 
     /* ═══════════════════════════════════════════
        GUITAR FRETBOARD
@@ -1209,46 +1111,19 @@
       color: var(--accent-gold);
     }
     .fret-toggle-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
-    .fretboard-scroll {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      display: flex;
-      justify-content: center;
-      /* Extra top space so the string labels above the nut are fully visible */
-      padding-top: 72px;
-      padding-bottom: 12px;
-    }
+    .fretboard-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
     .fretboard-container {
-      background: linear-gradient(to bottom, #6B3310 0%, #8B4513 100%);
+      background: linear-gradient(to bottom, #8B4513 0%, #A0522D 100%);
       border-radius: 4px;
-      /* Top padding creates room for the string-label badges above the nut */
-      padding: 72px 16px 16px;
+      padding: 6px 12px 4px;
       display: inline-block;
-      position: relative;
-      /* CRITICAL: allow string labels to overflow upward without clipping */
-      overflow: visible;
-    }
-    /* NUT — thick ivory/bone bar at the very top of the wood */
-    .fretboard-container::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 72px; /* sits right below the string labels */
-      left: 0;
-      right: 0;
-      height: 10px;
-      background: linear-gradient(to bottom, #f0e6cc 0%, #d4c49a 60%, #b8a478 100%);
-      border-radius: 3px 3px 0 0;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
-      z-index: 10;
     }
     .fretboard {
       position: relative;
       width: 180px;
       background: linear-gradient(to right, #D2691E 0%, #8B4513 50%, #654321 100%);
-      border-radius: 0 0 4px 4px;
+      border-radius: 2px;
       border: 1px solid #654321;
-      border-top: none;
       cursor: pointer;
       transition: height 0.3s ease;
     }
@@ -1257,14 +1132,7 @@
       height: 100%;
       top: 0;
     }
-    .fret-wire {
-      position: absolute;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(to right, #777 0%, #bbb 50%, #777 100%);
-      left: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    }
+    .fret-wire { position: absolute; width: 100%; height: 3px; background: linear-gradient(to right, #888 0%, #aaa 50%, #888 100%); left: 0; }
     .note-dot {
       position: absolute;
       width: clamp(24px,4vw,30px);
@@ -1288,76 +1156,26 @@
       box-shadow: 0 0 20px rgba(255,255,255,1) !important;
       transform: translate(-50%, -50%) scale(1.4) !important;
     }
-
-    /* ═══════════════════════════════════════════════
-       STRING LABELS — Open string badges above the nut
-       Positioned inside .fretboard-container (overflow:visible)
-       top: 8px puts them in the top padding zone above the nut
-    ═══════════════════════════════════════════════ */
     .string-label {
       position: absolute;
-      top: 14px;           /* sits in the padding zone, above the nut bar */
-      font-family: 'Cinzel', 'DM Serif Display', Georgia, serif;
+      top: -56px;
       font-weight: 700;
-      font-size: 15px;
-      letter-spacing: 0.02em;
-      color: #F4D03F;       /* KCM brand gold */
+      font-size: clamp(22px,4vw,30px);
+      color: white;
       text-align: center;
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       cursor: pointer;
-      z-index: 600;
+      z-index: 500;
+      transition: color 0.2s, transform 0.2s;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
       display: flex;
       align-items: center;
       justify-content: center;
       touch-action: manipulation;
-      /* Badge styling — teal ring, dark bg */
-      border-radius: 50%;
-      border: 2px solid #008080;
-      background: radial-gradient(circle, rgba(0,128,128,0.25) 0%, rgba(0,0,0,0.7) 100%);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,128,128,0.3);
-      transition: color 0.2s, transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      /* Center each badge over its string */
-      transform: translateX(-50%);
     }
-    .string-label:hover {
-      color: #fff;
-      border-color: #F4D03F;
-      box-shadow: 0 0 16px rgba(244,208,63,0.6), 0 0 30px rgba(244,208,63,0.3);
-      transform: translateX(-50%) scale(1.15);
-    }
-    /* Octave label below the letter — tiny, subtle */
-    .string-label .str-oct {
-      position: absolute;
-      bottom: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Montserrat', 'Outfit', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.5);
-      white-space: nowrap;
-      pointer-events: none;
-      letter-spacing: 0.04em;
-    }
-    /* Active/selected string label */
-    .string-label.active-string {
-      border-color: #F4D03F;
-      box-shadow: 0 0 18px rgba(244,208,63,0.7);
-    }
-    /* Open string tuning row label */
-    .open-strings-row {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      margin-bottom: 8px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .guitar-info { text-align: center; margin-bottom: 8px; }
+    .string-label:hover { color: var(--accent-gold); transform: scale(1.3); }
+    .guitar-info { text-align: center; margin-bottom: 50px; }
     .guitar-info p { margin: 4px 0; font-size: 13px; }
     .guitar-info .hint { color: var(--accent-green); font-weight: 600; }
 
@@ -1583,41 +1401,6 @@
     /* ═══════════════════════════════════════════════════════
        FOOTER — FULLY REDESIGNED, ALL LINKS, FULL COMPLIANCE
     ═══════════════════════════════════════════════════════ */
-    /* ── FOOTER SOCIAL LINKS ── */
-    .footer-social {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-    .footer-social a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(0,128,128,0.4);
-      background: rgba(0,128,128,0.1);
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 16px;
-      transition: all 0.2s ease;
-    }
-    .footer-social a:hover {
-      border-color: #F4D03F;
-      background: rgba(244,208,63,0.15);
-      color: #F4D03F;
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(244,208,63,0.3);
-    }
-    .footer-social-note {
-      font-size: 10px;
-      color: var(--text-secondary);
-      margin-top: 8px;
-      opacity: 0.6;
-    }
-
     .site-footer {
       margin-top: 48px;
       background: var(--bg-card);
@@ -1999,21 +1782,6 @@
     }
 
     /* Tempo in sidebar */
-    /* Tempo panel — centered layout */
-    .tempo-centered {
-      text-align: center;
-    }
-    .tempo-centered label {
-      display: block;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    .tempo-centered .bpm-display {
-      text-align: center;
-    }
-    .tempo-centered .tempo-slider-row {
-      justify-content: center;
-    }
     .ctrl-section .tempo-control {
       padding: 8px 14px 12px;
       border-top: 1px solid var(--border);
@@ -2296,11 +2064,10 @@
           <!-- PIANO VIEW -->
           <div id="panel-keyboard" role="tabpanel" aria-labelledby="tab-keyboard" class="view-panel" hidden>
             <div id="pianoKeyboard">
-              <h2 class="panel-title">🎹 Piano Keyboard — 3 Octaves (C3–B5)</h2>
+              <h2 class="panel-title">🎹 Piano Keyboard</h2>
               <div class="piano-scroll">
-                <div class="piano-container" id="pianoContainer" role="group" aria-label="Piano keyboard — C3 to B5, three octaves"></div>
+                <div class="piano-container" id="pianoContainer" role="group" aria-label="Piano keyboard"></div>
               </div>
-              <p class="piano-scroll-hint">← Scroll to see all keys &nbsp;·&nbsp; C dots mark each octave start</p>
             </div>
           </div>
 
@@ -2314,10 +2081,8 @@
                 <button class="level-btn" id="fret12Btn" type="button" aria-pressed="false">12 Frets</button>
               </div>
               <div class="guitar-info">
-                <p class="hint">Active notes light up — click dots or open strings to play</p>
-                <p style="font-size:12px;color:var(--text-secondary);margin:4px 0;">
-                  ↑ Click the letter above each string to hear the open note
-                </p>
+                <p class="hint">Active notes light up — click dots or strings to play</p>
+                <p class="open-strings-label">OPEN STRINGS (0 fret)</p>
               </div>
               <div class="fretboard-scroll">
                 <div class="fretboard-container">
@@ -2355,20 +2120,6 @@
       ══════════════════════════════════ -->
       <div class="controls-col">
 
-        <!-- ─ SECTION: PLAY BUTTONS — closest to the visual ─ -->
-        <div class="ctrl-section">
-          <div class="ctrl-section-header">
-            <span class="ctrl-section-icon">▶</span>
-            <span>Play</span>
-          </div>
-          <div class="play-grid" role="group" aria-label="Playback controls">
-            <button class="play-btn" id="playUpBtn" type="button">↑ Ascending</button>
-            <button class="play-btn" id="playDownBtn" type="button">↓ Descending</button>
-            <button class="play-btn" id="playScaleBtn" type="button">♫ Full Scale</button>
-            <button class="play-btn" id="playChordBtn" type="button">♪ Chord</button>
-          </div>
-        </div>
-
         <!-- ─ SECTION: MODE / LEVEL ─ -->
         <div class="ctrl-section">
           <div class="ctrl-section-header">
@@ -2390,29 +2141,6 @@
           </div>
         </div>
 
-        <!-- ─ SECTION: RECORDING ─ -->
-        <div class="ctrl-section">
-          <div class="ctrl-section-header">
-            <span class="ctrl-section-icon">🎙</span>
-            <span>Recording Studio</span>
-          </div>
-          <div class="rec-grid" role="group" aria-label="Recording controls">
-            <button class="rec-btn" id="recordBtn" type="button" aria-label="Toggle recording" aria-pressed="false">
-              <span>⏺</span> Record
-            </button>
-            <button class="rec-btn rec-green" id="playRecBtn" type="button">
-              <span>▶</span> Play
-            </button>
-            <button class="rec-btn rec-orange" id="clearRecBtn" type="button">
-              <span>🗑</span> Clear
-            </button>
-            <button class="rec-btn rec-purple" id="downloadRecBtn" type="button">
-              <span>💾</span> Save
-            </button>
-          </div>
-          <div id="recordingStatus" aria-live="polite" role="status" class="rec-status"></div>
-        </div>
-
         <!-- ─ SECTION: PLAYBACK ─ -->
         <div class="ctrl-section">
           <div class="ctrl-section-header">
@@ -2430,8 +2158,8 @@
             <button class="octave-btn" id="octaveUp" type="button" aria-label="Higher octave">▶</button>
           </div>
 
-          <!-- Tempo — centered -->
-          <div class="tempo-control tempo-centered">
+          <!-- Tempo -->
+          <div class="tempo-control">
             <label for="tempoSlider">⏱ Tempo</label>
             <div class="tempo-slider-row">
               <span class="tempo-label">40</span>
@@ -2442,6 +2170,13 @@
             <div class="bpm-display"><span id="bpmDisplay">120</span> BPM</div>
           </div>
 
+          <!-- Play Buttons 2x2 grid -->
+          <div class="play-grid" role="group" aria-label="Playback controls">
+            <button class="play-btn" id="playUpBtn" type="button">↑ Ascending</button>
+            <button class="play-btn" id="playDownBtn" type="button">↓ Descending</button>
+            <button class="play-btn" id="playScaleBtn" type="button">♫ Full Scale</button>
+            <button class="play-btn" id="playChordBtn" type="button">♪ Chord</button>
+          </div>
         </div>
 
         <!-- ─ SECTION: CHORD SETTINGS (dynamic) ─ -->
@@ -2466,6 +2201,29 @@
             🎹 Play All Scale Chords
           </button>
           <div class="progression-buttons" id="progressionButtons" role="list"></div>
+        </div>
+
+        <!-- ─ SECTION: RECORDING ─ -->
+        <div class="ctrl-section">
+          <div class="ctrl-section-header">
+            <span class="ctrl-section-icon">🎙</span>
+            <span>Recording Studio</span>
+          </div>
+          <div class="rec-grid" role="group" aria-label="Recording controls">
+            <button class="rec-btn" id="recordBtn" type="button" aria-label="Toggle recording" aria-pressed="false">
+              <span>⏺</span> Record
+            </button>
+            <button class="rec-btn rec-green" id="playRecBtn" type="button">
+              <span>▶</span> Play
+            </button>
+            <button class="rec-btn rec-orange" id="clearRecBtn" type="button">
+              <span>🗑</span> Clear
+            </button>
+            <button class="rec-btn rec-purple" id="downloadRecBtn" type="button">
+              <span>💾</span> Save
+            </button>
+          </div>
+          <div id="recordingStatus" aria-live="polite" role="status" class="rec-status"></div>
         </div>
 
         <!-- ─ SECTION: KEYBOARD SHORTCUTS ─ -->
@@ -2523,56 +2281,7 @@
             <span class="compliance-badge badge-teal" title="Section 508 of the Rehabilitation Act">§508</span>
             <span class="compliance-badge" title="SSL/TLS encrypted connection">🔐 SSL</span>
           </div>
-
-          <!-- SOCIAL LINKS -->
-          <nav class="footer-social" aria-label="Social media links">
-            <a href="https://www.facebook.com/KeysCodesModes"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="Keys, Codes & Modes on Facebook"
-               title="Facebook — Keys, Codes & Modes">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-              </svg>
-            </a>
-            <a href="https://x.com/keyscodesmodes"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="Keys, Codes & Modes on X (Twitter)"
-               title="X / Twitter — @keyscodesmodes">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </a>
-            <a href="https://www.instagram.com/keyscodesandmodes"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="Keys, Codes & Modes on Instagram"
-               title="Instagram — @keyscodesandmodes">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                <circle cx="12" cy="12" r="4"/>
-                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
-              </svg>
-            </a>
-            <a href="https://www.tiktok.com/@keyscodesandmodes"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="Keys, Codes & Modes on TikTok"
-               title="TikTok — @keyscodesandmodes">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.54V6.78a4.85 4.85 0 01-1.02-.09z"/>
-              </svg>
-            </a>
-            <a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="Ben Ryan on LinkedIn"
-               title="LinkedIn — Ben Ryan">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-            </a>
-          </nav>
-          <p class="footer-social-note">
-            💡 Follow for music theory tips, updates &amp; new tools
-          </p>
+        </div>
 
         <!-- EXPLORE COLUMN -->
         <div class="footer-col">
@@ -2882,9 +2591,8 @@
             selectedNotes = new Set();
             window.currentPatternIntervals = [];
           } else if (currentLevel === '2') {
-            // Don't pre-select — let user pick both notes freely
-            selectedNotes = new Set();
-            window.currentPatternIntervals = [];
+            selectedNotes = new Set([0, 7]);
+            window.currentPatternIntervals = [0, 7];
           } else if (currentLevel === 'harmMajor' || currentLevel === 'harmMinor') {
             currentHarmDegree = 0;
             currentHarmChordType = 'triad';
@@ -3044,100 +2752,46 @@
       const container = document.getElementById('pianoContainer');
       if (!container) return;
       container.innerHTML = '';
+      const whiteNotes = [0,2,4,5,7,9,11];
+      const blackNotes = [{note:1,after:0},{note:3,after:2},{note:6,after:5},{note:8,after:7},{note:10,after:9}];
+      const wkw = Math.max(36, Math.min(52, window.innerWidth / 9));
 
-      // 3 octaves: C3, C4 (middle C), C5
-      const octaves   = [3, 4, 5];
-      const octLabels = ['C3', 'C4 — Middle C', 'C5'];
+      whiteNotes.forEach((n, idx) => {
+        const k = document.createElement('div');
+        k.className = 'white-key';
+        k.style.width = wkw + 'px';
+        k.dataset.note = n;
+        k.setAttribute('role', 'button');
+        k.setAttribute('aria-label', `${noteNames[n]} — click to play`);
+        k.setAttribute('tabindex', '0');
+        k.onclick = () => handleNoteClick(n);
+        k.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(n); } };
+        const l = document.createElement('div');
+        l.className = 'key-label';
+        l.textContent = noteNamesShort[n];
+        l.setAttribute('aria-hidden', 'true');
+        k.appendChild(l);
+        container.appendChild(k);
+      });
 
-      // White notes in order within an octave (chromatic indices)
-      const whiteNotes = [0, 2, 4, 5, 7, 9, 11]; // C D E F G A B
-      // Black notes: { note index, positioned after this white note index }
-      const blackDefs  = [
-        {note:1, after:0},  // C#
-        {note:3, after:2},  // D#
-        {note:6, after:5},  // F#
-        {note:8, after:7},  // G#
-        {note:10,after:9}   // A#
-      ];
-
-      const WKW = 42; // white key width px
-      const BKW = 26; // black key width px
-
-      octaves.forEach((oct, octIdx) => {
-
-        // ── OCTAVE WRAPPER ──
-        const octWrap = document.createElement('div');
-        octWrap.className = 'piano-octave';
-        octWrap.setAttribute('aria-label', `Octave ${oct}`);
-
-        // ── OCTAVE LABEL ──
-        const lbl = document.createElement('div');
-        lbl.className = 'octave-label';
-        lbl.setAttribute('aria-hidden', 'true');
-        lbl.textContent = octLabels[octIdx];
-        octWrap.appendChild(lbl);
-
-        // ── KEYS ROW ──
-        const keysRow = document.createElement('div');
-        keysRow.className = 'piano-keys-row';
-        keysRow.style.width = (WKW * 7) + 'px';
-
-        // White keys
-        whiteNotes.forEach((n, wIdx) => {
-          const k = document.createElement('div');
-          k.className = 'white-key' + (n === 0 ? ' key-c' : '');
-          k.style.width = WKW + 'px';
-          k.dataset.note   = n;
-          k.dataset.octave = oct;
-          k.setAttribute('role', 'button');
-          k.setAttribute('tabindex', '0');
-          k.setAttribute('aria-label', `${noteNames[n]} octave ${oct} — click to play`);
-
-          const label = document.createElement('div');
-          label.className = 'key-label';
-          label.setAttribute('aria-hidden', 'true');
-          label.textContent = noteNamesShort[n];
-          k.appendChild(label);
-
-          k.onclick    = () => { playNote(n, oct, 0.9); };
-          k.onkeydown  = e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); playNote(n, oct, 0.9); } };
-          keysRow.appendChild(k);
-        });
-
-        // Black keys — positioned absolutely over white keys
-        blackDefs.forEach(({note, after}) => {
-          const k = document.createElement('div');
-          k.className = 'black-key';
-          k.style.width = BKW + 'px';
-          const afterIdx   = whiteNotes.indexOf(after);
-          k.style.left     = (afterIdx * WKW + WKW - Math.round(BKW / 2)) + 'px';
-          k.dataset.note   = note;
-          k.dataset.octave = oct;
-          k.setAttribute('role', 'button');
-          k.setAttribute('tabindex', '0');
-          k.setAttribute('aria-label', `${noteNames[note]} octave ${oct} — click to play`);
-
-          const label = document.createElement('div');
-          label.className = 'key-label';
-          label.setAttribute('aria-hidden', 'true');
-          label.textContent = noteNamesShort[note];
-          k.appendChild(label);
-
-          k.onclick   = () => { playNote(note, oct, 0.9); };
-          k.onkeydown = e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); playNote(note, oct, 0.9); } };
-          keysRow.appendChild(k);
-        });
-
-        octWrap.appendChild(keysRow);
-        container.appendChild(octWrap);
-
-        // Teal divider between octaves (not after last)
-        if (octIdx < octaves.length - 1) {
-          const div = document.createElement('div');
-          div.className = 'octave-divider';
-          div.setAttribute('aria-hidden', 'true');
-          container.appendChild(div);
-        }
+      blackNotes.forEach(({note, after}) => {
+        const k = document.createElement('div');
+        k.className = 'black-key';
+        k.style.width = Math.round(wkw * 0.62) + 'px';
+        k.dataset.note = note;
+        const afterIdx = whiteNotes.indexOf(after);
+        k.style.left = ((afterIdx * wkw) + wkw - Math.round(wkw * 0.31)) + 'px';
+        k.setAttribute('role', 'button');
+        k.setAttribute('aria-label', `${noteNames[note]} — click to play`);
+        k.setAttribute('tabindex', '0');
+        k.onclick = () => handleNoteClick(note);
+        k.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(note); } };
+        const l = document.createElement('div');
+        l.className = 'key-label';
+        l.textContent = enharmonicNames[note];
+        l.setAttribute('aria-hidden', 'true');
+        k.appendChild(l);
+        container.appendChild(k);
       });
     }
 
@@ -3145,49 +2799,33 @@
       const fb = document.getElementById('fretboard');
       if (!fb) return;
       fb.innerHTML = '';
-      // Standard tuning: E2 A2 D3 G3 B3 E4 — low E on left (string 0) to high E on right (string 5)
-      const tuning = [4, 9, 2, 7, 11, 4];   // note indices: E A D G B E
-      const names  = ['E','A','D','G','B','E'];
-      const octs   = [2,  2,  3,  3,  3,  4]; // E2 A2 D3 G3 B3 E4
-      const fretH  = guitarFretCount === 12 ? 50 : guitarFretCount === 3 ? 120 : 80;
+      const tuning = [4,9,2,7,11,4];
+      const names = ['E','A','D','G','B','E'];
+      const octs = [3,3,4,4,4,5];
+      const fretH = guitarFretCount === 12 ? 50 : guitarFretCount === 3 ? 120 : 80;
       const totalH = guitarFretCount * fretH;
       fb.style.height = totalH + 'px';
-      fb.style.width  = '180px';
+      fb.style.width = '180px';
 
-      // ── STRINGS (vertical lines) ──
       for (let s = 0; s < 6; s++) {
-        const strThickness = s === 0 ? 4 : s === 1 ? 3 : s === 2 ? 2.5 : s === 3 ? 2 : 1.5;
         const str = document.createElement('div');
         str.className = 'guitar-string';
-        str.setAttribute('aria-hidden', 'true');
-        str.style.cssText = `left:${30*s+15}px;width:${strThickness}px;height:100%;background:linear-gradient(to bottom,#D0D0D0 0%,#909090 100%);top:0;transform:translateX(-50%);`;
+        str.style.cssText = `left:${30*s+15}px;width:${s>=4?1:s>=2?2:3}px;height:100%;background:linear-gradient(to bottom,#C0C0C0 0%,#808080 100%);top:0;`;
         fb.appendChild(str);
 
-        // ── OPEN STRING LABELS — positioned in top padding zone above nut ──
         const lbl = document.createElement('div');
         lbl.className = 'string-label';
         lbl.textContent = names[s];
-        // Center badge over its string column (string at x = 30*s+15, badge width=38, so left = 30*s+15 - 0 using transform:translateX(-50%))
-        lbl.style.left = (30 * s + 15) + 'px';
+        lbl.style.left = (30 * s - 5) + 'px';
         lbl.dataset.note = tuning[s];
         lbl.setAttribute('role', 'button');
-        lbl.setAttribute('aria-label', `Open ${names[s]} string (${['E2','A2','D3','G3','B3','E4'][s]}) — click to play`);
+        lbl.setAttribute('aria-label', `Open string ${names[s]} — click to play`);
         lbl.setAttribute('tabindex', '0');
-        lbl.title = `Open ${names[s]} — ${['E2','A2','D3','G3','B3','E4'][s]} — click to play`;
-
-        // Tiny octave label below the letter
-        const octLbl = document.createElement('span');
-        octLbl.className = 'str-oct';
-        octLbl.setAttribute('aria-hidden', 'true');
-        octLbl.textContent = ['E2','A2','D3','G3','B3','E4'][s];
-        lbl.appendChild(octLbl);
-
-        lbl.onclick = () => playNote(tuning[s], octs[s], 1.2);
-        lbl.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playNote(tuning[s], octs[s], 1.2); } };
+        lbl.onclick = () => playNote(tuning[s], octs[s], 0.8);
+        lbl.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playNote(tuning[s], octs[s], 0.8); } };
         fb.appendChild(lbl);
       }
 
-      // ── FRET WIRES ──
       for (let f = 1; f <= guitarFretCount; f++) {
         const fw = document.createElement('div');
         fw.className = 'fret-wire';
@@ -3196,41 +2834,29 @@
         fb.appendChild(fw);
       }
 
-      // ── FRET POSITION MARKERS (dots on board) ──
       const markerFrets = guitarFretCount === 12 ? [3,5,7,9,12] : guitarFretCount === 3 ? [3] : [3,5];
       markerFrets.forEach(fret => {
         if (fret > guitarFretCount) return;
-        const positions = fret === 12 ? [1.5, 4.5] : [3];
+        const positions = fret === 12 ? [1.5,4.5] : [3];
         positions.forEach(p => {
           const m = document.createElement('div');
+          m.style.cssText = `position:absolute;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.25);left:${30*p}px;top:${fret*fretH-fretH/2}px;transform:translate(-5px,-5px);pointer-events:none;`;
           m.setAttribute('aria-hidden', 'true');
-          m.style.cssText = `position:absolute;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.2);left:${30*p}px;top:${fret*fretH - fretH/2}px;transform:translate(-5px,-5px);pointer-events:none;`;
           fb.appendChild(m);
         });
       });
 
-      // ── FRET NUMBER LABELS (right side) ──
-      const labelFrets = guitarFretCount === 12 ? [1,2,3,4,5,6,7,8,9,10,11,12] : guitarFretCount === 3 ? [1,2,3] : [1,2,3,4,5];
-      labelFrets.forEach(f => {
-        const fl = document.createElement('div');
-        fl.setAttribute('aria-hidden', 'true');
-        fl.style.cssText = `position:absolute;right:-22px;top:${f*fretH - fretH/2}px;transform:translateY(-50%);font-size:10px;color:rgba(255,255,255,0.4);font-weight:600;pointer-events:none;`;
-        fl.textContent = f;
-        fb.appendChild(fl);
-      });
-
-      // ── NOTE DOTS ON FRETS ──
       for (let s = 0; s < 6; s++) {
         for (let f = 1; f <= guitarFretCount; f++) {
-          const n   = (tuning[s] + f) % 12;
-          const oct = octs[s] + Math.floor((tuning[s] + f) / 12);
+          const n = (tuning[s] + f) % 12;
           const dot = document.createElement('div');
           dot.className = 'note-dot';
-          dot.style.cssText = `left:${30*s+15}px;top:${f*fretH - fretH/2}px;background:${colors[n]};color:${textColors[n]};`;
+          dot.style.cssText = `left:${30*s+15}px;top:${f*fretH-fretH/2}px;background:${colors[n]};color:${textColors[n]};`;
           dot.textContent = noteNamesShort[n];
           dot.setAttribute('role', 'button');
-          dot.setAttribute('aria-label', `${noteNames[n]} — fret ${f}, ${names[s]} string`);
+          dot.setAttribute('aria-label', `${noteNames[n]} fret ${f} string ${s+1}`);
           dot.setAttribute('tabindex', '0');
+          const oct = octs[s] + Math.floor((tuning[s] + f) / 12);
           dot.onclick = () => playNote(n, oct, 0.8);
           dot.onkeydown = e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); playNote(n,oct,0.8); } };
           fb.appendChild(dot);
@@ -3281,10 +2907,6 @@
     // ── AUDIO PLAYBACK ────────────────────────
     const FREQS = [261.63,277.18,293.66,311.13,329.63,349.23,369.99,392.00,415.30,440.00,466.16,493.88];
 
-    // Track which note is currently sounding so all views stay in sync
-    let activePlayNote = -1;
-    let activePlayTimer = null;
-
     function playNote(n, oct = currentOctave, dur = 0.8) {
       if (!audioContext || !audioReady) return;
       const freq = FREQS[n] * Math.pow(2, oct - 4);
@@ -3303,127 +2925,38 @@
       gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
       osc.start(now);
       osc.stop(now + dur);
-
-      // Flash single note across ALL views
       highlightNote(n, true);
       updateStaffNotation([n]);
-
-      // Clear any previous restore timer
-      if (activePlayTimer) clearTimeout(activePlayTimer);
-      activePlayTimer = setTimeout(() => {
-        highlightNote(n, false);
-        activePlayNote = -1;
-        // Restore full pattern display across all views
-        updateStaffNotation(Array.from(selectedNotes));
-        updateSphereDisplay();
-      }, dur * 1000);
+      setTimeout(() => { highlightNote(n, false); updateStaffNotation(Array.from(selectedNotes)); }, dur * 1000);
     }
 
     function highlightNote(n, on) {
-      activePlayNote = on ? n : -1;
-
-      // ── CHROMATIC CIRCLE ──
       const sphere = document.querySelector(`.sphere[data-note="${n}"]`);
+      const wKey = document.querySelector(`.white-key[data-note="${n}"]`);
+      const bKey = document.querySelector(`.black-key[data-note="${n}"]`);
+      const strLabels = document.querySelectorAll(`.string-label[data-note="${n}"]`);
+
       if (on) {
-        // Dim all other spheres during single-note playback
-        document.querySelectorAll('.sphere').forEach((s, i) => {
-          if (i !== n) { s.style.opacity = '0.2'; s.style.transform = 'scale(0.85)'; }
-          else { s.style.opacity = '1'; s.classList.add('playing'); s.style.transform = 'scale(1.3)'; }
+        if (sphere) { sphere.classList.add('playing'); }
+        if (wKey) { wKey.classList.add('playing'); wKey.style.background = colors[n]; wKey.style.boxShadow = `0 0 20px ${colors[n]}`; }
+        if (bKey) { bKey.classList.add('playing'); bKey.style.background = colors[n]; bKey.style.boxShadow = `0 0 20px ${colors[n]}`; }
+        document.querySelectorAll('.note-dot').forEach(d => {
+          if (d.textContent.trim() === noteNamesShort[n]) {
+            d.classList.add('playing');
+            d.style.boxShadow = `0 0 25px ${colors[n]}, 0 0 40px ${colors[n]}`;
+          }
         });
+        strLabels.forEach(l => { l.style.color = colors[n]; l.style.textShadow = `0 0 20px ${colors[n]}`; l.style.transform = 'scale(1.5)'; });
       } else {
-        document.querySelectorAll('.sphere').forEach(s => {
-          s.style.opacity = ''; s.style.transform = ''; s.classList.remove('playing');
+        if (sphere) { sphere.classList.remove('playing'); }
+        if (wKey) { wKey.classList.remove('playing'); wKey.style.background = ''; wKey.style.boxShadow = ''; }
+        if (bKey) { bKey.classList.remove('playing'); bKey.style.background = ''; bKey.style.boxShadow = ''; }
+        document.querySelectorAll('.note-dot').forEach(d => {
+          d.classList.remove('playing');
+          d.style.boxShadow = '';
         });
+        strLabels.forEach(l => { l.style.color = ''; l.style.textShadow = ''; l.style.transform = ''; });
       }
-
-      // ── PIANO — show ONLY the playing note (correct octave key lights up, others dim) ──
-      document.querySelectorAll('.white-key, .black-key').forEach(key => {
-        const kn  = parseInt(key.dataset.note);
-        const ko  = parseInt(key.dataset.octave);
-        if (on) {
-          if (kn === n) {
-            // Light up ALL octave instances of this note name for visual clarity
-            key.style.background  = colors[n];
-            key.style.boxShadow   = `0 0 22px ${colors[n]}, 0 0 40px ${colors[n]}88`;
-            key.style.borderColor = colors[n];
-            key.style.borderWidth = '3px';
-            key.style.opacity     = '1';
-            key.classList.add('playing');
-          } else {
-            // Dim all other keys
-            key.style.background  = key.classList.contains('black-key') ? '#111' : '#f0f0f0';
-            key.style.boxShadow   = 'none';
-            key.style.borderColor = key.classList.contains('white-key') ? '#333' : '#000';
-            key.style.borderWidth = '1px';
-            key.style.opacity     = '0.3';
-            key.classList.remove('playing');
-          }
-        } else {
-          key.style.background  = '';
-          key.style.boxShadow   = '';
-          key.style.opacity     = '';
-          key.style.borderWidth = '';
-          key.classList.remove('playing');
-        }
-      });
-
-      // ── GUITAR — show ONLY matching note dots ──
-      document.querySelectorAll('.note-dot').forEach(dot => {
-        const dn = noteNamesShort.indexOf(dot.textContent.trim());
-        if (on) {
-          if (dn === n) {
-            dot.style.opacity = '1';
-            dot.style.transform = 'translate(-50%,-50%) scale(1.4)';
-            dot.style.boxShadow = `0 0 18px ${colors[n]}, 0 0 35px ${colors[n]}99`;
-            dot.style.borderWidth = '3px';
-            dot.style.filter = 'none';
-            dot.classList.add('playing');
-          } else {
-            dot.style.opacity = '0.08';
-            dot.style.transform = 'translate(-50%,-50%) scale(0.65)';
-            dot.style.boxShadow = 'none';
-            dot.style.borderWidth = '1px';
-            dot.style.filter = 'grayscale(100%)';
-            dot.classList.remove('playing');
-          }
-        } else {
-          dot.style.opacity = '';
-          dot.style.transform = '';
-          dot.style.boxShadow = '';
-          dot.style.borderWidth = '';
-          dot.style.filter = '';
-          dot.classList.remove('playing');
-        }
-      });
-
-      // ── STRING LABELS (open strings) ──
-      document.querySelectorAll('.string-label').forEach(lbl => {
-        const ln = parseInt(lbl.dataset.note);
-        if (on) {
-          if (ln === n) {
-            lbl.style.color       = '#F4D03F';
-            lbl.style.borderColor = '#F4D03F';
-            lbl.style.boxShadow   = `0 0 22px rgba(244,208,63,0.9), 0 0 40px rgba(244,208,63,0.5)`;
-            lbl.style.background  = 'radial-gradient(circle, rgba(244,208,63,0.3) 0%, rgba(0,0,0,0.7) 100%)';
-            lbl.style.opacity     = '1';
-            lbl.style.transform   = 'translateX(-50%) scale(1.25)';
-          } else {
-            lbl.style.color       = 'rgba(255,255,255,0.1)';
-            lbl.style.borderColor = 'rgba(0,128,128,0.15)';
-            lbl.style.boxShadow   = '';
-            lbl.style.background  = '';
-            lbl.style.opacity     = '0.15';
-            lbl.style.transform   = 'translateX(-50%) scale(1)';
-          }
-        } else {
-          lbl.style.color       = '';
-          lbl.style.borderColor = '';
-          lbl.style.boxShadow   = '';
-          lbl.style.background  = '';
-          lbl.style.opacity     = '';
-          lbl.style.transform   = '';
-        }
-      });
     }
 
     function playSelection(mode) {
@@ -3779,8 +3312,6 @@
     }
 
     function updateSphereDisplay() {
-      // Don't override single-note highlight during playback
-      if (activePlayNote !== -1) return;
       document.querySelectorAll('.sphere').forEach((s, i) => {
         s.classList.remove('active','included','excluded','freeplay-inactive','playing');
         if (currentLevel === 'freeplay') {
@@ -3801,28 +3332,19 @@
     }
 
     function updatePianoDisplay() {
-      // Don't override single-note highlight during playback
-      if (activePlayNote !== -1) return;
       document.querySelectorAll('.white-key,.black-key').forEach(key => {
         const n = parseInt(key.dataset.note);
-        key.style.opacity     = '';
-        key.style.background  = '';
         if (selectedNotes.has(n)) {
-          // Highlight this note name across all octaves
-          key.style.borderColor = colors[n];
-          key.style.borderWidth = '3px';
-          key.style.boxShadow   = `0 0 10px ${colors[n]}`;
+          key.style.borderColor = colors[n]; key.style.borderWidth = '3px';
+          key.style.boxShadow = `0 0 10px ${colors[n]}`;
         } else {
           key.style.borderColor = key.classList.contains('white-key') ? '#444' : '#000';
-          key.style.borderWidth = '';
-          key.style.boxShadow   = '';
+          key.style.borderWidth = '2px'; key.style.boxShadow = '';
         }
       });
     }
 
     function updateGuitarDisplay() {
-      // Don't override single-note highlight during playback
-      if (activePlayNote !== -1) return;
       document.querySelectorAll('.note-dot').forEach(dot => {
         const n = noteNamesShort.indexOf(dot.textContent.trim());
         if (n !== -1 && selectedNotes.has(n)) {
@@ -3839,21 +3361,12 @@
     }
 
     function updateStringLabels() {
-      if (activePlayNote !== -1) return;
       document.querySelectorAll('.string-label').forEach(lbl => {
         const n = parseInt(lbl.dataset.note);
         if (selectedNotes.has(n)) {
-          lbl.style.color       = '#F4D03F';
-          lbl.style.borderColor = '#F4D03F';
-          lbl.style.boxShadow   = `0 0 16px rgba(244,208,63,0.7), 0 0 30px rgba(244,208,63,0.3)`;
-          lbl.style.background  = 'radial-gradient(circle, rgba(244,208,63,0.2) 0%, rgba(0,0,0,0.7) 100%)';
-          lbl.style.opacity     = '1';
+          lbl.style.color = colors[n]; lbl.style.textShadow = `0 0 10px ${colors[n]}`; lbl.style.transform = 'scale(1.3)'; lbl.style.opacity = '1';
         } else {
-          lbl.style.color       = 'rgba(255,255,255,0.35)';
-          lbl.style.borderColor = 'rgba(0,128,128,0.25)';
-          lbl.style.boxShadow   = '';
-          lbl.style.background  = 'radial-gradient(circle, rgba(0,128,128,0.1) 0%, rgba(0,0,0,0.6) 100%)';
-          lbl.style.opacity     = '0.45';
+          lbl.style.color = 'rgba(255,255,255,0.2)'; lbl.style.textShadow = ''; lbl.style.transform = 'scale(1)'; lbl.style.opacity = '0.25';
         }
       });
     }
