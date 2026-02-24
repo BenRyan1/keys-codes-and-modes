@@ -434,24 +434,135 @@ function trackEvent(n,p){if(typeof gtag==='function')gtag('event',n,p);}
         }
         
         /* Responsive */
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 2rem;
+        /* ============================================================
+           RESPONSIVE BREAKPOINTS — All Devices
+           xs:  < 480px   — small phones
+           sm:  480–767px — large phones
+           md:  768–1023px — tablets
+           lg:  1024–1439px — laptops
+           xl:  1440px+  — large desktops
+           ============================================================ */
+
+        /* --- Large Desktop (1440px+) --- */
+        @media (min-width: 1440px) {
+            .container { max-width: 1100px; padding: 5rem 2rem; }
+            .page-title { font-size: 3.5rem; }
+            .contact-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* --- Laptop / iPad Pro landscape (1024px–1439px) --- */
+        @media (min-width: 1024px) and (max-width: 1439px) {
+            .contact-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* --- Tablet portrait (768px–1023px) --- */
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .container { padding: 3rem 1.5rem; }
+            .page-title { font-size: 2.5rem; }
+            .contact-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .contact-card { padding: 2rem; }
+            .contact-section { padding: 2.5rem; }
+            .contact-section h2 { font-size: 1.75rem; }
+            nav ul { gap: 1.25rem; }
+            nav a { font-size: 0.95rem; }
+        }
+
+        /* --- Large phones (480px–767px) --- */
+        @media (max-width: 767px) {
+            header { padding: 1rem; }
+            .header-content {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
             }
-            
-            .contact-grid {
-                grid-template-columns: 1fr;
+            .logo-text h1 { font-size: 1.2rem; letter-spacing: 1px; }
+            nav ul { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            nav a { font-size: 0.9rem; }
+
+            .container { padding: 2rem 1rem; }
+            .page-title { font-size: 1.9rem; letter-spacing: 0; }
+            .subtitle { font-size: 1rem; margin-bottom: 2.5rem; }
+
+            .contact-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+            .contact-card { padding: 1.75rem; }
+            .contact-card h3 { font-size: 1.3rem; }
+
+            .contact-section { padding: 2rem 1.25rem; }
+            .contact-section h2 { font-size: 1.6rem; }
+
+            /* Form inputs — prevent iOS zoom (must be 16px+) */
+            .contact-section input,
+            .contact-section select,
+            .contact-section textarea {
+                font-size: 16px !important;
+                padding: 0.85rem !important;
             }
-            
-            .contact-card,
-            .contact-info-section,
-            .cta-section {
-                padding: 2rem 1.5rem;
+
+            .cta-section { padding: 2rem 1.25rem; }
+            .cta-section h2 { font-size: 1.6rem; }
+            .cta-buttons { flex-direction: column; align-items: center; gap: 1rem; }
+            .cta-button { width: 100%; max-width: 280px; text-align: center; }
+        }
+
+        /* --- Small phones (< 480px) --- */
+        @media (max-width: 479px) {
+            .logo-text h1 { font-size: 1rem; }
+            nav ul { gap: 0.6rem; }
+            nav a { font-size: 0.82rem; }
+
+            .container { padding: 1.5rem 0.75rem; }
+            .page-title { font-size: 1.6rem; }
+            .subtitle { font-size: 0.9rem; margin-bottom: 2rem; }
+
+            .contact-card { padding: 1.5rem 1.25rem; }
+            .contact-card-icon { font-size: 2.25rem; }
+            .contact-card h3 { font-size: 1.2rem; }
+            .contact-card p { font-size: 0.9rem; }
+
+            .contact-section { padding: 1.5rem 1rem; border-radius: 14px; }
+            .contact-section h2 { font-size: 1.4rem; }
+            .contact-section p { font-size: 0.95rem; }
+
+            .cta-section { padding: 1.5rem 1rem; border-radius: 14px; }
+            .cta-section h2 { font-size: 1.4rem; }
+            .cta-button { font-size: 0.95rem; padding: 0.85rem 1.5rem; }
+        }
+
+        /* --- Touch device optimizations --- */
+        @media (hover: none) and (pointer: coarse) {
+            .contact-card:hover {
+                transform: none; /* Disable lift on touch screens */
             }
-            
-            nav ul {
-                gap: 1rem;
+            /* WCAG 2.5.5 — minimum 44×44px touch targets */
+            .cta-button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; }
+            nav a { min-height: 44px; display: inline-flex; align-items: center; }
+            button[type="submit"] { min-height: 52px; }
+        }
+
+        /* --- Reduced motion (WCAG 2.3.3) --- */
+        @media (prefers-reduced-motion: reduce) {
+            .contact-card { transition: none; }
+            .cta-button { transition: none; }
+            * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+        }
+
+        /* --- High contrast mode (Windows accessibility) --- */
+        @media (forced-colors: active) {
+            .contact-card { border: 2px solid ButtonText; }
+            .cta-button { border: 2px solid ButtonText; }
+            button[type="submit"] { border: 2px solid ButtonText; }
+        }
+
+        /* --- Print --- */
+        @media print {
+            header, .cta-section, .skip-link { display: none; }
+            .contact-card { border: 1px solid #ccc; box-shadow: none; }
+            body { background: white; color: black; }
+            .page-title, .contact-section h2, .contact-card h3 {
+                -webkit-text-fill-color: black;
+                color: black;
             }
+            a { color: black; }
         }
     </style>
 </head>
