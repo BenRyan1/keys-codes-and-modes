@@ -491,206 +491,139 @@ select option { background: #1a1a2e; color: white; }
 #pianoKeyboard {
     display: none;
     background: rgba(0,0,0,0.4);
-    padding: 1.25rem 1rem;
+    padding: 2rem;
     border-radius: 16px;
     margin-top: 1rem;
     border: 2px solid rgba(0,128,128,0.2);
     box-shadow: 0 6px 25px rgba(0,0,0,0.4);
-    overflow-x: auto;
 }
-/* piano-container, white-key, black-key, key-label defined in guitar block above */
+.piano-container {
+    position: relative;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.white-key {
+    width: 50px; height: 200px;
+    background: linear-gradient(to bottom, #fff 0%, #f0f0f0 100%);
+    border: 2px solid #333;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s;
+    touch-action: manipulation;
+}
+.white-key:hover { background: linear-gradient(to bottom, #f5f5f5 0%, #e0e0e0 100%); transform: translateY(-2px); }
+.white-key.playing { transform: translateY(3px); box-shadow: inset 0 4px 8px rgba(0,0,0,0.3); }
+.black-key {
+    width: 32px; height: 120px;
+    background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+    border: 2px solid #000;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+    transition: all 0.15s;
+    touch-action: manipulation;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+.black-key:hover { background: linear-gradient(180deg, #2a2a2a 0%, #111 100%); transform: translateY(-2px); }
+.black-key.playing { transform: translateY(3px); box-shadow: inset 0 4px 8px rgba(0,0,0,0.7); }
+.key-label {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    pointer-events: none;
+    font-family: var(--font-body);
+}
+.black-key .key-label { bottom: 5px; font-size: 9px; line-height: 1.2; color: white; }
 
 /* ============================================================
-   GUITAR FRETBOARD  — NORTH-TO-SOUTH strings
-   Strings run TOP→BOTTOM (one column per string)
-   Frets  run LEFT→RIGHT  (one row  per fret)
-   Order left→right: E(low) A D G B e(high)
-   NUT = first row at top
+   GUITAR FRETBOARD
    ============================================================ */
 #guitarFretboard {
     display: none;
     background: rgba(0,0,0,0.4);
-    padding: 1.25rem 1rem 1.5rem;
+    padding: 2rem;
     border-radius: 16px;
+    max-width: 1100px;
     margin-top: 1rem;
     border: 2px solid rgba(0,128,128,0.2);
     box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+    overflow-y: auto;
+    max-height: 90vh;
 }
-
-/* ── Table-based grid ── */
-.fb-table {
-    display: table;
-    width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
-    border-collapse: collapse;
-    background: linear-gradient(135deg, #1a0a04 0%, #2d1508 50%, #1a0a04 100%);
-    border-radius: 6px;
-    border: 2px solid #7a4010;
-    box-shadow: inset 0 0 24px rgba(0,0,0,0.7), 0 6px 20px rgba(0,0,0,0.5);
-}
-.fb-row   { display: table-row; }
-.fb-row.nut-row .fb-cell { border-bottom: 5px solid #888 !important; background: linear-gradient(180deg,#ece4b8,#d4c090,#ece4b8); min-height: 14px; height: 14px; }
-.fb-cell  {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    border-bottom: 3px solid rgba(160,160,160,0.75); /* fret wire */
-    border-right: 1px solid rgba(255,255,255,0.06);
+.fretboard-container {
     position: relative;
+    background: linear-gradient(to bottom, #8B4513 0%, #A0522D 100%);
+    border-radius: 3px;
+    padding: 5px 10px 1px 10px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: center;
+}
+.fretboard {
+    position: relative;
+    width: 180px;
+    height: 400px;
+    background: linear-gradient(to right, #D2691E 0%, #8B4513 50%, #654321 100%);
+    border-radius: 2px;
+    border: 1px solid #654321;
     cursor: pointer;
-    height: 56px;
-    transition: background 0.15s;
-    min-width: 50px;
 }
-.fb-cell:hover { background: rgba(0,128,128,0.18); }
-
-/* fret-number label column */
-.fb-fnum-cell {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    width: 26px;
-    font-size: 0.62rem;
-    font-weight: 700;
-    color: rgba(244,208,63,0.55);
-    font-family: var(--font-body);
-    border-right: 2px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.35);
-    padding: 0 3px;
-}
-
-/* String name header row */
-.fb-str-label-cell {
-    display: table-cell;
-    text-align: center;
-    padding: 5px 2px;
-    font-size: 1.2rem;
-    font-weight: 900;
-    cursor: pointer;
-    color: rgba(255,255,255,0.35);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
-    transition: color 0.2s, transform 0.2s;
-    user-select: none;
-    font-family: var(--font-body);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.fb-str-label-cell:hover  { color: var(--primary-gold) !important; transform: scale(1.25); }
-.fb-str-label-cell.fb-lit { transform: scale(1.15); }
-
-/* String lines — vertical, running through each column */
-/* Applied via inline style width set by JS per string thickness */
-.fb-cell::before {
-    content: '';
+.guitar-string {
     position: absolute;
-    top: 0; bottom: 0;
-    left: 50%; transform: translateX(-50%);
-    border-radius: 99px;
-    pointer-events: none;
-    z-index: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, #C0C0C0 0%, #808080 100%);
+    top: 0;
 }
-.nut-row .fb-cell::before { top: 50%; }
-
-/* Note dot */
-.fb-dot {
-    position: relative;
-    z-index: 2;
-    width: 33px; height: 33px;
+.fret-wire {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #888 0%, #aaa 50%, #888 100%);
+    left: 0;
+}
+.note-dot {
+    position: absolute;
+    width: 30px; height: 30px;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 9.5px;
-    font-weight: 800;
+    font-size: 11px;
+    font-weight: bold;
     font-family: var(--font-body);
-    opacity: 0.14;
-    filter: grayscale(80%) brightness(0.7);
-    transform: scale(0.68);
-    transition: all 0.18s;
-    pointer-events: none;
-    margin: auto;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-}
-.fb-cell.fb-on .fb-dot {
-    opacity: 1; filter: none; transform: scale(1.12);
-    border-color: white; border-width: 2.5px;
-    box-shadow: 0 0 14px currentColor, 0 0 5px currentColor;
-}
-.fb-cell.fb-off .fb-dot {
-    opacity: 0.09; filter: grayscale(100%); transform: scale(0.6);
-}
-
-/* Position marker inlay dots — shown in the fret-number cell */
-.fb-inlay { display: flex; gap: 3px; justify-content: center; }
-.fb-inlay-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
-
-/* ── Staff notation below fretboard ── */
-.fb-staff-wrap {
-    background: rgba(255,255,255,0.97);
-    border-radius: 10px;
-    padding: 8px 14px 4px;
-    margin-top: 1rem;
-    border: 2px solid var(--primary-teal);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-}
-.fb-staff-hdr {
-    background: linear-gradient(135deg, #008080, #006060);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 7px 7px 0 0;
-    margin: -8px -14px 6px;
-    text-align: center;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    font-family: var(--font-display);
-}
-#fbStaffSVG { width: 100%; height: 125px; display: block; }
-
-/* ── Piano compact ── */
-.piano-outer { overflow-x: auto; padding-bottom: 4px; }
-.piano-container {
-    position: relative;
-    height: 135px;
-    display: flex;
-    align-items: flex-start;
-    width: fit-content;
-    margin: 0 auto;
-}
-.white-key {
-    width: 36px; height: 135px;
-    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%);
-    border: 1.5px solid #444;
-    border-radius: 0 0 4px 4px;
     cursor: pointer;
-    position: relative;
-    transition: all 0.12s;
+    transform: translate(-15px, -15px);
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     touch-action: manipulation;
-    flex-shrink: 0;
 }
-.white-key:hover { background: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%); }
-.white-key.playing { transform: translateY(2px); box-shadow: inset 0 3px 8px rgba(0,0,0,0.25); background: var(--key-color, #fff) !important; }
-.black-key {
-    width: 22px; height: 82px;
-    background: linear-gradient(180deg, #222 0%, #000 100%);
-    border: 1.5px solid #000;
-    border-radius: 0 0 3px 3px;
-    cursor: pointer;
+.note-dot:hover { transform: translate(-15px, -15px) scale(1.2); }
+.note-dot.playing { transform: translate(-15px, -15px) scale(1.4); border-color: #fff; border-width: 4px; }
+.string-label {
     position: absolute;
-    z-index: 2;
-    transition: all 0.12s;
+    top: -60px;
+    font-weight: bold;
+    font-size: 32px;
+    color: white;
+    text-align: center;
+    width: 40px; height: 40px;
+    cursor: pointer;
+    z-index: 500;
+    transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     touch-action: manipulation;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
 }
-.black-key:hover { background: linear-gradient(180deg, #333 0%, #111 100%); }
-.black-key.playing { transform: translateY(2px); background: var(--key-color, #000) !important; box-shadow: 0 0 18px var(--key-color, #fff), inset 0 3px 6px rgba(0,0,0,0.7); }
-.key-label {
-    position: absolute; bottom: 4px; width: 100%;
-    text-align: center; font-size: 9px; font-weight: bold;
-    pointer-events: none; font-family: var(--font-body); color: #555; line-height: 1.2;
-}
-.black-key .key-label { bottom: 3px; font-size: 7px; color: #ccc; }
+.string-label:hover { color: var(--primary-gold); transform: scale(1.35); }
 
 /* ============================================================
    EAR TRAINING
@@ -985,10 +918,10 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
         <nav role="navigation" aria-label="Main navigation">
             <ul>
-                <li><a href="https://keyscodesandmodes.com/index.html">Home</a></li>
-                <li><a href="https://keyscodesandmodes.com/insights.html">All Apps</a></li>
-                <li><a href="https://keyscodesandmodes.com/about.html">About</a></li>
-                <li><a href="https://keyscodesandmodes.com/contact.html">Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="insights.html">All Apps</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -1096,28 +1029,27 @@ input[type="range"]::-webkit-slider-thumb {
             </div>
 
             <!-- PIANO KEYBOARD -->
-            <div id="pianoKeyboard" style="margin:0 auto; width:100%;" role="region" aria-label="Piano keyboard">
-                <h3 style="text-align:center; margin:0 0 0.75rem 0; font-family:var(--font-display); font-size:1.15rem; font-weight:800; color:var(--primary-gold);">🎹 Piano Keyboard — 2 Octaves</h3>
-                <div class="piano-outer">
-                    <div class="piano-container" id="pianoContainer"></div>
-                </div>
+            <div id="pianoKeyboard" style="margin:0 auto;" role="region" aria-label="Piano keyboard">
+                <h3 style="text-align:center; margin:0 0 1.1rem 0; font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:var(--primary-gold);">🎹 Piano Keyboard</h3>
+                <div class="piano-container" id="pianoContainer"></div>
             </div>
 
             <!-- GUITAR FRETBOARD -->
-            <div id="guitarFretboard" style="margin:0 auto; width:100%;" role="region" aria-label="Guitar fretboard">
-                <h3 style="text-align:center; margin:0 0 0.75rem 0; font-family:var(--font-display); font-size:1.15rem; font-weight:800; color:var(--primary-gold);">🎸 Guitar Fretboard — Standard Tuning  E · A · D · G · B · e</h3>
-                <div style="display:flex; justify-content:center; margin-bottom:0.85rem; gap:6px;">
-                    <button class="level-btn" id="fret4Btn"  style="padding:6px 14px; font-size:0.68rem; min-width:70px;">4 Frets</button>
-                    <button class="level-btn active" id="fret5Btn"  style="padding:6px 14px; font-size:0.68rem; min-width:70px;">5 Frets</button>
-                    <button class="level-btn" id="fret12Btn" style="padding:6px 14px; font-size:0.68rem; min-width:70px;">12 Frets</button>
+            <div id="guitarFretboard" style="margin:0 auto;" role="region" aria-label="Guitar fretboard">
+                <h3 style="text-align:center; margin:0 0 0.85rem 0; font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:var(--primary-gold);">🎸 Guitar Fretboard — Standard Tuning</h3>
+                <div style="display:flex; justify-content:center; margin-bottom:1.1rem;">
+                    <div style="display:flex; gap:6px; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:10px;">
+                        <button class="level-btn" id="fret4Btn" style="padding:8px 16px; font-size:0.7rem; min-width:80px;">4 Frets</button>
+                        <button class="level-btn active" id="fret5Btn" style="padding:8px 16px; font-size:0.7rem; min-width:80px;">5 Frets</button>
+                        <button class="level-btn" id="fret12Btn" style="padding:8px 16px; font-size:0.7rem; min-width:80px;">12 Frets</button>
+                    </div>
                 </div>
-                <p style="text-align:center; color:#4CAF50; font-weight:700; font-size:0.78rem; margin-bottom:0.75rem;">Active notes glow in KCM color · Click string names or dots to play</p>
-                <!-- Fretboard grid built by JS into #fbTable -->
-                <div id="fbTable"></div>
-                <!-- Staff notation -->
-                <div class="fb-staff-wrap">
-                    <div class="fb-staff-hdr">🎼 STAFF NOTATION</div>
-                    <svg id="fbStaffSVG" viewBox="0 0 500 125" aria-hidden="true"></svg>
+                <div style="text-align:center; margin-bottom:3.5rem;">
+                    <p style="color:#4CAF50; font-weight:bold; font-size:0.82rem;">Active notes light up in color · Click dots or open strings to play</p>
+                    <div style="color:white; font-weight:bold; font-size:0.82rem; margin-top:0.25rem;">OPEN STRINGS (0 fret)</div>
+                </div>
+                <div class="fretboard-container">
+                    <div class="fretboard" id="fretboard"></div>
                 </div>
             </div>
 
@@ -1177,12 +1109,9 @@ input[type="range"]::-webkit-slider-thumb {
     <p>1187 Coast Village Rd #110 · Santa Barbara, CA 93108</p>
     <p style="font-size:0.8rem; margin-top:8px; color:rgba(232,232,232,0.4);">
         FreeStyle® is a registered trademark. U.S. Patents. |
-        <a href="https://keyscodesandmodes.com/privacy-policy.html">Privacy Policy</a> |
-        <a href="https://keyscodesandmodes.com/terms.html">Terms of Service</a> |
-        <a href="https://keyscodesandmodes.com/contact.html">Contact</a> |
-        <a href="https://keyscodesandmodes.com/index.html">Home</a> |
-        <a href="https://keyscodesandmodes.com/insights.html">All Apps</a> |
-        <a href="https://keyscodesandmodes.com/about.html">About</a>
+        <a href="privacy-policy.html">Privacy Policy</a> |
+        <a href="terms.html">Terms of Service</a> |
+        <a href="contact.html">Contact</a>
     </p>
 </footer>
 
@@ -1379,9 +1308,9 @@ window.addEventListener('unhandledrejection', function(event) {
                 if (el('downloadRecBtn')) el('downloadRecBtn').onclick = downloadMIDI;
                 const tempoSlider = el('tempoSlider');
                 if (tempoSlider) tempoSlider.oninput = function() { currentBPM = parseInt(this.value); const d = el('bpmDisplay'); if (d) d.textContent = currentBPM; };
-                if (el('fret4Btn')) el('fret4Btn').onclick = () => { guitarFretCount = 4; el('fret4Btn').classList.add('active'); el('fret5Btn').classList.remove('active'); el('fret12Btn').classList.remove('active'); createGuitar(); setTimeout(() => updateSphereDisplay(), 50); };
-                if (el('fret5Btn')) el('fret5Btn').onclick = () => { guitarFretCount = 5; el('fret5Btn').classList.add('active'); el('fret4Btn').classList.remove('active'); el('fret12Btn').classList.remove('active'); createGuitar(); setTimeout(() => updateSphereDisplay(), 50); };
-                if (el('fret12Btn')) el('fret12Btn').onclick = () => { guitarFretCount = 12; el('fret12Btn').classList.add('active'); el('fret4Btn').classList.remove('active'); el('fret5Btn').classList.remove('active'); createGuitar(); setTimeout(() => updateSphereDisplay(), 50); };
+                if (el('fret4Btn')) el('fret4Btn').onclick = () => { guitarFretCount = 4; el('fret4Btn').classList.add('active'); el('fret5Btn').classList.remove('active'); el('fret12Btn').classList.remove('active'); createGuitar(); setTimeout(() => { updateSphereDisplay(); updateStringLabels(); }, 50); };
+                if (el('fret5Btn')) el('fret5Btn').onclick = () => { guitarFretCount = 5; el('fret5Btn').classList.add('active'); el('fret4Btn').classList.remove('active'); el('fret12Btn').classList.remove('active'); createGuitar(); setTimeout(() => { updateSphereDisplay(); updateStringLabels(); }, 50); };
+                if (el('fret12Btn')) el('fret12Btn').onclick = () => { guitarFretCount = 12; el('fret12Btn').classList.add('active'); el('fret4Btn').classList.remove('active'); el('fret5Btn').classList.remove('active'); createGuitar(); setTimeout(() => { updateSphereDisplay(); updateStringLabels(); }, 50); };
                 setTimeout(() => { const playAllBtn = el('playAllChordsBtn'); if (playAllBtn) playAllBtn.onclick = playAllScaleChords; }, 100);
             } catch(e) { console.error('Event listeners error:', e); }
         }
@@ -1434,23 +1363,24 @@ window.addEventListener('unhandledrejection', function(event) {
             } catch(e) { console.error('Audio init error:', e); }
         }
 
-        // ── MIDI init (graceful — security policy may block) ──────
+        // ── MIDI init ─────────────────────────────────────────────
         function initMIDI() {
             try {
-                if (!navigator.requestMIDIAccess) return; // not supported
-                navigator.requestMIDIAccess().then(access => {
-                    for (let input of access.inputs.values()) {
-                        input.onmidimessage = e => {
-                            try {
-                                const [status, note, vel] = e.data;
-                                const cmd = status >> 4;
-                                if (cmd === 9 && vel > 0) { const n = note % 12, oct = Math.floor(note / 12) - 1; playNote(n, oct, 0.5); highlightNote(n, true); }
-                                else if (cmd === 8 || (cmd === 9 && vel === 0)) { highlightNote(note % 12, false); }
-                            } catch(e2) { /* ignore */ }
-                        };
-                    }
-                }).catch(() => { /* MIDI blocked by security policy — silent */ });
-            } catch(e) { /* MIDI not available — silent */ }
+                if (navigator.requestMIDIAccess) {
+                    navigator.requestMIDIAccess().then(access => {
+                        for (let input of access.inputs.values()) {
+                            input.onmidimessage = e => {
+                                try {
+                                    const [status, note, vel] = e.data;
+                                    const cmd = status >> 4;
+                                    if (cmd === 9 && vel > 0) { const n = note % 12, oct = Math.floor(note / 12) - 1; playNote(n, oct, 0.5); highlightNote(n, true); }
+                                    else if (cmd === 8 || (cmd === 9 && vel === 0)) { highlightNote(note % 12, false); }
+                                } catch(e) { console.error('MIDI msg error:', e); }
+                            };
+                        }
+                    }).catch(e => console.log('MIDI not available:', e));
+                }
+            } catch(e) { console.error('MIDI init error:', e); }
         }
 
         // ── Create spheres ────────────────────────────────────────
@@ -1485,217 +1415,95 @@ window.addEventListener('unhandledrejection', function(event) {
             }
         }
 
-        // ── Create piano — 2 octaves, compact, KCM colors ─────────
+        // ── Create piano ──────────────────────────────────────────
         function createPiano() {
             const container = document.getElementById('pianoContainer');
             if (!container) return;
             container.innerHTML = '';
-
-            // KCM chromatic colors (same as circle spheres)
-            // colors array already defined: ['#FFFF00','#FFC400',...]
-
-            const WHITE_W = 36; // px per white key
-            const whiteOrder = [0,2,4,5,7,9,11]; // C D E F G A B
-            const blackDefs  = [{n:1,after:0},{n:3,after:1},{n:6,after:3},{n:8,after:4},{n:10,after:5}];
-
-            // Build 2 octaves: oct 4 then oct 5
-            [currentOctave, currentOctave+1].forEach((oct, octIdx) => {
-                const offsetPx = octIdx * 7 * WHITE_W; // each octave = 7 white keys
-
-                whiteOrder.forEach((pc, wi) => {
-                    const k = document.createElement('div');
-                    k.className = 'white-key';
-                    k.dataset.note = pc;
-                    k.dataset.octave = oct;
-                    k.setAttribute('role','button'); k.setAttribute('tabindex','0');
-                    k.setAttribute('aria-label', `${noteNames[pc]} ${oct}`);
-                    k.onclick = () => handleNoteClick(pc);
-                    k.style.setProperty('--key-color', colors[pc]);
-                    // NO background set here — CSS keeps it white until .playing
-                    const l = document.createElement('span');
-                    l.className = 'key-label';
-                    l.textContent = wi === 0 ? noteNamesShort[pc]+oct : noteNamesShort[pc];
-                    l.style.color = '#444';
-                    k.appendChild(l);
-                    container.appendChild(k);
-                });
-
-                blackDefs.forEach(({n: pc, after}) => {
-                    const k = document.createElement('div');
-                    k.className = 'black-key';
-                    k.dataset.note = pc;
-                    k.dataset.octave = oct;
-                    k.style.left = (offsetPx + after * WHITE_W + WHITE_W - 11) + 'px';
-                    k.setAttribute('role','button'); k.setAttribute('tabindex','0');
-                    k.setAttribute('aria-label', `${noteNames[pc]} ${oct}`);
-                    k.onclick = () => handleNoteClick(pc);
-                    k.style.setProperty('--key-color', colors[pc]);
-                    // NO background set here — CSS keeps it black until .playing
-                    const l = document.createElement('span');
-                    l.className = 'key-label';
-                    l.textContent = noteNamesShort[pc];
-                    l.style.color = '#ccc';
-                    k.appendChild(l);
-                    container.appendChild(k);
-                });
+            const whiteNotes = [0,2,4,5,7,9,11];
+            const blackNotes = [{note:1,after:0},{note:3,after:2},{note:6,after:5},{note:8,after:7},{note:10,after:9}];
+            whiteNotes.forEach((n) => {
+                const k = document.createElement('div');
+                k.className = 'white-key'; k.dataset.note = n;
+                k.setAttribute('role','button'); k.setAttribute('tabindex','0');
+                k.setAttribute('aria-label', `Piano key ${noteNames[n]}`);
+                k.onclick = () => handleNoteClick(n);
+                const l = document.createElement('div');
+                l.className = 'key-label'; l.textContent = noteNamesShort[n]; l.style.color = '#333';
+                k.appendChild(l); container.appendChild(k);
+            });
+            blackNotes.forEach(({note, after}) => {
+                const k = document.createElement('div');
+                k.className = 'black-key'; k.dataset.note = note;
+                const afterIdx = whiteNotes.indexOf(after);
+                k.style.left = ((afterIdx * 50) + 50 - 16) + 'px';
+                k.setAttribute('role','button'); k.setAttribute('tabindex','0');
+                k.setAttribute('aria-label', `Piano key ${noteNames[note]}`);
+                k.onclick = () => handleNoteClick(note);
+                const l = document.createElement('div');
+                l.className = 'key-label'; l.textContent = enharmonicNames[note];
+                k.appendChild(l); container.appendChild(k);
             });
         }
 
-        // ── Create guitar — N→S strings, W→E frets ───────────────
-        // Rows = frets (0=nut at top … N at bottom)
-        // Cols = strings (E low … e high, left→right)
+        // ── Create guitar ─────────────────────────────────────────
         function createGuitar() {
-            const container = document.getElementById('fbTable');
-            if (!container) return;
-            container.innerHTML = '';
-
-            // Standard tuning: E(low) A D G B e(high)
-            const tuning = [4,  9,  2,  7, 11, 4 ];  // pitch class open
-            const names  = ['E','A','D','G','B','e'];
-            const octs   = [2,  2,  3,  3,  3,  4];   // octave open string
-            // String wire widths px (thick E → thin e)
-            const strW   = ['4px','3px','2.5px','2px','1.5px','1px'];
-            // String wire colors
-            const strC   = [
-                'linear-gradient(180deg,#c8a870,#907040)',
-                'linear-gradient(180deg,#c0c0c0,#888)',
-                'linear-gradient(180deg,#d0d0d0,#a0a0a0)',
-                'linear-gradient(180deg,#dcdcdc,#b8b8b8)',
-                'linear-gradient(180deg,#e8e8e8,#c8c8c8)',
-                'linear-gradient(180deg,#f4f4f4,#d8d8d8)'
-            ];
-            const markerFrets = guitarFretCount === 12 ? [3,5,7,9,12] : guitarFretCount === 4 ? [3] : [3,5];
-
-            const table = document.createElement('div');
-            table.className = 'fb-table';
-
-            // ── Row 0: string name labels ──
-            const headerRow = document.createElement('div');
-            headerRow.className = 'fb-row';
-
-            // Corner cell (top-left, above fret-number column)
-            const corner = document.createElement('div');
-            corner.className = 'fb-fnum-cell';
-            corner.style.cssText = 'border-bottom:1px solid rgba(255,255,255,0.1); font-size:0.55rem; color:rgba(244,208,63,0.3);';
-            corner.textContent = 'fret';
-            headerRow.appendChild(corner);
-
+            const fb = document.getElementById('fretboard');
+            if (!fb) return;
+            fb.innerHTML = '';
+            const tuning = [4,9,2,7,11,4];
+            const names  = ['E','A','D','G','B','E'];
+            const octs   = [3,3,4,4,4,5];
+            const fretHeight = guitarFretCount === 12 ? 50 : guitarFretCount === 4 ? 90 : 80;
+            const totalHeight = guitarFretCount * fretHeight;
+            fb.style.height = totalHeight + 'px'; fb.style.width = '180px';
             for (let s = 0; s < 6; s++) {
+                const str = document.createElement('div');
+                str.className = 'guitar-string';
+                str.style.left = (30 * s + 15) + 'px';
+                str.style.width = (s >= 4 ? '1px' : s >= 2 ? '2px' : '3px');
+                str.style.height = '100%';
+                fb.appendChild(str);
                 const lbl = document.createElement('div');
-                lbl.className = 'fb-str-label-cell';
-                lbl.textContent = names[s];
-                lbl.dataset.note = tuning[s];
-                lbl.dataset.stringIdx = s;
-                lbl.setAttribute('aria-label', `${names[s]} string`);
-                lbl.onclick = () => {
-                    if (!audioReady) { alert('Click START AUDIO ENGINE first!'); return; }
-                    playNote(tuning[s], octs[s], 0.8);
-                };
-                headerRow.appendChild(lbl);
+                lbl.className = 'string-label'; lbl.textContent = names[s];
+                lbl.style.left = (30 * s - 5) + 'px'; lbl.dataset.note = tuning[s];
+                lbl.onclick = () => playNote(tuning[s], octs[s], 0.8);
+                fb.appendChild(lbl);
             }
-            table.appendChild(headerRow);
-
-            // ── Row 1: NUT (fret 0 = open strings) ──
-            const nutRow = document.createElement('div');
-            nutRow.className = 'fb-row nut-row';
-
-            const nutFnum = document.createElement('div');
-            nutFnum.className = 'fb-fnum-cell';
-            nutFnum.style.height = '14px';
-            nutFnum.textContent = '0';
-            nutRow.appendChild(nutFnum);
-
-            for (let s = 0; s < 6; s++) {
-                const cell = document.createElement('div');
-                cell.className = 'fb-cell';
-                cell.dataset.note = tuning[s];
-                cell.dataset.stringIdx = s;
-                cell.dataset.fret = 0;
-                // string line
-                cell.style.setProperty('--sw', strW[s]);
-                cell.style.setProperty('--sc', strC[s]);
-                cell.style.cssText += `--sw:${strW[s]};`;
-                cell.style.setProperty('background-color', '');
-
-                // Wire via ::before — set with inline custom props
-                cell.setAttribute('style', (cell.getAttribute('style')||'') +
-                    `--strw:${strW[s]};`);
-                // We'll do this via a direct pseudo approach in the dot wrapper
-                const wire = document.createElement('div');
-                wire.style.cssText = `position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:${strW[s]};background:${strC[s]};border-radius:99px;pointer-events:none;z-index:0;`;
-                cell.appendChild(wire);
-
-                const dot = document.createElement('div');
-                dot.className = 'fb-dot';
-                dot.style.background = colors[tuning[s]];
-                dot.style.color = textColors[tuning[s]];
-                dot.textContent = noteNamesShort[tuning[s]];
-                cell.appendChild(dot);
-
-                cell.onclick = () => {
-                    if (!audioReady) { alert('Click START AUDIO ENGINE first!'); return; }
-                    playNote(tuning[s], octs[s], 0.8);
-                };
-                nutRow.appendChild(cell);
-            }
-            table.appendChild(nutRow);
-
-            // ── Rows: frets 1..N ──
             for (let f = 1; f <= guitarFretCount; f++) {
-                const row = document.createElement('div');
-                row.className = 'fb-row';
-                row.dataset.fret = f;
-
-                // Fret number / inlay cell
-                const fnumCell = document.createElement('div');
-                fnumCell.className = 'fb-fnum-cell';
-                if (markerFrets.includes(f)) {
-                    const inlay = document.createElement('div');
-                    inlay.className = 'fb-inlay';
-                    if (f === 12) {
-                        inlay.innerHTML = '<div class="fb-inlay-dot"></div><div class="fb-inlay-dot"></div>';
-                    } else {
-                        inlay.innerHTML = '<div class="fb-inlay-dot"></div>';
-                    }
-                    fnumCell.appendChild(inlay);
-                } else {
-                    fnumCell.textContent = f;
-                }
-                row.appendChild(fnumCell);
-
-                for (let s = 0; s < 6; s++) {
-                    const pc  = (tuning[s] + f) % 12;
-                    const oct = octs[s] + Math.floor((tuning[s] + f) / 12);
-
-                    const cell = document.createElement('div');
-                    cell.className = 'fb-cell';
-                    cell.dataset.note = pc;
-                    cell.dataset.stringIdx = s;
-                    cell.dataset.fret = f;
-
-                    // string wire div
-                    const wire = document.createElement('div');
-                    wire.style.cssText = `position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:${strW[s]};background:${strC[s]};border-radius:99px;pointer-events:none;z-index:0;`;
-                    cell.appendChild(wire);
-
-                    const dot = document.createElement('div');
-                    dot.className = 'fb-dot';
-                    dot.style.background = colors[pc];
-                    dot.style.color = textColors[pc];
-                    dot.textContent = noteNamesShort[pc];
-                    cell.appendChild(dot);
-
-                    cell.onclick = () => {
-                        if (!audioReady) { alert('Click START AUDIO ENGINE first!'); return; }
-                        playNote(pc, oct, 0.8);
-                    };
-                    row.appendChild(cell);
-                }
-                table.appendChild(row);
+                const fw = document.createElement('div');
+                fw.className = 'fret-wire'; fw.style.top = (f * fretHeight) + 'px';
+                fb.appendChild(fw);
             }
-
-            container.appendChild(table);
-            updateGuitarDisplay();
+            const markerFrets = guitarFretCount === 12 ? [3,5,7,9,12] : guitarFretCount === 4 ? [3] : [3,5];
+            markerFrets.forEach(fret => {
+                if (fret > guitarFretCount) return;
+                if (fret === 12) {
+                    [1.5,4.5].forEach(sp => {
+                        const m = document.createElement('div');
+                        m.style.cssText = `position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);left:${30*sp}px;top:${fret*fretHeight-fretHeight/2}px;transform:translate(-4px,-4px);pointer-events:none;`;
+                        fb.appendChild(m);
+                    });
+                } else {
+                    const m = document.createElement('div');
+                    m.style.cssText = `position:absolute;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);left:90px;top:${fret*fretHeight-fretHeight/2}px;transform:translate(-5px,-5px);pointer-events:none;`;
+                    fb.appendChild(m);
+                }
+            });
+            for (let s = 0; s < 6; s++) {
+                for (let f = 1; f <= guitarFretCount; f++) {
+                    const n = (tuning[s] + f) % 12;
+                    const dot = document.createElement('div');
+                    dot.className = 'note-dot';
+                    dot.style.left = (30 * s + 15) + 'px';
+                    dot.style.top  = (f * fretHeight - fretHeight / 2) + 'px';
+                    dot.style.background = colors[n]; dot.style.color = textColors[n];
+                    dot.textContent = noteNamesShort[n];
+                    dot.onclick = () => playNote(n, octs[s] + Math.floor((tuning[s] + f) / 12), 0.8);
+                    fb.appendChild(dot);
+                }
+            }
+            updateStringLabels();
         }
 
         // ── Note click handler ────────────────────────────────────
@@ -1754,32 +1562,29 @@ window.addEventListener('unhandledrejection', function(event) {
         // ── Highlight note ────────────────────────────────────────
         function highlightNote(n, on) {
             try {
-                const sphere   = document.querySelector(`.sphere[data-note="${n}"]`);
-                const whiteKey = document.querySelector(`.white-key[data-note="${n}"]`);
-                const blackKey = document.querySelector(`.black-key[data-note="${n}"]`);
-                const fretCells  = document.querySelectorAll(`.fb-cell[data-note="${n}"]`);
-                const strLabels  = document.querySelectorAll(`.fb-str-label-cell[data-note="${n}"]`);
+                const sphere     = document.querySelector(`.sphere[data-note="${n}"]`);
+                const whiteKey   = document.querySelector(`.white-key[data-note="${n}"]`);
+                const blackKey   = document.querySelector(`.black-key[data-note="${n}"]`);
+                const guitarDots = document.querySelectorAll('.note-dot');
+                const stringLabels = document.querySelectorAll(`.string-label[data-note="${n}"]`);
 
                 if (on) {
                     if (sphere) { sphere.classList.add('playing'); sphere.style.borderColor='#fff'; sphere.style.borderWidth='5px'; sphere.style.boxShadow=`0 0 35px ${colors[n]}, 0 0 60px ${colors[n]}`; }
-                    if (whiteKey) { whiteKey.classList.add('playing'); whiteKey.style.boxShadow=`0 0 22px ${colors[n]}, inset 0 4px 8px rgba(0,0,0,0.2)`; }
-                    if (blackKey) { blackKey.classList.add('playing'); blackKey.style.boxShadow=`0 0 24px ${colors[n]}, inset 0 3px 6px rgba(0,0,0,0.7)`; }
-                    fretCells.forEach(cell => {
-                        cell.classList.add('fb-on'); cell.classList.remove('fb-off');
-                        const dot = cell.querySelector('.fb-dot');
-                        if (dot) { dot.style.borderColor='#fff'; dot.style.borderWidth='3px'; dot.style.boxShadow=`0 0 20px ${colors[n]}, 0 0 35px ${colors[n]}`; }
+                    if (whiteKey) { whiteKey.classList.add('playing'); whiteKey.style.background=colors[n]; whiteKey.style.boxShadow=`0 0 20px ${colors[n]}, inset 0 4px 8px rgba(0,0,0,0.3)`; }
+                    if (blackKey) { blackKey.classList.add('playing'); blackKey.style.background=colors[n]; blackKey.style.boxShadow=`0 0 20px ${colors[n]}, inset 0 4px 8px rgba(0,0,0,0.7)`; }
+                    guitarDots.forEach(dot => {
+                        if (dot.textContent.trim() === noteNamesSharp[n]) {
+                            dot.classList.add('playing'); dot.style.borderColor='#fff'; dot.style.borderWidth='4px';
+                            dot.style.boxShadow=`0 0 25px ${colors[n]}, 0 0 40px ${colors[n]}`; dot.style.transform='translate(-15px,-15px) scale(1.5)';
+                        }
                     });
-                    strLabels.forEach(l => { l.classList.add('fb-lit'); l.style.color=colors[n]; l.style.textShadow=`0 0 20px ${colors[n]}, 1px 1px 3px rgba(0,0,0,0.9)`; });
+                    stringLabels.forEach(l => { l.style.color=colors[n]; l.style.textShadow=`0 0 20px ${colors[n]}, 2px 2px 4px rgba(0,0,0,0.8)`; l.style.transform='scale(1.5)'; });
                 } else {
                     if (sphere) { sphere.classList.remove('playing'); sphere.style.borderColor=''; sphere.style.borderWidth=''; sphere.style.boxShadow=''; }
-                    if (whiteKey) { whiteKey.classList.remove('playing'); whiteKey.style.boxShadow=''; }
-                    if (blackKey) { blackKey.classList.remove('playing'); blackKey.style.boxShadow=''; }
-                    fretCells.forEach(cell => {
-                        const dot = cell.querySelector('.fb-dot');
-                        if (dot) { dot.style.borderColor=''; dot.style.borderWidth=''; dot.style.boxShadow=''; }
-                    });
-                    strLabels.forEach(l => { l.classList.remove('fb-lit'); l.style.color=''; l.style.textShadow=''; });
-                    updateGuitarDisplay();
+                    if (whiteKey) { whiteKey.classList.remove('playing'); whiteKey.style.background=''; whiteKey.style.boxShadow=''; }
+                    if (blackKey) { blackKey.classList.remove('playing'); blackKey.style.background=''; blackKey.style.boxShadow=''; }
+                    guitarDots.forEach(dot => { dot.classList.remove('playing'); dot.style.borderColor=''; dot.style.borderWidth=''; dot.style.boxShadow=''; dot.style.transform=''; });
+                    stringLabels.forEach(l => { l.style.color=''; l.style.textShadow=''; l.style.transform=''; });
                 }
             } catch(e) { console.error('Highlight note error:', e); }
         }
@@ -1885,92 +1690,91 @@ window.addEventListener('unhandledrejection', function(event) {
             } catch(e) {}
         }
 
-        function drawStaff(svg, notes, viewW) {
-            if (!svg) return;
-            svg.innerHTML = '';
-            const W = viewW || 500;
-            for (let i = 0; i < 5; i++) {
-                const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-                line.setAttribute('x1','15'); line.setAttribute('y1',20+i*10); line.setAttribute('x2',W-10); line.setAttribute('y2',20+i*10);
-                line.setAttribute('stroke','#000'); line.setAttribute('stroke-width','1.2'); svg.appendChild(line);
-            }
-            const clef = document.createElementNS('http://www.w3.org/2000/svg','text');
-            clef.setAttribute('x','18'); clef.setAttribute('y','50'); clef.setAttribute('font-size','40'); clef.setAttribute('font-family','serif');
-            clef.textContent = '𝄞'; clef.setAttribute('fill','#000'); svg.appendChild(clef);
-            const keySig = keySignatures[rootNote];
-            let sigX = 48;
-            if (keySig.sharps > 0) {
-                const sharpPos = [20,35,15,50,25,60,40];
-                for (let i = 0; i < keySig.sharps; i++) {
-                    const sharp = document.createElementNS('http://www.w3.org/2000/svg','text');
-                    sharp.setAttribute('x',sigX); sharp.setAttribute('y',sharpPos[i]); sharp.setAttribute('font-size','22'); sharp.setAttribute('font-weight','bold'); sharp.setAttribute('font-family','serif');
-                    sharp.textContent = '♯'; sharp.setAttribute('fill','#000'); svg.appendChild(sharp);
-                    if (i===2){const led=document.createElementNS('http://www.w3.org/2000/svg','line');led.setAttribute('x1',sigX-5);led.setAttribute('y1','15');led.setAttribute('x2',sigX+10);led.setAttribute('y2','15');led.setAttribute('stroke','#000');led.setAttribute('stroke-width','1');svg.appendChild(led);}
-                    sigX += 10;
-                }
-            } else if (keySig.flats > 0) {
-                const flatPos = [40,55,45,50,30,35,25];
-                for (let i = 0; i < keySig.flats; i++) {
-                    const flat = document.createElementNS('http://www.w3.org/2000/svg','text');
-                    flat.setAttribute('x',sigX); flat.setAttribute('y',flatPos[i]); flat.setAttribute('font-size','22'); flat.setAttribute('font-weight','bold'); flat.setAttribute('font-family','serif');
-                    flat.textContent = '♭'; flat.setAttribute('fill','#000'); svg.appendChild(flat); sigX += 10;
-                }
-            }
-            const pos = {0:70,1:68,2:65,3:62,4:60,5:55,6:52,7:50,8:47,9:45,10:42,11:40};
-            const sortedNotes = Array.from(new Set(notes)).sort((a,b)=>a-b);
-            if (sortedNotes.length === 0) return;
-            let x = Math.max(70, sigX+12);
-            const available = W - x - 20;
-            const noteSpacing = Math.min(28, available / (sortedNotes.length||1));
-            sortedNotes.forEach(n => {
-                const y = pos[n];
-                if (y===70){const led=document.createElementNS('http://www.w3.org/2000/svg','line');led.setAttribute('x1',x-8);led.setAttribute('y1','70');led.setAttribute('x2',x+8);led.setAttribute('y2','70');led.setAttribute('stroke','#000');led.setAttribute('stroke-width','1.2');svg.appendChild(led);}
-                const nh = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-                nh.setAttribute('cx',x); nh.setAttribute('cy',y); nh.setAttribute('rx','6'); nh.setAttribute('ry','5');
-                nh.setAttribute('fill',colors[n]); nh.setAttribute('stroke','#000'); nh.setAttribute('stroke-width','1'); svg.appendChild(nh);
-                const stem = document.createElementNS('http://www.w3.org/2000/svg','line');
-                if(y>42){stem.setAttribute('x1',x+5.5);stem.setAttribute('y1',y);stem.setAttribute('x2',x+5.5);stem.setAttribute('y2',y-28);}
-                else{stem.setAttribute('x1',x-5.5);stem.setAttribute('y1',y);stem.setAttribute('x2',x-5.5);stem.setAttribute('y2',y+28);}
-                stem.setAttribute('stroke','#000'); stem.setAttribute('stroke-width','1.8'); svg.appendChild(stem);
-                const lbl = document.createElementNS('http://www.w3.org/2000/svg','text');
-                lbl.setAttribute('x',x); lbl.setAttribute('y','85'); lbl.setAttribute('font-size','10'); lbl.setAttribute('font-weight','bold');
-                lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('fill','#000'); lbl.textContent = getNoteName(n); svg.appendChild(lbl);
-                x += noteSpacing;
-            });
-            if (sortedNotes.length >= 1) {
-                const tbg = document.createElementNS('http://www.w3.org/2000/svg','rect');
-                tbg.setAttribute('x','50'); tbg.setAttribute('y','100'); tbg.setAttribute('width','160'); tbg.setAttribute('height','22');
-                tbg.setAttribute('fill','rgba(0,128,128,0.15)'); tbg.setAttribute('rx','3'); svg.appendChild(tbg);
-                const title = document.createElementNS('http://www.w3.org/2000/svg','text');
-                title.setAttribute('x','130'); title.setAttribute('y','113'); title.setAttribute('font-size','11'); title.setAttribute('font-weight','bold');
-                title.setAttribute('text-anchor','middle'); title.setAttribute('fill','#2c3e50');
-                let tt = '';
-                if(currentLevel==='1') tt=getRootName();
-                else if(currentLevel==='2'&&sortedNotes.length===2){const int=(sortedNotes[1]-sortedNotes[0]+12)%12;tt=intervalNames[int];}
-                else if(currentLevel==='3') tt=`${getRootName()} ${currentTriadSelection}`;
-                else if(currentLevel==='4') tt=`${getRootName()} ${currentExtendedSelection}`;
-                else if(currentLevel==='5') tt=`${getRootName()} Pentatonic`;
-                else if(currentLevel==='7') tt=`${getRootName()} Major`;
-                else if(currentLevel==='minor') tt=`${getRootName()} ${currentMinorType}`;
-                else if(currentLevel==='modes') tt=`${getRootName()} ${currentModeSelection}`;
-                else if(currentLevel==='harmMajor'){const cd=currentHarmChordType==='7th'?harmonizedMajor7ths[currentHarmDegree]:harmonizedMajorTriads[currentHarmDegree];tt=`${cd.name} ${cd.quality}`;}
-                else if(currentLevel==='harmMinor'){const cd=currentHarmChordType==='7th'?harmonizedMinor7ths[currentHarmDegree]:harmonizedMinorTriads[currentHarmDegree];tt=`${cd.name} ${cd.quality}`;}
-                else if(currentLevel==='freeplay') tt='Free Play';
-                title.textContent=tt; svg.appendChild(title);
-                const ki=document.createElementNS('http://www.w3.org/2000/svg','text');
-                ki.setAttribute('x','130');ki.setAttribute('y','121');ki.setAttribute('font-size','8');ki.setAttribute('text-anchor','middle');ki.setAttribute('fill','#555');
-                ki.textContent=`Key: ${keySig.name}`; svg.appendChild(ki);
-            }
-        }
-
         function updateStaffNotation(notes) {
             try {
                 const svg = document.getElementById('staffSVG');
                 if (!svg) return;
-                drawStaff(svg, notes, 220);
-                // Also update guitar staff if present
-                const fbSVG = document.getElementById('fbStaffSVG');
-                if (fbSVG) drawStaff(fbSVG, notes, 500);
+                svg.innerHTML = '';
+                for (let i = 0; i < 5; i++) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+                    line.setAttribute('x1','15'); line.setAttribute('y1',20+i*10); line.setAttribute('x2','205'); line.setAttribute('y2',20+i*10);
+                    line.setAttribute('stroke','#000'); line.setAttribute('stroke-width','1.2'); svg.appendChild(line);
+                }
+                const clef = document.createElementNS('http://www.w3.org/2000/svg','text');
+                clef.setAttribute('x','18'); clef.setAttribute('y','50'); clef.setAttribute('font-size','40'); clef.setAttribute('font-family','serif');
+                clef.textContent = '𝄞'; clef.setAttribute('fill','#000'); svg.appendChild(clef);
+
+                const keySig = keySignatures[rootNote];
+                let sigX = 48;
+                if (keySig.sharps > 0) {
+                    const sharpPos = [20,35,15,50,25,60,40];
+                    for (let i = 0; i < keySig.sharps; i++) {
+                        const sharp = document.createElementNS('http://www.w3.org/2000/svg','text');
+                        sharp.setAttribute('x',sigX); sharp.setAttribute('y',sharpPos[i]); sharp.setAttribute('font-size','22'); sharp.setAttribute('font-weight','bold'); sharp.setAttribute('font-family','serif');
+                        sharp.textContent = '♯'; sharp.setAttribute('fill','#000'); svg.appendChild(sharp);
+                        if (i === 2) { const led = document.createElementNS('http://www.w3.org/2000/svg','line'); led.setAttribute('x1',sigX-5); led.setAttribute('y1','15'); led.setAttribute('x2',sigX+10); led.setAttribute('y2','15'); led.setAttribute('stroke','#000'); led.setAttribute('stroke-width','1'); svg.appendChild(led); }
+                        sigX += 10;
+                    }
+                } else if (keySig.flats > 0) {
+                    const flatPos = [40,55,45,50,30,35,25];
+                    for (let i = 0; i < keySig.flats; i++) {
+                        const flat = document.createElementNS('http://www.w3.org/2000/svg','text');
+                        flat.setAttribute('x',sigX); flat.setAttribute('y',flatPos[i]); flat.setAttribute('font-size','22'); flat.setAttribute('font-weight','bold'); flat.setAttribute('font-family','serif');
+                        flat.textContent = '♭'; flat.setAttribute('fill','#000'); svg.appendChild(flat); sigX += 10;
+                    }
+                }
+
+                const pos = {0:70,1:68,2:65,3:62,4:60,5:55,6:52,7:50,8:47,9:45,10:42,11:40};
+                const sortedNotes = Array.from(new Set(notes)).sort((a,b)=>a-b);
+                if (sortedNotes.length === 0) return;
+                let x = Math.max(70, sigX + 12);
+                const noteSpacing = Math.min(22, 140 / (sortedNotes.length || 1));
+
+                sortedNotes.forEach(n => {
+                    const y = pos[n];
+                    if (y === 70) {
+                        const led = document.createElementNS('http://www.w3.org/2000/svg','line');
+                        led.setAttribute('x1',x-8); led.setAttribute('y1','70'); led.setAttribute('x2',x+8); led.setAttribute('y2','70');
+                        led.setAttribute('stroke','#000'); led.setAttribute('stroke-width','1.2'); svg.appendChild(led);
+                    }
+                    const nh = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+                    nh.setAttribute('cx',x); nh.setAttribute('cy',y); nh.setAttribute('rx','6'); nh.setAttribute('ry','5');
+                    nh.setAttribute('fill',colors[n]); nh.setAttribute('stroke','#000'); nh.setAttribute('stroke-width','1'); svg.appendChild(nh);
+                    const stem = document.createElementNS('http://www.w3.org/2000/svg','line');
+                    if (y > 42) { stem.setAttribute('x1',x+5.5); stem.setAttribute('y1',y); stem.setAttribute('x2',x+5.5); stem.setAttribute('y2',y-28); }
+                    else { stem.setAttribute('x1',x-5.5); stem.setAttribute('y1',y); stem.setAttribute('x2',x-5.5); stem.setAttribute('y2',y+28); }
+                    stem.setAttribute('stroke','#000'); stem.setAttribute('stroke-width','1.8'); svg.appendChild(stem);
+                    const lbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+                    lbl.setAttribute('x',x); lbl.setAttribute('y','85'); lbl.setAttribute('font-size','10'); lbl.setAttribute('font-weight','bold');
+                    lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('fill','#000'); lbl.textContent = getNoteName(n); svg.appendChild(lbl);
+                    x += noteSpacing;
+                });
+
+                if (sortedNotes.length >= 1) {
+                    const tbg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+                    tbg.setAttribute('x','50'); tbg.setAttribute('y','100'); tbg.setAttribute('width','120'); tbg.setAttribute('height','28');
+                    tbg.setAttribute('fill','rgba(0,128,128,0.15)'); tbg.setAttribute('rx','3'); svg.appendChild(tbg);
+                    const title = document.createElementNS('http://www.w3.org/2000/svg','text');
+                    title.setAttribute('x','110'); title.setAttribute('y','113'); title.setAttribute('font-size','11'); title.setAttribute('font-weight','bold');
+                    title.setAttribute('text-anchor','middle'); title.setAttribute('fill','#2c3e50');
+                    let titleText = '';
+                    if (currentLevel === '1') titleText = getRootName();
+                    else if (currentLevel === '2' && sortedNotes.length === 2) { const int = (sortedNotes[1]-sortedNotes[0]+12)%12; titleText = intervalNames[int]; }
+                    else if (currentLevel === '3') titleText = `${getRootName()} ${currentTriadSelection}`;
+                    else if (currentLevel === '4') titleText = `${getRootName()} ${currentExtendedSelection}`;
+                    else if (currentLevel === '5') titleText = `${getRootName()} Pentatonic`;
+                    else if (currentLevel === '7') titleText = `${getRootName()} Major`;
+                    else if (currentLevel === 'minor') titleText = `${getRootName()} ${currentMinorType}`;
+                    else if (currentLevel === 'modes') titleText = `${getRootName()} ${currentModeSelection}`;
+                    else if (currentLevel === 'harmMajor') { const cd = currentHarmChordType==='7th'?harmonizedMajor7ths[currentHarmDegree]:harmonizedMajorTriads[currentHarmDegree]; titleText = `${cd.name} ${cd.quality}`; }
+                    else if (currentLevel === 'harmMinor') { const cd = currentHarmChordType==='7th'?harmonizedMinor7ths[currentHarmDegree]:harmonizedMinorTriads[currentHarmDegree]; titleText = `${cd.name} ${cd.quality}`; }
+                    else if (currentLevel === 'freeplay') titleText = 'Free Play';
+                    title.textContent = titleText; svg.appendChild(title);
+                    const keyInfo = document.createElementNS('http://www.w3.org/2000/svg','text');
+                    keyInfo.setAttribute('x','110'); keyInfo.setAttribute('y','123'); keyInfo.setAttribute('font-size','8');
+                    keyInfo.setAttribute('text-anchor','middle'); keyInfo.setAttribute('fill','#555');
+                    keyInfo.textContent = `Key: ${keySig.name}`; svg.appendChild(keyInfo);
+                }
             } catch(e) { console.error('Staff notation error:', e); }
         }
 
@@ -2132,42 +1936,30 @@ window.addEventListener('unhandledrejection', function(event) {
         function updatePianoDisplay() {
             document.querySelectorAll('.white-key,.black-key').forEach(key => {
                 const n = parseInt(key.dataset.note);
-                const isWhite = key.classList.contains('white-key');
-                if (selectedNotes.has(n)) {
-                    key.style.borderColor = colors[n];
-                    key.style.borderWidth = '3px';
-                    key.style.boxShadow = `0 0 10px ${colors[n]}`;
-                } else {
-                    key.style.borderColor = isWhite ? '#444' : '#000';
-                    key.style.borderWidth = '1.5px';
-                    key.style.boxShadow = '';
-                }
+                if (selectedNotes.has(n)) { key.style.borderColor=colors[n]; key.style.borderWidth='4px'; key.style.boxShadow=`0 0 10px ${colors[n]}`; }
+                else { key.style.borderColor=key.classList.contains('white-key')?'#333':'#000'; key.style.borderWidth='2px'; key.style.boxShadow=''; }
             });
         }
 
         function updateGuitarDisplay() {
-            // Fret cells
-            document.querySelectorAll('.fb-cell').forEach(cell => {
-                const n = parseInt(cell.dataset.note);
-                if (isNaN(n)) return;
-                if (selectedNotes.has(n)) { cell.classList.add('fb-on'); cell.classList.remove('fb-off'); }
-                else                      { cell.classList.remove('fb-on'); cell.classList.add('fb-off'); }
+            document.querySelectorAll('.note-dot').forEach(dot => {
+                const n = noteNamesSharp.indexOf(dot.textContent.trim());
+                if (n !== -1 && selectedNotes.has(n)) {
+                    dot.style.opacity='1'; dot.style.transform='translate(-15px,-15px) scale(1.15)';
+                    dot.style.borderWidth='3px'; dot.style.boxShadow=`0 0 12px ${colors[n]}`; dot.style.filter='none';
+                } else {
+                    dot.style.opacity='0.15'; dot.style.transform='translate(-15px,-15px) scale(0.7)';
+                    dot.style.borderWidth='1px'; dot.style.boxShadow='none'; dot.style.filter='grayscale(100%)';
+                }
             });
             updateStringLabels();
         }
 
         function updateStringLabels() {
-            document.querySelectorAll('.fb-str-label-cell').forEach(lbl => {
-                const n = parseInt(lbl.dataset.note);
-                if (selectedNotes.has(n)) {
-                    lbl.classList.add('fb-lit');
-                    lbl.style.color = colors[n];
-                    lbl.style.textShadow = `0 0 16px ${colors[n]}, 1px 1px 3px rgba(0,0,0,0.9)`;
-                } else {
-                    lbl.classList.remove('fb-lit');
-                    lbl.style.color = '';
-                    lbl.style.textShadow = '';
-                }
+            document.querySelectorAll('.string-label').forEach(label => {
+                const n = parseInt(label.dataset.note);
+                if (selectedNotes.has(n)) { label.style.color=colors[n]; label.style.textShadow=`0 0 10px ${colors[n]}, 2px 2px 4px rgba(0,0,0,0.8)`; label.style.transform='scale(1.3)'; label.style.opacity='1'; }
+                else { label.style.color='rgba(255,255,255,0.2)'; label.style.textShadow='2px 2px 4px rgba(0,0,0,0.8)'; label.style.transform='scale(1)'; label.style.opacity='0.3'; }
             });
         }
 
