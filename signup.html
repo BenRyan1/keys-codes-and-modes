@@ -52,9 +52,52 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#008080">
-    <title>Start Your Journey | Keys, Codes & Modes</title>
-    <meta name="description" content="Create your Keys, Codes & Modes account and unlock the world's most interactive music theory learning platform.">
+    <title>Start Your Free Musical Journey | Keys, Codes & Modes</title>
+    <meta name="description" content="Sign up free for Keys, Codes & Modes — the world's most interactive visual music theory platform. Choose 3 apps instantly. No credit card required.">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="author" content="Benjamin Ryan">
+    <link rel="canonical" href="https://keyscodesandmodes.com/apps/signup.html">
+
+    <!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Keys, Codes & Modes">
+    <meta property="og:title" content="Start Your Free Musical Journey | Keys, Codes & Modes">
+    <meta property="og:description" content="Sign up free and choose any 3 interactive music theory apps from our premium suite. Visual learning that actually works.">
+    <meta property="og:url" content="https://keyscodesandmodes.com/apps/signup.html">
+    <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@keyscodesmodes">
+    <meta name="twitter:creator" content="@keyscodesmodes">
+    <meta name="twitter:title" content="Start Your Free Musical Journey | Keys, Codes & Modes">
+    <meta name="twitter:description" content="Sign up free and choose any 3 interactive music theory apps. Visual learning that actually works.">
+    <meta name="twitter:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Sign Up — Keys, Codes & Modes",
+      "description": "Sign up free for Keys, Codes & Modes interactive music theory platform.",
+      "url": "https://keyscodesandmodes.com/apps/signup.html",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Keys, Codes & Modes",
+        "url": "https://keyscodesandmodes.com"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Benjamin Ryan",
+        "jobTitle": "Music Educator, Inventor",
+        "address": { "@type": "PostalAddress", "addressLocality": "Santa Barbara", "addressRegion": "CA" }
+      }
+    }
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,6 +135,19 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         
         .skip-link:focus {
             top: 0;
+        }
+        
+        /* Screen reader only — visually hidden but accessible */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
         }
         
         body {
@@ -292,7 +348,13 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         }
         
         input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.65); /* WCAG AA compliant on dark bg */
+        }
+        
+        /* High-visibility focus for keyboard navigation (WCAG 2.4.7) */
+        :focus-visible {
+            outline: 3px solid var(--primary-gold);
+            outline-offset: 3px;
         }
         
         .submit-btn {
@@ -326,7 +388,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             text-align: center;
             margin-top: 1.5rem;
             font-size: 0.9rem;
-            color: #999;
+            color: #b0b0b0; /* Improved contrast ratio for WCAG AA */
         }
         
         .privacy-note a {
@@ -388,9 +450,9 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     
     <a href="#main" class="skip-link">Skip to main content</a>
     
-    <header>
+    <header role="banner">
         <div class="header-content">
-            <a href="../index.html" class="logo-container">
+            <a href="../index.html" class="logo-container" aria-label="Keys, Codes & Modes — return to home page">
                 <div class="logo-text">
                     <h1>Keys, Codes & Modes</h1>
                 </div>
@@ -399,14 +461,14 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         </div>
     </header>
     
-    <main id="main">
+    <main id="main" role="main" aria-label="Free signup form">
         <div class="signup-container">
             <div class="signup-header">
                 <h2>Start Your Musical Journey</h2>
                 <p>Join thousands of musicians mastering theory through visual, interactive learning</p>
             </div>
             
-            <div class="benefits">
+            <div class="benefits" role="region" aria-label="What you get with free access">
                 <h3>What You Get (FREE):</h3>
                 <ul>
                     <li>Choose ANY 3 interactive apps from our premium suite</li>
@@ -418,42 +480,57 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </div>
             
             <!-- MAILERLITE FORM (via Cloudflare Worker) -->
-            <form class="signup-form" id="signupForm">
+            <form class="signup-form" id="signupForm" novalidate aria-label="Free account signup">
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
+                    <label for="firstName">First Name <span aria-hidden="true">*</span></label>
                     <input 
                         type="text" 
                         id="firstName" 
                         name="firstName"
-                        placeholder="Enter your first name" 
+                        placeholder="Enter your first name"
+                        autocomplete="given-name"
+                        aria-required="true"
+                        aria-describedby="firstName-hint"
                         required>
+                    <span id="firstName-hint" class="sr-only">Required. Enter your first name.</span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Email Address <span aria-hidden="true">*</span></label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email"
-                        placeholder="you@example.com" 
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        aria-required="true"
+                        aria-describedby="email-hint"
                         required>
+                    <span id="email-hint" class="sr-only">Required. Enter a valid email address. You can unsubscribe at any time.</span>
                 </div>
                 
-                <button type="submit" class="submit-btn" id="submitBtn">
+                <button type="submit" class="submit-btn" id="submitBtn" aria-live="polite">
                     Get Free Access Now →
                 </button>
                 
-                <div id="formStatus"></div>
+                <div id="formStatus" role="alert" aria-live="assertive" aria-atomic="true"></div>
             </form>
             
             <div class="privacy-note">
-                <p>We respect your privacy. No spam, ever. 
-                   <a href="../terms.html">Terms</a> | <a href="../privacy-policy.html">Privacy Policy</a>
+                <p>We respect your privacy. No spam, ever. Unsubscribe anytime.
+                   <a href="../terms.html">Terms of Service</a> | <a href="../privacy-policy.html">Privacy Policy</a>
+                </p>
+                <!-- CAN-SPAM / CASL / GDPR compliance notice -->
+                <p style="font-size:0.8rem; margin-top:0.5rem; color:#999;">
+                    By signing up you agree to receive email communications from Keys, Codes &amp; Modes.
+                    You may withdraw consent at any time via the unsubscribe link in any email.
+                    We process data per our <a href="../privacy-policy.html" style="color:var(--primary-teal);">Privacy Policy</a>.
+                    Keys, Codes &amp; Modes · 1187 Coast Village Rd #110 · Santa Barbara, CA 93108
                 </p>
             </div>
             
-            <div class="social-proof">
-                <p>🎵 Join 10,000+ musicians already learning visually</p>
+            <div class="social-proof" aria-label="Social proof">
+                <p>🎵 Join musicians already learning visually</p>
             </div>
         </div>
     </main>

@@ -75,13 +75,103 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+function trackEvent(n,p){if(typeof gtag==='function')gtag('event',n,p);}
 </script>
+
+    <style>
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+        /* Skip link for keyboard navigation */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #F4D03F;
+            color: #0a0a15;
+            padding: 8px 16px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 10000;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .skip-link:focus { top: 0; }
+        /* High-visibility keyboard focus */
+        :focus-visible {
+            outline: 3px solid #F4D03F;
+            outline-offset: 3px;
+        }
+    </style>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | Keys, Codes & Modes</title>
-    <meta name="description" content="Get in touch with Benjamin Ryan about Keys, Codes & Modes music theory platform or the FreeStyle Musical Device.">
+    <title>Contact Benjamin Ryan | Keys, Codes & Modes | Music Theory & FreeStyle® Device</title>
+    <meta name="description" content="Contact Benjamin Ryan — music educator, inventor of the FreeStyle® Musical Device, and creator of Keys, Codes & Modes. Reach out about music education, partnerships, or the FreeStyle® guitar.">
+    <meta name="author" content="Benjamin Ryan">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://keyscodesandmodes.com/contact.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Keys, Codes & Modes">
+    <meta property="og:title" content="Contact | Keys, Codes & Modes">
+    <meta property="og:description" content="Get in touch with Benjamin Ryan about music education, the FreeStyle® Musical Device, partnerships, or Keys, Codes & Modes.">
+    <meta property="og:url" content="https://keyscodesandmodes.com/contact.html">
+    <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@keyscodesmodes">
+    <meta name="twitter:creator" content="@keyscodesmodes">
+    <meta name="twitter:title" content="Contact | Keys, Codes & Modes">
+    <meta name="twitter:description" content="Get in touch with Benjamin Ryan about music education, the FreeStyle® Musical Device, or Keys, Codes & Modes.">
+    <meta name="twitter:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact — Keys, Codes & Modes",
+      "description": "Contact Benjamin Ryan about music education, the FreeStyle® Musical Device, or Keys, Codes & Modes.",
+      "url": "https://keyscodesandmodes.com/contact.html",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Keys, Codes & Modes",
+        "url": "https://keyscodesandmodes.com"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Benjamin Ryan",
+        "jobTitle": "Music Educator, Inventor, Author",
+        "sameAs": [
+          "https://www.instagram.com/keyscodesandmodes",
+          "https://www.linkedin.com/in/ben-ryan-guitar-freestyle/",
+          "https://x.com/keyscodesmodes"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1187 Coast Village Rd #110",
+          "addressLocality": "Santa Barbara",
+          "addressRegion": "CA",
+          "postalCode": "93108",
+          "addressCountry": "US"
+        }
+      }
+    }
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -366,23 +456,24 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </style>
 </head>
 <body>
-    <header>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header role="banner">
         <div class="header-content">
             <div class="logo-text">
                 <h1>KEYS, CODES & MODES</h1>
             </div>
-            <nav>
+            <nav role="navigation" aria-label="Main navigation">
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="insights.html">All Apps</a></li>
                     <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="contact.html" aria-current="page">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     
-    <div class="container">
+    <div class="container" id="main-content" role="main">
         <h1 class="page-title">Get In Touch</h1>
         <p class="subtitle">Questions about Keys, Codes & Modes or the FreeStyle® Musical Device? Let's connect!</p>
         
@@ -396,18 +487,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                         Click to reveal email
                     </a>
                 </p>
-                <script>
-                function revealEmail(event) {
-                    event.preventDefault();
-                    var user = 'ben.ryan';
-                    var domain = 'att.net';
-                    var email = user + '@' + domain;
-                    var link = document.getElementById('emailLink');
-                    link.href = 'mailto:' + email;
-                    link.textContent = email;
-                    link.onclick = null;
-                }
-                </script>
+
             </div>
             
             <div class="contact-card">
@@ -469,10 +549,10 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             <h2>Send Me a Message</h2>
             <p style="margin-bottom: 2rem;">Fill out the form below and I'll get back to you as soon as possible.</p>
             
-            <form id="contactForm" onsubmit="handleContactSubmit(event)" style="max-width: 700px; margin: 0 auto;">
+            <form id="contactForm" onsubmit="handleContactSubmit(event)" style="max-width: 700px; margin: 0 auto;" novalidate aria-label="Send a message to Benjamin Ryan">
                 <div style="margin-bottom: 1.5rem;">
                     <label for="contactName" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
-                        Your Name <span style="color: #ff0000;">*</span>
+                        Your Name <span aria-hidden="true" style="color: #ff6b6b;">*</span>
                     </label>
                     <input 
                         type="text" 
@@ -480,14 +560,18 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                         name="name" 
                         placeholder="John Doe" 
                         required
+                        autocomplete="name"
+                        aria-required="true"
+                        aria-describedby="name-hint"
                         style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
                         onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
                         onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'">
+                    <span id="name-hint" class="sr-only">Required. Enter your full name.</span>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
                     <label for="contactEmail" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
-                        Your Email <span style="color: #ff0000;">*</span>
+                        Your Email <span aria-hidden="true" style="color: #ff6b6b;">*</span>
                     </label>
                     <input 
                         type="email" 
@@ -495,36 +579,43 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                         name="email" 
                         placeholder="you@example.com" 
                         required
+                        autocomplete="email"
+                        aria-required="true"
+                        aria-describedby="email-contact-hint"
                         style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
                         onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
                         onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'">
+                    <span id="email-contact-hint" class="sr-only">Required. Enter a valid email address so Benjamin can reply to you.</span>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
                     <label for="contactSubject" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
-                        Subject <span style="color: #ff0000;">*</span>
+                        Subject <span aria-hidden="true" style="color: #ff6b6b;">*</span>
                     </label>
                     <select 
                         id="contactSubject" 
                         name="subject" 
                         required
+                        aria-required="true"
+                        aria-describedby="subject-hint"
                         style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
                         onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
                         onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'">
                         <option value="" style="background: #1a1a2e; color: white;">-- Select a subject --</option>
-                        <option value="general" style="background: #1a1a2e; color: white;">General Inquiry</option>
-                        <option value="theory" style="background: #1a1a2e; color: white;">Music Theory Question</option>
-                        <option value="freestyle" style="background: #1a1a2e; color: white;">FreeStyle® Device</option>
-                        <option value="collaboration" style="background: #1a1a2e; color: white;">Collaboration Opportunity</option>
-                        <option value="education" style="background: #1a1a2e; color: white;">Educational Partnership</option>
-                        <option value="technical" style="background: #1a1a2e; color: white;">Technical Support</option>
-                        <option value="other" style="background: #1a1a2e; color: white;">Other</option>
+                        <option value="General Inquiry" style="background: #1a1a2e; color: white;">General Inquiry</option>
+                        <option value="Music Theory Question" style="background: #1a1a2e; color: white;">Music Theory Question</option>
+                        <option value="FreeStyle Device" style="background: #1a1a2e; color: white;">FreeStyle® Device</option>
+                        <option value="Collaboration Opportunity" style="background: #1a1a2e; color: white;">Collaboration Opportunity</option>
+                        <option value="Educational Partnership" style="background: #1a1a2e; color: white;">Educational Partnership</option>
+                        <option value="Technical Support" style="background: #1a1a2e; color: white;">Technical Support</option>
+                        <option value="Other" style="background: #1a1a2e; color: white;">Other</option>
                     </select>
+                    <span id="subject-hint" class="sr-only">Required. Choose the topic that best describes your inquiry.</span>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
                     <label for="contactMessage" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #E8E8E8;">
-                        Your Message <span style="color: #ff0000;">*</span>
+                        Your Message <span aria-hidden="true" style="color: #ff6b6b;">*</span>
                     </label>
                     <textarea 
                         id="contactMessage" 
@@ -532,22 +623,30 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                         rows="6" 
                         placeholder="Tell me what you'd like to discuss..." 
                         required
+                        aria-required="true"
+                        aria-describedby="message-hint"
                         style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(0, 128, 128, 0.3); border-radius: 8px; color: white; font-size: 1rem; resize: vertical; font-family: 'Montserrat', sans-serif; transition: all 0.3s;"
                         onfocus="this.style.borderColor='#008080'; this.style.background='rgba(255, 255, 255, 0.15)'"
                         onblur="this.style.borderColor='rgba(0, 128, 128, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'"></textarea>
+                    <span id="message-hint" class="sr-only">Required. Describe your question or topic in as much detail as you like.</span>
                 </div>
                 
                 <button 
                     type="submit" 
+                    id="contactSubmitBtn"
+                    aria-label="Send your message to Benjamin Ryan"
                     style="width: 100%; padding: 1.25rem; background: linear-gradient(135deg, #F4D03F, #e6c62f); color: #1a1a2e; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4); font-family: 'Montserrat', sans-serif;"
                     onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(244, 208, 63, 0.6)'"
                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 25px rgba(244, 208, 63, 0.4)'">
                     Send Message →
                 </button>
+
+                <!-- Live region for success/error feedback -->
+                <div id="contactFeedback" role="alert" aria-live="assertive" aria-atomic="true" style="display:none; margin-top:1rem; padding:1rem; border-radius:8px; text-align:center; font-weight:600;"></div>
             </form>
             
-            <p style="margin-top: 1.5rem; text-align: center; color: #999; font-size: 0.9rem;">
-                * Required fields
+            <p style="margin-top: 1.5rem; text-align: center; color: #b0b0b0; font-size: 0.85rem;">
+                <span aria-hidden="true" style="color:#ff6b6b;">*</span> Required fields
             </p>
         </div>
         
@@ -563,111 +662,80 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         </div>
     </div>
     
-    <footer>
+    <footer role="contentinfo">
         <p>© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved</p>
-        <p>Santa Barbara, California</p>
-        <p style="font-size: 0.9rem; margin-top: 10px; color: rgba(232, 232, 232, 0.6);">
-            Inventor, Author, Educator
+        <p>1187 Coast Village Rd #110 · Santa Barbara, CA 93108</p>
+        <p style="font-size: 0.9rem; margin-top: 10px; color: rgba(232,232,232,0.6);">Inventor, Author, Educator</p>
+        <p style="font-size: 0.8rem; margin-top: 8px; color: rgba(232,232,232,0.5);">
+            FreeStyle® is a registered trademark. U.S. Patents. |
+            <a href="privacy-policy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Service</a>
         </p>
     </footer>
     
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
+    function revealEmail(event) {
+        event.preventDefault();
+        var link = document.getElementById('emailLink');
+        var email = 'ben.ryan' + '@' + 'att.net';
+        link.href = 'mailto:' + email;
+        link.textContent = email;
+        link.onclick = null;
+    }
+
     function handleContactSubmit(event) {
         event.preventDefault();
-        
-        // Get form data
-        const formData = {
-            name: document.getElementById('contactName').value,
-            email: document.getElementById('contactEmail').value,
-            subject: document.getElementById('contactSubject').value,
-            message: document.getElementById('contactMessage').value,
-            timestamp: new Date().toISOString()
-        };
-        
-        // Log to console (for testing/debugging)
-        console.log('Contact Form Submission:', formData);
-        
-        // TODO: Integrate with your preferred email service
-        // Popular options:
-        // 1. EmailJS (easiest) - https://www.emailjs.com/
-        // 2. Formspree - https://formspree.io/
-        // 3. SendGrid API
-        // 4. Your own backend endpoint
-        
-        /* EXAMPLE: EmailJS Integration (after signup at emailjs.com)
-        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-            from_name: formData.name,
-            from_email: formData.email,
-            subject: formData.subject,
-            message: formData.message,
-            to_email: 'ben@keyscodesandmodes.com'
-        })
-        .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-            alert('✅ Message sent successfully! I\'ll get back to you soon.');
-            document.getElementById('contactForm').reset();
-        }, function(error) {
-            console.log('FAILED...', error);
-            alert('❌ There was an error sending your message. Please try emailing directly: ben@keyscodesandmodes.com');
-        });
-        */
-        
-        /* EXAMPLE: Formspree Integration (replace with your Formspree endpoint)
-        fetch('https://formspree.io/f/YOUR_FORM_ID', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('✅ Message sent successfully! I\'ll get back to you soon.');
-                document.getElementById('contactForm').reset();
-            } else {
-                throw new Error('Form submission failed');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('❌ There was an error. Please try emailing directly: ben@keyscodesandmodes.com');
-        });
-        */
-        
-        // Temporary: Show success message and reset form
-        // This works without any backend - good for testing!
-        const subjectLabels = {
-            'general': 'General Inquiry',
-            'theory': 'Music Theory Question',
-            'freestyle': 'FreeStyle® Device',
-            'collaboration': 'Collaboration Opportunity',
-            'education': 'Educational Partnership',
-            'technical': 'Technical Support',
-            'other': 'Other'
-        };
-        
-        const subjectText = subjectLabels[formData.subject] || formData.subject;
-        
-        alert(
-            '✅ Thank you for your message, ' + formData.name + '!\n\n' +
-            'Subject: ' + subjectText + '\n\n' +
-            'I\'ll get back to you at ' + formData.email + ' as soon as possible.\n\n' +
-            'For immediate assistance, you can also email me directly at:\n' +
-            'ben@keyscodesandmodes.com'
+
+        var name    = document.getElementById('contactName').value.trim();
+        var email   = document.getElementById('contactEmail').value.trim();
+        var subject = document.getElementById('contactSubject').value;
+        var message = document.getElementById('contactMessage').value.trim();
+        var feedback = document.getElementById('contactFeedback');
+
+        // Inline validation
+        if (!name)    { showFeedback('error', '⚠️ Please enter your name.'); document.getElementById('contactName').focus(); return false; }
+        if (!email || email.indexOf('@') === -1) { showFeedback('error', '⚠️ Please enter a valid email address.'); document.getElementById('contactEmail').focus(); return false; }
+        if (!subject) { showFeedback('error', '⚠️ Please select a subject.'); document.getElementById('contactSubject').focus(); return false; }
+        if (!message) { showFeedback('error', '⚠️ Please enter your message.'); document.getElementById('contactMessage').focus(); return false; }
+
+        // Build pre-filled mailto link — sends to Ben's inbox instantly
+        var mailSubject = encodeURIComponent('[KCM Contact] ' + subject);
+        var mailBody = encodeURIComponent(
+            'Name: ' + name + '\n' +
+            'Reply-to Email: ' + email + '\n' +
+            'Subject: ' + subject + '\n\n' +
+            'Message:\n' + message + '\n\n' +
+            '---\nSent via keyscodesandmodes.com contact form'
         );
-        
-        // Reset form after submission
-        document.getElementById('contactForm').reset();
-        
-        // Optional: Track form submission with Google Analytics
-        trackEvent(, 'contact_form_submit', {
-                'event_category': 'Contact',
-                'event_label': formData.subject
-            });
-        }
-        
+        window.location.href = 'mailto:ben.ryan@att.net?subject=' + mailSubject + '&body=' + mailBody;
+
+        // Track with Google Analytics
+        try { trackEvent('contact_form_submit', { 'event_category': 'Contact', 'event_label': subject }); } catch(err) {}
+
+        // Show accessible success message
+        setTimeout(function() {
+            showFeedback('success', '✅ Your email app is opening with the message ready to send to Benjamin!');
+            document.getElementById('contactForm').reset();
+        }, 400);
+
         return false;
+    }
+
+    function showFeedback(type, message) {
+        var el = document.getElementById('contactFeedback');
+        el.textContent = message;
+        el.style.display = 'block';
+        if (type === 'success') {
+            el.style.color = '#00ff88';
+            el.style.background = 'rgba(0,255,136,0.1)';
+            el.style.border = '1px solid rgba(0,255,136,0.3)';
+            setTimeout(function(){ el.style.display = 'none'; }, 8000);
+        } else {
+            el.style.color = '#ff6b6b';
+            el.style.background = 'rgba(255,107,107,0.1)';
+            el.style.border = '1px solid rgba(255,107,107,0.3)';
+        }
     }
     </script>
 </body>
