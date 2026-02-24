@@ -34,7 +34,7 @@ window.addEventListener('load', function() {
   window.cookieconsent.initialise({
     palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
     theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "https://keyscodesandmodes.com/privacy-policy.html" },
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "../privacy-policy.html" },
     onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
     onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
   });
@@ -56,14 +56,14 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <meta name="description" content="Sign up free for Keys, Codes & Modes — the world's most interactive visual music theory platform. Choose 3 apps instantly. No credit card required.">
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" content="Benjamin Ryan">
-    <link rel="canonical" href="https://keyscodesandmodes.com/signup.html">
+    <link rel="canonical" href="https://keyscodesandmodes.com/apps/signup.html">
 
     <!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Keys, Codes & Modes">
     <meta property="og:title" content="Start Your Free Musical Journey | Keys, Codes & Modes">
     <meta property="og:description" content="Sign up free and choose any 3 interactive music theory apps from our premium suite. Visual learning that actually works.">
-    <meta property="og:url" content="https://keyscodesandmodes.com/signup.html">
+    <meta property="og:url" content="https://keyscodesandmodes.com/apps/signup.html">
     <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -84,7 +84,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
       "@type": "WebPage",
       "name": "Sign Up — Keys, Codes & Modes",
       "description": "Sign up free for Keys, Codes & Modes interactive music theory platform.",
-      "url": "https://keyscodesandmodes.com/signup.html",
+      "url": "https://keyscodesandmodes.com/apps/signup.html",
       "isPartOf": {
         "@type": "WebSite",
         "name": "Keys, Codes & Modes",
@@ -574,12 +574,12 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     
     <header role="banner">
         <div class="header-content">
-            <a href="https://keyscodesandmodes.com/" class="logo-container" aria-label="Keys, Codes & Modes — return to home page">
+            <a href="../index.html" class="logo-container" aria-label="Keys, Codes & Modes — return to home page">
                 <div class="logo-text">
                     <h1>Keys, Codes & Modes</h1>
                 </div>
             </a>
-            <a href="https://keyscodesandmodes.com/" class="back-link">← Back to Home</a>
+            <a href="../index.html" class="back-link">← Back to Home</a>
         </div>
     </header>
     
@@ -640,13 +640,13 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             
             <div class="privacy-note">
                 <p>We respect your privacy. No spam, ever. Unsubscribe anytime.
-                   <a href="https://keyscodesandmodes.com/terms.html">Terms of Service</a> | <a href="https://keyscodesandmodes.com/privacy-policy.html">Privacy Policy</a>
+                   <a href="../terms.html">Terms of Service</a> | <a href="../privacy-policy.html">Privacy Policy</a>
                 </p>
                 <!-- CAN-SPAM / CASL / GDPR compliance notice -->
                 <p style="font-size:0.8rem; margin-top:0.5rem; color:#999;">
                     By signing up you agree to receive email communications from Keys, Codes &amp; Modes.
                     You may withdraw consent at any time via the unsubscribe link in any email.
-                    We process data per our <a href="https://keyscodesandmodes.com/privacy-policy.html" style="color:var(--primary-teal);">Privacy Policy</a>.
+                    We process data per our <a href="../privacy-policy.html" style="color:var(--primary-teal);">Privacy Policy</a>.
                     Keys, Codes &amp; Modes · 1187 Coast Village Rd #110 · Santa Barbara, CA 93108
                 </p>
             </div>
