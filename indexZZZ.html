@@ -63,7 +63,7 @@ window.addEventListener('load', function() {
   window.cookieconsent.initialise({
     palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
     theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "https://keyscodesandmodes.com/privacy-policy.html" },
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
     onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
     onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
   });
@@ -75,7 +75,7 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
 </script>
 
     <meta charset="UTF-8">
@@ -83,51 +83,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <meta name="theme-color" content="#4A7BA7">
     <title>Keys, Codes & Modes | Revolutionary Visual Music Theory</title>
     <meta name="description" content="Transform your musical journey with interactive visual learning. Master music theory, guitar, and composition through our revolutionary 20+ applications.">
-    <meta name="author" content="Benjamin Ryan">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://keyscodesandmodes.com/">
-
-    <!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Keys, Codes & Modes">
-    <meta property="og:title" content="Keys, Codes & Modes | Revolutionary Visual Music Theory">
-    <meta property="og:description" content="Transform your musical journey with interactive visual learning. Master music theory, guitar, and composition through our revolutionary 20+ applications.">
-    <meta property="og:url" content="https://keyscodesandmodes.com/">
-    <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter / X Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@keyscodesmodes">
-    <meta name="twitter:creator" content="@keyscodesmodes">
-    <meta name="twitter:title" content="Keys, Codes & Modes | Revolutionary Visual Music Theory">
-    <meta name="twitter:description" content="Transform your musical journey with interactive visual learning. Master music theory, guitar, and composition through our revolutionary 20+ applications.">
-    <meta name="twitter:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-
-    <!-- Schema.org Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Keys, Codes & Modes",
-      "url": "https://keyscodesandmodes.com/",
-      "description": "The world's most comprehensive visual music theory platform with 20+ interactive applications.",
-      "author": {
-        "@type": "Person",
-        "name": "Benjamin Ryan",
-        "jobTitle": "Music Educator, Inventor",
-        "address": { "@type": "PostalAddress", "addressLocality": "Santa Barbara", "addressRegion": "CA" }
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://keyscodesandmodes.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="kcm-official-logo-32.png">
     
@@ -463,136 +419,26 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             margin: 0.5rem 0;
         }
         
-        /* ============================================================
-           RESPONSIVE BREAKPOINTS
-           xs:  < 480px   — small phones (iPhone SE, Galaxy S)
-           sm:  480–767px — large phones (iPhone 14, Pixel)
-           md:  768–1023px — tablets (iPad Mini, iPad Air)
-           lg:  1024–1439px — laptops, iPad Pro landscape
-           xl:  1440px+  — large desktops
-           ============================================================ */
-
-        /* --- Large Desktop (1440px+) --- */
-        @media (min-width: 1440px) {
-            .hero h2 { font-size: 4.5rem; }
-            .hero p { font-size: 1.6rem; }
-            .features-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        /* --- Laptop (1024px–1439px) --- */
-        @media (min-width: 1024px) and (max-width: 1439px) {
-            .hero h2 { font-size: 3.5rem; }
-            .features-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        /* --- Tablet portrait (768px–1023px) --- */
-        @media (max-width: 1023px) and (min-width: 768px) {
+        @media (max-width: 968px) {
             .main-nav {
                 flex-direction: column;
                 text-align: center;
-                gap: 1rem;
-                padding: 1.2rem 1.5rem;
-            }
-            .nav-links { justify-content: center; gap: 1.5rem; }
-            .hero { padding: 4rem 2rem; }
-            .hero h2 { font-size: 2.8rem; }
-            .hero p { font-size: 1.2rem; }
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
-            .header-logo { width: 90px; }
-            .logo-text h1 { font-size: 1.4rem; }
-        }
-
-        /* --- Large phones (480px–767px) --- */
-        @media (max-width: 767px) {
-            .main-nav {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-                padding: 1rem;
             }
             .nav-links {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 0.75rem;
+                flex-direction: column;
+                gap: 1rem;
             }
-            .hero { padding: 3rem 1.5rem; }
-            .hero h2 { font-size: 2.2rem; }
-            .hero p { font-size: 1.1rem; }
-            .hero-cta { flex-direction: column; align-items: center; gap: 1rem; }
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                max-width: 320px;
-                text-align: center;
-                padding: 1rem 2rem;
-                font-size: 1.1rem;
+            .hero h2 {
+                font-size: 2.5rem;
             }
-            .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            .features-section, .pricing-section { padding: 3rem 1.5rem; }
-            .section-header h2 { font-size: 2rem; }
-            .header-logo { width: 70px; }
-            .logo-text h1 { font-size: 1.2rem; }
-            .pricing-section > div[style] { margin-left: 0 !important; margin-right: 0 !important; }
-        }
-
-        /* --- Small phones (< 480px) — iPhone SE, Galaxy A --- */
-        @media (max-width: 479px) {
-            .main-nav { padding: 0.75rem; }
-            .header-logo { width: 55px; }
-            .logo-text h1 { font-size: 1rem; letter-spacing: 1px; }
-            .logo-tagline { font-size: 0.7rem; }
-            .nav-links { gap: 0.5rem; }
-            .nav-links a { padding: 0.4rem 0.75rem; font-size: 0.9rem; }
-            .cta-btn { padding: 0.6rem 1.2rem !important; font-size: 0.9rem !important; }
-            .hero { padding: 2rem 1rem; }
-            .hero h2 { font-size: 1.7rem; line-height: 1.3; }
-            .hero p { font-size: 1rem; margin-bottom: 2rem; }
-            .btn-primary, .btn-secondary {
-                font-size: 1rem;
-                padding: 0.9rem 1.5rem;
-                letter-spacing: 0;
+            .header-logo {
+                width: 90px;
             }
-            .feature-card { padding: 1.5rem 1.25rem; }
-            .feature-title { font-size: 1.2rem; }
-            .section-header h2 { font-size: 1.7rem; }
-            footer { padding: 2rem 1rem; margin-top: 3rem; }
-            .footer-logo { width: 70px; }
+            .logo-text h1 {
+                font-size: 1.4rem;
+            }
         }
-
-        /* --- Touch device optimizations --- */
-        @media (hover: none) and (pointer: coarse) {
-            .btn-primary:hover, .btn-secondary:hover,
-            .feature-card:hover, .cta-btn:hover { transform: none; }
-            /* Minimum 44x44px touch targets (WCAG 2.5.5) */
-            .nav-links a { min-height: 44px; display: inline-flex; align-items: center; }
-            .btn-primary, .btn-secondary, .cta-btn { min-height: 52px; }
-        }
-
-        /* --- Reduced motion (WCAG 2.3.3) --- */
-        @media (prefers-reduced-motion: reduce) {
-            .bg-animation { animation: none; }
-            .header-logo { animation: none; }
-            * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-        }
-
-        /* --- High contrast mode (Windows accessibility) --- */
-        @media (forced-colors: active) {
-            .btn-primary, .btn-secondary, .cta-btn { border: 2px solid ButtonText; }
-            .feature-card { border: 1px solid ButtonText; }
-        }
-
-        /* --- Focus visible (WCAG 2.4.7) --- */
-        :focus-visible {
-            outline: 3px solid var(--primary-gold);
-            outline-offset: 3px;
-        }
-
-        /* --- Print --- */
-        @media print {
-            .bg-animation, header { display: none; }
-            body { background: white; color: black; }
-            .btn-primary, .btn-secondary { border: 1px solid #333; }
-        }
+    </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -600,7 +446,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     
     <!-- HEADER WITH OFFICIAL LOGO -->
     <header>
-        <nav class="main-nav" aria-label="Main navigation" role="navigation">
+        <nav class="main-nav">
             <a href="index.html" class="logo-container">
                 <svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="header-logo" style="filter: drop-shadow(0 6px 15px rgba(74, 123, 167, 0.6));">
                     <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
@@ -629,7 +475,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </header>
     
     <main id="main-content">
-        <section class="hero" aria-label="Welcome — start your musical journey">
+        <section class="hero">
             <h2>Transform Your Musical Journey</h2>
             <p>Experience the visual breakthrough that makes music theory finally click. Master guitar, piano, and composition with our revolutionary 20+ interactive applications.</p>
             <div class="hero-cta">
@@ -638,7 +484,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </div>
         </section>
         
-        <section class="features-section" aria-label="Platform features">
+        <section class="features-section">
             <div class="section-header">
                 <h2>Why Keys, Codes & Modes?</h2>
                 <p>The most comprehensive visual music theory platform in the world</p>
@@ -683,7 +529,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </div>
         </section>
         
-        <section class="pricing-section" aria-label="Pricing and signup options">
+        <section class="pricing-section">
             <div class="section-header">
                 <h2>Start Your Journey Today</h2>
                 <p>Choose your path - from free forever to lifetime access</p>
@@ -709,7 +555,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </main>
     
     <!-- FOOTER WITH SVG LOGO -->
-    <footer role="contentinfo" aria-label="Site footer">
+    <footer>
         <svg width="35" height="35" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="footer-logo" style="filter: drop-shadow(0 2px 8px rgba(244, 208, 63, 0.3)); margin-bottom: 1rem;">
             <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
             <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
@@ -735,11 +581,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </p>
             <p style="font-size: 0.85rem; color: rgba(232,232,232,0.5); margin-top: 1rem;">
                 Created by <strong style="color: #F4D03F;">Benjamin Ryan</strong> • Based on "Keys, Codes, and Modes: A Visual Approach to Understanding Music" • Santa Barbara, California
-            </p>
-            <p style="font-size: 0.8rem; color: rgba(232,232,232,0.4); margin-top: 1rem;">
-                <a href="privacy-policy.html" style="color: #008080; text-decoration: none;">Privacy Policy</a> &nbsp;|&nbsp;
-                <a href="terms.html" style="color: #008080; text-decoration: none;">Terms of Service</a> &nbsp;|&nbsp;
-                <a href="contact.html" style="color: #008080; text-decoration: none;">Contact</a>
             </p>
         </div>
     </footer>
