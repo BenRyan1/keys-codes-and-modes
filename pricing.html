@@ -34,7 +34,7 @@ window.addEventListener('load', function() {
   window.cookieconsent.initialise({
     palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
     theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "https://keyscodesandmodes.com/privacy-policy.html" },
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
     onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
     onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
   });
@@ -46,7 +46,7 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
 </script>
 
     <meta charset="UTF-8">
@@ -54,39 +54,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <meta name="theme-color" content="#008080">
     <title>Pricing Plans | Keys, Codes & Modes</title>
     <meta name="description" content="Choose your perfect plan. Student, Professional, or Lifetime Founder's Circle - unlock the world's most comprehensive visual music theory platform.">
-    <meta name="author" content="Benjamin Ryan">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://keyscodesandmodes.com/pricing.html">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Keys, Codes & Modes">
-    <meta property="og:title" content="Pricing Plans | Keys, Codes & Modes">
-    <meta property="og:description" content="Choose your perfect plan. Student, Professional, or Lifetime Founder's Circle access to the world's most comprehensive visual music theory platform.">
-    <meta property="og:url" content="https://keyscodesandmodes.com/pricing.html">
-    <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter / X Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@keyscodesmodes">
-    <meta name="twitter:title" content="Pricing Plans | Keys, Codes & Modes">
-    <meta name="twitter:description" content="Student, Professional, or Lifetime Founder's Circle — unlock visual music theory mastery.">
-    <meta name="twitter:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-
-    <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Pricing — Keys, Codes & Modes",
-      "url": "https://keyscodesandmodes.com/pricing.html",
-      "description": "Pricing plans for Keys, Codes & Modes interactive music theory platform.",
-      "isPartOf": { "@type": "WebSite", "name": "Keys, Codes & Modes", "url": "https://keyscodesandmodes.com" }
-    }
-    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,19 +77,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             padding: 0;
             box-sizing: border-box;
         }
-
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--primary-gold);
-            color: var(--dark-bg);
-            padding: 8px 16px;
-            text-decoration: none;
-            font-weight: bold;
-            z-index: 10000;
-        }
-        .skip-link:focus { top: 0; }
         
         body {
             font-family: var(--font-body);
@@ -344,89 +298,34 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             color: var(--primary-purple);
         }
         
-        /* ============================================================
-           RESPONSIVE BREAKPOINTS — All screen sizes
-           ============================================================ */
-
-        /* Tablet portrait (768px–1023px) */
-        @media (max-width: 1023px) and (min-width: 768px) {
-            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
-            .page-header h2 { font-size: 2.4rem; }
-            .header-content { flex-direction: column; gap: 1rem; text-align: center; }
+        @media (max-width: 768px) {
+            .page-header h2 {
+                font-size: 2rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
-
-        /* Large phones (480px–767px) */
-        @media (max-width: 767px) {
-            .page-header h2 { font-size: 2rem; }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .header-content { flex-direction: column; gap: 1rem; text-align: center; }
-            .container { padding: 1.5rem; }
-            .pricing-card { padding: 2rem 1.5rem; }
-            .founder-section { padding: 2rem 1.5rem; }
-            .founder-section h2 { font-size: 2rem; }
-            .price { font-size: 2.5rem; }
-        }
-
-        /* Small phones (< 480px) */
-        @media (max-width: 479px) {
-            header { padding: 1rem; }
-            .logo-text h1 { font-size: 1.1rem; }
-            .back-link { font-size: 0.85rem; padding: 0.4rem 1rem; }
-            .page-header h2 { font-size: 1.6rem; }
-            .pricing-card { padding: 1.5rem 1.25rem; }
-            .tier-name { font-size: 1.5rem; }
-            .price { font-size: 2rem; }
-            .cta-button { font-size: 1rem; padding: 1rem; }
-            .founder-section h2 { font-size: 1.6rem; }
-            #accessCodeInput { font-size: 16px; } /* prevent iOS zoom */
-        }
-
-        /* Touch targets */
-        @media (hover: none) and (pointer: coarse) {
-            .cta-button { min-height: 52px; }
-            .back-link { min-height: 44px; display: inline-flex; align-items: center; }
-            .pricing-card:hover { transform: none; }
-            .cta-button:hover { transform: none; }
-        }
-
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .bg-animation { animation: none; }
-            * { transition-duration: 0.01ms !important; }
-        }
-
-        /* High contrast */
-        @media (forced-colors: active) {
-            .cta-button, .back-link { border: 2px solid ButtonText; }
-            .pricing-card { border: 1px solid ButtonText; }
-        }
-
-        /* Focus visible */
-        :focus-visible {
-            outline: 3px solid var(--primary-gold);
-            outline-offset: 3px;
-        }
-
-        /* Print */
-        @media print {
-            .bg-animation { display: none; }
-            body { background: white; color: black; }
-        }
+    </style>
 </head>
 <body>
-    <a href="#main" class="skip-link">Skip to main content</a>
     <div class="bg-animation"></div>
     
-    <header role="banner">
+    <header>
         <div class="header-content">
-            <a href="https://keyscodesandmodes.com/" class="logo-text" style="text-decoration:none;" aria-label="Keys, Codes & Modes — return to home page">
+            <div class="logo-text">
                 <h1>KEYS, CODES & MODES</h1>
-            </a>
-            <a href="https://keyscodesandmodes.com/" class="back-link">← Back to Home</a>
+            </div>
+            <a href="index.html" class="back-link">← Back to Home</a>
         </div>
     </header>
     
-    <main id="main" role="main" aria-label="Pricing plans">
     <div class="container">
         <div class="page-header">
             <h2>Your Musical Journey Starts Here</h2>
@@ -574,12 +473,11 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </form>
             
             <p style="color: var(--light-text); font-size: 1rem; margin-top: 1rem;">
-                Don't have a code yet? <a href="https://keyscodesandmodes.com/contact.html" style="color: var(--primary-gold); text-decoration: none; font-weight: 600; transition: all 0.3s;">Reach out to Ben</a> and let's chat about getting you access!
+                Don't have a code yet? <a href="contact.html" style="color: var(--primary-gold); text-decoration: none; font-weight: 600; transition: all 0.3s;">Reach out to Ben</a> and let's chat about getting you access!
             </p>
         </div>
         
     </div>
-    </main>
     
     <script>
         // Access Code Redemption - FIXED VERSION
