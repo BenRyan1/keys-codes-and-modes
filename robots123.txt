@@ -1,5 +1,5 @@
 # robots.txt — keyscodesandmodes.com
-# Updated: 2026-02-27
+# Updated: 2026-02-22
 
 # Allow all crawlers full access
 User-agent: *
@@ -17,9 +17,11 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 
-# Block only auth pages (NEVER block /apps/ or /assets/)
+# Block internal/private pages from indexing
 User-agent: *
 Disallow: /auth/
+Disallow: /apps/
+Disallow: /assets/
 
 # Sitemap location
-Sitemap: https://keyscodesandmodes.com/sitemap.xml
+Sitemap: https://www.keyscodesandmodes.com/sitemap.xml
