@@ -54,41 +54,17 @@ function trackEvent(n,p){if(typeof gtag==='function')gtag('event',n,p);}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#008080">
-<title>Music Theory Explorer Pro | Interactive Chromatic Circle, Piano & Guitar | Keys, Codes & Modes</title>
-<meta name="description" content="Free interactive music theory app — explore scales, chords, modes & intervals on a chromatic circle, 2-octave piano keyboard, and guitar fretboard with ear training. By Benjamin Ryan, Keys, Codes & Modes.">
-<meta name="keywords" content="music theory, interactive music theory, chromatic circle, circle of fifths, piano keyboard, guitar fretboard, scales, chords, modes, ear training, music education, keys codes modes, Benjamin Ryan, FreeStyle musical device, music intervals, major minor scales, music theory app">
+<title>Music Theory Explorer Pro | Keys, Codes & Modes</title>
+<meta name="description" content="Interactive music theory learning — chromatic circle, piano keyboard, guitar fretboard, ear training & MIDI support. Part of Keys, Codes & Modes by Benjamin Ryan.">
 <meta name="author" content="Benjamin Ryan">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://keyscodesandmodes.com/music-theory-pro.html">
-<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Keys, Codes & Modes">
-<meta property="og:title" content="Music Theory Explorer Pro | Interactive Chromatic Circle, Piano & Guitar">
-<meta property="og:description" content="Free interactive music theory — chromatic circle, 2-octave piano, guitar fretboard, ear training & more. By Benjamin Ryan, Keys, Codes & Modes.">
+<meta property="og:title" content="Music Theory Explorer Pro | Keys, Codes & Modes">
+<meta property="og:description" content="Interactive music theory — chromatic circle, piano, guitar, ear training & MIDI. By Benjamin Ryan.">
 <meta property="og:url" content="https://keyscodesandmodes.com/music-theory-pro.html">
 <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-<meta property="og:locale" content="en_US">
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Music Theory Explorer Pro | Keys, Codes & Modes">
-<meta name="twitter:description" content="Free interactive music theory — chromatic circle, 2-octave piano, guitar fretboard, ear training & more.">
-<meta name="twitter:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-<!-- Structured Data: SoftwareApplication -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Music Theory Explorer Pro",
-  "applicationCategory": "EducationalApplication",
-  "operatingSystem": "Any",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Interactive music theory web application featuring chromatic circle, 2-octave piano keyboard, guitar fretboard, ear training, and real-time audio synthesis.",
-  "author": { "@type": "Person", "name": "Benjamin Ryan", "url": "https://keyscodesandmodes.com" },
-  "url": "https://keyscodesandmodes.com/music-theory-pro.html",
-  "screenshot": "https://keyscodesandmodes.com/images/kcm-social-share.jpg",
-  "keywords": "music theory, chromatic circle, piano keyboard, guitar fretboard, ear training, scales, chords, modes"
-}
-</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -490,28 +466,24 @@ select option { background: #1a1a2e; color: white; }
 }
 
 /* ============================================================
-   STAFF NOTATION — below chromatic circle, fully scalable
+   STAFF NOTATION (center of circle)
    ============================================================ */
 #staffNotation {
-    /* No longer overlaid — sits below the circle */
-    position: relative;
-    width: min(420px, 90%);
-    max-width: 420px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    height: 200px;
     background: rgba(255,255,255,0.97);
     border-radius: 12px;
-    padding: 12px 15px 10px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.6);
+    padding: 15px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+    pointer-events: none;
     border: 3px solid var(--primary-teal);
-    margin: 0.75rem auto 0;
-    display: block;
+    z-index: 10;
 }
-#staffNotation svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    min-height: 70px;
-    max-height: 120px;
-}
+#staffNotation svg { width: 100%; height: 100%; }
 
 /* ============================================================
    PIANO KEYBOARD
@@ -558,7 +530,7 @@ select option { background: #1a1a2e; color: white; }
     box-shadow: inset 0 0 24px rgba(0,0,0,0.7), 0 6px 20px rgba(0,0,0,0.5);
 }
 .fb-row   { display: table-row; }
-.fb-row.nut-row .fb-cell { border-bottom: 5px solid #888 !important; background: linear-gradient(180deg,#ece4b8,#d4c090,#ece4b8); min-height: 7px; height: 7px; }
+.fb-row.nut-row .fb-cell { border-bottom: 5px solid #888 !important; background: linear-gradient(180deg,#ece4b8,#d4c090,#ece4b8); min-height: 14px; height: 14px; }
 .fb-cell  {
     display: table-cell;
     vertical-align: middle;
@@ -677,7 +649,7 @@ select option { background: #1a1a2e; color: white; }
 #fbStaffSVG { width: 100%; height: 125px; display: block; }
 
 /* ── Piano compact ── */
-.piano-outer { overflow-x: auto; padding-bottom: 4px; padding-top: 26px; }
+.piano-outer { overflow-x: auto; padding-bottom: 4px; }
 .piano-container {
     position: relative;
     height: 135px;
@@ -973,7 +945,6 @@ input[type="range"]::-webkit-slider-thumb {
     .app-title-banner h2 { font-size: 1.5rem; }
     .app-container { padding: 1rem 0.75rem 2rem; }
     #chromaticCircle { width: 340px; height: 340px; }
-    #staffNotation { width: min(340px, 90%); }
     .sphere { width: 50px; height: 50px; font-size: 11px; }
     .view-btn { font-size: 0.72rem; padding: 0.55rem 0.85rem; }
     .level-btn { font-size: 0.65rem; min-width: 75px; padding: 0.5rem 0.65rem; }
@@ -984,7 +955,6 @@ input[type="range"]::-webkit-slider-thumb {
     nav ul { gap: 0.6rem; }
     nav a { font-size: 0.75rem; }
     #chromaticCircle { width: 300px; height: 300px; }
-    #staffNotation { width: min(300px, 90%); }
     .sphere { width: 44px; height: 44px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1116,18 +1086,18 @@ input[type="range"]::-webkit-slider-thumb {
         <div style="display:flex; flex-direction:column; gap:1.25rem; background:rgba(0,0,0,0.35); padding:1.75rem; border-radius:14px; border:1px solid rgba(0,128,128,0.15);">
 
             <!-- CHROMATIC CIRCLE -->
-            <div id="chromaticCircle" style="margin:0 auto; display:block;" role="region" aria-label="Chromatic circle — 12 pitch classes arranged in a circle of fifths"></div>
-            <!-- STAFF NOTATION — below circle, scales proportionally -->
-            <div id="staffNotation" aria-label="Staff notation showing selected notes on treble clef" role="img">
-                <div style="background:linear-gradient(135deg, var(--primary-teal), #006666); color:white; padding:5px; border-radius:8px 8px 0 0; margin:-12px -15px 6px -15px; text-align:center; font-size:0.72rem; font-weight:800; letter-spacing:1px; font-family:var(--font-display);">
-                    🎼 STAFF NOTATION
+            <div id="chromaticCircle" style="margin:0 auto; display:block;" role="region" aria-label="Chromatic circle">
+                <div id="staffNotation" aria-label="Staff notation" role="img">
+                    <div style="background:linear-gradient(135deg, var(--primary-teal), #006666); color:white; padding:6px; border-radius:8px 8px 0 0; margin:-15px -15px 6px -15px; text-align:center; font-size:0.75rem; font-weight:800; letter-spacing:1px; font-family:var(--font-display);">
+                        🎼 STAFF NOTATION
+                    </div>
+                    <svg id="staffSVG" viewBox="0 0 220 135" aria-hidden="true"></svg>
                 </div>
-                <svg id="staffSVG" viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
             </div>
 
             <!-- PIANO KEYBOARD -->
             <div id="pianoKeyboard" style="margin:0 auto; width:100%;" role="region" aria-label="Piano keyboard">
-                <h3 style="text-align:center; margin:0 0 0.75rem 0; font-family:var(--font-display); font-size:1.15rem; font-weight:800; color:var(--primary-gold);">🎹 Piano Keyboard — 2 Octaves · 2 Registers</h3>
+                <h3 style="text-align:center; margin:0 0 0.75rem 0; font-family:var(--font-display); font-size:1.15rem; font-weight:800; color:var(--primary-gold);">🎹 Piano Keyboard — 2 Octaves</h3>
                 <div class="piano-outer">
                     <div class="piano-container" id="pianoContainer"></div>
                 </div>
@@ -1531,12 +1501,6 @@ window.addEventListener('unhandledrejection', function(event) {
             // Build 2 octaves: oct 4 then oct 5
             [currentOctave, currentOctave+1].forEach((oct, octIdx) => {
                 const offsetPx = octIdx * 7 * WHITE_W; // each octave = 7 white keys
-                // Add register divider label
-                const regLabel = document.createElement('div');
-                regLabel.className = 'register-label';
-                regLabel.textContent = `Register ${octIdx+1} — Octave ${oct}`;
-                regLabel.style.cssText = `position:absolute; top:-22px; left:${offsetPx}px; width:${7*WHITE_W}px; text-align:center; font-size:0.62rem; font-weight:700; color:var(--primary-gold); font-family:var(--font-body); letter-spacing:0.5px; pointer-events:none;`;
-                container.appendChild(regLabel);
 
                 whiteOrder.forEach((pc, wi) => {
                     const k = document.createElement('div');
@@ -1637,7 +1601,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
             const nutFnum = document.createElement('div');
             nutFnum.className = 'fb-fnum-cell';
-            nutFnum.style.height = '7px';
+            nutFnum.style.height = '14px';
             nutFnum.textContent = '0';
             nutRow.appendChild(nutFnum);
 
@@ -2289,7 +2253,6 @@ window.addEventListener('unhandledrejection', function(event) {
             try {
                 const el = (id) => document.getElementById(id);
                 if (el('chromaticCircle')) el('chromaticCircle').style.display = currentView==='circle' ? 'block' : 'none';
-                if (el('staffNotation')) el('staffNotation').style.display = currentView==='circle' ? 'block' : 'none';
                 if (el('pianoKeyboard')) el('pianoKeyboard').style.display = currentView==='keyboard' ? 'block' : 'none';
                 if (el('guitarFretboard')) el('guitarFretboard').style.display = currentView==='guitar' ? 'block' : 'none';
                 if (el('earTraining')) el('earTraining').style.display = currentView==='ear' ? 'block' : 'none';
