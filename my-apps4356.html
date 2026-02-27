@@ -1,0 +1,810 @@
+<!--
+================================================================================
+COPYRIGHT NOTICE - LEGAL WARNING
+================================================================================
+© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved
+FreeStyle® is a registered trademark. U.S. Patents.
+For licensing: ben@keyscodesandmodes.com
+Santa Barbara, California
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ═══════════════════════════════════════════════════════
+         ANALYTICS — Keys, Codes & Modes · My Apps
+         GA4: G-6EGC5ZNZPF
+    ═══════════════════════════════════════════════════════ -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6EGC5ZNZPF', {
+            page_title: 'My Music Theory Apps',
+            page_location: 'https://keyscodesandmodes.com/my-apps.html',
+            send_page_view: true
+        });
+        function trackEvent(name, params) {
+            if (typeof gtag === 'function') gtag('event', name, params);
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+
+    <title>My Music Theory Apps | Keys, Codes &amp; Modes</title>
+    <meta name="description" content="Access your personalized interactive music theory apps from Keys, Codes &amp; Modes. Launch your chosen visual learning tools — scales, chords, guitar, rhythm and more.">
+    <meta name="keywords" content="music theory apps, interactive music tools, visual music learning, scales chords modes, guitar fretboard, circle of fifths, music education">
+    <meta name="author" content="Benjamin Ryan">
+
+    <!-- This is a personalized user dashboard — no index needed -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://keyscodesandmodes.com/my-apps.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://keyscodesandmodes.com/my-apps.html">
+    <meta property="og:title" content="My Music Theory Apps | Keys, Codes &amp; Modes">
+    <meta property="og:description" content="Launch your personalized interactive music theory learning tools.">
+    <meta property="og:site_name" content="Keys, Codes &amp; Modes">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ═══════════════════════════════════════
+           DESIGN TOKENS
+        ═══════════════════════════════════════ */
+        :root {
+            --teal:      #008080;
+            --teal-lt:   #00b3b3;
+            --gold:      #F4D03F;
+            --gold-dk:   #c9a800;
+            --purple:    #8B6BA3;
+            --coral:     #CF7A5A;
+            --bg-deep:   #080814;
+            --bg-mid:    #0f0f1e;
+            --bg-card:   rgba(255,255,255,0.04);
+            --bg-card-h: rgba(255,255,255,0.08);
+            --text:      #E8E8E8;
+            --text-dim:  #9999bb;
+            --border:    rgba(0,128,128,0.25);
+            --border-h:  rgba(244,208,63,0.6);
+            --font-d:    'Cinzel', serif;
+            --font-b:    'Montserrat', sans-serif;
+            --font-s:    'Cormorant Garamond', serif;
+            --radius:    16px;
+            --shadow-card: 0 8px 32px rgba(0,0,0,0.5);
+            --shadow-glow: 0 0 40px rgba(0,128,128,0.15);
+        }
+
+        /* ═══════════════════════════════════════
+           RESET & BASE
+        ═══════════════════════════════════════ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-b);
+            background: var(--bg-deep);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════
+           ANIMATED BACKGROUND MESH
+        ═══════════════════════════════════════ */
+        .bg-mesh {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 15% 40%, rgba(0,128,128,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 85% 70%, rgba(139,107,163,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 100% 50% at 50% 0%,  rgba(244,208,63,0.05)  0%, transparent 50%),
+                linear-gradient(180deg, #080814 0%, #0d0d1f 50%, #080814 100%);
+            animation: meshDrift 30s ease-in-out infinite alternate;
+        }
+        @keyframes meshDrift {
+            0%   { filter: hue-rotate(0deg)   brightness(1); }
+            100% { filter: hue-rotate(15deg)  brightness(1.05); }
+        }
+
+        /* Star-field dots */
+        .bg-mesh::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 20%  30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 75%  15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 45%  65%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90%  50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10%  80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60%  90%, rgba(255,255,255,0.15) 0%, transparent 100%);
+        }
+
+        /* ═══════════════════════════════════════
+           SKIP LINK (Accessibility)
+        ═══════════════════════════════════════ */
+        .skip-link {
+            position: absolute; top: -60px; left: 1rem;
+            background: var(--gold); color: #000;
+            padding: 0.75rem 1.5rem; border-radius: 0 0 8px 8px;
+            font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; z-index: 9999;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* ═══════════════════════════════════════
+           HEADER
+        ═══════════════════════════════════════ */
+        .site-header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(8,8,20,0.92);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+        }
+        .header-inner {
+            max-width: 1400px; margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .site-logo {
+            font-family: var(--font-d); font-size: 1.15rem; font-weight: 700;
+            letter-spacing: 2px; text-decoration: none;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--teal-lt) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: opacity 0.2s;
+        }
+        .site-logo:hover, .site-logo:focus { opacity: 0.85; }
+
+        .site-nav { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
+        .nav-link {
+            color: var(--text-dim); text-decoration: none; font-size: 0.88rem;
+            font-weight: 600; padding: 0.5rem 0.85rem; border-radius: 8px;
+            transition: color 0.2s, background 0.2s;
+            min-height: 44px; display: inline-flex; align-items: center;
+        }
+        .nav-link:hover, .nav-link:focus {
+            color: var(--gold); background: rgba(244,208,63,0.08);
+            outline: none;
+        }
+        .nav-cta {
+            background: var(--gold); color: #000 !important;
+            padding: 0.5rem 1.25rem; border-radius: 50px; font-weight: 700;
+            margin-left: 0.5rem;
+        }
+        .nav-cta:hover, .nav-cta:focus { background: #ffe040; color: #000 !important; }
+
+        /* ═══════════════════════════════════════
+           MAIN
+        ═══════════════════════════════════════ */
+        main { padding: 3rem 2rem 4rem; }
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* ═══════════════════════════════════════
+           PAGE HERO
+        ═══════════════════════════════════════ */
+        .page-hero {
+            text-align: center;
+            padding: 3.5rem 2rem 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            border-radius: 24px;
+            background: linear-gradient(135deg,
+                rgba(0,128,128,0.08) 0%,
+                rgba(139,107,163,0.06) 50%,
+                rgba(244,208,63,0.05) 100%);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .page-hero::before {
+            content: '𝄞';
+            position: absolute; top: -20px; right: 5%;
+            font-size: 12rem; color: rgba(0,128,128,0.04);
+            line-height: 1; pointer-events: none;
+            font-family: serif;
+        }
+
+        .welcome-tag {
+            display: inline-block;
+            font-family: var(--font-s); font-style: italic;
+            font-size: 1.25rem; color: var(--gold);
+            margin-bottom: 0.75rem; letter-spacing: 0.5px;
+        }
+        .page-hero h1 {
+            font-family: var(--font-d);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700; letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--teal-lt) 60%, var(--purple) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem; line-height: 1.2;
+        }
+        .page-hero p {
+            font-size: 1.05rem; color: var(--text-dim); max-width: 540px; margin: 0 auto;
+        }
+
+        /* ═══════════════════════════════════════
+           SECTION LABEL
+        ═══════════════════════════════════════ */
+        .section-label {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.75rem;
+        }
+        .section-label h2 {
+            font-family: var(--font-d); font-size: 1.1rem;
+            font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--teal-lt);
+        }
+        .section-label::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, var(--teal) 0%, transparent 100%);
+        }
+
+        /* ═══════════════════════════════════════
+           APPS GRID
+        ═══════════════════════════════════════ */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        /* ═══════════════════════════════════════
+           APP CARD
+        ═══════════════════════════════════════ */
+        .app-card {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--text);
+            display: flex; flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+        /* Accent bar top */
+        .app-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--teal), var(--gold), var(--purple));
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+        /* Glow layer */
+        .app-card::after {
+            content: '';
+            position: absolute; inset: 0; border-radius: var(--radius);
+            background: radial-gradient(ellipse at 30% 0%, rgba(0,128,128,0.08) 0%, transparent 70%);
+            opacity: 0; transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .app-card:hover,
+        .app-card:focus-within {
+            transform: translateY(-6px);
+            background: var(--bg-card-h);
+            border-color: var(--border-h);
+            box-shadow: var(--shadow-card), 0 0 40px rgba(244,208,63,0.12);
+        }
+        .app-card:hover::before,
+        .app-card:focus-within::before { transform: scaleX(1); }
+        .app-card:hover::after,
+        .app-card:focus-within::after  { opacity: 1; }
+
+        .app-card:focus {
+            outline: 2px solid var(--gold);
+            outline-offset: 3px;
+        }
+
+        /* Card inner */
+        .card-icon {
+            font-size: 2.8rem; line-height: 1;
+            margin-bottom: 1.1rem;
+            filter: drop-shadow(0 0 8px rgba(0,128,128,0.4));
+        }
+        .card-category {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--teal-lt);
+            margin-bottom: 0.5rem;
+        }
+        .card-title {
+            font-family: var(--font-d); font-size: 1.25rem; font-weight: 700;
+            color: var(--gold); margin-bottom: 0.75rem; line-height: 1.3;
+            letter-spacing: 0.5px;
+        }
+        .card-desc {
+            font-size: 0.9rem; color: var(--text-dim);
+            line-height: 1.65; margin-bottom: 1.25rem; flex: 1;
+        }
+        .card-features {
+            list-style: none; margin-bottom: 1.5rem;
+        }
+        .card-features li {
+            font-size: 0.82rem; color: #8888aa;
+            padding: 0.3rem 0 0.3rem 1.4rem;
+            position: relative;
+        }
+        .card-features li::before {
+            content: '◆';
+            position: absolute; left: 0;
+            color: var(--teal); font-size: 0.5rem;
+            top: 50%; transform: translateY(-50%);
+        }
+
+        .launch-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--gold) 0%, #ffe040 100%);
+            color: #000; font-weight: 700; font-size: 0.88rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 16px rgba(244,208,63,0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+            align-self: flex-start;
+            letter-spacing: 0.5px;
+        }
+        .app-card:hover .launch-btn {
+            transform: scale(1.04);
+            box-shadow: 0 6px 24px rgba(244,208,63,0.4);
+        }
+        .launch-arrow { transition: transform 0.2s; }
+        .app-card:hover .launch-arrow { transform: translateX(3px); }
+
+        /* ═══════════════════════════════════════
+           EMPTY / ERROR STATE
+        ═══════════════════════════════════════ */
+        .state-panel {
+            padding: 3.5rem 2rem; text-align: center;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+        .state-panel h2 { font-family: var(--font-d); color: var(--gold); margin-bottom: 1rem; }
+        .state-panel p  { color: var(--text-dim); margin-bottom: 0.5rem; }
+        .state-panel a  { color: var(--teal-lt); font-weight: 700; text-underline-offset: 3px; }
+
+        /* ═══════════════════════════════════════
+           UPGRADE BANNER
+        ═══════════════════════════════════════ */
+        .upgrade-banner {
+            margin-top: 1rem;
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg,
+                rgba(139,107,163,0.10) 0%,
+                rgba(0,128,128,0.08) 100%);
+            border: 1px solid rgba(139,107,163,0.35);
+            border-radius: 20px;
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .upgrade-banner::before {
+            content: '20+';
+            position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
+            font-family: var(--font-d); font-size: 6rem; font-weight: 900;
+            color: rgba(139,107,163,0.07); pointer-events: none; line-height: 1;
+        }
+        .upgrade-banner h2 {
+            font-family: var(--font-d); font-size: 1.6rem;
+            color: var(--purple); margin-bottom: 0.75rem;
+        }
+        .upgrade-banner p { color: var(--text-dim); max-width: 480px; margin: 0 auto 1.5rem; }
+        .btn-row {
+            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+        }
+        .btn-outline {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.75rem 1.75rem;
+            border: 1.5px solid var(--teal); color: var(--teal-lt);
+            border-radius: 50px; text-decoration: none; font-weight: 700;
+            font-size: 0.9rem; transition: all 0.25s;
+            min-height: 44px;
+        }
+        .btn-outline:hover, .btn-outline:focus {
+            background: var(--teal); color: #000;
+            box-shadow: 0 4px 20px rgba(0,128,128,0.35);
+            outline: none;
+        }
+        .btn-outline.purple { border-color: var(--purple); color: var(--purple); }
+        .btn-outline.purple:hover, .btn-outline.purple:focus {
+            background: var(--purple); color: #fff;
+            box-shadow: 0 4px 20px rgba(139,107,163,0.35);
+        }
+
+        /* ═══════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════ */
+        .site-footer {
+            padding: 2rem 2rem 3rem;
+        }
+        .footer-inner {
+            max-width: 900px; margin: 0 auto;
+            background: rgba(0,128,128,0.05);
+            border-top: 1px solid var(--teal);
+            border-bottom: 1px solid rgba(244,208,63,0.3);
+            border-radius: 12px; padding: 2rem;
+            text-align: center;
+        }
+        .footer-brand {
+            font-family: var(--font-d); font-size: 0.9rem;
+            color: var(--gold); letter-spacing: 1px; margin-bottom: 0.75rem;
+        }
+        .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+        .footer-links a { color: var(--teal-lt); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--gold); text-decoration: underline; }
+        .footer-sub { font-size: 0.78rem; color: rgba(232,232,232,0.4); }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .apps-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+        }
+        @media (max-width: 640px) {
+            main { padding: 2rem 1rem 3rem; }
+            .header-inner { padding: 0.85rem 1rem; }
+            .page-hero { padding: 2.5rem 1.25rem 2rem; }
+            .apps-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+            .app-card { padding: 1.5rem; }
+            .upgrade-banner::before { display: none; }
+            .site-nav { gap: 0; }
+            .nav-link { padding: 0.5rem 0.6rem; font-size: 0.82rem; }
+        }
+        @media (max-width: 380px) {
+            .page-hero h1 { font-size: 1.6rem; }
+            .card-title { font-size: 1.1rem; }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .bg-mesh { animation: none; }
+            *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+        }
+        @media (forced-colors: active) {
+            .app-card { border: 2px solid ButtonText; }
+            .launch-btn { border: 2px solid ButtonText; }
+        }
+        /* Touch devices — disable hover lift */
+        @media (hover: none) and (pointer: coarse) {
+            .app-card:hover { transform: none; }
+            .app-card:active {
+                transform: scale(0.98);
+                border-color: var(--border-h);
+            }
+        }
+
+        /* Card entrance animation */
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .app-card { animation: cardIn 0.4s ease both; }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh" aria-hidden="true"></div>
+
+    <!-- Accessibility: skip navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- ═══════════════════════════════════════ HEADER -->
+    <header class="site-header" role="banner">
+        <div class="header-inner">
+            <a href="index.html" class="site-logo" aria-label="Keys, Codes &amp; Modes — return to homepage">
+                Keys, Codes &amp; Modes
+            </a>
+            <nav class="site-nav" aria-label="Primary navigation">
+                <a href="index.html"     class="nav-link">Home</a>
+                <a href="about.html"     class="nav-link">About</a>
+                <a href="offerings.html" class="nav-link">Apps</a>
+                <a href="pricing.html"   class="nav-link">Pricing</a>
+                <a href="contact.html"   class="nav-link">Contact</a>
+                <a href="signup.html"    class="nav-link nav-cta" aria-label="Start for free">Start Free</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════ MAIN -->
+    <main id="main-content" role="main">
+        <div class="container">
+
+            <!-- Hero -->
+            <div class="page-hero" role="banner">
+                <span class="welcome-tag" id="welcomeMsg" aria-live="polite">Welcome back!</span>
+                <h1>My Music Theory Apps</h1>
+                <p>Your personalized learning suite — click any app to launch it instantly.</p>
+            </div>
+
+            <!-- Apps Section -->
+            <div class="section-label" aria-hidden="true">
+                <h2>Your Selected Apps</h2>
+            </div>
+
+            <!-- Dynamic app cards injected here -->
+            <div id="appsContainer"
+                 aria-live="polite"
+                 aria-label="Your selected music theory applications"
+                 role="region">
+            </div>
+
+            <!-- Upgrade Banner -->
+            <aside class="upgrade-banner" role="complementary" aria-label="Unlock more apps">
+                <h2>🎵 Unlock All 20+ Apps</h2>
+                <p>Upgrade to Premium or Founder and access our complete interactive music theory suite — every tool, every mode, every scale.</p>
+                <div class="btn-row">
+                    <a href="offerings.html" class="btn-outline" aria-label="Browse all available apps">
+                        Browse All Apps →
+                    </a>
+                    <a href="pricing.html" class="btn-outline purple" aria-label="View upgrade pricing">
+                        Upgrade Now →
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- ═══════════════════════════════════════ FOOTER -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p class="footer-brand">© 2026 Keys, Codes &amp; Modes™ · All Rights Reserved</p>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="terms-of-service.html">Terms of Service</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="refund-policy.html">Refund Policy</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <p class="footer-sub">
+                FreeStyle® is a registered trademark &nbsp;·&nbsp;
+                Created by <strong style="color:#F4D03F;">Benjamin Ryan</strong> &nbsp;·&nbsp;
+                Santa Barbara, California
+            </p>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════ JAVASCRIPT -->
+    <script>
+    'use strict';
+
+    /* ──────────────────────────────────────────
+       APP DATABASE
+       All filenames confirmed and live in /apps/
+    ────────────────────────────────────────── */
+    const ALL_APPS = [
+        {
+            id:       'holy-grail',
+            file:     'apps/holy-mole-grail.html',
+            icon:     '✨',
+            category: 'Flagship',
+            title:    'Holy Grail Chromatic Wheel',
+            desc:     'The ultimate all-in-one music theory visualization. Sacred geometry meets chromatic theory — scales, chords, modes, arpeggios, and audio synthesis in one breathtaking interface.',
+            features: ['Sacred geometry patterns', 'All scales & modes', 'Audio synthesis', 'Drag to rotate']
+        },
+        {
+            id:       'music-theory-pro',
+            file:     'apps/MusicTheoryPro_COMPLETE.html',
+            icon:     '🎼',
+            category: 'Theory',
+            title:    'Music Theory Explorer Pro',
+            desc:     'Flagship 4-panel synchronized view — chromatic circle, piano, guitar fretboard, and staff notation all moving together in real-time.',
+            features: ['4-panel sync display', '11 learning modes', 'Audio playback', 'MIDI compatible']
+        },
+        {
+            id:       'circle-of-fifths',
+            file:     'apps/circleoffiths_master001.html',
+            icon:     '⭕',
+            category: 'Theory',
+            title:    'Circle of Fifths Master',
+            desc:     'The essential music theory tool. Interactive rotating circle with triads, chord progressions, and full audio playback for every key.',
+            features: ['Major & minor triads', 'Arpeggio sequences', 'Key relationships', 'Audio synthesis']
+        },
+        {
+            id:       'guitar-fretboard-pro',
+            file:     'apps/Guitar Fretboard Explorer Pro.html',
+            icon:     '🎸',
+            category: 'Guitar',
+            title:    'Guitar Fretboard Explorer Pro',
+            desc:     'Visualize scales, modes, and the CAGED system across the full guitar neck with authentic fingering positions.',
+            features: ['CAGED system', '13 scale types', 'Variable fret views', 'Color-coded positions']
+        },
+        {
+            id:       'guitar-fretboard-complete',
+            file:     'apps/GuitarFretboardComplete.html',
+            icon:     '🎸',
+            category: 'Guitar',
+            title:    'Guitar Fretboard Complete',
+            desc:     'Complete fretboard visualization with all scales, chord shapes, and patterns — perfect for intermediate to advanced guitarists.',
+            features: ['All chord shapes', 'Scale patterns', 'Tuning options', 'Interactive notes']
+        },
+        {
+            id:       'chromatic-roulette',
+            file:     'apps/chromatic-roulette-wheel.html',
+            icon:     '🎡',
+            category: 'Visual',
+            title:    'Chromatic Roulette Wheel',
+            desc:     'Spin the color-coded chromatic wheel to discover note relationships, intervals, and scales in a gamified, visual format.',
+            features: ['Color-coded 12 notes', 'Interactive spinning', 'Scale visualization', 'Audio synthesis']
+        },
+        {
+            id:       'caged-explorer',
+            file:     'apps/caged-145-explorer.html',
+            icon:     '🔷',
+            category: 'Guitar',
+            title:    'CAGED 1-4-5 Explorer',
+            desc:     'Master the most powerful chord progressions in music. I-IV-V patterns mapped across all five CAGED positions.',
+            features: ['All 5 CAGED shapes', 'I-IV-V progressions', 'All 12 keys', 'Audio playback']
+        },
+        {
+            id:       'chromatic-scale-viz',
+            file:     'apps/guitar-chromatic-scale-visualizer-pro.html',
+            icon:     '🌈',
+            category: 'Guitar',
+            title:    'Chromatic Scale Visualizer Pro',
+            desc:     'See every chromatic note position mapped across the guitar neck — the foundation for understanding any scale or mode.',
+            features: ['All 12 chromatic notes', 'Full fretboard view', 'Color-coded pitches', 'Audio synthesis']
+        },
+        {
+            id:       'rhythm-clock',
+            file:     'apps/rhythm-clock.html',
+            icon:     '⏱️',
+            category: 'Rhythm',
+            title:    'Rhythmic Clock',
+            desc:     'Visualize rhythmic patterns on a circular clock face. Explore time signatures, polyrhythms, and groove patterns visually.',
+            features: ['Visual rhythm display', 'Time signature explorer', 'Polyrhythm visualization', 'Interactive metronome']
+        },
+        {
+            id:       'cymatics',
+            file:     'apps/kcm-cymatics-visualizer.html',
+            icon:     '🎯',
+            category: 'Visual',
+            title:    'Cymatics Visualizer',
+            desc:     'See sound come alive through cymatics — the sacred geometry of musical frequencies. Watch harmonics form stunning visual patterns.',
+            features: ['Real-time frequency viz', 'Sacred geometry', 'Harmonic resonance', 'Interactive sound']
+        },
+        {
+            id:       'tonic-sub-dom',
+            file:     'apps/Tonic subdominant dominant.html',
+            icon:     '🎵',
+            category: 'Theory',
+            title:    'Tonic · Sub · Dominant',
+            desc:     'Understand the harmonic backbone of all Western music. Interactive I-IV-V visualizer with audio across all keys.',
+            features: ['I-IV-V relationships', 'All 12 keys', 'Audio synthesis', 'Visual harmony map']
+        },
+        {
+            id:       'octave-wave',
+            file:     'apps/Octave_Wave_Visualizer.html',
+            icon:     '〰️',
+            category: 'Visual',
+            title:    'Octave Wave Visualizer',
+            desc:     'See the physics of octaves as waveforms. Understand frequency doubling and the relationship between pitches and waves.',
+            features: ['Live waveform display', 'Octave relationships', 'Frequency visualization', 'Audio synthesis']
+        },
+        {
+            id:       'rhythm-harmony',
+            file:     'apps/RHYTHM HARMONY SIMPLE.html',
+            icon:     '🥁',
+            category: 'Rhythm',
+            title:    'Rhythm Harmony Simple',
+            desc:     'A clean, beginner-friendly approach to understanding how rhythm and harmony connect — perfect starting point for new learners.',
+            features: ['Basic rhythm patterns', 'Harmonic progressions', 'Interactive exercises', 'Beginner-friendly']
+        }
+    ];
+
+    /* ──────────────────────────────────────────
+       BUILD CARD HTML
+    ────────────────────────────────────────── */
+    function buildCard(app, delay) {
+        const card = document.createElement('a');
+        card.className    = 'app-card';
+        card.href         = `https://keyscodesandmodes.com/${app.file}`;
+        card.target       = '_blank';
+        card.rel          = 'noopener noreferrer';
+        card.setAttribute('role', 'article');
+        card.setAttribute('aria-label', `Launch ${app.title} — opens in new tab`);
+        card.style.animationDelay = `${delay * 80}ms`;
+
+        const featHTML = app.features
+            .map(f => `<li>${f}</li>`)
+            .join('');
+
+        card.innerHTML = `
+            <span class="card-icon" aria-hidden="true">${app.icon}</span>
+            <span class="card-category">${app.category}</span>
+            <h2 class="card-title">${app.title}</h2>
+            <p class="card-desc">${app.desc}</p>
+            <ul class="card-features" aria-label="${app.title} features">${featHTML}</ul>
+            <span class="launch-btn" aria-hidden="true">
+                Launch App
+                <span class="launch-arrow" aria-hidden="true">→</span>
+            </span>
+        `;
+
+        /* Track clicks in GA4 */
+        card.addEventListener('click', () => {
+            trackEvent('app_launch', {
+                app_id:    app.id,
+                app_title: app.title,
+                category:  app.category
+            });
+        });
+
+        return card;
+    }
+
+    /* ──────────────────────────────────────────
+       RENDER — reads localStorage set by welcome-free-picker
+    ────────────────────────────────────────── */
+    function renderMyApps() {
+        const container  = document.getElementById('appsContainer');
+        const welcomeMsg = document.getElementById('welcomeMsg');
+
+        /* Personalise greeting */
+        const userName = localStorage.getItem('userName') || '';
+        if (userName) {
+            welcomeMsg.textContent = `Welcome back, ${userName}! 👋`;
+        }
+
+        /* Get selected app IDs from localStorage */
+        let selectedIds = [];
+        try {
+            selectedIds = JSON.parse(localStorage.getItem('freeApps') || '[]');
+        } catch(e) { selectedIds = []; }
+
+        /* No apps chosen yet */
+        if (!selectedIds.length) {
+            container.innerHTML = `
+                <div class="state-panel" role="alert">
+                    <h2>No Apps Selected Yet</h2>
+                    <p>You haven't picked your free apps yet.</p>
+                    <p style="margin-top:1rem;">
+                        <a href="welcome-free-picker.html">Choose your 3 free apps →</a>
+                    </p>
+                </div>`;
+            return;
+        }
+
+        /* Match IDs to app database */
+        const userApps = ALL_APPS.filter(a => selectedIds.includes(a.id));
+
+        if (!userApps.length) {
+            container.innerHTML = `
+                <div class="state-panel" role="alert">
+                    <h2>Apps Not Found</h2>
+                    <p>We couldn't locate your saved app selections.</p>
+                    <p style="margin-top:1rem;">
+                        <a href="welcome-free-picker.html">Re-select your apps →</a>
+                    </p>
+                </div>`;
+            return;
+        }
+
+        /* Build grid */
+        const grid = document.createElement('div');
+        grid.className = 'apps-grid';
+        grid.setAttribute('role', 'list');
+        grid.setAttribute('aria-label', 'Your selected music theory apps');
+
+        userApps.forEach((app, i) => {
+            const card = buildCard(app, i);
+            card.setAttribute('role', 'listitem');
+            grid.appendChild(card);
+        });
+
+        container.appendChild(grid);
+    }
+
+    document.addEventListener('DOMContentLoaded', renderMyApps);
+    </script>
+</body>
+</html>

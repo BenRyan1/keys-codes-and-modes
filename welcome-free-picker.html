@@ -1,576 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-6EGC5ZNZPF');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6EGC5ZNZPF', {
+            page_title: 'Choose Your Free Apps',
+            page_location: 'https://keyscodesandmodes.com/welcome-free-picker.html'
+        });
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#008080">
-    <title>Choose Your 3 Free Music Theory Apps | Keys, Codes &amp; Modes</title>
-    <meta name="description" content="Choose any 3 free interactive music theory apps from Keys, Codes & Modes. Visual learning tools for scales, chords, guitar, rhythm, and more. No credit card required.">
-    <meta name="keywords" content="music theory apps, free music theory, interactive music learning, scales, chords, circle of fifths, guitar fretboard, visual music theory">
+    <title>Choose Your 3 Free Apps | Keys, Codes &amp; Modes</title>
+    <meta name="description" content="Pick any 3 music theory apps from our library. Scales, guitar, chords, rhythm — your choice.">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="author" content="Benjamin Ryan">
     <link rel="canonical" href="https://keyscodesandmodes.com/welcome-free-picker.html">
-    <meta property="og:title" content="Choose Your 3 Free Music Theory Apps | Keys, Codes & Modes">
-    <meta property="og:description" content="Pick any 3 interactive music theory apps free. Visual learning that actually works.">
-    <meta property="og:url" content="https://keyscodesandmodes.com/welcome-free-picker.html">
-    <meta property="og:type" content="website">
-    
-    <!-- Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
-            --primary-teal: #008080;
-            --primary-gold: #F4D03F;
-            --primary-purple: #8B6BA3;
-            --primary-coral: #CF7A5A;
-            --dark-bg: #1a1a2e;
-            --darker-bg: #0f0f1e;
-            --light-text: #E8E8E8;
-            --font-display: 'Cinzel', serif;
-            --font-body: 'Montserrat', sans-serif;
+            --teal:    #008080;
+            --teal-lt: #00b3b3;
+            --gold:    #F4D03F;
+            --purple:  #8B6BA3;
+            --bg:      #080814;
+            --bg-card: rgba(255,255,255,0.04);
+            --text:    #E8E8E8;
+            --dim:     #9999bb;
+            --border:  rgba(0,128,128,0.25);
+            --fd:      'Cinzel', serif;
+            --fb:      'Montserrat', sans-serif;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: var(--font-body);
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
-            color: var(--light-text);
+            font-family: var(--fb);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
         }
-        
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-            background: 
-                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
-            animation: bgShift 20s ease infinite;
+
+        .bg-mesh {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 15% 40%, rgba(0,128,128,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 85% 70%, rgba(139,107,163,0.08) 0%, transparent 60%),
+                linear-gradient(180deg, #080814 0%, #0d0d1f 100%);
         }
-        
-        @keyframes bgShift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 30px) scale(1.1); }
+
+        .skip-link {
+            position:absolute; top:-60px; left:1rem;
+            background:var(--gold); color:#000;
+            padding:.75rem 1.5rem; border-radius:0 0 8px 8px;
+            font-weight:700; text-decoration:none; z-index:9999;
+            transition:top .2s ease;
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
+        .skip-link:focus { top:0; }
+
+        /* ── HEADER ── */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(8,8,20,0.92);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
         }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 3rem 2rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(0, 128, 128, 0.3);
+        .header-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        
-        .header h1 {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .logo {
+            font-family: var(--fd); font-size: 1.1rem; font-weight: 700;
+            letter-spacing: 2px; text-decoration: none;
+            background: linear-gradient(135deg, var(--gold), var(--teal-lt));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
-        .header .welcome-name {
-            font-size: 1.3rem;
-            color: var(--primary-gold);
-            margin-bottom: 1rem;
+        .back-link {
+            color: var(--dim); text-decoration: none; font-size: .85rem;
+            font-weight: 600; transition: color .2s;
         }
-        
-        .header p {
-            font-size: 1.2rem;
-            color: #ccc;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
+        .back-link:hover { color: var(--gold); }
+
+        /* ── HERO ── */
+        .hero {
+            text-align: center; padding: 3rem 2rem 2rem;
+            max-width: 700px; margin: 0 auto 1rem;
         }
-        
-        .selection-status {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: rgba(244, 208, 63, 0.1);
-            border: 2px solid var(--primary-gold);
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: 700;
+        .step-tag {
+            display: inline-block;
+            border: 1px solid var(--teal); color: var(--teal-lt);
+            font-size: .75rem; font-weight: 700; letter-spacing: 3px;
+            padding: .35rem 1rem; border-radius: 50px; margin-bottom: 1.25rem;
+            text-transform: uppercase;
         }
-        
-        .selection-count {
-            color: var(--primary-gold);
-            font-size: 2rem;
+        .hero h1 {
+            font-family: var(--fd); font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700; letter-spacing: 2px; margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--teal-lt) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; line-height: 1.2;
         }
-        
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+        .hero p { color: var(--dim); font-size: 1rem; line-height: 1.7; }
+
+        /* ── COUNTER BAR ── */
+        .counter-bar {
+            max-width: 900px; margin: 0 auto 2.5rem;
+            padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 1rem;
         }
-        
-        .app-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(0, 128, 128, 0.3);
-            border-radius: 15px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .app-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-teal);
-            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
-        }
-        
-        .app-card.selected {
-            border-color: var(--primary-gold);
-            background: rgba(244, 208, 63, 0.1);
-            box-shadow: 0 10px 30px rgba(244, 208, 63, 0.4);
-        }
-        
-        .app-card.selected::before {
-            content: "✓ SELECTED";
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary-gold);
-            color: var(--dark-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 0.8rem;
+        .counter {
+            font-family: var(--fd); font-size: 1rem; color: var(--gold);
             letter-spacing: 1px;
         }
-        
-        .app-card.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .dots {
+            display: flex; gap: .5rem;
         }
-        
-        .app-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .dot {
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid var(--teal);
+            background: transparent;
+            transition: background .25s, border-color .25s;
         }
-        
-        .app-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary-gold);
+        .dot.filled { background: var(--teal); border-color: var(--teal-lt); }
+
+        /* ── GRID ── */
+        main { padding: 0 2rem 4rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
         }
-        
-        .app-description {
-            color: #ccc;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-        
-        .app-features {
-            list-style: none;
-            padding: 0;
-            font-size: 0.9rem;
-        }
-        
-        .app-features li {
-            padding: 0.3rem 0;
-            padding-left: 1.2rem;
-            position: relative;
-        }
-        
-        .app-features li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--primary-teal);
-        }
-        
-        .flagship-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b, #ff8787);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-        }
-        
-        .continue-section {
-            text-align: center;
-            margin: 3rem 0;
-        }
-        
-        .continue-btn {
-            background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple));
-            color: white;
-            border: none;
-            padding: 1.5rem 3rem;
-            font-size: 1.3rem;
-            font-weight: 700;
-            border-radius: 50px;
+
+        /* ── PICK CARD ── */
+        .pick-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px; padding: 1.75rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font-body);
-            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
+            transition: transform .25s, border-color .25s, background .25s, box-shadow .25s;
+            position: relative; overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        .continue-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 128, 128, 0.5);
+        .pick-card:hover:not(.disabled) {
+            transform: translateY(-4px);
+            border-color: rgba(244,208,63,0.5);
+            background: rgba(255,255,255,0.07);
         }
-        
+        .pick-card:focus {
+            outline: 2px solid var(--gold); outline-offset: 3px;
+        }
+        /* Selected state */
+        .pick-card.selected {
+            border-color: var(--gold);
+            background: rgba(244,208,63,0.07);
+            box-shadow: 0 0 24px rgba(244,208,63,0.15);
+        }
+        .pick-card.selected::before {
+            content: '✓';
+            position: absolute; top: .75rem; right: .75rem;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--gold); color: #000;
+            font-weight: 900; font-size: .85rem;
+            display: flex; align-items: center; justify-content: center;
+            line-height: 1;
+            display: grid; place-items: center;
+        }
+        /* Disabled state */
+        .pick-card.disabled {
+            opacity: .4; cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .pick-icon { font-size: 2.4rem; margin-bottom: .9rem; display: block; }
+        .pick-cat {
+            font-size: .68rem; font-weight: 700; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--teal-lt); margin-bottom: .4rem;
+        }
+        .pick-title {
+            font-family: var(--fd); font-size: 1.05rem; font-weight: 700;
+            color: var(--gold); margin-bottom: .6rem; line-height: 1.3;
+        }
+        .pick-desc { font-size: .83rem; color: var(--dim); line-height: 1.6; }
+
+        /* ── STICKY FOOTER CTA ── */
+        .sticky-cta {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(8,8,20,0.97);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+            flex-wrap: wrap; z-index: 200;
+        }
+        .cta-hint { color: var(--dim); font-size: .88rem; }
+        .cta-hint strong { color: var(--gold); }
+
+        .continue-btn {
+            padding: .85rem 2.5rem;
+            background: linear-gradient(135deg, var(--gold), #ffe040);
+            color: #000; font-weight: 700; font-size: 1rem;
+            border: none; border-radius: 50px; cursor: pointer;
+            transition: all .25s;
+            box-shadow: 0 4px 20px rgba(244,208,63,0.3);
+            min-width: 200px;
+        }
         .continue-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+            opacity: .4; cursor: not-allowed;
+            box-shadow: none;
         }
-        
-        .upgrade-teaser {
-            background: linear-gradient(135deg, rgba(139, 107, 163, 0.2), rgba(207, 122, 90, 0.2));
-            border: 2px solid var(--primary-purple);
-            border-radius: 20px;
-            padding: 3rem;
-            text-align: center;
-            margin-top: 4rem;
+        .continue-btn:not(:disabled):hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 28px rgba(244,208,63,0.45);
         }
-        
-        .upgrade-teaser h3 {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary-gold);
+        .continue-btn:focus { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        /* bottom padding so sticky bar doesn't cover last card */
+        .pad-bottom { height: 100px; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 640px) {
+            main { padding: 0 1rem 4rem; }
+            .hero { padding: 2rem 1rem 1.5rem; }
+            .counter-bar { padding: 0 1rem; }
+            .picker-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .pick-card { padding: 1.25rem; }
+            .pick-icon { font-size: 2rem; }
+            .pick-title { font-size: .92rem; }
         }
-        
-        .upgrade-teaser p {
-            font-size: 1.1rem;
-            color: #ccc;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+        @media (max-width: 400px) {
+            .picker-grid { grid-template-columns: 1fr; }
         }
-        
-        .upgrade-link {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary-gold), var(--primary-coral));
-            color: var(--dark-bg);
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(244, 208, 63, 0.3);
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
         }
-        
-        .upgrade-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(244, 208, 63, 0.5);
-        }
-        
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .apps-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .continue-btn {
-                padding: 1rem 2rem;
-                font-size: 1.1rem;
-            }
+        @media (forced-colors: active) {
+            .pick-card { border: 2px solid ButtonText; }
+            .pick-card.selected { border: 3px solid Highlight; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
+    <div class="bg-mesh" aria-hidden="true"></div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header role="banner" style="background:linear-gradient(135deg,rgba(26,61,95,0.95) 0%,rgba(42,77,111,0.95) 100%);border-bottom:3px solid var(--primary-teal);box-shadow:0 4px 20px rgba(0,128,128,0.3);backdrop-filter:blur(10px);position:sticky;top:0;z-index:1000;">
-        <div style="max-width:1400px;margin:0 auto;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
-            <a href="index.html" style="text-decoration:none;" aria-label="Keys, Codes & Modes — home">
-                <span style="font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,#F4D03F,#008080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;">Keys, Codes &amp; Modes</span>
-            </a>
-            <nav aria-label="Primary navigation">
-                <ul style="list-style:none;display:flex;gap:1.5rem;align-items:center;margin:0;padding:0;flex-wrap:wrap;">
-                    <li><a href="index.html" style="color:#E8E8E8;text-decoration:none;font-weight:600;font-size:0.95rem;">Home</a></li>
-                    <li><a href="about.html" style="color:#E8E8E8;text-decoration:none;font-weight:600;font-size:0.95rem;">About</a></li>
-                    <li><a href="pricing.html" style="color:#E8E8E8;text-decoration:none;font-weight:600;font-size:0.95rem;">Pricing</a></li>
-                    <li><a href="contact.html" style="color:#E8E8E8;text-decoration:none;font-weight:600;font-size:0.95rem;">Contact</a></li>
-                </ul>
-            </nav>
+    <header role="banner">
+        <div class="header-inner">
+            <a href="index.html" class="logo" aria-label="Keys, Codes &amp; Modes — home">Keys, Codes &amp; Modes</a>
+            <a href="index.html" class="back-link">← Back to Home</a>
         </div>
     </header>
-    
-    <a href="#main-content" style="position:absolute;top:-40px;left:0;background:#F4D03F;color:#1a1a2e;padding:8px 16px;text-decoration:none;font-weight:bold;z-index:10000;border-radius:0 0 8px 0;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
-    
-    <div class="container" id="main-content">
-        <div class="header">
-            <div class="welcome-name" id="welcomeName">Welcome! 👋</div>
-            <h1>Choose Your 3 Free Apps</h1>
-            <p>Select any 3 music theory tools to unlock for free. These will be yours forever, no credit card required!</p>
-        </div>
-        
-        <div class="selection-status">
-            <span class="selection-count" id="selectionCount">0</span> / 3 Apps Selected
-        </div>
-        
-        <div class="apps-grid" id="appsGrid">
-            <!-- Apps will be loaded here -->
-        </div>
-        
-        <div class="continue-section">
-            <button class="continue-btn" id="continueBtn" disabled onclick="goToDashboard()">
-                Continue to Your Dashboard →
-            </button>
-            <p style="color: #999; margin-top: 1rem;">Select 3 apps to continue</p>
-        </div>
-        
-        <div class="upgrade-teaser">
-            <h3>Want ALL 20+ Apps?</h3>
-            <p>Upgrade to Premium and unlock our complete suite of music theory tools, plus exclusive features and priority support.</p>
-            <a href="pricing.html" class="upgrade-link">View Pricing Plans</a>
+
+    <section class="hero" aria-labelledby="page-title">
+        <span class="step-tag">Step 1 of 1</span>
+        <h1 id="page-title">Choose Any 3 Free Apps</h1>
+        <p>Pick any combination you like — guitar, theory, rhythm, or visual tools. You can come back and change your picks anytime.</p>
+    </section>
+
+    <!-- Selection counter -->
+    <div class="counter-bar" role="status" aria-live="polite" aria-label="Selection progress">
+        <span class="counter" id="counterText">0 of 3 selected</span>
+        <div class="dots" aria-hidden="true">
+            <div class="dot" id="dot1"></div>
+            <div class="dot" id="dot2"></div>
+            <div class="dot" id="dot3"></div>
         </div>
     </div>
-    
+
+    <main id="main-content" role="main">
+        <div class="container">
+            <div class="picker-grid" id="pickerGrid" role="list" aria-label="Available apps — select 3"></div>
+            <div class="pad-bottom"></div>
+        </div>
+    </main>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta" role="region" aria-label="Continue to your apps">
+        <span class="cta-hint" id="hintText">
+            Select <strong id="remaining">3</strong> more to continue
+        </span>
+        <button
+            class="continue-btn"
+            id="continueBtn"
+            disabled
+            aria-disabled="true"
+            onclick="goToMyApps()"
+            aria-label="Continue to your selected apps">
+            Continue →
+        </button>
+    </div>
+
     <script>
-        // The 8 gateway apps users can choose from
-        const GATEWAY_APPS = [
-            {
-                id: 'music-theory-pro',
-                file: 'MusicTheoryPro_copy.html',
-                icon: '🎼',
-                title: 'Music Theory Explorer Pro',
-                description: 'Our flagship comprehensive music theory visualization tool. See scales, chords, and modes in real-time.',
-                features: ['Visual chromatic circles', 'Interactive note selection', 'Audio playback', 'Multiple view modes'],
-                flagship: true
-            },
-            {
-                id: 'chromatic-roulette',
-                file: 'chromatic-roulette-v2.html',
-                icon: '🎨',
-                title: 'Chromatic Roulette',
-                description: 'Interactive color-coded chromatic wheel. Spin and learn the relationships between all 12 notes.',
-                features: ['Color-coded notes', 'Interactive spinning', 'Scale visualization', 'Audio synthesis'],
-                flagship: true
-            },
-            {
-                id: 'circle-of-fifths',
-                file: 'circleoffiths_master001.html',
-                icon: '⭕',
-                title: 'Circle of Fifths Master',
-                description: 'The essential music theory tool. Interactive circle with triads, progressions, and audio playback.',
-                features: ['Major & minor triads', 'Arpeggio sequences', 'Audio synthesis', 'Key relationships'],
-                flagship: true
-            },
-            {
-                id: 'guitar-fretboard',
-                file: 'guitar-fretboard-complete.html',
-                icon: '🎸',
-                title: 'Guitar Fretboard Mapper',
-                description: 'Visualize scales, chords, and patterns across the guitar neck. Essential for guitarists.',
-                features: ['All scales & modes', 'Chord shapes', 'CAGED system', 'Tuning options'],
-                flagship: false
-            },
-            {
-                id: 'scale-finder',
-                file: 'scale-finder.html',
-                icon: '🔍',
-                title: 'Scale Finder & Builder',
-                description: 'Explore every scale imaginable. Build custom scales and hear them instantly.',
-                features: ['100+ scales', 'Custom scale builder', 'Audio playback', 'Scale formulas'],
-                flagship: false
-            },
-            {
-                id: 'chord-builder',
-                file: 'chord-builder.html',
-                icon: '🎹',
-                title: 'Chord Builder Pro',
-                description: 'Construct any chord from scratch. Learn inversions, voicings, and extensions.',
-                features: ['All chord types', 'Inversions', 'Voicing options', 'Audio synthesis'],
-                flagship: false
-            },
-            {
-                id: 'rhythmic-clock',
-                file: 'rhythm-clock.html',
-                icon: '⏱️',
-                title: 'Rhythmic Clock',
-                description: 'Visualize rhythmic patterns through circular clock-face representation.',
-                features: ['Visual rhythm display', 'Time signature exploration', 'Polyrhythm visualization', 'Interactive metronome'],
-                flagship: false
-            },
-            {
-                id: 'cymatics-visualizer',
-                file: 'kcm-cymatics-visualizer.html',
-                icon: '🎯',
-                title: 'Cymatics Visualizer',
-                description: 'See sound come alive through cymatics patterns. Explore the visual geometry of musical frequencies.',
-                features: ['Real-time frequency visualization', 'Sacred geometry patterns', 'Harmonic resonance display', 'Interactive sound generation'],
-                flagship: false
-            }
-        ];
-        
-        let selectedApps = [];
-        
-        // Load user name from signup
-        const userName = localStorage.getItem('userName');
-        if (userName) {
-            document.getElementById('welcomeName').textContent = `Welcome, ${userName}! 👋`;
-        }
-        
-        // Load apps into grid
-        function loadApps() {
-            const appsGrid = document.getElementById('appsGrid');
-            appsGrid.innerHTML = '';
-            
-            GATEWAY_APPS.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                card.setAttribute('data-app-id', app.id);
-                card.onclick = () => toggleApp(app.id);
-                
-                const flagshipBadge = app.flagship ? '<span class="flagship-badge">⭐ Flagship</span>' : '';
-                
-                card.innerHTML = `
-                    ${flagshipBadge}
-                    <div class="app-icon">${app.icon}</div>
-                    <h3 class="app-title">${app.title}</h3>
-                    <p class="app-description">${app.description}</p>
-                    <ul class="app-features">
-                        ${app.features.map(f => `<li>${f}</li>`).join('')}
-                    </ul>
-                `;
-                
-                appsGrid.appendChild(card);
-            });
-        }
-        
-        // Toggle app selection
-        function toggleApp(appId) {
-            const card = document.querySelector(`[data-app-id="${appId}"]`);
-            
-            if (selectedApps.includes(appId)) {
-                // Deselect
-                selectedApps = selectedApps.filter(id => id !== appId);
-                card.classList.remove('selected');
-            } else {
-                // Select (if not at limit)
-                if (selectedApps.length < 3) {
-                    selectedApps.push(appId);
-                    card.classList.add('selected');
-                } else {
-                    alert('You can only select 3 apps. Deselect one first to choose another.');
-                    return;
+    'use strict';
+
+    // ═══════════════════════════════════════════════════════
+    // MASTER APP DATABASE  — IDs MUST match my-apps.html exactly
+    // ═══════════════════════════════════════════════════════
+    const ALL_APPS = [
+        { id:'holy-grail',             file:'apps/holy-mole-grail.html',                    icon:'✨', category:'Flagship', title:'Holy Grail Chromatic Wheel',     desc:'Sacred geometry meets chromatic theory — scales, chords, modes, and audio in one breathtaking wheel.' },
+        { id:'music-theory-pro',        file:'apps/MusicTheoryPro_COMPLETE.html',             icon:'🎼', category:'Theory',   title:'Music Theory Explorer Pro',      desc:'4-panel sync view: chromatic circle, piano, guitar fretboard, and staff notation live.' },
+        { id:'circle-of-fifths',        file:'apps/circleoffiths_master001.html',             icon:'⭕', category:'Theory',   title:'Circle of Fifths Master',        desc:'Rotating circle with triads, progressions, and audio for every key.' },
+        { id:'guitar-fretboard-pro',    file:'apps/Guitar Fretboard Explorer Pro.html',       icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Explorer Pro',  desc:'CAGED system, 13 scale types, and color-coded positions across the full neck.' },
+        { id:'guitar-fretboard-complete',file:'apps/GuitarFretboardComplete.html',            icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Complete',      desc:'Complete fretboard with all scales, chord shapes, and patterns for advanced players.' },
+        { id:'chromatic-roulette',      file:'apps/chromatic-roulette-wheel.html',            icon:'🎡', category:'Visual',   title:'Chromatic Roulette Wheel',       desc:'Spin the color-coded chromatic wheel — discover intervals and scales visually.' },
+        { id:'caged-explorer',          file:'apps/caged-145-explorer.html',                  icon:'🔷', category:'Guitar',   title:'CAGED 1-4-5 Explorer',           desc:'I-IV-V progressions mapped across all 5 CAGED shapes in all 12 keys.' },
+        { id:'chromatic-scale-viz',     file:'apps/guitar-chromatic-scale-visualizer-pro.html',icon:'🌈',category:'Guitar',  title:'Chromatic Scale Visualizer Pro', desc:'Every chromatic note position across the guitar neck — foundation for all scales.' },
+        { id:'rhythm-clock',            file:'apps/rhythm-clock.html',                        icon:'⏱️',category:'Rhythm',   title:'Rhythmic Clock',                 desc:'Time signatures, polyrhythms, and groove patterns on a visual clock face.' },
+        { id:'cymatics',                file:'apps/kcm-cymatics-visualizer.html',             icon:'🎯', category:'Visual',   title:'Cymatics Visualizer',            desc:'See sound as sacred geometry — musical frequencies forming stunning visual patterns.' },
+        { id:'tonic-sub-dom',           file:'apps/Tonic subdominant dominant.html',          icon:'🎵', category:'Theory',   title:'Tonic · Sub · Dominant',         desc:'Interactive I-IV-V visualizer across all keys — backbone of Western harmony.' },
+        { id:'octave-wave',             file:'apps/Octave_Wave_Visualizer.html',              icon:'〰️',category:'Visual',  title:'Octave Wave Visualizer',         desc:'See frequency doubling as waveforms — the physics of octaves visualized.' },
+        { id:'rhythm-harmony',          file:'apps/RHYTHM HARMONY SIMPLE.html',               icon:'🥁', category:'Rhythm',   title:'Rhythm Harmony Simple',          desc:'Beginner-friendly — rhythm and harmony connections made clear and interactive.' }
+    ];
+
+    let selected = []; // array of app IDs
+
+    /* ── BUILD GRID ── */
+    function buildGrid() {
+        const grid = document.getElementById('pickerGrid');
+        ALL_APPS.forEach(app => {
+            const card = document.createElement('div');
+            card.className   = 'pick-card';
+            card.dataset.id  = app.id;
+            card.setAttribute('role', 'checkbox');
+            card.setAttribute('aria-checked', 'false');
+            card.setAttribute('aria-label', `${app.title} — ${app.category}`);
+            card.setAttribute('tabindex', '0');
+
+            card.innerHTML = `
+                <span class="pick-icon" aria-hidden="true">${app.icon}</span>
+                <span class="pick-cat">${app.category}</span>
+                <h2 class="pick-title">${app.title}</h2>
+                <p class="pick-desc">${app.desc}</p>
+            `;
+
+            card.addEventListener('click',   () => toggleApp(app.id, card));
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleApp(app.id, card);
                 }
-            }
-            
-            updateUI();
+            });
+
+            grid.appendChild(card);
+        });
+    }
+
+    /* ── TOGGLE SELECTION ── */
+    function toggleApp(id, card) {
+        if (card.classList.contains('disabled') && !card.classList.contains('selected')) return;
+
+        if (selected.includes(id)) {
+            // Deselect
+            selected = selected.filter(s => s !== id);
+            card.classList.remove('selected');
+            card.setAttribute('aria-checked', 'false');
+        } else {
+            // Select (only if under limit)
+            if (selected.length >= 3) return;
+            selected.push(id);
+            card.classList.add('selected');
+            card.setAttribute('aria-checked', 'true');
         }
-        
-        // Update UI based on selection
-        function updateUI() {
-            document.getElementById('selectionCount').textContent = selectedApps.length;
-            
-            const continueBtn = document.getElementById('continueBtn');
-            if (selectedApps.length === 3) {
-                continueBtn.disabled = false;
-                continueBtn.nextElementSibling.textContent = 'Ready to go! 🚀';
+        updateUI();
+    }
+
+    /* ── UPDATE UI STATE ── */
+    function updateUI() {
+        const count     = selected.length;
+        const remaining = 3 - count;
+        const btn       = document.getElementById('continueBtn');
+        const hint      = document.getElementById('hintText');
+        const counter   = document.getElementById('counterText');
+
+        // Counter text
+        counter.textContent = `${count} of 3 selected`;
+
+        // Dots
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`dot${i}`).classList.toggle('filled', i <= count);
+        }
+
+        // Hint
+        if (count === 3) {
+            hint.innerHTML = `<strong style="color:var(--teal-lt)">✓ Perfect! 3 apps chosen</strong>`;
+        } else {
+            hint.innerHTML = `Select <strong>${remaining}</strong> more to continue`;
+        }
+
+        // Button
+        btn.disabled = count !== 3;
+        btn.setAttribute('aria-disabled', String(count !== 3));
+        if (count === 3) {
+            btn.textContent = 'Go to My Apps →';
+        } else {
+            btn.textContent = `Continue (${count}/3)`;
+        }
+
+        // Disable/enable cards
+        document.querySelectorAll('.pick-card').forEach(c => {
+            const isSelected = selected.includes(c.dataset.id);
+            if (count >= 3 && !isSelected) {
+                c.classList.add('disabled');
+                c.setAttribute('aria-disabled', 'true');
             } else {
-                continueBtn.disabled = true;
-                continueBtn.nextElementSibling.textContent = `Select ${3 - selectedApps.length} more app${3 - selectedApps.length > 1 ? 's' : ''} to continue`;
-            }
-            
-            // Disable unselected cards if at limit
-            if (selectedApps.length === 3) {
-                document.querySelectorAll('.app-card:not(.selected)').forEach(card => {
-                    card.classList.add('disabled');
-                });
-            } else {
-                document.querySelectorAll('.app-card').forEach(card => {
-                    card.classList.remove('disabled');
-                });
-            }
-        }
-        
-        // Go to dashboard with selected apps
-        function goToDashboard() {
-            if (selectedApps.length !== 3) {
-                alert('Please select exactly 3 apps to continue.');
-                return;
-            }
-            
-            // Save selections to localStorage
-            localStorage.setItem('freeApps', JSON.stringify(selectedApps));
-            localStorage.setItem('userTier', 'free');
-            
-            // Get app files for selected apps
-            const selectedAppFiles = GATEWAY_APPS
-                .filter(app => selectedApps.includes(app.id))
-                .map(app => app.file);
-            
-            localStorage.setItem('freeAppFiles', JSON.stringify(selectedAppFiles));
-            
-            // Redirect to my-apps.html
-            window.location.href = 'my-apps.html';
-        }
-        
-        // Initialize
-        loadApps();
-        
-        // Auto-select the 3 flagship apps by default (optional)
-        // This gives users a great starting point, but they can change it
-        const flagshipIds = GATEWAY_APPS.filter(app => app.flagship).map(app => app.id);
-        flagshipIds.forEach(id => {
-            if (selectedApps.length < 3) {
-                selectedApps.push(id);
-                document.querySelector(`[data-app-id="${id}"]`).classList.add('selected');
+                c.classList.remove('disabled');
+                c.removeAttribute('aria-disabled');
             }
         });
-        updateUI();
+    }
+
+    /* ── SAVE & REDIRECT ── */
+    function goToMyApps() {
+        if (selected.length !== 3) return;
+
+        // Save to localStorage — key 'freeApps' used by my-apps.html
+        localStorage.setItem('freeApps', JSON.stringify(selected));
+        localStorage.setItem('userTier', 'free');
+
+        // GA4 event
+        if (typeof gtag === 'function') {
+            gtag('event', 'apps_selected', {
+                selected_apps: selected.join(','),
+                count: selected.length
+            });
+        }
+
+        // Redirect to dashboard
+        window.location.href = 'my-apps.html';
+    }
+
+    // Init
+    buildGrid();
+    updateUI();
     </script>
-    <footer role="contentinfo" style="margin-top:4rem;padding-bottom:2rem;">
-        <div style="background:linear-gradient(135deg,rgba(0,128,128,0.15) 0%,rgba(139,107,163,0.15) 100%);border-top:2px solid #008080;border-bottom:2px solid #F4D03F;padding:2rem;text-align:center;backdrop-filter:blur(10px);max-width:900px;margin:0 auto;border-radius:12px;">
-            <p style="color:#F4D03F;font-weight:700;font-size:1rem;margin-bottom:0.8rem;font-family:'Cinzel',serif;letter-spacing:1px;">© 2026 Keys, Codes &amp; Modes™ | All Rights Reserved</p>
-            <p style="font-size:0.85rem;color:rgba(232,232,232,0.7);margin-bottom:0.6rem;">
-                <a href="terms.html" style="color:#008080;text-decoration:none;">Terms of Service</a> &nbsp;|&nbsp;
-                <a href="privacy-policy.html" style="color:#008080;text-decoration:none;">Privacy Policy</a> &nbsp;|&nbsp;
-                <a href="contact.html" style="color:#008080;text-decoration:none;">Contact</a>
-            </p>
-            <p style="font-size:0.8rem;color:rgba(232,232,232,0.5);">FreeStyle® is a registered trademark · Created by <strong style="color:#F4D03F;">Benjamin Ryan</strong> · Santa Barbara, California</p>
-        </div>
-    </footer>
 </body>
 </html>
