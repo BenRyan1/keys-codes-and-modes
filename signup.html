@@ -1,757 +1,176 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Cookie Consent CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
-
-<style>
-/* Custom styling for cookie consent banner */
-.cc-window {
-    font-family: 'Montserrat', sans-serif !important;
-    background: #0a0a15 !important;
-    border: 2px solid #008080 !important;
-    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3) !important;
-}
-.cc-btn {
-    background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important;
-    border: none !important;
-    padding: 0.75rem 2rem !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-}
-.cc-btn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 5px 15px rgba(0, 128, 128, 0.4) !important;
-}
-.cc-link { color: #F4D03F !important; }
-.cc-link:hover { color: #008080 !important; }
-</style>
-
-<!-- Cookie Consent Script -->
-<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
-<script>
-window.addEventListener('load', function() {
-  window.cookieconsent.initialise({
-    palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
-    theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "https://keyscodesandmodes.com/privacy-policy.html" },
-    onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
-    onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
-  });
-});
-function loadGoogleAnalytics() {
-  if (window.gaLoaded) return; window.gaLoaded = true;
-  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
-  gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
-}
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
-</script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#008080">
     <title>Start Your Free Musical Journey | Keys, Codes & Modes</title>
-    <meta name="description" content="Sign up free for Keys, Codes & Modes — the world's most interactive visual music theory platform. Choose 3 apps instantly. No credit card required.">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="author" content="Benjamin Ryan">
-    <link rel="canonical" href="https://keyscodesandmodes.com/signup.html">
-
-    <!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Keys, Codes & Modes">
-    <meta property="og:title" content="Start Your Free Musical Journey | Keys, Codes & Modes">
-    <meta property="og:description" content="Sign up free and choose any 3 interactive music theory apps from our premium suite. Visual learning that actually works.">
-    <meta property="og:url" content="https://keyscodesandmodes.com/signup.html">
-    <meta property="og:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter / X Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@keyscodesmodes">
-    <meta name="twitter:creator" content="@keyscodesmodes">
-    <meta name="twitter:title" content="Start Your Free Musical Journey | Keys, Codes & Modes">
-    <meta name="twitter:description" content="Sign up free and choose any 3 interactive music theory apps. Visual learning that actually works.">
-    <meta name="twitter:image" content="https://keyscodesandmodes.com/images/kcm-social-share.jpg">
-
-    <!-- Schema.org Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Sign Up — Keys, Codes & Modes",
-      "description": "Sign up free for Keys, Codes & Modes interactive music theory platform.",
-      "url": "https://keyscodesandmodes.com/signup.html",
-      "isPartOf": {
-        "@type": "WebSite",
-        "name": "Keys, Codes & Modes",
-        "url": "https://keyscodesandmodes.com"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "Benjamin Ryan",
-        "jobTitle": "Music Educator, Inventor",
-        "address": { "@type": "PostalAddress", "addressLocality": "Santa Barbara", "addressRegion": "CA" }
-      }
-    }
-    </script>
-    
+    <meta name="description" content="Sign up free for Keys, Codes & Modes — choose 3 apps instantly. No credit card required.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
-            --primary-teal: #008080;
-            --primary-gold: #F4D03F;
-            --primary-purple: #8B6BA3;
-            --dark-bg: #1a1a2e;
-            --darker-bg: #0f0f1e;
-            --light-text: #E8E8E8;
-            --font-display: 'Cinzel', serif;
-            --font-body: 'Montserrat', sans-serif;
+            --teal: #008080;
+            --gold: #F4D03F;
+            --purple: #8B6BA3;
+            --dark: #1a1a2e;
+            --darker: #0f0f1e;
+            --text: #E8E8E8;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--primary-gold);
-            color: var(--dark-bg);
-            padding: 8px 16px;
-            text-decoration: none;
-            font-weight: bold;
-            z-index: 10000;
-        }
-        
-        .skip-link:focus {
-            top: 0;
-        }
-        
-        /* Screen reader only — visually hidden but accessible */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0,0,0,0);
-            white-space: nowrap;
-            border: 0;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: var(--font-body);
+            font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
-            color: var(--light-text);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-            background: 
-                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
-            animation: bgShift 20s ease infinite;
-        }
-        
-        @keyframes bgShift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 30px) scale(1.1); }
-        }
-        
         header {
-            background: linear-gradient(135deg, rgba(26, 61, 95, 0.95) 0%, rgba(42, 77, 111, 0.95) 100%);
-            border-bottom: 3px solid var(--primary-teal);
-            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3);
-            backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(26,61,95,0.95), rgba(42,77,111,0.95));
+            border-bottom: 3px solid var(--teal);
             padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            text-decoration: none;
-        }
-        
-        .logo-text h1 {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 2px;
-        }
-        
-        .back-link {
-            color: var(--primary-gold);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            padding: 0.5rem 1.5rem;
-            border: 2px solid var(--primary-gold);
-            border-radius: 50px;
-        }
-        
-        .back-link:hover,
-        .back-link:focus {
-            background: var(--primary-gold);
-            color: var(--dark-bg);
-        }
-        
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        
-        .signup-container {
-            max-width: 600px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(0, 128, 128, 0.3);
+        .logo { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        nav a { color: var(--text); text-decoration: none; margin-left: 1.5rem; font-weight: 600; }
+        nav a:hover { color: var(--gold); }
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .box {
+            max-width: 580px; width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(0,128,128,0.3);
             border-radius: 20px;
             padding: 3rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 0.6s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; text-align: center; margin-bottom: 1rem; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .sub { text-align: center; color: #ccc; margin-bottom: 2rem; line-height: 1.6; }
+        .benefits { background: rgba(244,208,63,0.1); border-left: 4px solid var(--gold); padding: 1.5rem; margin-bottom: 2rem; border-radius: 8px; }
+        .benefits h3 { color: var(--gold); margin-bottom: 0.8rem; }
+        .benefits li { list-style: none; padding: 0.3rem 0 0.3rem 1.5rem; position: relative; }
+        .benefits li:before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .fg { margin-bottom: 1.5rem; }
+        input[type=text], input[type=email] {
+            width: 100%; padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(0,128,128,0.3);
+            border-radius: 8px; color: white; font-size: 1rem;
         }
-        
-        .signup-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-        
-        .signup-header h2 {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .signup-header p {
-            color: #ccc;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        
-        .benefits {
-            background: rgba(244, 208, 63, 0.1);
-            border-left: 4px solid var(--primary-gold);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-        
-        .benefits h3 {
-            color: var(--primary-gold);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .benefits ul {
-            list-style: none;
-        }
-        
-        .benefits li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-        
-        .benefits li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--primary-gold);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .signup-form {
-            width: 100%;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--light-text);
-        }
-        
-        input[type="text"],
-        input[type="email"] {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(0, 128, 128, 0.3);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
+        input:focus { outline: none; border-color: var(--teal); }
+        input::placeholder { color: rgba(255,255,255,0.5); }
+        .btn {
+            width: 100%; padding: 1.25rem;
+            background: linear-gradient(135deg, var(--gold), #e6c62f);
+            color: var(--dark); border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 6px 25px rgba(244,208,63,0.4);
             transition: all 0.3s;
         }
-        
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: var(--primary-teal);
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.65); /* WCAG AA compliant on dark bg */
-        }
-        
-        /* High-visibility focus for keyboard navigation (WCAG 2.4.7) */
-        :focus-visible {
-            outline: 3px solid var(--primary-gold);
-            outline-offset: 3px;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 1.25rem;
-            background: linear-gradient(135deg, var(--primary-gold), #e6c62f);
-            color: var(--dark-bg);
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .submit-btn:hover:not(:disabled),
-        .submit-btn:focus:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
-        }
-        
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .privacy-note {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: #b0b0b0; /* Improved contrast ratio for WCAG AA */
-        }
-        
-        .privacy-note a {
-            color: var(--primary-teal);
-            text-decoration: none;
-        }
-        
-        .privacy-note a:hover {
-            text-decoration: underline;
-        }
-        
-        .social-proof {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .social-proof p {
-            color: var(--primary-gold);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        #formStatus {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 1rem;
-            display: none;
-        }
-        
-        #formStatus.success {
-            color: var(--primary-gold);
-        }
-        
-        #formStatus.error {
-            color: #ff6b6b;
-        }
-        
-        /* ============================================================
-           RESPONSIVE BREAKPOINTS
-           xs:  < 480px   — small phones (iPhone SE, Galaxy S)
-           sm:  480–767px — large phones (iPhone 14, Pixel)
-           md:  768–1023px — tablets (iPad Mini, iPad Air, Surface)
-           lg:  1024–1439px — laptops, iPad Pro landscape
-           xl:  1440px+  — large desktops, 4K monitors
-           ============================================================ */
-
-        /* --- Large Desktop (1440px+) --- */
-        @media (min-width: 1440px) {
-            .signup-container {
-                max-width: 680px;
-                padding: 3.5rem;
-            }
-            .signup-header h2 { font-size: 3rem; }
-            .submit-btn { font-size: 1.3rem; padding: 1.4rem; }
-        }
-
-        /* --- Laptop / iPad Pro landscape (1024px–1439px) --- */
-        @media (min-width: 1024px) and (max-width: 1439px) {
-            .signup-container { max-width: 580px; }
-        }
-
-        /* --- Tablet portrait: iPad Mini, iPad Air (768px–1023px) --- */
-        @media (max-width: 1023px) and (min-width: 768px) {
-            .signup-container {
-                max-width: 540px;
-                padding: 2.5rem;
-            }
-            .signup-header h2 { font-size: 2.2rem; }
-            .header-content {
-                padding: 1.2rem 1.5rem;
-            }
-        }
-
-        /* --- Large phones / small tablets (480px–767px) --- */
-        @media (max-width: 767px) {
-            main { padding: 1.5rem 1rem; }
-
-            .header-content {
-                flex-direction: column;
-                gap: 0.75rem;
-                text-align: center;
-                padding: 1rem;
-            }
-            .logo-text h1 { font-size: 1.2rem; }
-            .back-link { font-size: 0.9rem; padding: 0.4rem 1.2rem; }
-
-            .signup-container {
-                padding: 2rem 1.5rem;
-                border-radius: 16px;
-            }
-            .signup-header h2 { font-size: 1.9rem; }
-            .signup-header p { font-size: 1rem; }
-
-            .benefits { padding: 1.25rem; }
-            .benefits h3 { font-size: 1.1rem; }
-            .benefits li { font-size: 0.95rem; }
-
-            input[type="text"],
-            input[type="email"] {
-                font-size: 16px; /* Prevents iOS zoom on focus */
-                padding: 0.9rem;
-            }
-            .submit-btn {
-                font-size: 1.1rem;
-                padding: 1.1rem;
-            }
-        }
-
-        /* --- Small phones (< 480px) — iPhone SE, Galaxy A series --- */
-        @media (max-width: 479px) {
-            main { padding: 1rem 0.75rem; }
-
-            .signup-container {
-                padding: 1.5rem 1.25rem;
-                border-radius: 12px;
-                border-width: 1px;
-            }
-            .signup-header h2 {
-                font-size: 1.6rem;
-                letter-spacing: 0;
-            }
-            .signup-header p { font-size: 0.95rem; }
-
-            .benefits li { font-size: 0.9rem; }
-
-            label { font-size: 0.95rem; }
-
-            input[type="text"],
-            input[type="email"] {
-                font-size: 16px; /* Critical — prevents iOS auto-zoom */
-                padding: 0.85rem 0.9rem;
-            }
-            .submit-btn {
-                font-size: 1rem;
-                padding: 1rem;
-                letter-spacing: 0;
-            }
-            .privacy-note { font-size: 0.8rem; }
-            .social-proof p { font-size: 0.95rem; }
-        }
-
-        /* --- Touch device optimizations --- */
-        @media (hover: none) and (pointer: coarse) {
-            .submit-btn:hover:not(:disabled) {
-                transform: none; /* Disable hover lift on touch */
-            }
-            .back-link:hover {
-                background: none;
-                color: var(--primary-gold);
-            }
-            /* Larger touch targets (WCAG 2.5.5 — min 44×44px) */
-            .submit-btn { min-height: 52px; }
-            .back-link { min-height: 44px; display: inline-flex; align-items: center; }
-        }
-
-        /* --- Reduced motion (WCAG 2.3.3) --- */
-        @media (prefers-reduced-motion: reduce) {
-            .bg-animation { animation: none; }
-            .signup-container { animation: none; }
-            * { transition-duration: 0.01ms !important; }
-        }
-
-        /* --- High contrast mode (Windows accessibility) --- */
-        @media (forced-colors: active) {
-            .submit-btn { border: 2px solid ButtonText; }
-            input[type="text"], input[type="email"] { border: 2px solid ButtonText; }
-        }
-
-        /* --- Print --- */
-        @media print {
-            .bg-animation, header, .social-proof { display: none; }
-            .signup-container { box-shadow: none; border: 1px solid #ccc; }
-            body { background: white; color: black; }
-        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(244,208,63,0.6); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        #status { text-align: center; margin-top: 1rem; font-size: 1rem; display: none; padding: 1rem; border-radius: 8px; }
+        #status.success { color: var(--gold); background: rgba(244,208,63,0.1); display: block; }
+        #status.error { color: #ff6b6b; background: rgba(255,107,107,0.1); display: block; }
+        .note { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #999; }
+        .note a { color: var(--teal); text-decoration: none; }
+        footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(0,128,128,0.3); color: #999; font-size: 0.85rem; }
+        footer a { color: var(--teal); text-decoration: none; }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
-    
-    <a href="#main" class="skip-link">Skip to main content</a>
-    
-    <header role="banner">
-        <div class="header-content">
-            <a href="/index.html" class="logo-container" aria-label="Keys, Codes & Modes — return to home page">
-                <div class="logo-text">
-                    <h1>Keys, Codes &amp; Modes</h1>
-                </div>
-            </a>
-            <nav aria-label="Primary navigation">
-                <ul style="list-style:none;display:flex;gap:1.5rem;align-items:center;margin:0;padding:0;flex-wrap:wrap;">
-                    <li><a href="/index.html" style="color:var(--light-text);text-decoration:none;font-weight:600;">Home</a></li>
-                    <li><a href="/about.html" style="color:var(--light-text);text-decoration:none;font-weight:600;">About</a></li>
-                    <li><a href="/pricing.html" style="color:var(--light-text);text-decoration:none;font-weight:600;">Pricing</a></li>
-                    <li><a href="/contact.html" style="color:var(--light-text);text-decoration:none;font-weight:600;">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+    <header>
+        <a href="/index.html" class="logo">Keys, Codes &amp; Modes</a>
+        <nav>
+            <a href="/index.html">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/contact.html">Contact</a>
+        </nav>
     </header>
-    
-    <main id="main" role="main" aria-label="Free signup form">
-        <div class="signup-container">
-            <div class="signup-header">
-                <h2>Start Your Musical Journey</h2>
-                <p>Join thousands of musicians mastering theory through visual, interactive learning</p>
-            </div>
-            
-            <div class="benefits" role="region" aria-label="What you get with free access">
+
+    <main>
+        <div class="box">
+            <h2>Start Your Musical Journey</h2>
+            <p class="sub">Join musicians mastering theory through visual, interactive learning</p>
+
+            <div class="benefits">
                 <h3>What You Get (FREE):</h3>
                 <ul>
                     <li>Choose ANY 3 interactive apps from our premium suite</li>
                     <li>Instant access to professional-grade music theory tools</li>
                     <li>Visual learning system proven to accelerate understanding</li>
-                    <li>Join our vibrant community of musicians worldwide</li>
                     <li>Exclusive tips, lessons, and theory insights via email</li>
                 </ul>
             </div>
-            
-            <!-- MAILERLITE FORM (via Cloudflare Worker) -->
-            <form class="signup-form" id="signupForm" novalidate aria-label="Free account signup">
-                <div class="form-group">
-                    <label for="firstName">First Name <span aria-hidden="true">*</span></label>
-                    <input 
-                        type="text" 
-                        id="firstName" 
-                        name="firstName"
-                        placeholder="Enter your first name"
-                        autocomplete="given-name"
-                        aria-required="true"
-                        aria-describedby="firstName-hint"
-                        required>
-                    <span id="firstName-hint" class="sr-only">Required. Enter your first name.</span>
+
+            <form id="signupForm">
+                <div class="fg">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" placeholder="Enter your first name" required>
                 </div>
-                
-                <div class="form-group">
-                    <label for="email">Email Address <span aria-hidden="true">*</span></label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                        aria-required="true"
-                        aria-describedby="email-hint"
-                        required>
-                    <span id="email-hint" class="sr-only">Required. Enter a valid email address. You can unsubscribe at any time.</span>
+                <div class="fg">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
                 </div>
-                
-                <button type="submit" class="submit-btn" id="submitBtn" aria-live="polite">
-                    Get Free Access Now →
-                </button>
-                
-                <div id="formStatus" role="alert" aria-live="assertive" aria-atomic="true"></div>
+                <button type="submit" class="btn" id="btn">Get Free Access Now →</button>
+                <div id="status"></div>
             </form>
-            
-            <div class="privacy-note">
-                <p>We respect your privacy. No spam, ever. Unsubscribe anytime.
-                   <a href="https://keyscodesandmodes.com/terms.html">Terms of Service</a> | <a href="https://keyscodesandmodes.com/privacy-policy.html">Privacy Policy</a>
-                </p>
-                <!-- CAN-SPAM / CASL / GDPR compliance notice -->
-                <p style="font-size:0.8rem; margin-top:0.5rem; color:#999;">
-                    By signing up you agree to receive email communications from Keys, Codes &amp; Modes.
-                    You may withdraw consent at any time via the unsubscribe link in any email.
-                    We process data per our <a href="https://keyscodesandmodes.com/privacy-policy.html" style="color:var(--primary-teal);">Privacy Policy</a>.
-                    Keys, Codes &amp; Modes · 1187 Coast Village Rd #110 · Santa Barbara, CA 93108
-                </p>
-            </div>
-            
-            <div class="social-proof" aria-label="Social proof">
-                <p>🎵 Join musicians already learning visually</p>
-            </div>
+
+            <p class="note">No spam, ever. Unsubscribe anytime.<br>
+                <a href="/privacy-policy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a>
+            </p>
         </div>
     </main>
-    
-    <script>
-        // ===== CLOUDFLARE WORKER URL =====
-        const WORKER_URL = 'https://keys-codes-and-modes-mailer-lite.ben-03b.workers.dev';
-        // ==================================
-        
-        const form = document.getElementById('signupForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const formStatus = document.getElementById('formStatus');
-        
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const firstName = document.getElementById('firstName').value;
-            const email = document.getElementById('email').value;
-            
-            // Store user data in localStorage
-            localStorage.setItem('userTier', 'free');
-            localStorage.setItem('signupComplete', 'true');
-            localStorage.setItem('userName', firstName);
-            localStorage.setItem('userEmail', email);
-            
-            // Disable submit button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
-            
-            // Track with analytics
-            try {
-                trackEvent('form_submit', {
-                    'event_category': 'signup',
-                    'event_label': 'free_tier_mailerlite'
-                });
-            } catch(err) {
-                console.log('Analytics tracking failed:', err);
-            }
-            
-            // Submit to Cloudflare Worker
-            try {
-                const formData = new FormData();
-                formData.append('firstName', firstName);
-                formData.append('email', email);
-                
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok && result.success) {
-                    // Success! Show message and redirect
-                    formStatus.textContent = '✅ Success! Taking you to choose your free apps...';
-                    formStatus.className = 'success';
-                    formStatus.style.display = 'block';
-                    
-                    // Redirect to app picker after 1 second
-                    setTimeout(function() {
-                        window.location.href = '/welcome-free-picker.html';
-                    }, 1000);
-                } else {
-                    // Error handling
-                    formStatus.textContent = '❌ ' + (result.error || 'Something went wrong. Please try again.');
-                    formStatus.className = 'error';
-                    formStatus.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Get Free Access Now →';
-                }
-            } catch (error) {
-                // Network error
-                console.error('Submission error:', error);
-                formStatus.textContent = '❌ Network error. Please check your connection.';
-                formStatus.className = 'error';
-                formStatus.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Get Free Access Now →';
-            }
-        });
-    </script>
-    <footer role="contentinfo" style="margin-top:3rem;">
-        <div style="background:linear-gradient(135deg,rgba(0,128,128,0.15) 0%,rgba(139,107,163,0.15) 100%);border-top:2px solid #008080;border-bottom:2px solid #F4D03F;padding:2rem;text-align:center;backdrop-filter:blur(10px);max-width:900px;margin:0 auto;border-radius:12px;">
-            <p style="color:#F4D03F;font-weight:700;font-size:1rem;margin-bottom:0.8rem;font-family:'Cinzel',serif;letter-spacing:1px;">© 2026 Keys, Codes &amp; Modes™ | All Rights Reserved</p>
-            <p style="font-size:0.85rem;color:rgba(232,232,232,0.7);margin-bottom:0.6rem;">
-                <a href="/terms.html" style="color:var(--primary-teal);text-decoration:none;">Terms of Service</a> &nbsp;|&nbsp;
-                <a href="/privacy-policy.html" style="color:var(--primary-teal);text-decoration:none;">Privacy Policy</a> &nbsp;|&nbsp;
-                <a href="/contact.html" style="color:var(--primary-teal);text-decoration:none;">Contact</a>
-            </p>
-            <p style="font-size:0.8rem;color:rgba(232,232,232,0.5);">FreeStyle® is a registered trademark · Created by <strong style="color:#F4D03F;">Benjamin Ryan</strong> · Santa Barbara, California</p>
-        </div>
+
+    <footer>
+        <p>© 2026 Keys, Codes &amp; Modes™ | Benjamin Ryan | Santa Barbara, CA |
+        <a href="/privacy-policy.html">Privacy</a> | <a href="/terms.html">Terms</a> | <a href="/contact.html">Contact</a></p>
     </footer>
+
+    <script>
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const firstName = document.getElementById('firstName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const btn = document.getElementById('btn');
+        const status = document.getElementById('status');
+
+        if (!firstName || !email) {
+            status.textContent = '❌ Please fill in your name and email.';
+            status.className = 'error';
+            return;
+        }
+
+        // Save to localStorage immediately
+        localStorage.setItem('userName', firstName);
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userTier', 'free');
+        localStorage.setItem('signupComplete', 'true');
+
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+        status.textContent = '✅ Welcome! Taking you to choose your free apps...';
+        status.className = 'success';
+
+        // Send to MailerLite via Worker in background (don't wait for it)
+        fetch('https://keys-codes-and-modes-mailer-lite.ben-03b.workers.dev', {
+            method: 'POST',
+            body: new URLSearchParams({ firstName: firstName, email: email })
+        }).catch(function() {
+            // Silent fail - user still gets through
+        });
+
+        // Redirect immediately after 1.5 seconds - don't wait for Worker
+        setTimeout(function() {
+            window.location.href = '/welcome-free-picker.html';
+        }, 1500);
+    });
+    </script>
 </body>
 </html>
