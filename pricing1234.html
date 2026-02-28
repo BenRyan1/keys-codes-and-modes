@@ -480,50 +480,59 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </div>
     
     <script>
-        // Access Code Redemption - codes validated server-side via Cloudflare Worker
-        // No codes are stored in this file — validation happens entirely on the server
-        async function redeemAccessCode(event) {
+        // Access Code Redemption - FIXED VERSION
+        function redeemAccessCode(event) {
             event.preventDefault();
-
+            
             const codeInput = document.getElementById('accessCodeInput');
-            const submitBtn = event.target.querySelector('button[type="submit"]');
-            const code = codeInput.value.trim();
-
-            submitBtn.textContent = 'Checking...';
-            submitBtn.disabled = true;
-
-            try {
-                const response = await fetch('/api/validate-code', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code })
-                });
-
-                const result = await response.json();
-
-                if (result.valid) {
-                    localStorage.setItem('validAccessCode', 'true');
-                    localStorage.setItem('accessCodeUsed', code);
-                    localStorage.setItem('paidMember', 'true');
-                    localStorage.setItem('userTier', result.tier);
-                    localStorage.setItem('accessGranted', 'true');
-                    localStorage.setItem('accessLevel', result.tier);
-
-                    alert('✅ Access code validated! Welcome to Keys, Codes & Modes!');
-                    setTimeout(() => { window.location.href = 'offerings.html'; }, 500);
-
-                } else {
-                    alert('❌ Invalid access code. Please check and try again.\n\nNeed help? Contact ben@keyscodesandmodes.com');
-                    codeInput.value = '';
-                    codeInput.focus();
-                    submitBtn.textContent = 'Redeem Access Code →';
-                    submitBtn.disabled = false;
-                }
-
-            } catch (err) {
-                alert('⚠️ Unable to validate code right now. Please try again shortly.');
-                submitBtn.textContent = 'Redeem Access Code →';
-                submitBtn.disabled = false;
+            const code = codeInput.value.trim(); // Don't convert to uppercase yet
+            
+            // Define all valid access codes (case-insensitive)
+            const CODES = {
+                // Premium access codes
+                'KCM2026Premium!': 'premium',
+                'KCM2026PREMIUM!': 'premium',
+                
+                // Founder access codes
+                'KCM2026Founder!': 'founder',
+                'KCM2026FOUNDER!': 'founder',
+                'FriendOfBen2026!': 'founder',
+                'FRIENDOFBEN2026!': 'founder',
+                
+                // Beta/Special access codes
+                'BetaTester2026!': 'special',
+                'BETATESTER2026!': 'special',
+                'PressAccess2026!': 'special',
+                'PRESSACCESS2026!': 'special',
+                'DemoAccess2026!': 'special',
+                'DEMOACCESS2026!': 'special'
+            };
+            
+            // Check if code is valid
+            const tier = CODES[code];
+            
+            if (tier) {
+                // Valid code found!
+                localStorage.setItem('validAccessCode', 'true');
+                localStorage.setItem('accessCodeUsed', code);
+                localStorage.setItem('paidMember', 'true');
+                localStorage.setItem('userTier', tier);
+                localStorage.setItem('accessGranted', 'true');
+                localStorage.setItem('accessLevel', tier);
+                
+                // Success message
+                alert('✅ Access code validated! Welcome to Keys, Codes & Modes!');
+                
+                // Redirect to offerings page
+                setTimeout(() => {
+                    window.location.href = 'offerings.html';
+                }, 500);
+                
+            } else {
+                // Invalid code
+                alert('❌ Invalid access code. Please check your code and try again.\n\nMake sure to include the exclamation mark at the end!\n\nNeed help? Contact ben@keyscodesandmodes.com');
+                codeInput.value = '';
+                codeInput.focus();
             }
         }
         
