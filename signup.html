@@ -8,13 +8,23 @@
     <meta name="description" content="Sign up free for Keys, Codes & Modes — choose 3 apps instantly. No credit card required.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- MailerLite Universal -->
+    <script>
+        (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+        (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+        ml('account', '2099860');
+    </script>
+    <!-- End MailerLite Universal -->
+
     <style>
         :root {
             --teal: #008080;
             --gold: #F4D03F;
             --purple: #8B6BA3;
             --dark: #1a1a2e;
-            --darker: #0f0f1e;
             --text: #E8E8E8;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,53 +43,74 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-        .logo { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
         nav a { color: var(--text); text-decoration: none; margin-left: 1.5rem; font-weight: 600; }
         nav a:hover { color: var(--gold); }
         main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
         .box {
-            max-width: 580px; width: 100%;
+            max-width: 620px; width: 100%;
             background: rgba(255,255,255,0.05);
             border: 2px solid rgba(0,128,128,0.3);
             border-radius: 20px;
             padding: 3rem;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-        h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; text-align: center; margin-bottom: 1rem; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
         .sub { text-align: center; color: #ccc; margin-bottom: 2rem; line-height: 1.6; }
-        .benefits { background: rgba(244,208,63,0.1); border-left: 4px solid var(--gold); padding: 1.5rem; margin-bottom: 2rem; border-radius: 8px; }
+        .benefits {
+            background: rgba(244,208,63,0.1);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
         .benefits h3 { color: var(--gold); margin-bottom: 0.8rem; }
         .benefits li { list-style: none; padding: 0.3rem 0 0.3rem 1.5rem; position: relative; }
         .benefits li:before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-        .fg { margin-bottom: 1.5rem; }
-        input[type=text], input[type=email] {
-            width: 100%; padding: 1rem;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(0,128,128,0.3);
-            border-radius: 8px; color: white; font-size: 1rem;
+
+        /* MailerLite form styling */
+        .ml-embedded { margin-top: 1rem; }
+        .ml-embedded .ml-form-embedWrapper {
+            background: transparent !important;
         }
-        input:focus { outline: none; border-color: var(--teal); }
-        input::placeholder { color: rgba(255,255,255,0.5); }
-        .btn {
-            width: 100%; padding: 1.25rem;
-            background: linear-gradient(135deg, var(--gold), #e6c62f);
-            color: var(--dark); border: none; border-radius: 50px;
-            font-size: 1.2rem; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 6px 25px rgba(244,208,63,0.4);
-            transition: all 0.3s;
-        }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(244,208,63,0.6); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        #status { text-align: center; margin-top: 1rem; font-size: 1rem; display: none; padding: 1rem; border-radius: 8px; }
-        #status.success { color: var(--gold); background: rgba(244,208,63,0.1); display: block; }
-        #status.error { color: #ff6b6b; background: rgba(255,107,107,0.1); display: block; }
+
         .note { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #999; }
         .note a { color: var(--teal); text-decoration: none; }
-        footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(0,128,128,0.3); color: #999; font-size: 0.85rem; }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(0,128,128,0.3);
+            color: #999;
+            font-size: 0.85rem;
+        }
         footer a { color: var(--teal); text-decoration: none; }
+        @media (max-width: 600px) {
+            .box { padding: 1.5rem; }
+            h2 { font-size: 1.7rem; }
+            header { padding: 1rem; }
+            nav a { margin-left: 0.8rem; font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
@@ -108,18 +139,8 @@
                 </ul>
             </div>
 
-            <form id="signupForm">
-                <div class="fg">
-                    <label for="firstName">First Name *</label>
-                    <input type="text" id="firstName" placeholder="Enter your first name" required>
-                </div>
-                <div class="fg">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" placeholder="you@example.com" required>
-                </div>
-                <button type="submit" class="btn" id="btn">Get Free Access Now →</button>
-                <div id="status"></div>
-            </form>
+            <!-- MailerLite Embedded Form -->
+            <div class="ml-embedded" data-form="CAc4ZX"></div>
 
             <p class="note">No spam, ever. Unsubscribe anytime.<br>
                 <a href="/privacy-policy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a>
@@ -133,43 +154,26 @@
     </footer>
 
     <script>
-    document.getElementById('signupForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const firstName = document.getElementById('firstName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const btn = document.getElementById('btn');
-        const status = document.getElementById('status');
-
-        if (!firstName || !email) {
-            status.textContent = '❌ Please fill in your name and email.';
-            status.className = 'error';
-            return;
-        }
-
-        // Save to localStorage immediately
-        localStorage.setItem('userName', firstName);
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('userTier', 'free');
-        localStorage.setItem('signupComplete', 'true');
-
-        btn.disabled = true;
-        btn.textContent = 'Processing...';
-        status.textContent = '✅ Welcome! Taking you to choose your free apps...';
-        status.className = 'success';
-
-        // Send to MailerLite via Worker in background (don't wait for it)
-        fetch('https://keys-codes-and-modes-mailer-lite.ben-03b.workers.dev', {
-            method: 'POST',
-            body: new URLSearchParams({ firstName: firstName, email: email })
-        }).catch(function() {
-            // Silent fail - user still gets through
+    // After MailerLite form submits, redirect to app picker
+    document.addEventListener('DOMContentLoaded', function() {
+        // Watch for MailerLite success message and redirect
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.classList && (
+                        node.classList.contains('ml-form-successContent') ||
+                        node.classList.contains('ml-form-successBody')
+                    )) {
+                        localStorage.setItem('userTier', 'free');
+                        localStorage.setItem('signupComplete', 'true');
+                        setTimeout(function() {
+                            window.location.href = '/welcome-free-picker.html';
+                        }, 2000);
+                    }
+                });
+            });
         });
-
-        // Redirect immediately after 1.5 seconds - don't wait for Worker
-        setTimeout(function() {
-            window.location.href = '/welcome-free-picker.html';
-        }, 1500);
+        observer.observe(document.body, { childList: true, subtree: true });
     });
     </script>
 </body>
