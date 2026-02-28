@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacred Geometry Music | Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a1f;
+            background: radial-gradient(ellipse at top, #1a1a3e 0%, #0a0a1f 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(255,255,0,0.08) 0%, rgba(255,196,0,0.08) 16%,
+                rgba(255,128,0,0.08) 33%, rgba(255,0,0,0.08) 50%,
+                rgba(128,0,255,0.08) 66%, rgba(0,0,255,0.08) 83%,
+                rgba(0,255,128,0.08) 100%
+            );
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            box-shadow: 0 4px 20px rgba(255,128,0,0.2);
+        }
+
+        .hero-logo {
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(90deg, 
+                #FFFF00 0%, #FFC400 8%, #FF8000 16%, #FF4000 25%,
+                #FF0000 33%, #C4007F 41%, #8000FF 50%, #4000FF 58%,
+                #0000FF 66%, #007FFF 75%, #00FF80 83%, #80FF00 91%, #FFFF00 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            animation: shimmer 4s linear infinite;
+            margin-bottom: 5px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2em;
+            color: #FFC400;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .main-container {
+            max-width: 2000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-row {
+            display: grid;
+            grid-template-columns: 420px 1fr 380px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .guitar-column {
+            background: rgba(20, 20, 40, 0.6);
+            border: 1px solid rgba(255,128,0,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fretboard-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            margin-left: 0;
+            background: rgba(255,128,0,0.08);
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,196,0,0.25);
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(128,0,255,0.12);
+            color: #e0e0e0;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,128,0,0.15);
+        }
+
+        .toggle-btn:hover {
+            background: rgba(128,0,255,0.2);
+            border-color: rgba(255,196,0,0.4);
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #00FF80 0%, #007FFF 100%);
+            color: #000;
+            font-weight: 700;
+            border-color: rgba(255,196,0,0.6);
+            box-shadow: 0 0 15px rgba(0,255,128,0.4);
+        }
+
+        .guitar-neck {
+            background: linear-gradient(to right, #3a2820 0%, #5a4030 100%);
+            border-radius: 8px;
+            padding: 15px 10px;
+            width: 100%;
+            max-width: 390px;
+            margin-left: -8px;
+        }
+
+        .wheel-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .controls-column {
+            background: rgba(20, 20, 40, 0.6);
+            border: 1px solid rgba(255,128,0,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .controls-column::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls-column::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #8000FF 0%, #0000FF 100%);
+            border-radius: 4px;
+        }
+
+        .panel-title {
+            color: #FFC400;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255,196,0,0.3);
+        }
+
+        /* GUITAR STYLES */
+        .fret-row {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 2px;
+            align-items: center;
+        }
+
+        .fret-label {
+            min-width: 30px;
+            text-align: right;
+            padding-right: 6px;
+            color: #FFC400;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .string-cell {
+            flex: 1;
+            min-width: 42px;
+            height: 42px;
+            background: rgba(200, 200, 200, 0.05);
+            border-top: 2px solid rgba(255,255,255,0.2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .string-cell::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(200, 200, 200, 0.25);
+            transform: translateY(-50%);
+        }
+
+        .note-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid rgba(255,255,255,0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .note-dot:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .note-dot.active {
+            box-shadow: 0 0 25px currentColor;
+            border-color: white;
+            border-width: 3px;
+        }
+
+        /* WHEEL STYLES */
+        canvas {
+            border-radius: 50%;
+            box-shadow: 
+                0 0 50px rgba(255,215,0,0.3),
+                0 0 100px rgba(138,43,226,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        canvas:hover {
+            box-shadow: 
+                0 0 70px rgba(255,215,0,0.5),
+                0 0 120px rgba(138,43,226,0.25);
+        }
+
+        .button-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .mega-button {
+            padding: 14px 40px;
+            font-size: 1.15em;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .play-mega {
+            background: linear-gradient(135deg, #00FF80 0%, #007FFF 100%);
+            color: #000;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .clear-mega {
+            background: linear-gradient(135deg, #FF0000 0%, #FF8000 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .mega-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .settings-box {
+            background: rgba(255,128,0,0.08);
+            border: 1px solid rgba(255,196,0,0.25);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .settings-box label {
+            color: #FFC400;
+            font-weight: 700;
+            font-size: 1em;
+            display: block;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .settings-box select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255,128,0,0.1);
+            border: 2px solid rgba(255,196,0,0.3);
+            color: white;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .info-badge {
+            background: linear-gradient(135deg, 
+                rgba(255,255,0,0.08) 0%,
+                rgba(255,128,0,0.08) 100%
+            );
+            border-left: 3px solid #FF8000;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(255,128,0,0.1);
+        }
+
+        .info-badge h4 {
+            color: #FFC400;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+
+        .info-badge p {
+            color: #c0c0c0;
+            line-height: 1.4;
+            font-size: 0.85em;
+        }
+
+        /* CONTROLS COLUMN */
+        .pattern-section {
+            margin-bottom: 12px;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, 
+                rgba(255,255,0,0.1) 0%,
+                rgba(255,128,0,0.1) 100%
+            );
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,128,0,0.2);
+        }
+
+        .section-header:hover {
+            background: rgba(255,196,0,0.15);
+            border-color: rgba(255,196,0,0.4);
+        }
+
+        .section-header.active {
+            background: rgba(255,128,0,0.2);
+            border-color: rgba(255,196,0,0.5);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-icon {
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+
+        .section-name {
+            color: #FFC400;
+            font-weight: 700;
+            font-size: 1em;
+            flex: 1;
+        }
+
+        .section-arrow {
+            color: #FF8000;
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+        }
+
+        .section-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .pattern-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .pattern-buttons.expanded {
+            max-height: 800px;
+            margin-top: 8px;
+        }
+
+        .btn-pattern {
+            padding: 10px 12px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(128,0,255,0.12);
+            color: #e0e0e0;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,128,0,0.15);
+        }
+
+        .btn-pattern:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, 
+                rgba(128,0,255,0.25) 0%,
+                rgba(0,0,255,0.25) 100%
+            );
+            border-color: rgba(255,196,0,0.5);
+            box-shadow: 0 4px 12px rgba(128,0,255,0.3);
+        }
+
+        /* STAFF STYLES */
+        .staff-section {
+            background: rgba(20, 20, 40, 0.6);
+            border: 1px solid rgba(255,128,0,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .staff-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            height: 180px;
+        }
+
+        .staff-lines {
+            position: relative;
+            height: 100px;
+            margin: 20px 0;
+        }
+
+        .staff-line {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: #000;
+            left: 0;
+        }
+
+        .clef {
+            position: absolute;
+            font-size: 4em;
+            left: 10px;
+            top: -15px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .staff-note {
+            position: absolute;
+            width: 28px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+            border: 2px solid rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .staff-note:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .ledger-line {
+            position: absolute;
+            width: 35px;
+            height: 1px;
+            background: #000;
+            left: -3px;
+        }
+
+        @media (max-width: 1600px) {
+            .top-row {
+                grid-template-columns: 380px 1fr 350px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .top-row {
+                grid-template-columns: 1fr;
+            }
+            .controls-column {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-logo">KEYS, CODES & MODES</div>
+        <div class="hero-subtitle">Sacred Geometry Music Theory Explorer</div>
+    </div>
+
+    <div class="main-container">
+        <!-- TOP ROW: 3 columns (Guitar | Wheel | Controls) -->
+        <div class="top-row">
+            <!-- COLUMN 1: GUITAR FRETBOARD -->
+            <div class="guitar-column">
+                <div class="panel-title">🎸 FRETBOARD</div>
+                <div class="fretboard-toggle">
+                    <button class="toggle-btn active" id="btn-4fret" onclick="setFretView(4)">4 Frets</button>
+                    <button class="toggle-btn" id="btn-12fret" onclick="setFretView(12)">12 Frets</button>
+                </div>
+                <div class="guitar-neck" id="guitarNeck"></div>
+            </div>
+
+            <!-- COLUMN 2+3: WHEEL & CONTROLS -->
+            <div class="wheel-column">
+                <canvas id="canvas" width="550" height="550"></canvas>
+                <div class="button-controls">
+                    <button class="mega-button play-mega" onclick="playPattern()">▶ PLAY</button>
+                    <button class="mega-button clear-mega" onclick="clearAll()">✕ CLEAR</button>
+                </div>
+                <div class="settings-box">
+                    <label>Root Note</label>
+                    <select id="root" onchange="rootKey=+this.value; updateAll()">
+                        <option value="0">C</option>
+                        <option value="1">C# / Db</option>
+                        <option value="2">D</option>
+                        <option value="3">D# / Eb</option>
+                        <option value="4">E</option>
+                        <option value="5">F</option>
+                        <option value="6">F# / Gb</option>
+                        <option value="7">G</option>
+                        <option value="8">G# / Ab</option>
+                        <option value="9">A</option>
+                        <option value="10">A# / Bb</option>
+                        <option value="11">B</option>
+                    </select>
+                </div>
+                <div class="info-badge">
+                    <h4>Pattern Info</h4>
+                    <p id="info">Click notes • Select patterns • All views sync</p>
+                </div>
+            </div>
+
+            <!-- COLUMN 4: PATTERN CONTROLS -->
+            <div class="controls-column" id="controls"></div>
+        </div>
+
+        <!-- BOTTOM ROW: STAFF SPANS FULL WIDTH -->
+        <div class="staff-section">
+            <div class="panel-title">🎼 MUSICAL STAFF</div>
+            <div class="staff-container" id="staffContainer">
+                <div class="clef">𝄞</div>
+                <div class="staff-lines" id="staffLines">
+                    <div class="staff-line" style="top: 0%"></div>
+                    <div class="staff-line" style="top: 25%"></div>
+                    <div class="staff-line" style="top: 50%"></div>
+                    <div class="staff-line" style="top: 75%"></div>
+                    <div class="staff-line" style="top: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colors = {
+            'C': '#FFFF00', 'C#': '#FFC400', 'D': '#FF8000', 'D#': '#FF4000',
+            'E': '#FF0000', 'F': '#C4007F', 'F#': '#8000FF', 'G': '#4000FF',
+            'G#': '#0000FF', 'A': '#007FFF', 'A#': '#00FF80', 'B': '#80FF00'
+        };
+
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = 275, centerY = 275, radius = 220;
+
+        let audioContext, currentPattern = { notes: [], name: '', type: null }, rootKey = 0;
+        let fretView = 4; // Default to 4-fret view
+
+        document.addEventListener('click', () => {
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }, { once: true });
+
+        function getColor(note) {
+            return colors[note] || '#FFFFFF';
+        }
+
+        const guitarStrings = [
+            { name: 'E', octave: 4, baseFret: 4 },
+            { name: 'B', octave: 3, baseFret: 11 },
+            { name: 'G', octave: 3, baseFret: 7 },
+            { name: 'D', octave: 3, baseFret: 2 },
+            { name: 'A', octave: 2, baseFret: 9 },
+            { name: 'E', octave: 2, baseFret: 4 }
+        ];
+
+        function buildGuitar() {
+            const neck = document.getElementById('guitarNeck');
+            const activeNotes = currentPattern.notes || [];
+            let html = '';
+            
+            for (let fret = 0; fret <= fretView; fret++) {
+                html += '<div class="fret-row">';
+                html += `<div class="fret-label">${fret === 0 ? 'Nut' : fret}</div>`;
+                
+                for (let stringIdx = 5; stringIdx >= 0; stringIdx--) {
+                    const string = guitarStrings[stringIdx];
+                    const noteIdx = (notes.indexOf(string.name) + fret) % 12;
+                    const noteName = notes[noteIdx];
+                    const color = getColor(noteName);
+                    const isActive = activeNotes.includes(noteName);
+                    const opacity = isActive ? '1' : '0.3'; // Subdued to 30% if not in pattern
+                    
+                    html += `<div class="string-cell">`;
+                    html += `<div class="note-dot ${isActive ? 'active' : ''}" data-note="${noteName}" data-fret="${fret}" data-string="${stringIdx}" style="background: ${color}; opacity: ${opacity};" onclick="handleNoteClick('${noteName}')">${noteName}</div>`;
+                    html += `</div>`;
+                }
+                
+                html += '</div>';
+            }
+            
+            neck.innerHTML = html;
+        }
+
+        function setFretView(count) {
+            fretView = count;
+            
+            // Update toggle button states
+            document.getElementById('btn-4fret').classList.toggle('active', count === 4);
+            document.getElementById('btn-12fret').classList.toggle('active', count === 12);
+            
+            // Rebuild guitar with new fret count
+            buildGuitar();
+        }
+
+        function handleNoteClick(noteName) {
+            playNote(noteName);
+            flashSingleNote(noteName);
+            highlightGuitarNote(noteName);
+            highlightStaffNoteByName(noteName);
+        }
+
+        function highlightStaffNoteByName(noteName) {
+            // Find and flash the staff note with this name
+            document.querySelectorAll('.staff-note').forEach(noteEl => {
+                if (noteEl.textContent === noteName) {
+                    highlightStaffNote(noteEl);
+                }
+            });
+        }
+
+        const staffPositions = {
+            'C': { line: 110, ledger: true },
+            'D': { line: 100, ledger: false },
+            'E': { line: 90, ledger: false },
+            'F': { line: 80, ledger: false },
+            'G': { line: 70, ledger: false },
+            'A': { line: 60, ledger: false },
+            'B': { line: 50, ledger: false },
+        };
+
+        function updateStaff() {
+            const container = document.getElementById('staffContainer');
+            const existingNotes = container.querySelectorAll('.staff-note, .ledger-line');
+            existingNotes.forEach(n => n.remove());
+
+            const activeNotes = currentPattern.notes || [];
+            activeNotes.forEach((note, index) => {
+                const baseNote = note.replace('#', '');
+                const position = staffPositions[baseNote[0]];
+                if (!position) return;
+
+                const noteEl = document.createElement('div');
+                noteEl.className = 'staff-note';
+                noteEl.style.background = getColor(note);
+                noteEl.style.left = (80 + index * 50) + 'px';
+                noteEl.style.top = position.line + 'px';
+                noteEl.textContent = note;
+                noteEl.style.color = parseInt(getColor(note).substr(1, 2), 16) > 128 ? '#000' : '#fff';
+                
+                // Enhanced click handler - highlights everywhere and plays
+                noteEl.onclick = () => { 
+                    playNote(note); 
+                    flashSingleNote(note);
+                    highlightGuitarNote(note);
+                    highlightStaffNote(noteEl);
+                };
+
+                if (position.ledger) {
+                    const ledger = document.createElement('div');
+                    ledger.className = 'ledger-line';
+                    ledger.style.top = position.line + 10 + 'px';
+                    ledger.style.left = (80 + index * 50) + 'px';
+                    container.appendChild(ledger);
+                }
+
+                container.appendChild(noteEl);
+            });
+        }
+
+        function highlightStaffNote(noteElement) {
+            // Flash the staff note
+            const originalTransform = noteElement.style.transform;
+            noteElement.style.transform = 'scale(1.4)';
+            noteElement.style.boxShadow = `0 0 20px ${noteElement.style.background}`;
+            
+            setTimeout(() => {
+                noteElement.style.transform = originalTransform || '';
+                noteElement.style.boxShadow = '';
+            }, 200);
+        }
+
+        function highlightGuitarNote(noteName) {
+            // Flash all instances of this note on the guitar
+            document.querySelectorAll('.note-dot').forEach(dot => {
+                if (dot.getAttribute('data-note') === noteName) {
+                    const originalTransform = dot.style.transform;
+                    dot.style.transform = 'scale(1.3)';
+                    setTimeout(() => {
+                        dot.style.transform = originalTransform || '';
+                    }, 200);
+                }
+            });
+        }
+
+        function updateGuitar() {
+            const activeNotes = currentPattern.notes || [];
+            document.querySelectorAll('.note-dot').forEach(dot => {
+                const note = dot.getAttribute('data-note');
+                const isActive = activeNotes.includes(note);
+                
+                if (isActive) {
+                    dot.style.opacity = '1';
+                    dot.classList.add('active');
+                } else {
+                    dot.style.opacity = '0.3'; // Subdued to 30%
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function updateAll() {
+            updateGuitar();
+            updateStaff();
+            if (currentPattern.type) {
+                drawPattern(currentPattern.type);
+            } else {
+                drawCircle();
+            }
+        }
+
+        function drawCircle() {
+            ctx.clearRect(0, 0, 550, 550);
+
+            ctx.strokeStyle = 'rgba(120, 130, 140, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 3]);
+            for (let i = 0; i < 6; i++) {
+                const a1 = (i * 30 - 90) * Math.PI / 180;
+                const a2 = ((i + 6) * 30 - 90) * Math.PI / 180;
+                ctx.beginPath();
+                ctx.moveTo(centerX + radius * Math.cos(a1), centerY + radius * Math.sin(a1));
+                ctx.lineTo(centerX + radius * Math.cos(a2), centerY + radius * Math.sin(a2));
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+
+            const activeNotes = currentPattern.notes || [];
+
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                const note = notes[i];
+                const color = getColor(note);
+                const isActive = activeNotes.includes(note);
+                const opacity = isActive ? 1.0 : 0.5;
+
+                ctx.shadowBlur = isActive ? 18 : 9;
+                ctx.shadowColor = color;
+                ctx.globalAlpha = opacity;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 35, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.strokeStyle = isActive ? 'rgba(255, 255, 255, 0.6)' : 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = isActive ? 2.5 : 1.5;
+                ctx.stroke();
+
+                const brightness = (parseInt(color.substr(1, 2), 16) * 299 + parseInt(color.substr(3, 2), 16) * 587 + parseInt(color.substr(5, 2), 16) * 114) / 1000;
+                ctx.fillStyle = brightness > 128 ? '#000' : '#fff';
+                ctx.font = isActive ? 'bold 16px Arial' : 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(note, x, y);
+                
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        const patterns = {
+            'interval-1': { i: [0, 1], n: 'Minor 2nd' },
+            'interval-2': { i: [0, 2], n: 'Major 2nd' },
+            'interval-3': { i: [0, 3], n: 'Minor 3rd' },
+            'interval-4': { i: [0, 4], n: 'Major 3rd' },
+            'interval-5': { i: [0, 5], n: 'Perfect 4th' },
+            'interval-6': { i: [0, 6], n: 'Tritone' },
+            'interval-7': { i: [0, 7], n: 'Perfect 5th' },
+            'interval-8': { i: [0, 8], n: 'Minor 6th' },
+            'interval-9': { i: [0, 9], n: 'Major 6th' },
+            'interval-10': { i: [0, 10], n: 'Minor 7th' },
+            'interval-11': { i: [0, 11], n: 'Major 7th' },
+            'interval-12': { i: [0, 0], n: 'Octave' },
+            'major-triad': { i: [0, 4, 7], n: 'Major Triad' },
+            'minor-triad': { i: [0, 3, 7], n: 'Minor Triad' },
+            'diminished-triad': { i: [0, 3, 6], n: 'Diminished' },
+            'augmented-triad': { i: [0, 4, 8], n: 'Augmented' },
+            'major7': { i: [0, 4, 7, 11], n: 'Major 7th' },
+            'minor7': { i: [0, 3, 7, 10], n: 'Minor 7th' },
+            'dominant7': { i: [0, 4, 7, 10], n: 'Dominant 7th' },
+            'diminished7': { i: [0, 3, 6, 9], n: 'Diminished 7th' },
+            'major-scale': { i: [0, 2, 4, 5, 7, 9, 11], n: 'Major Scale' },
+            'minor-scale': { i: [0, 2, 3, 5, 7, 8, 10], n: 'Minor Scale' },
+            'pentatonic-major': { i: [0, 2, 4, 7, 9], n: 'Pentatonic Major' },
+            'pentatonic-minor': { i: [0, 3, 5, 7, 10], n: 'Pentatonic Minor' },
+            'blues-scale': { i: [0, 3, 5, 6, 7, 10], n: 'Blues' },
+            'chromatic': { i: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], n: 'Chromatic' },
+            'whole-tone': { i: [0, 2, 4, 6, 8, 10], n: 'Whole Tone' },
+            'ionian': { i: [0, 2, 4, 5, 7, 9, 11], n: 'Ionian' },
+            'dorian': { i: [0, 2, 3, 5, 7, 9, 10], n: 'Dorian' },
+            'phrygian': { i: [0, 1, 3, 5, 7, 8, 10], n: 'Phrygian' },
+            'lydian': { i: [0, 2, 4, 6, 7, 9, 11], n: 'Lydian' },
+            'mixolydian': { i: [0, 2, 4, 5, 7, 9, 10], n: 'Mixolydian' },
+            'aeolian': { i: [0, 2, 3, 5, 7, 8, 10], n: 'Aeolian' },
+            'locrian': { i: [0, 1, 3, 5, 6, 8, 10], n: 'Locrian' },
+            'triangle': { i: [0, 4, 8], n: 'Triangle' },
+            'square': { i: [0, 3, 6, 9], n: 'Square' },
+            'pentagon': { i: [0, 2, 5, 7, 10], n: 'Pentagon' },
+            'hexagon': { i: [0, 2, 4, 6, 8, 10], n: 'Hexagon' },
+            'heptagon': { i: [0, 2, 3, 5, 7, 8, 10], n: 'Heptagon' },
+            'octagon': { i: [0, 1, 3, 4, 6, 7, 9, 10], n: 'Octagon' },
+        };
+
+        function drawPattern(type) {
+            const p = patterns[type];
+            if (!p) return;
+            
+            const intervals = p.i.map(i => (i + rootKey) % 12);
+            currentPattern = { notes: intervals.map(i => notes[i]), name: p.n, type };
+            document.getElementById('info').innerHTML = `<strong>${p.n}</strong> on ${notes[rootKey]}`;
+
+            drawCircle();
+
+            ctx.lineCap = 'round';
+            for (let i = 0; i < intervals.length; i++) {
+                const fromIdx = intervals[i];
+                const toIdx = intervals[(i + 1) % intervals.length];
+
+                const a1 = (fromIdx * 30 - 90) * Math.PI / 180;
+                const a2 = (toIdx * 30 - 90) * Math.PI / 180;
+                
+                const x1 = centerX + radius * Math.cos(a1);
+                const y1 = centerY + radius * Math.sin(a1);
+                const x2 = centerX + radius * Math.cos(a2);
+                const y2 = centerY + radius * Math.sin(a2);
+
+                const angle = Math.atan2(y2 - y1, x2 - x1);
+                const fx = x1 + 35 * Math.cos(angle);
+                const fy = y1 + 35 * Math.sin(angle);
+                const tx = x2 - 35 * Math.cos(angle);
+                const ty = y2 - 35 * Math.sin(angle);
+
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 6;
+                ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.moveTo(fx, fy);
+                ctx.lineTo(tx, ty);
+                ctx.stroke();
+
+                const grad = ctx.createLinearGradient(fx, fy, tx, ty);
+                grad.addColorStop(0, getColor(notes[fromIdx]));
+                grad.addColorStop(1, getColor(notes[toIdx]));
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = getColor(notes[fromIdx]);
+                ctx.beginPath();
+                ctx.moveTo(fx, fy);
+                ctx.lineTo(tx, ty);
+                ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+
+            intervals.forEach(idx => {
+                const angle = (idx * 30 - 90) * Math.PI / 180;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                ctx.beginPath();
+                ctx.arc(x, y, 38, 0, Math.PI * 2);
+                ctx.strokeStyle = getColor(notes[idx]);
+                ctx.lineWidth = 4;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = getColor(notes[idx]);
+                ctx.stroke();
+            });
+            ctx.shadowBlur = 0;
+
+            updateGuitar();
+            updateStaff();
+        }
+
+        function playPattern() {
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (currentPattern.notes.length === 0) return alert('Select a pattern first!');
+            
+            const isOctave = currentPattern.type === 'interval-12';
+            
+            if (isOctave) {
+                const note = currentPattern.notes[0];
+                playNoteWithOctave(note, 4);
+                playNoteWithOctave(note, 5);
+                highlightNote(note);
+            } else {
+                currentPattern.notes.forEach((note, i) => {
+                    setTimeout(() => {
+                        const octave = 4 + Math.floor(i / 12);
+                        playNoteWithOctave(note, octave);
+                        highlightNote(note);
+                    }, i * 200);
+                });
+            }
+        }
+
+        function playNoteWithOctave(note, octave) {
+            if (!audioContext) return;
+            const idx = notes.indexOf(note);
+            const baseC4 = 261.63;
+            const freq = baseC4 * Math.pow(2, octave - 4) * Math.pow(2, idx / 12);
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.6);
+        }
+
+        function playNote(note) {
+            playNoteWithOctave(note, 4);
+        }
+
+        function highlightNote(noteName) {
+            const idx = notes.indexOf(noteName);
+            const angle = (idx * 30 - 90) * Math.PI / 180;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            const color = getColor(noteName);
+
+            ctx.save();
+            ctx.shadowBlur = 35;
+            ctx.shadowColor = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 42, 0, Math.PI * 2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 8;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(x, y, 36, 0, Math.PI * 2);
+            ctx.fillStyle = color + 'AA';
+            ctx.fill();
+            ctx.restore();
+
+            setTimeout(() => {
+                if (currentPattern.type) {
+                    drawPattern(currentPattern.type);
+                }
+            }, 150);
+        }
+
+        function flashSingleNote(noteName) {
+            const idx = notes.indexOf(noteName);
+            const angle = (idx * 30 - 90) * Math.PI / 180;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            const color = getColor(noteName);
+
+            ctx.save();
+            ctx.shadowBlur = 40;
+            ctx.shadowColor = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 45, 0, Math.PI * 2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(x, y, 38, 0, Math.PI * 2);
+            ctx.fillStyle = color + 'DD';
+            ctx.fill();
+            ctx.restore();
+
+            setTimeout(() => {
+                drawCircle();
+                if (currentPattern.type) {
+                    drawPattern(currentPattern.type);
+                }
+            }, 200);
+        }
+
+        function clearAll() {
+            currentPattern = { notes: [], name: '', type: null };
+            drawCircle();
+            updateGuitar();
+            updateStaff();
+            document.getElementById('info').innerHTML = 'Click notes • Select patterns • All views sync';
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const nx = centerX + radius * Math.cos(angle);
+                const ny = centerY + radius * Math.sin(angle);
+                const dist = Math.sqrt((x - nx) ** 2 + (y - ny) ** 2);
+                
+                if (dist <= 35) {
+                    const note = notes[i];
+                    handleNoteClick(note);
+                    return;
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const nx = centerX + radius * Math.cos(angle);
+                const ny = centerY + radius * Math.sin(angle);
+                const dist = Math.sqrt((x - nx) ** 2 + (y - ny) ** 2);
+                
+                if (dist <= 35) {
+                    canvas.style.cursor = 'pointer';
+                    return;
+                }
+            }
+            canvas.style.cursor = 'default';
+        });
+
+        const sections = [
+            { id: 'intervals', icon: '🎵', title: 'INTERVALS', items: Array.from({length:12}, (_,i) => [`interval-${i+1}`, ['Minor 2nd','Major 2nd','Minor 3rd','Major 3rd','Perfect 4th','Tritone','Perfect 5th','Minor 6th','Major 6th','Minor 7th','Major 7th','Octave'][i]]) },
+            { id: 'chords', icon: '🎹', title: 'TRIADS & CHORDS', items: [['major-triad','Major Triad'],['minor-triad','Minor Triad'],['diminished-triad','Diminished'],['augmented-triad','Augmented'],['major7','Major 7th'],['minor7','Minor 7th'],['dominant7','Dominant 7th'],['diminished7','Diminished 7th']] },
+            { id: 'scales', icon: '🎼', title: 'SCALES', items: [['major-scale','Major Scale'],['minor-scale','Minor Scale'],['pentatonic-major','Pentatonic Major'],['pentatonic-minor','Pentatonic Minor'],['blues-scale','Blues Scale'],['chromatic','Chromatic'],['whole-tone','Whole Tone']] },
+            { id: 'modes', icon: '🎭', title: 'MODES', items: [['ionian','Ionian'],['dorian','Dorian'],['phrygian','Phrygian'],['lydian','Lydian'],['mixolydian','Mixolydian'],['aeolian','Aeolian'],['locrian','Locrian']] },
+            { id: 'geometry', icon: '✨', title: 'SACRED GEOMETRY', items: [['triangle','Triangle'],['square','Square'],['pentagon','Pentagon'],['hexagon','Hexagon'],['heptagon','Heptagon'],['octagon','Octagon']] },
+            { id: 'intervals-ear', icon: '👂', title: 'INTERVAL EAR TRAINING', items: Array.from({length:12}, (_,i) => [`interval-${i+1}`, `Test ${['Minor 2nd','Major 2nd','Minor 3rd','Major 3rd','Perfect 4th','Tritone','Perfect 5th','Minor 6th','Major 6th','Minor 7th','Major 7th','Octave'][i]}`]) },
+            { id: 'chords-ear', icon: '🎹', title: 'CHORD EAR TRAINING', items: [['major-triad','Test Major'],['minor-triad','Test Minor'],['diminished-triad','Test Diminished'],['augmented-triad','Test Augmented'],['major7','Test Major 7th'],['minor7','Test Minor 7th'],['dominant7','Test Dominant 7th'],['diminished7','Test Dim 7th']] },
+            { id: 'scales-ear', icon: '🎼', title: 'SCALE EAR TRAINING', items: [['major-scale','Test Major'],['minor-scale','Test Minor'],['pentatonic-major','Test Pent Major'],['pentatonic-minor','Test Pent Minor'],['blues-scale','Test Blues'],['chromatic','Test Chromatic'],['whole-tone','Test Whole Tone']] },
+            { id: 'modes-ear', icon: '🎭', title: 'MODE EAR TRAINING', items: [['ionian','Test Ionian'],['dorian','Test Dorian'],['phrygian','Test Phrygian'],['lydian','Test Lydian'],['mixolydian','Test Mixolydian'],['aeolian','Test Aeolian'],['locrian','Test Locrian']] }
+        ];
+
+        let html = '';
+        sections.forEach(s => {
+            html += `<div class="pattern-section">`;
+            html += `<div class="section-header" onclick="toggleSection('${s.id}')">`;
+            html += `<div class="section-title">`;
+            html += `<span class="section-icon">${s.icon}</span>`;
+            html += `<span class="section-name">${s.title}</span>`;
+            html += `<span class="section-arrow" id="arrow-${s.id}">▼</span>`;
+            html += `</div></div>`;
+            html += `<div class="pattern-buttons" id="buttons-${s.id}">`;
+            s.items.forEach(([type, name]) => {
+                html += `<button class="btn-pattern" onclick="drawPattern('${type}')">${name}</button>`;
+            });
+            html += `</div></div>`;
+        });
+
+        document.getElementById('controls').innerHTML = html;
+
+        function toggleSection(id) {
+            const buttons = document.getElementById('buttons-' + id);
+            const arrow = document.getElementById('arrow-' + id);
+            const header = arrow.closest('.section-header');
+            const wasOpen = buttons.classList.contains('expanded');
+            
+            document.querySelectorAll('.pattern-buttons').forEach(b => b.classList.remove('expanded'));
+            document.querySelectorAll('.section-arrow').forEach(a => a.classList.remove('rotated'));
+            document.querySelectorAll('.section-header').forEach(h => h.classList.remove('active'));
+            
+            if (!wasOpen) {
+                buttons.classList.add('expanded');
+                arrow.classList.add('rotated');
+                header.classList.add('active');
+            }
+        }
+
+        buildGuitar();
+        drawCircle();
+    </script>
+</body>
+</html>
