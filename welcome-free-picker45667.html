@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6EGC5ZNZPF', {
+            page_title: 'Choose Your Free Apps',
+            page_location: 'https://keyscodesandmodes.com/welcome-free-picker.html'
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#008080">
+    <title>Choose Your 3 Free Apps | Keys, Codes &amp; Modes</title>
+    <meta name="description" content="Pick any 3 music theory apps from our library. Scales, guitar, chords, rhythm — your choice.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://keyscodesandmodes.com/welcome-free-picker.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --teal:    #008080;
+            --teal-lt: #00b3b3;
+            --gold:    #F4D03F;
+            --purple:  #8B6BA3;
+            --bg:      #080814;
+            --bg-card: rgba(255,255,255,0.04);
+            --text:    #E8E8E8;
+            --dim:     #9999bb;
+            --border:  rgba(0,128,128,0.25);
+            --fd:      'Cinzel', serif;
+            --fb:      'Montserrat', sans-serif;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--fb);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .bg-mesh {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 15% 40%, rgba(0,128,128,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 85% 70%, rgba(139,107,163,0.08) 0%, transparent 60%),
+                linear-gradient(180deg, #080814 0%, #0d0d1f 100%);
+        }
+
+        .skip-link {
+            position:absolute; top:-60px; left:1rem;
+            background:var(--gold); color:#000;
+            padding:.75rem 1.5rem; border-radius:0 0 8px 8px;
+            font-weight:700; text-decoration:none; z-index:9999;
+            transition:top .2s ease;
+        }
+        .skip-link:focus { top:0; }
+
+        /* ── HEADER ── */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(8,8,20,0.92);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo {
+            font-family: var(--fd); font-size: 1.1rem; font-weight: 700;
+            letter-spacing: 2px; text-decoration: none;
+            background: linear-gradient(135deg, var(--gold), var(--teal-lt));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .back-link {
+            color: var(--dim); text-decoration: none; font-size: .85rem;
+            font-weight: 600; transition: color .2s;
+        }
+        .back-link:hover { color: var(--gold); }
+
+        /* ── HERO ── */
+        .hero {
+            text-align: center; padding: 3rem 2rem 2rem;
+            max-width: 700px; margin: 0 auto 1rem;
+        }
+        .step-tag {
+            display: inline-block;
+            border: 1px solid var(--teal); color: var(--teal-lt);
+            font-size: .75rem; font-weight: 700; letter-spacing: 3px;
+            padding: .35rem 1rem; border-radius: 50px; margin-bottom: 1.25rem;
+            text-transform: uppercase;
+        }
+        .hero h1 {
+            font-family: var(--fd); font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700; letter-spacing: 2px; margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--teal-lt) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; line-height: 1.2;
+        }
+        .hero p { color: var(--dim); font-size: 1rem; line-height: 1.7; }
+
+        /* ── COUNTER BAR ── */
+        .counter-bar {
+            max-width: 900px; margin: 0 auto 2.5rem;
+            padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .counter {
+            font-family: var(--fd); font-size: 1rem; color: var(--gold);
+            letter-spacing: 1px;
+        }
+        .dots {
+            display: flex; gap: .5rem;
+        }
+        .dot {
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid var(--teal);
+            background: transparent;
+            transition: background .25s, border-color .25s;
+        }
+        .dot.filled { background: var(--teal); border-color: var(--teal-lt); }
+
+        /* ── GRID ── */
+        main { padding: 0 2rem 4rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ── PICK CARD ── */
+        .pick-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px; padding: 1.75rem;
+            cursor: pointer;
+            transition: transform .25s, border-color .25s, background .25s, box-shadow .25s;
+            position: relative; overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .pick-card:hover:not(.disabled) {
+            transform: translateY(-4px);
+            border-color: rgba(244,208,63,0.5);
+            background: rgba(255,255,255,0.07);
+        }
+        .pick-card:focus {
+            outline: 2px solid var(--gold); outline-offset: 3px;
+        }
+        /* Selected state */
+        .pick-card.selected {
+            border-color: var(--gold);
+            background: rgba(244,208,63,0.07);
+            box-shadow: 0 0 24px rgba(244,208,63,0.15);
+        }
+        .pick-card.selected::before {
+            content: '✓';
+            position: absolute; top: .75rem; right: .75rem;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--gold); color: #000;
+            font-weight: 900; font-size: .85rem;
+            display: flex; align-items: center; justify-content: center;
+            line-height: 1;
+            display: grid; place-items: center;
+        }
+        /* Disabled state */
+        .pick-card.disabled {
+            opacity: .4; cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .pick-icon { font-size: 2.4rem; margin-bottom: .9rem; display: block; }
+        .pick-cat {
+            font-size: .68rem; font-weight: 700; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--teal-lt); margin-bottom: .4rem;
+        }
+        .pick-title {
+            font-family: var(--fd); font-size: 1.05rem; font-weight: 700;
+            color: var(--gold); margin-bottom: .6rem; line-height: 1.3;
+        }
+        .pick-desc { font-size: .83rem; color: var(--dim); line-height: 1.6; }
+
+        /* ── STICKY FOOTER CTA ── */
+        .sticky-cta {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(8,8,20,0.97);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+            flex-wrap: wrap; z-index: 200;
+        }
+        .cta-hint { color: var(--dim); font-size: .88rem; }
+        .cta-hint strong { color: var(--gold); }
+
+        .continue-btn {
+            padding: .85rem 2.5rem;
+            background: linear-gradient(135deg, var(--gold), #ffe040);
+            color: #000; font-weight: 700; font-size: 1rem;
+            border: none; border-radius: 50px; cursor: pointer;
+            transition: all .25s;
+            box-shadow: 0 4px 20px rgba(244,208,63,0.3);
+            min-width: 200px;
+        }
+        .continue-btn:disabled {
+            opacity: .4; cursor: not-allowed;
+            box-shadow: none;
+        }
+        .continue-btn:not(:disabled):hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 28px rgba(244,208,63,0.45);
+        }
+        .continue-btn:focus { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        /* bottom padding so sticky bar doesn't cover last card */
+        .pad-bottom { height: 100px; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 640px) {
+            main { padding: 0 1rem 4rem; }
+            .hero { padding: 2rem 1rem 1.5rem; }
+            .counter-bar { padding: 0 1rem; }
+            .picker-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .pick-card { padding: 1.25rem; }
+            .pick-icon { font-size: 2rem; }
+            .pick-title { font-size: .92rem; }
+        }
+        @media (max-width: 400px) {
+            .picker-grid { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
+        }
+        @media (forced-colors: active) {
+            .pick-card { border: 2px solid ButtonText; }
+            .pick-card.selected { border: 3px solid Highlight; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh" aria-hidden="true"></div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="header-inner">
+            <a href="index.html" class="logo" aria-label="Keys, Codes &amp; Modes — home">Keys, Codes &amp; Modes</a>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+        <span class="step-tag">Step 1 of 1</span>
+        <h1 id="page-title">Choose Any 3 Free Apps</h1>
+        <p>Pick any combination you like — guitar, theory, rhythm, or visual tools. You can come back and change your picks anytime.</p>
+    </section>
+
+    <!-- Selection counter -->
+    <div class="counter-bar" role="status" aria-live="polite" aria-label="Selection progress">
+        <span class="counter" id="counterText">0 of 3 selected</span>
+        <div class="dots" aria-hidden="true">
+            <div class="dot" id="dot1"></div>
+            <div class="dot" id="dot2"></div>
+            <div class="dot" id="dot3"></div>
+        </div>
+    </div>
+
+    <main id="main-content" role="main">
+        <div class="container">
+            <div class="picker-grid" id="pickerGrid" role="list" aria-label="Available apps — select 3"></div>
+            <div class="pad-bottom"></div>
+        </div>
+    </main>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta" role="region" aria-label="Continue to your apps">
+        <span class="cta-hint" id="hintText">
+            Select <strong id="remaining">3</strong> more to continue
+        </span>
+        <button
+            class="continue-btn"
+            id="continueBtn"
+            disabled
+            aria-disabled="true"
+            onclick="goToMyApps()"
+            aria-label="Continue to your selected apps">
+            Continue →
+        </button>
+    </div>
+
+    <script>
+    'use strict';
+
+    // ═══════════════════════════════════════════════════════
+    // MASTER APP DATABASE  — IDs MUST match my-apps.html exactly
+    // ═══════════════════════════════════════════════════════
+    const ALL_APPS = [
+        { id:'holy-grail',             file:'apps/holy-mole-grail.html',                    icon:'✨', category:'Flagship', title:'Holy Grail Chromatic Wheel',     desc:'Sacred geometry meets chromatic theory — scales, chords, modes, and audio in one breathtaking wheel.' },
+        { id:'music-theory-pro',        file:'apps/MusicTheoryPro_COMPLETE.html',             icon:'🎼', category:'Theory',   title:'Music Theory Explorer Pro',      desc:'4-panel sync view: chromatic circle, piano, guitar fretboard, and staff notation live.' },
+        { id:'circle-of-fifths',        file:'apps/circleoffiths_master001.html',             icon:'⭕', category:'Theory',   title:'Circle of Fifths Master',        desc:'Rotating circle with triads, progressions, and audio for every key.' },
+        { id:'guitar-fretboard-pro',    file:'apps/Guitar Fretboard Explorer Pro.html',       icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Explorer Pro',  desc:'CAGED system, 13 scale types, and color-coded positions across the full neck.' },
+        { id:'guitar-fretboard-complete',file:'apps/GuitarFretboardComplete.html',            icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Complete',      desc:'Complete fretboard with all scales, chord shapes, and patterns for advanced players.' },
+        { id:'chromatic-roulette',      file:'apps/chromatic-roulette-wheel.html',            icon:'🎡', category:'Visual',   title:'Chromatic Roulette Wheel',       desc:'Spin the color-coded chromatic wheel — discover intervals and scales visually.' },
+        { id:'caged-explorer',          file:'apps/caged-145-explorer.html',                  icon:'🔷', category:'Guitar',   title:'CAGED 1-4-5 Explorer',           desc:'I-IV-V progressions mapped across all 5 CAGED shapes in all 12 keys.' },
+        { id:'chromatic-scale-viz',     file:'apps/guitar-chromatic-scale-visualizer-pro.html',icon:'🌈',category:'Guitar',  title:'Chromatic Scale Visualizer Pro', desc:'Every chromatic note position across the guitar neck — foundation for all scales.' },
+        { id:'rhythm-clock',            file:'apps/rhythm-clock.html',                        icon:'⏱️',category:'Rhythm',   title:'Rhythmic Clock',                 desc:'Time signatures, polyrhythms, and groove patterns on a visual clock face.' },
+        { id:'cymatics',                file:'apps/kcm-cymatics-visualizer.html',             icon:'🎯', category:'Visual',   title:'Cymatics Visualizer',            desc:'See sound as sacred geometry — musical frequencies forming stunning visual patterns.' },
+        { id:'tonic-sub-dom',           file:'apps/Tonic subdominant dominant.html',          icon:'🎵', category:'Theory',   title:'Tonic · Sub · Dominant',         desc:'Interactive I-IV-V visualizer across all keys — backbone of Western harmony.' },
+        { id:'octave-wave',             file:'apps/Octave_Wave_Visualizer.html',              icon:'〰️',category:'Visual',  title:'Octave Wave Visualizer',         desc:'See frequency doubling as waveforms — the physics of octaves visualized.' },
+        { id:'rhythm-harmony',          file:'apps/RHYTHM HARMONY SIMPLE.html',               icon:'🥁', category:'Rhythm',   title:'Rhythm Harmony Simple',          desc:'Beginner-friendly — rhythm and harmony connections made clear and interactive.' }
+    ];
+
+    let selected = []; // array of app IDs
+
+    /* ── BUILD GRID ── */
+    function buildGrid() {
+        const grid = document.getElementById('pickerGrid');
+        ALL_APPS.forEach(app => {
+            const card = document.createElement('div');
+            card.className   = 'pick-card';
+            card.dataset.id  = app.id;
+            card.setAttribute('role', 'checkbox');
+            card.setAttribute('aria-checked', 'false');
+            card.setAttribute('aria-label', `${app.title} — ${app.category}`);
+            card.setAttribute('tabindex', '0');
+
+            card.innerHTML = `
+                <span class="pick-icon" aria-hidden="true">${app.icon}</span>
+                <span class="pick-cat">${app.category}</span>
+                <h2 class="pick-title">${app.title}</h2>
+                <p class="pick-desc">${app.desc}</p>
+            `;
+
+            card.addEventListener('click',   () => toggleApp(app.id, card));
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleApp(app.id, card);
+                }
+            });
+
+            grid.appendChild(card);
+        });
+    }
+
+    /* ── TOGGLE SELECTION ── */
+    function toggleApp(id, card) {
+        if (card.classList.contains('disabled') && !card.classList.contains('selected')) return;
+
+        if (selected.includes(id)) {
+            // Deselect
+            selected = selected.filter(s => s !== id);
+            card.classList.remove('selected');
+            card.setAttribute('aria-checked', 'false');
+        } else {
+            // Select (only if under limit)
+            if (selected.length >= 3) return;
+            selected.push(id);
+            card.classList.add('selected');
+            card.setAttribute('aria-checked', 'true');
+        }
+        updateUI();
+    }
+
+    /* ── UPDATE UI STATE ── */
+    function updateUI() {
+        const count     = selected.length;
+        const remaining = 3 - count;
+        const btn       = document.getElementById('continueBtn');
+        const hint      = document.getElementById('hintText');
+        const counter   = document.getElementById('counterText');
+
+        // Counter text
+        counter.textContent = `${count} of 3 selected`;
+
+        // Dots
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`dot${i}`).classList.toggle('filled', i <= count);
+        }
+
+        // Hint
+        if (count === 3) {
+            hint.innerHTML = `<strong style="color:var(--teal-lt)">✓ Perfect! 3 apps chosen</strong>`;
+        } else {
+            hint.innerHTML = `Select <strong>${remaining}</strong> more to continue`;
+        }
+
+        // Button
+        btn.disabled = count !== 3;
+        btn.setAttribute('aria-disabled', String(count !== 3));
+        if (count === 3) {
+            btn.textContent = 'Go to My Apps →';
+        } else {
+            btn.textContent = `Continue (${count}/3)`;
+        }
+
+        // Disable/enable cards
+        document.querySelectorAll('.pick-card').forEach(c => {
+            const isSelected = selected.includes(c.dataset.id);
+            if (count >= 3 && !isSelected) {
+                c.classList.add('disabled');
+                c.setAttribute('aria-disabled', 'true');
+            } else {
+                c.classList.remove('disabled');
+                c.removeAttribute('aria-disabled');
+            }
+        });
+    }
+
+    /* ── SAVE & REDIRECT ── */
+    function goToMyApps() {
+        if (selected.length !== 3) return;
+
+        // Save to localStorage — key 'freeApps' used by my-apps.html
+        localStorage.setItem('freeApps', JSON.stringify(selected));
+        localStorage.setItem('userTier', 'free');
+
+        // GA4 event
+        if (typeof gtag === 'function') {
+            gtag('event', 'apps_selected', {
+                selected_apps: selected.join(','),
+                count: selected.length
+            });
+        }
+
+        // Redirect to dashboard
+        window.location.href = 'my-apps.html';
+    }
+
+    // Init
+    buildGrid();
+    updateUI();
+    </script>
+</body>
+</html>
