@@ -1,891 +1,955 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-6EGC5ZNZPF');
+  gtag('config', 'G-6EGC5ZNZPF', { page_title: 'Chromatic Roulette Wheel', page_location: window.location.href });
 </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keys, Codes & Modes - Chromatic Roulette Wheel</title>
-    <style>
-        /* 
-        KEYS, CODES & MODES - CHROMATIC ROULETTE WHEEL
-        Official Brand Color System:
-        C = Yellow (#FFFF00), C#/Db = Yellow-Orange (#FFC400), D = Orange (#FF8000),
-        D#/Eb = Red-Orange (#FF4000), E = Red (#FF0000), F = Red-Purple (#C4007F),
-        F#/Gb = Purple (#8000FF), G = Blue-Purple (#4000FF), G#/Ab = Blue (#0000FF),
-        A = Blue-Green (#007FFF), A#/Bb = Green (#00FF80), B = Yellow-Green (#80FF00)
-        */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            color: white;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            text-align: center;
-            font-size: 2em;
-            margin-bottom: 5px;
-            /* Official Keys, Codes & Modes chromatic gradient: Yellow → Red → Purple → Blue */
-            background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        
-        .app-title {
-            text-align: center;
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            color: #fff;
-            font-weight: 600;
-            text-shadow: 0 2px 10px rgba(255,255,255,0.3);
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 30px;
-        }
-        
-        .main-grid {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-        
-        /* Left Column - Roulette with buttons beside it */
-        .roulette-section {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .wheel-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .root-display {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        
-        .root-label {
-            font-size: 1em;
-            margin-bottom: 8px;
-            color: #ddd;
-        }
-        
-        .root-note {
-            font-size: 3em;
-            font-weight: bold;
-            padding: 15px 35px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        #rouletteWheel {
-            margin-bottom: 15px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-            cursor: grab;
-            touch-action: none;
-        }
-        
-        #rouletteWheel:active {
-            cursor: grabbing;
-        }
-        
-        .spin-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .btn-spin {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .mode-controls {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 10px;
-        }
-        
-        .mode-title {
-            font-size: 1.1em;
-            margin-bottom: 12px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .mode-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .btn-mode {
-            padding: 12px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            transition: all 0.3s;
-        }
-        
-        .btn-mode.active {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-        
-        .btn-fret {
-            padding: 12px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            transition: all 0.3s;
-        }
-        
-        .btn-fret.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        /* Right Column - Guitar */
-        .guitar-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-        }
-        
-        .guitar-title {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        #fretboard {
-            width: 100%;
-            max-width: 280px;
-            margin: 0 auto;
-            background: #5d4e37;
-            border-radius: 10px;
-            padding: 20px;
-            position: relative;
-            max-height: 700px;
-            overflow-y: auto;
-        }
-        
-        #fretboard::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        #fretboard::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-        }
-        
-        #fretboard::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.3);
-            border-radius: 10px;
-        }
-        
-        #fretboard::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.5);
-        }
-        
-        .fret-marker {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #fff;
-            opacity: 0.2;
-            pointer-events: none;
-        }
-        
-        .string-line {
-            height: 2px;
-            background: #888;
-            margin: 15px 0;
-            position: relative;
-        }
-        
-        .note-dot {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7px;
-            font-weight: bold;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid #000;
-            line-height: 1;
-        }
-        
-        .note-dot:hover {
-            transform: scale(1.2);
-            z-index: 10;
-        }
-        
-        .note-dot.active {
-            opacity: 1;
-            box-shadow: 0 0 15px rgba(255,255,255,0.5);
-        }
-        
-        .note-dot.inactive {
-            opacity: 0.2;
-        }
-        
-        .note-dot.root {
-            border: 3px solid white;
-            box-shadow: 0 0 10px rgba(255,255,255,0.8);
-        }
-        
-        .note-dot.playing {
-            box-shadow: 0 0 20px rgba(255,255,255,0.9);
-            filter: brightness(1.5);
-            z-index: 100;
-        }
-        
-        .playing-highlight {
-            filter: brightness(1.5) drop-shadow(0 0 15px currentColor);
-        }
-        
-        .legend {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            font-size: 0.9em;
-        }
-        
-        .legend-item {
-            margin: 5px 0;
-        }
-        
-        @media (max-width: 1200px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .roulette-section {
-                flex-direction: column;
-            }
-            
-            .mode-controls {
-                width: 100%;
-                max-width: 400px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Keys, Codes & Modes</h1>
-        <div class="app-title">Chromatic Roulette Wheel</div>
-        <p class="subtitle">Spin the wheel, press a mode button to hear it play!</p>
-        
-        <div class="main-grid">
-            <!-- Left: Roulette Wheel + Controls -->
-            <div class="roulette-section">
-                <div class="wheel-container">
-                    <div class="root-display">
-                        <div class="root-label">Root Note</div>
-                        <div class="root-note" id="rootNote">C</div>
-                    </div>
-                    
-                    <svg id="rouletteWheel" width="350" height="350" viewBox="0 0 400 400"></svg>
-                    
-                    <div class="spin-controls">
-                        <button class="btn btn-spin" id="spinCCW" style="padding: 10px 20px; font-size: 0.9em;">↺ CCW</button>
-                        <button class="btn btn-spin" id="spinRandom" style="padding: 10px 20px; font-size: 0.9em;">🎲</button>
-                        <button class="btn btn-spin" id="spinCW" style="padding: 10px 20px; font-size: 0.9em;">CW ↻</button>
-                    </div>
-                </div>
-                
-                <!-- Mode Controls - Beside the wheel -->
-                <div class="mode-controls" style="width: 150px; padding: 15px;">
-                    <div class="mode-title" style="font-size: 1.1em; margin-bottom: 12px;">Mode</div>
-                    <div class="mode-buttons" style="gap: 8px;">
-                        <button class="btn btn-mode active" data-mode="scale" style="padding: 10px; font-size: 0.9em;">Major Scale</button>
-                        <button class="btn btn-mode" data-mode="triad" style="padding: 10px; font-size: 0.9em;">Major Triad</button>
-                        <button class="btn btn-mode" data-mode="intervals" style="padding: 10px; font-size: 0.9em;">Chromatic</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right: Guitar Fretboard -->
-            <div class="guitar-section">
-                <h2 class="guitar-title">🎸 Guitar Fretboard</h2>
-                
-                <!-- Fret View Selector -->
-                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                    <button class="btn btn-fret" data-frets="3" style="padding: 8px 20px; font-size: 0.9em;">3 Frets</button>
-                    <button class="btn btn-fret active" data-frets="5" style="padding: 8px 20px; font-size: 0.9em;">5 Frets</button>
-                    <button class="btn btn-fret" data-frets="15" style="padding: 8px 20px; font-size: 0.9em;">15 Frets</button>
-                </div>
-                
-                <div id="fretboard"></div>
-                <div class="legend">
-                    <div class="legend-item">⬜ Root: <span id="legendRoot">C</span> | 🎵 Mode: <span id="legendMode">C Major Scale</span></div>
-                    <div class="legend-item">✨ Bright = Active notes | 💡 Extra bright = Playing now</div>
-                    <div class="legend-item">👆 Click any note to hear it | Press mode button to play</div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        // ===== CONFIGURATION =====
-        const notes = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
-        
-        // OFFICIAL KEYS, CODES & MODES CHROMATIC COLOR SYSTEM
-        // This color scheme is used consistently across all Keys, Codes & Modes applications
-        const colors = [
-            '#FFFF00',  // 1. C - Yellow
-            '#FFC400',  // 2. C#/Db - Yellow-Orange
-            '#FF8000',  // 3. D - Orange
-            '#FF4000',  // 4. D#/Eb - Red-Orange
-            '#FF0000',  // 5. E - Red
-            '#C4007F',  // 6. F - Red-Purple
-            '#8000FF',  // 7. F#/Gb - Purple
-            '#4000FF',  // 8. G - Blue-Purple
-            '#0000FF',  // 9. G#/Ab - Blue
-            '#007FFF',  // 10. A - Blue-Green
-            '#00FF80',  // 11. A#/Bb - Green
-            '#80FF00'   // 12. B - Yellow-Green
-        ];
-        
-        const midiBase = 60; // C4 (Middle C)
-        
-        // Guitar strings in standard tuning (MIDI numbers from bass to treble)
-        const guitarStrings = [40, 45, 50, 55, 59, 64]; // E2, A2, D3, G3, B3, E4
-        const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
-        
-        // Scale patterns (semitones from root)
-        const patterns = {
-            scale: [0, 2, 4, 5, 7, 9, 11], // Major scale
-            triad: [0, 4, 7],              // Major triad
-            intervals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] // All notes
-        };
-        
-        // ===== STATE =====
-        let audioContext = null;
-        let currentRotation = 60; // Start with C at 12 o'clock position
-        let selectedNote = 0;
-        let isSpinning = false;
-        let spinSpeed = 0;
-        let currentMode = 'scale';
-        let fretView = 5; // Default to 5 frets view
-        
-        // ===== AUDIO =====
-        function initAudio() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
+<!-- Core Meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Chromatic Roulette Wheel | Keys, Codes &amp; Modes — Interactive Music Theory</title>
+<meta name="description" content="Spin the Chromatic Roulette Wheel to explore major scales, triads, and intervals on a color-coded guitar fretboard. Interactive music theory trainer from Keys, Codes &amp; Modes.">
+<meta name="keywords" content="chromatic roulette, music theory, guitar fretboard, major scale, music education, keys codes modes, interactive music, circle of fifths, chromatic scale, guitar training">
+<meta name="author" content="Ben Ryan — Keys, Codes &amp; Modes">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f1b2d">
+<link rel="canonical" href="https://keyscodesandmodes.com/chromatic-roulette.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Keys, Codes &amp; Modes">
+<meta property="og:title" content="Chromatic Roulette Wheel — Interactive Music Theory Trainer">
+<meta property="og:description" content="Spin, drag, and explore every key on the guitar fretboard. Visual color-coded music theory for all levels.">
+<meta property="og:url" content="https://keyscodesandmodes.com/chromatic-roulette.html">
+<meta property="og:image" content="https://keyscodesandmodes.com/images/chromatic-roulette-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chromatic Roulette Wheel | Keys, Codes &amp; Modes">
+<meta name="twitter:description" content="Spin to any key. See it on the guitar. Hear it played. Color-coded music theory.">
+<meta name="twitter:image" content="https://keyscodesandmodes.com/images/chromatic-roulette-og.png">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Chromatic Roulette Wheel",
+  "url": "https://keyscodesandmodes.com/chromatic-roulette.html",
+  "description": "Interactive chromatic roulette wheel for learning music theory.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "creator": { "@type": "Person", "name": "Ben Ryan", "url": "https://keyscodesandmodes.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/*
+  KEYS, CODES & MODES — CHROMATIC ROULETTE WHEEL
+  C=#FFFF00  C#=#FFC400  D=#FF8000  D#=#FF4000  E=#FF0000
+  F=#C4007F  F#=#8000FF  G=#4000FF  Ab=#0000FF
+  A=#007FFF  Bb=#00FF80  B=#80FF00
+*/
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Rajdhani', Arial, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(12px, 2.5vw, 24px);
+  overscroll-behavior: contain;
+}
+
+/* ── Header ── */
+.site-header { text-align:center; margin-bottom:clamp(14px,2.5vw,26px); }
+
+h1 {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1.2rem,3.5vw,1.8rem);
+  font-weight:900;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  background:linear-gradient(90deg,#FFFF00,#FF8000,#FF0000,#8000FF,#0000FF,#00FF80);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:4px;
+}
+.app-title {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1.4rem,4vw,2.2rem);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:1px;
+  margin-bottom:4px;
+  text-shadow:0 2px 10px rgba(255,255,255,0.2);
+}
+.subtitle {
+  font-family:'Space Mono',monospace;
+  font-size:clamp(0.62rem,1.7vw,0.78rem);
+  color:#777;
+  letter-spacing:1px;
+}
+
+/* ══════════════════════════════════
+   MAIN 2-COLUMN LAYOUT
+   Col 1 (left)  = Guitar Fretboard
+   Col 2 (right) = Wheel + Controls
+   ══════════════════════════════════ */
+.main-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(16px, 2.5vw, 40px);
+  align-items: start;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 820px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .guitar-col   { order: 2; }
+  .controls-col { order: 1; }
+}
+
+/* ══════════════════════════════════
+   LEFT COL — Guitar Fretboard
+   ══════════════════════════════════ */
+.guitar-col {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+.guitar-title {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.4rem);
+  font-weight:700;
+  letter-spacing:1px;
+  text-align:center;
+}
+
+/* Fret view buttons */
+.fret-panel {
+  display:flex;
+  gap:7px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+/* Brown fretboard pane — tight fit to content */
+#fretboard {
+  width: fit-content;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #4a3620 0%, #5d4e37 50%, #4a3620 100%);
+  border-radius: 10px;
+  padding: 12px 8px;
+  position: relative;
+  max-height: 760px;
+  overflow-y: auto;
+  border: 1px solid rgba(120,90,40,0.5);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+#fretboard::-webkit-scrollbar { width:6px; }
+#fretboard::-webkit-scrollbar-track { background:rgba(0,0,0,0.2); border-radius:6px; }
+#fretboard::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.22); border-radius:6px; }
+
+/* String name labels — exact same widths & gap as columns */
+.fb-label-row {
+  display:flex;
+  gap:3px;
+  margin-bottom:6px;
+}
+.fb-label-cell {
+  width:36px;
+  flex-shrink:0;
+  text-align:center;
+  font-family:'Space Mono',monospace;
+  font-size:0.67rem;
+  font-weight:700;
+  color:rgba(255,210,120,0.75);
+}
+
+.fb-strings-row {
+  display:flex;
+  gap:3px;
+  position:relative;
+}
+.fb-string-col {
+  position:relative;
+  width:36px;
+  flex-shrink:0;
+}
+
+/* Vertical string line */
+.fb-vline {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:2px;
+  bottom:0;
+  background:linear-gradient(180deg, rgba(200,170,100,0.6), rgba(150,120,60,0.25));
+}
+
+/* Horizontal fret lines */
+.fb-fret-line {
+  position:absolute;
+  left:-3px; right:-3px;
+  height:1px;
+  background:rgba(180,140,80,0.3);
+  pointer-events:none;
+}
+
+/* Fret position marker dots */
+.fb-fret-marker {
+  position:absolute;
+  width:13px; height:13px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  left:50%;
+  transform:translateX(-50%);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* ── NOTE DOTS ── */
+.note-dot {
+  position:absolute;
+  width:26px; height:26px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Space Mono',monospace;
+  font-size:6px;
+  font-weight:700;
+  color:#000;
+  cursor:pointer;
+  left:50%;
+  transform:translateX(-50%);
+  border:2px solid rgba(0,0,0,0.4);
+  /* All dim by default */
+  opacity:0.12;
+  transition:opacity 0.1s, transform 0.1s, box-shadow 0.1s;
+  z-index:2;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+/* Active notes in current mode */
+.note-dot.active  { opacity:0.72; }
+/* Root note */
+.note-dot.root {
+  opacity:0.9;
+  border:2.5px solid rgba(255,255,255,0.9);
+  box-shadow:0 0 8px rgba(255,255,255,0.5);
+}
+/* Inactive notes */
+.note-dot.inactive { opacity:0.1; }
+/* Hover */
+.note-dot:hover {
+  opacity:1 !important;
+  transform:translateX(-50%) scale(1.2) !important;
+  z-index:20;
+  box-shadow:0 0 12px rgba(255,255,255,0.5) !important;
+}
+
+/* ── PLAYING STATE ──
+   body.is-playing dims everything; only .playing shines */
+body.is-playing .note-dot {
+  opacity:0.07 !important;
+  box-shadow:none !important;
+}
+body.is-playing .note-dot.playing {
+  opacity:1 !important;
+  box-shadow:0 0 0 3px rgba(255,255,255,0.9),
+             0 0 20px 5px rgba(255,255,255,0.65) !important;
+  transform:translateX(-50%) scale(1.2) !important;
+  z-index:50;
+  animation:pop-dot 0.2s ease-out;
+}
+body.is-playing #rouletteWheel path:not(.playing-highlight) {
+  opacity:0.1 !important;
+  transition:opacity 0.1s;
+}
+@keyframes pop-dot {
+  0%   { box-shadow:0 0 0 6px rgba(255,255,255,1), 0 0 28px 8px rgba(255,255,255,0.8); }
+  100% { box-shadow:0 0 0 3px rgba(255,255,255,0.9), 0 0 20px 5px rgba(255,255,255,0.65); }
+}
+.playing-highlight {
+  filter:brightness(1.7) drop-shadow(0 0 10px currentColor) !important;
+}
+
+/* Legend */
+.legend {
+  padding:10px 12px;
+  background:rgba(0,0,0,0.3);
+  border-radius:8px;
+  font-family:'Space Mono',monospace;
+  font-size:clamp(0.58rem,1.5vw,0.7rem);
+  color:#777;
+  line-height:1.85;
+  width:fit-content;
+  margin:0 auto;
+}
+.legend span { color:#ccc; }
+
+/* ══════════════════════════════════
+   RIGHT COL — Controls
+   ══════════════════════════════════ */
+.controls-col {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+
+/* Root note badge */
+.root-display { text-align:center; }
+.root-label {
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;
+  color:#666;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.root-note {
+  display:inline-block;
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(2rem,5vw,2.8rem);
+  font-weight:700;
+  padding:8px 26px;
+  border-radius:12px;
+  color:#000;
+  min-width:108px;
+  text-align:center;
+  letter-spacing:1px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);
+  transition:background-color 0.2s;
+}
+
+/* Wheel */
+.wheel-wrap {
+  position:relative;
+  width:min(320px,85vw);
+  height:min(320px,85vw);
+}
+#rouletteWheel {
+  width:100%; height:100%;
+  cursor:grab;
+  touch-action:none;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+}
+#rouletteWheel:active { cursor:grabbing; }
+
+/* Spin buttons */
+.spin-controls {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* Mode panel */
+.mode-panel {
+  background:rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:14px 12px;
+  width:100%;
+  max-width:min(320px,90vw);
+}
+.mode-panel-title {
+  font-family:'Space Mono',monospace;
+  font-size:0.67rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#666;
+  text-align:center;
+  margin-bottom:10px;
+}
+.mode-buttons {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* ── Shared buttons ── */
+.btn {
+  font-family:'Rajdhani',sans-serif;
+  font-size:0.95rem;
+  font-weight:700;
+  letter-spacing:0.5px;
+  padding:10px 18px;
+  border:none;
+  border-radius:9px;
+  cursor:pointer;
+  transition:transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 5px 14px rgba(0,0,0,0.35); }
+.btn:active:not(:disabled) { transform:translateY(0); }
+.btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+.btn-spin { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; }
+
+.btn-mode {
+  flex:1;
+  min-width:88px;
+  padding:11px 8px;
+  background:rgba(255,255,255,0.07);
+  color:#ccc;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:9px;
+  font-size:0.9rem;
+}
+.btn-mode.active {
+  background:linear-gradient(135deg,#11998e,#38ef7d);
+  color:#000;
+  border-color:transparent;
+}
+
+.btn-fret {
+  padding:9px 16px;
+  background:rgba(255,255,255,0.07);
+  color:#ccc;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  font-size:0.88rem;
+}
+.btn-fret.active {
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;
+  border-color:transparent;
+}
+
+/* ── Footer ── */
+.site-footer {
+  text-align:center;
+  margin-top:clamp(20px,3vw,36px);
+  font-family:'Space Mono',monospace;
+  font-size:0.63rem;
+  color:#444;
+  letter-spacing:1px;
+}
+.site-footer a { color:#444; text-decoration:none; }
+.site-footer a:hover { color:#aaa; }
+
+:focus-visible { outline:2px solid #FFD700; outline-offset:2px; }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:rgba(0,0,0,0.15); border-radius:6px; }
+::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.18); border-radius:6px; }
+</style>
+</head>
+
+<body>
+
+<header class="site-header" role="banner">
+  <h1 aria-label="Keys Codes and Modes">Keys, Codes &amp; Modes</h1>
+  <div class="app-title">Chromatic Roulette Wheel</div>
+  <p class="subtitle">Spin to a key · Select a mode · Hear it play</p>
+</header>
+
+<main role="main">
+  <div class="main-grid">
+
+    <!-- ══ LEFT COLUMN — Guitar Fretboard ══ -->
+    <section class="guitar-col" aria-label="Guitar fretboard">
+
+      <h2 class="guitar-title">🎸 Guitar Fretboard</h2>
+
+      <div class="fret-panel" role="group" aria-label="Fret view">
+        <button class="btn btn-fret" data-frets="3"  aria-pressed="false">3 Frets</button>
+        <button class="btn btn-fret active" data-frets="5"  aria-pressed="true">5 Frets</button>
+        <button class="btn btn-fret" data-frets="15" aria-pressed="false">15 Frets</button>
+      </div>
+
+      <div id="fretboard" role="img" aria-label="Guitar fretboard — active notes shown"></div>
+
+      <div class="legend" aria-live="polite">
+        <div>Root: <span id="legendRoot">C</span> &nbsp;|&nbsp; Mode: <span id="legendMode">C Major Scale</span></div>
+        <div>Bright = playing now &nbsp;|&nbsp; Click any dot to hear it</div>
+      </div>
+
+    </section>
+
+    <!-- ══ RIGHT COLUMN — Controls ══ -->
+    <section class="controls-col" aria-label="Roulette wheel and controls">
+
+      <div class="root-display">
+        <div class="root-label">Root Note</div>
+        <div class="root-note" id="rootNote" aria-live="polite" aria-atomic="true">C</div>
+      </div>
+
+      <div class="wheel-wrap">
+        <svg id="rouletteWheel"
+             viewBox="0 0 400 400"
+             role="img"
+             aria-label="Chromatic roulette wheel — drag or use buttons to spin"
+             tabindex="0"></svg>
+      </div>
+
+      <div class="spin-controls" role="group" aria-label="Spin controls">
+        <button class="btn btn-spin" id="spinCCW"    aria-label="Spin counter-clockwise">↺ CCW</button>
+        <button class="btn btn-spin" id="spinRandom" aria-label="Random spin">🎲 Spin</button>
+        <button class="btn btn-spin" id="spinCW"     aria-label="Spin clockwise">CW ↻</button>
+      </div>
+
+      <div class="mode-panel" role="group" aria-label="Mode selection">
+        <div class="mode-panel-title">Select &amp; Play Mode</div>
+        <div class="mode-buttons">
+          <button class="btn btn-mode active" data-mode="scale"     aria-pressed="true">Major Scale</button>
+          <button class="btn btn-mode"         data-mode="triad"     aria-pressed="false">Major Triad</button>
+          <button class="btn btn-mode"         data-mode="intervals" aria-pressed="false">Chromatic</button>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <p>© <span id="yr"></span> <a href="https://keyscodesandmodes.com" rel="noopener">Keys, Codes &amp; Modes</a> — All rights reserved.</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════
+//  KEYS, CODES & MODES — CHROMATIC ROULETTE WHEEL
+//  © Ben Ryan | keyscodesandmodes.com
+// ════════════════════════════════════════════════════
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── Brand Color System ──
+const notes  = ['C','C#/Db','D','D#/Eb','E','F','F#/Gb','G','G#/Ab','A','A#/Bb','B'];
+const colors = [
+  '#FFFF00','#FFC400','#FF8000','#FF4000','#FF0000',
+  '#C4007F','#8000FF','#4000FF','#0000FF','#007FFF','#00FF80','#80FF00'
+];
+
+const MIDI_C4       = 60;
+const guitarStrings = [40, 45, 50, 55, 59, 64]; // E2 A2 D3 G3 B3 E4
+const stringNames   = ['E','A','D','G','B','E'];
+
+const patterns = {
+  scale:     [0,2,4,5,7,9,11],
+  triad:     [0,4,7],
+  intervals: [0,1,2,3,4,5,6,7,8,9,10,11]
+};
+const modeNames = { scale:'Major Scale', triad:'Major Triad', intervals:'Chromatic' };
+
+// ── State ──
+let audioCtx     = null;
+let currentRot   = 60;   // starts with C at 12 o'clock
+let selectedNote = 0;
+let isSpinning   = false;
+let spinSpeed    = 0;
+let currentMode  = 'scale';
+let fretView     = 5;
+let playTimers   = [];
+
+// ── Audio ──
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playNote(midi, dur = 0.35) {
+  if (!Number.isFinite(midi) || midi < 0 || midi > 127) return;
+  initAudio();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = 440 * Math.pow(2, (midi - 69) / 12);
+  osc.type = 'sine';
+  const t = audioCtx.currentTime;
+  gain.gain.setValueAtTime(0.32, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  osc.start(t);
+  osc.stop(t + dur);
+}
+
+// ── Playback State Management ──
+function clearPlayState() {
+  playTimers.forEach(clearTimeout);
+  playTimers = [];
+  document.body.classList.remove('is-playing');
+  document.querySelectorAll('.note-dot.playing').forEach(d => d.classList.remove('playing'));
+  document.querySelectorAll('#rouletteWheel path.playing-highlight').forEach(p => p.classList.remove('playing-highlight'));
+}
+
+function lightUpNote(ni, dur) {
+  // Wheel segment
+  document.querySelectorAll('#rouletteWheel path[data-note]').forEach(seg => {
+    if (parseInt(seg.getAttribute('data-note')) === ni) {
+      seg.classList.add('playing-highlight');
+      playTimers.push(setTimeout(() => seg.classList.remove('playing-highlight'), dur));
+    }
+  });
+  // Fretboard dots
+  document.querySelectorAll(`.note-dot[data-ni="${ni}"]`).forEach(dot => {
+    dot.classList.add('playing');
+    playTimers.push(setTimeout(() => dot.classList.remove('playing'), dur));
+  });
+}
+
+function playSelection() {
+  clearPlayState();
+  initAudio();
+  document.body.classList.add('is-playing');
+
+  const root    = MIDI_C4 + selectedNote;
+  const pattern = patterns[currentMode];
+
+  if (currentMode === 'triad') {
+    // All 3 notes simultaneously
+    pattern.forEach(iv => {
+      const ni = (selectedNote + iv) % 12;
+      playNote(root + iv, 1.1);
+      lightUpNote(ni, 1100);
+    });
+    playTimers.push(setTimeout(clearPlayState, 1250));
+
+  } else {
+    // Sequential — one note at a time, rest fully dimmed
+    const stepMs  = 300;
+    const noteDur = 0.42;
+    pattern.forEach((iv, i) => {
+      playTimers.push(setTimeout(() => {
+        // Clear previous step
+        document.querySelectorAll('.note-dot.playing').forEach(d => d.classList.remove('playing'));
+        document.querySelectorAll('#rouletteWheel path.playing-highlight').forEach(p => p.classList.remove('playing-highlight'));
+        const ni = (selectedNote + iv) % 12;
+        playNote(root + iv, noteDur);
+        lightUpNote(ni, stepMs - 40);
+      }, i * stepMs));
+    });
+    playTimers.push(setTimeout(clearPlayState, pattern.length * stepMs + 250));
+  }
+}
+
+// ── Wheel Drawing ──
+function getActiveNotes() {
+  return patterns[currentMode].map(iv => (selectedNote + iv) % 12);
+}
+
+function drawWheel() {
+  const svg = document.getElementById('rouletteWheel');
+  svg.innerHTML = '';
+  const cx = 200, cy = 200, R = 150;
+  const active = getActiveNotes();
+
+  for (let i = 0; i < 12; i++) {
+    const a0 = ((i * 30) - 90 - currentRot + 45) * Math.PI / 180;
+    const a1 = a0 + 30 * Math.PI / 180;
+    const x1 = cx + R * Math.cos(a0), y1 = cy + R * Math.sin(a0);
+    const x2 = cx + R * Math.cos(a1), y2 = cy + R * Math.sin(a1);
+
+    const seg = document.createElementNS('http://www.w3.org/2000/svg','path');
+    seg.setAttribute('d', `M${cx} ${cy} L${x1} ${y1} A${R} ${R} 0 0 1 ${x2} ${y2}Z`);
+    seg.setAttribute('fill', colors[i]);
+    seg.setAttribute('stroke', '#000');
+    seg.setAttribute('stroke-width', '1.5');
+    seg.setAttribute('opacity', active.includes(i) ? '1' : '0.28');
+    seg.setAttribute('data-note', i);
+    svg.appendChild(seg);
+
+    // Label
+    const mid = (a0 + a1) / 2;
+    const lx = cx + 108 * Math.cos(mid), ly = cy + 108 * Math.sin(mid);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x', lx); txt.setAttribute('y', ly);
+    txt.setAttribute('text-anchor','middle');
+    txt.setAttribute('dominant-baseline','middle');
+    txt.setAttribute('fill','#000');
+    txt.setAttribute('font-weight','bold');
+    txt.setAttribute('font-size','12');
+    txt.setAttribute('font-family','Space Mono, monospace');
+    txt.textContent = notes[i];
+    svg.appendChild(txt);
+  }
+
+  // Center disc
+  const disc = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  disc.setAttribute('cx',cx); disc.setAttribute('cy',cy); disc.setAttribute('r','38');
+  disc.setAttribute('fill','#1a2340');
+  disc.setAttribute('stroke', colors[selectedNote]);
+  disc.setAttribute('stroke-width','4');
+  svg.appendChild(disc);
+
+  // Pointer
+  const ptr = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  ptr.setAttribute('points','200,16 190,38 210,38');
+  ptr.setAttribute('fill','#FFD700');
+  svg.appendChild(ptr);
+}
+
+// ── Fretboard Drawing ──
+function drawFretboard() {
+  const fb = document.getElementById('fretboard');
+  fb.innerHTML = '';
+  const active = getActiveNotes();
+
+  const DOT   = 26;   // dot diameter in px
+  const fretH = 52;   // px per fret cell
+  const COL_W = 36;   // column width (matches CSS .fb-string-col)
+  const totalH = DOT + fretH * fretView;
+
+  // Label row — same widths & gap as string columns
+  const lblRow = document.createElement('div');
+  lblRow.className = 'fb-label-row';
+  stringNames.forEach(n => {
+    const lbl = document.createElement('div');
+    lbl.className = 'fb-label-cell';
+    lbl.textContent = n;
+    lblRow.appendChild(lbl);
+  });
+  fb.appendChild(lblRow);
+
+  // String columns
+  const strRow = document.createElement('div');
+  strRow.className = 'fb-strings-row';
+
+  guitarStrings.forEach((openMidi, si) => {
+    const col = document.createElement('div');
+    col.className = 'fb-string-col';
+    col.style.height = totalH + 'px';
+    col.style.width  = COL_W + 'px';
+
+    // String line — starts at centre of fret-0 dot
+    const vline = document.createElement('div');
+    vline.className = 'fb-vline';
+    vline.style.top = (DOT / 2) + 'px';
+    col.appendChild(vline);
+
+    // Horizontal fret lines
+    for (let f = 1; f <= fretView; f++) {
+      const fl = document.createElement('div');
+      fl.className = 'fb-fret-line';
+      fl.style.top = (DOT + (f - 1) * fretH) + 'px';
+      col.appendChild(fl);
+    }
+
+    // Position marker dots (on D string = index 2)
+    if (si === 2) {
+      [3,5,7,9,12,15].forEach(f => {
+        if (f <= fretView) {
+          const mk = document.createElement('div');
+          mk.className = 'fb-fret-marker';
+          mk.style.top = (DOT + (f-1)*fretH + fretH/2 - 7) + 'px';
+          col.appendChild(mk);
         }
-        
-        function playNote(midiNote, duration = 0.3) {
-            // Validate MIDI note
-            if (!midiNote || !isFinite(midiNote) || midiNote < 0 || midiNote > 127) {
-                console.error('Invalid MIDI note:', midiNote);
-                return;
-            }
-            
-            initAudio();
-            const ctx = audioContext;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            const freq = 440 * Math.pow(2, (midiNote - 69) / 12);
-            
-            // Validate frequency
-            if (!isFinite(freq) || freq <= 0) {
-                console.error('Invalid frequency calculated:', freq, 'from MIDI:', midiNote);
-                return;
-            }
-            
-            osc.frequency.value = freq;
-            osc.type = 'sine';
-            
-            gain.gain.setValueAtTime(0.3, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-            
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + duration);
-        }
-        
-        // ===== ROULETTE WHEEL =====
-        function drawWheel() {
-            const svg = document.getElementById('rouletteWheel');
-            svg.innerHTML = '';
-            
-            const cx = 200, cy = 200, radius = 150;
-            const activeNotes = getActiveNotes();
-            
-            // Draw segments (rotated 45 degrees so C is centered at 12 o'clock)
-            for (let i = 0; i < 12; i++) {
-                const angle = (i * 30) - 90 - currentRotation + 45;
-                const startAngle = angle * Math.PI / 180;
-                const endAngle = (angle + 30) * Math.PI / 180;
-                
-                const x1 = cx + radius * Math.cos(startAngle);
-                const y1 = cy + radius * Math.sin(startAngle);
-                const x2 = cx + radius * Math.cos(endAngle);
-                const y2 = cy + radius * Math.sin(endAngle);
-                
-                const isActive = activeNotes.includes(i);
-                
-                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('d', `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`);
-                path.setAttribute('fill', colors[i]);
-                path.setAttribute('stroke', '#000');
-                path.setAttribute('stroke-width', '2');
-                path.setAttribute('opacity', isActive ? '1' : '0.3');
-                svg.appendChild(path);
-                
-                // Note labels
-                const labelAngle = (angle + 15) * Math.PI / 180;
-                const labelX = cx + 110 * Math.cos(labelAngle);
-                const labelY = cy + 110 * Math.sin(labelAngle);
-                
-                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                text.setAttribute('x', labelX);
-                text.setAttribute('y', labelY);
-                text.setAttribute('text-anchor', 'middle');
-                text.setAttribute('dominant-baseline', 'middle');
-                text.setAttribute('fill', '#000');
-                text.setAttribute('font-weight', 'bold');
-                text.setAttribute('font-size', '14');
-                text.textContent = notes[i];
-                svg.appendChild(text);
-            }
-            
-            // Center circle
-            const center = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            center.setAttribute('cx', cx);
-            center.setAttribute('cy', cy);
-            center.setAttribute('r', '40');
-            center.setAttribute('fill', '#333');
-            center.setAttribute('stroke', '#FFD700');
-            center.setAttribute('stroke-width', '4');
-            svg.appendChild(center);
-            
-            // Pointer at 12 o'clock
-            const pointer = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-            pointer.setAttribute('points', '200,20 190,40 210,40');
-            pointer.setAttribute('fill', '#FFD700');
-            svg.appendChild(pointer);
-        }
-        
-        // ===== SPINNING =====
-        let targetRotation = null;
-        let isDragging = false;
-        let lastAngle = 0;
-        let dragSpeed = 0;
-        
-        function spin(direction) {
-            if (isSpinning) return;
-            initAudio();
-            
-            // Random spin: 3-7 full rotations plus random final position
-            const fullRotations = (3 + Math.random() * 4) * 360;
-            const randomFinalNote = Math.floor(Math.random() * 12);
-            const finalPosition = randomFinalNote * 30 + 60; // +60 for the offset
-            
-            targetRotation = currentRotation + (direction * fullRotations) + finalPosition;
-            spinSpeed = direction * 20;
-            isSpinning = true;
-            animateSpin();
-        }
-        
-        function animateSpin() {
-            if (!isSpinning) return;
-            
-            // Disable buttons during spin
-            document.getElementById('spinCCW').disabled = true;
-            document.getElementById('spinCW').disabled = true;
-            document.getElementById('spinRandom').disabled = true;
-            
-            currentRotation += spinSpeed;
-            currentRotation = ((currentRotation % 360) + 360) % 360;
-            
-            // Update selected note (accounting for 45-degree display offset)
-            const notePosition = (currentRotation - 60) / 30;
-            const newNote = (Math.round(notePosition) % 12 + 12) % 12;
-            if (newNote !== selectedNote) {
-                selectedNote = newNote;
-                playNote(midiBase + selectedNote, 0.1);
-                updateDisplay();
-            }
-            
-            // Slow down with easing
-            spinSpeed *= 0.96;
-            
-            if (Math.abs(spinSpeed) < 0.2) {
-                isSpinning = false;
-                spinSpeed = 0;
-                // Snap to nearest 30-degree position
-                currentRotation = Math.round(currentRotation / 30) * 30;
-                targetRotation = null;
-                // Re-enable buttons
-                document.getElementById('spinCCW').disabled = false;
-                document.getElementById('spinCW').disabled = false;
-                document.getElementById('spinRandom').disabled = false;
-                updateDisplay();
-            } else {
-                requestAnimationFrame(animateSpin);
-            }
-            
-            drawWheel();
-        }
-        
-        // ===== FREE SPIN WITH DRAG =====
-        function getAngle(x, y) {
-            const svg = document.getElementById('rouletteWheel');
-            const rect = svg.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            return Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
-        }
-        
-        function startDrag(e) {
-            if (isSpinning) return;
-            isDragging = true;
-            const x = e.clientX || (e.touches && e.touches[0].clientX);
-            const y = e.clientY || (e.touches && e.touches[0].clientY);
-            lastAngle = getAngle(x, y);
-            dragSpeed = 0;
-        }
-        
-        function drag(e) {
-            if (!isDragging) return;
-            e.preventDefault();
-            
-            const x = e.clientX || (e.touches && e.touches[0].clientX);
-            const y = e.clientY || (e.touches && e.touches[0].clientY);
-            const currentAngle = getAngle(x, y);
-            
-            let deltaAngle = currentAngle - lastAngle;
-            
-            // Handle angle wrapping
-            if (deltaAngle > 180) deltaAngle -= 360;
-            if (deltaAngle < -180) deltaAngle += 360;
-            
-            currentRotation += deltaAngle;
-            dragSpeed = deltaAngle;
-            lastAngle = currentAngle;
-            
-            // Update selected note
-            currentRotation = ((currentRotation % 360) + 360) % 360;
-            const notePosition = (currentRotation - 60) / 30;
-            const newNote = (Math.round(notePosition) % 12 + 12) % 12;
-            if (newNote !== selectedNote) {
-                selectedNote = newNote;
-                playNote(midiBase + selectedNote, 0.1);
-                updateDisplay();
-            }
-            
-            drawWheel();
-        }
-        
-        function endDrag() {
-            if (!isDragging) return;
-            isDragging = false;
-            
-            // Add momentum to the wheel
-            if (Math.abs(dragSpeed) > 2) {
-                initAudio();
-                spinSpeed = dragSpeed * 1.5;
-                isSpinning = true;
-                animateSpin();
-            } else {
-                // Snap to nearest position
-                currentRotation = Math.round(currentRotation / 30) * 30;
-                updateDisplay();
-            }
-        }
-        
-        // ===== NOTE LOGIC =====
-        function getActiveNotes() {
-            const pattern = patterns[currentMode];
-            return pattern.map(interval => (selectedNote + interval) % 12);
-        }
-        
-        function isNoteActive(noteIndex) {
-            return getActiveNotes().includes(noteIndex % 12);
-        }
-        
-        // ===== FRETBOARD =====
-        function drawFretboard() {
-            const fretboard = document.getElementById('fretboard');
-            fretboard.innerHTML = '';
-            
-            const numFrets = fretView;
-            const fretHeight = 50;
-            const activeNotes = getActiveNotes();
-            
-            // String labels
-            const stringLabels = document.createElement('div');
-            stringLabels.style.cssText = 'display: flex; justify-content: space-around; margin-bottom: 10px; font-weight: bold; font-size: 0.85em;';
-            stringNames.forEach(name => {
-                const label = document.createElement('div');
-                label.textContent = name;
-                label.style.width = '38px';
-                label.style.textAlign = 'center';
-                stringLabels.appendChild(label);
-            });
-            fretboard.appendChild(stringLabels);
-            
-            // Container for all strings
-            const stringsContainer = document.createElement('div');
-            stringsContainer.style.cssText = 'display: flex; position: relative;';
-            
-            // Draw fret markers only if they're within the view range
-            const singleMarkerFrets = [3, 5, 7, 9];
-            const doubleMarkerFrets = [12, 15];
-            
-            singleMarkerFrets.forEach(fret => {
-                if (fret <= numFrets) {
-                    const marker = document.createElement('div');
-                    marker.className = 'fret-marker';
-                    marker.style.cssText = `position: absolute; left: 50%; top: ${fret * fretHeight + 10}px; transform: translateX(-50%);`;
-                    stringsContainer.appendChild(marker);
-                }
-            });
-            
-            doubleMarkerFrets.forEach(fret => {
-                if (fret <= numFrets) {
-                    const marker1 = document.createElement('div');
-                    marker1.className = 'fret-marker';
-                    marker1.style.cssText = `position: absolute; left: 35%; top: ${fret * fretHeight + 10}px;`;
-                    stringsContainer.appendChild(marker1);
-                    
-                    const marker2 = document.createElement('div');
-                    marker2.className = 'fret-marker';
-                    marker2.style.cssText = `position: absolute; left: 65%; top: ${fret * fretHeight + 10}px;`;
-                    stringsContainer.appendChild(marker2);
-                }
-            });
-            
-            // Draw strings with notes
-            guitarStrings.forEach((stringMidi, stringIndex) => {
-                const stringContainer = document.createElement('div');
-                stringContainer.style.cssText = `position: relative; height: ${fretHeight * numFrets}px; width: 38px; margin-right: 2px;`;
-                
-                // String line
-                const line = document.createElement('div');
-                line.className = 'string-line';
-                line.style.cssText = 'position: absolute; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background: #888;';
-                stringContainer.appendChild(line);
-                
-                // Draw notes
-                for (let fret = 0; fret <= numFrets; fret++) {
-                    const noteMidi = stringMidi + fret;
-                    const noteIndex = noteMidi % 12;
-                    const isActive = activeNotes.includes(noteIndex);
-                    const isRoot = noteIndex === selectedNote;
-                    
-                    const dot = document.createElement('div');
-                    dot.className = 'note-dot';
-                    dot.setAttribute('data-midi', noteMidi);
-                    if (isActive) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.add('inactive');
-                    }
-                    if (isRoot) {
-                        dot.classList.add('root');
-                    }
-                    
-                    dot.style.backgroundColor = colors[noteIndex];
-                    dot.style.left = '50%';
-                    dot.style.transform = 'translateX(-50%)';
-                    dot.style.top = `${fret === 0 ? 5 : fret * fretHeight - 12}px`;
-                    dot.textContent = notes[noteIndex];
-                    dot.onclick = () => {
-                        if (isFinite(noteMidi) && noteMidi >= 0 && noteMidi <= 127) {
-                            playNote(noteMidi, 0.5);
-                        }
-                    };
-                    
-                    stringContainer.appendChild(dot);
-                }
-                
-                stringsContainer.appendChild(stringContainer);
-            });
-            
-            fretboard.appendChild(stringsContainer);
-        }
-        
-        // ===== UPDATE DISPLAY =====
-        function updateDisplay() {
-            // Update root note display
-            const rootNoteEl = document.getElementById('rootNote');
-            rootNoteEl.textContent = notes[selectedNote];
-            rootNoteEl.style.backgroundColor = colors[selectedNote];
-            
-            // Update legend
-            document.getElementById('legendRoot').textContent = notes[selectedNote];
-            const modeNames = {
-                scale: 'Major Scale',
-                triad: 'Major Triad',
-                intervals: 'Chromatic'
-            };
-            document.getElementById('legendMode').textContent = notes[selectedNote] + ' ' + modeNames[currentMode];
-            
-            // Redraw everything
-            drawWheel();
-            drawFretboard();
-        }
-        
-        // ===== PLAY SELECTION =====
-        function highlightNote(noteIndex, duration = 500) {
-            // Validate noteIndex
-            if (!isFinite(noteIndex) || noteIndex < 0 || noteIndex > 11) {
-                console.error('Invalid note index:', noteIndex);
-                return;
-            }
-            
-            // Highlight on wheel
-            const wheelSegments = document.querySelectorAll('#rouletteWheel path');
-            if (wheelSegments[noteIndex]) {
-                wheelSegments[noteIndex].classList.add('playing-highlight');
-                setTimeout(() => {
-                    wheelSegments[noteIndex].classList.remove('playing-highlight');
-                }, duration);
-            }
-            
-            // Highlight on fretboard
-            const fretboardDots = document.querySelectorAll('.note-dot');
-            fretboardDots.forEach(dot => {
-                const midiAttr = dot.getAttribute('data-midi');
-                if (midiAttr) {
-                    const dotMidi = parseInt(midiAttr, 10);
-                    if (isFinite(dotMidi) && dotMidi % 12 === noteIndex) {
-                        dot.classList.add('playing');
-                        setTimeout(() => {
-                            dot.classList.remove('playing');
-                        }, duration);
-                    }
-                }
-            });
-        }
-        
-        function playSelection() {
-            initAudio();
-            const rootMidi = midiBase + selectedNote;
-            const pattern = patterns[currentMode];
-            
-            if (currentMode === 'triad') {
-                // Play chord - all notes simultaneously with visual feedback
-                pattern.forEach(interval => {
-                    const noteIndex = (selectedNote + interval) % 12;
-                    playNote(rootMidi + interval, 1.0);
-                    highlightNote(noteIndex, 1000);
-                });
-            } else {
-                // Play scale/intervals - sequential with visual feedback
-                pattern.forEach((interval, i) => {
-                    setTimeout(() => {
-                        const noteIndex = (selectedNote + interval) % 12;
-                        playNote(rootMidi + interval, 0.5);
-                        highlightNote(noteIndex, 500);
-                    }, i * 300);
-                });
-            }
-        }
-        
-        // ===== EVENT LISTENERS =====
-        document.getElementById('spinCCW').addEventListener('click', () => spin(-1));
-        document.getElementById('spinCW').addEventListener('click', () => spin(1));
-        document.getElementById('spinRandom').addEventListener('click', () => {
-            const randomDirection = Math.random() < 0.5 ? -1 : 1;
-            spin(randomDirection);
-        });
-        
-        // Drag/touch events for free spin
-        const wheel = document.getElementById('rouletteWheel');
-        wheel.addEventListener('mousedown', startDrag);
-        wheel.addEventListener('touchstart', startDrag, { passive: false });
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('touchmove', drag, { passive: false });
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('touchend', endDrag);
-        
-        document.querySelectorAll('.btn-mode').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                initAudio(); // Ensure audio is initialized
-                document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentMode = e.target.dataset.mode;
-                updateDisplay();
-                // Auto-play immediately when mode button is pressed
-                playSelection();
-            });
-        });
-        
-        document.querySelectorAll('.btn-fret').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.btn-fret').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                fretView = parseInt(e.target.dataset.frets);
-                updateDisplay();
-            });
-        });
-        
-        // ===== INITIALIZE =====
-        updateDisplay();
-    </script>
+      });
+    }
+
+    // Note dots
+    for (let fret = 0; fret <= fretView; fret++) {
+      const midi     = openMidi + fret;
+      const ni       = midi % 12;
+      const isActive = active.includes(ni);
+      const isRoot   = ni === selectedNote;
+
+      const dot = document.createElement('div');
+      dot.className = 'note-dot';
+      dot.setAttribute('data-midi', midi);
+      dot.setAttribute('data-ni', ni);
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('tabindex', isActive ? '0' : '-1');
+      dot.setAttribute('aria-label', `${notes[ni]} — ${stringNames[si]} string fret ${fret}`);
+
+      if (isActive) dot.classList.add('active');
+      else          dot.classList.add('inactive');
+      if (isRoot)   dot.classList.add('root');
+
+      dot.style.backgroundColor = colors[ni];
+
+      // Fret 0: flush at top (nut); fret n: centred in fret cell
+      const topPx = fret === 0
+        ? 0
+        : DOT + (fret - 1) * fretH + (fretH - DOT) / 2;
+      dot.style.top = topPx + 'px';
+      dot.textContent = notes[ni];
+
+      dot.addEventListener('click', () => {
+        if (Number.isFinite(midi)) playNote(midi, 0.55);
+      });
+      dot.addEventListener('keydown', e => {
+        if (e.key==='Enter'||e.key===' ') { e.preventDefault(); playNote(midi, 0.55); }
+      });
+
+      col.appendChild(dot);
+    }
+    strRow.appendChild(col);
+  });
+
+  fb.appendChild(strRow);
+}
+
+// ── Update All Display ──
+function updateDisplay(redrawFret = true) {
+  const rn = document.getElementById('rootNote');
+  rn.textContent = notes[selectedNote];
+  rn.style.backgroundColor = colors[selectedNote];
+  rn.style.color = '#000';
+  document.getElementById('legendRoot').textContent = notes[selectedNote];
+  document.getElementById('legendMode').textContent  = notes[selectedNote] + ' ' + modeNames[currentMode];
+  drawWheel();
+  if (redrawFret) drawFretboard();
+}
+
+// ── Spin ──
+let isDragging = false, lastDragAngle = 0, dragSpeed = 0;
+
+function getWheelAngle(x, y) {
+  const r = document.getElementById('rouletteWheel').getBoundingClientRect();
+  return Math.atan2(y - (r.top + r.height/2), x - (r.left + r.width/2)) * 180 / Math.PI;
+}
+
+function setSpinBtns(dis) {
+  ['spinCCW','spinCW','spinRandom'].forEach(id => document.getElementById(id).disabled = dis);
+}
+
+function spin(dir) {
+  if (isSpinning) return;
+  clearPlayState();
+  initAudio();
+  spinSpeed = dir * (14 + Math.random() * 10);
+  isSpinning = true;
+  setSpinBtns(true);
+  animateSpin();
+}
+
+function animateSpin() {
+  if (!isSpinning) return;
+  currentRot = ((currentRot + spinSpeed) % 360 + 360) % 360;
+  const np = Math.round(((currentRot - 60) / 30 % 12 + 12) % 12);
+  if (np !== selectedNote) {
+    selectedNote = np;
+    playNote(MIDI_C4 + selectedNote, 0.08);
+    updateDisplay(false);
+  }
+  spinSpeed *= 0.963;
+  drawWheel();
+  if (Math.abs(spinSpeed) < 0.18) {
+    isSpinning = false; spinSpeed = 0;
+    currentRot = Math.round(currentRot / 30) * 30;
+    setSpinBtns(false);
+    updateDisplay(true);
+  } else {
+    requestAnimationFrame(animateSpin);
+  }
+}
+
+// Drag to spin
+const wheel = document.getElementById('rouletteWheel');
+wheel.addEventListener('mousedown', e => {
+  if (isSpinning) return;
+  isDragging = true; dragSpeed = 0;
+  lastDragAngle = getWheelAngle(e.clientX, e.clientY);
+});
+wheel.addEventListener('touchstart', e => {
+  if (isSpinning) return;
+  isDragging = true; dragSpeed = 0;
+  lastDragAngle = getWheelAngle(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: false });
+document.addEventListener('mousemove', e => { if (isDragging) doDrag(e.clientX, e.clientY); });
+document.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  e.preventDefault();
+  doDrag(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: false });
+document.addEventListener('mouseup', endDrag);
+document.addEventListener('touchend', endDrag);
+
+function doDrag(x, y) {
+  const cur = getWheelAngle(x, y);
+  let d = cur - lastDragAngle;
+  if (d > 180) d -= 360; if (d < -180) d += 360;
+  currentRot = ((currentRot + d) % 360 + 360) % 360;
+  dragSpeed = d; lastDragAngle = cur;
+  const np = Math.round(((currentRot - 60) / 30 % 12 + 12) % 12);
+  if (np !== selectedNote) {
+    selectedNote = np;
+    playNote(MIDI_C4 + selectedNote, 0.08);
+    updateDisplay(false);
+  }
+  drawWheel();
+}
+
+function endDrag() {
+  if (!isDragging) return;
+  isDragging = false;
+  if (Math.abs(dragSpeed) > 1.8) {
+    clearPlayState();
+    spinSpeed = dragSpeed * 1.4; isSpinning = true;
+    setSpinBtns(true); animateSpin();
+  } else {
+    currentRot = Math.round(currentRot / 30) * 30;
+    updateDisplay(true);
+  }
+}
+
+// Keyboard on wheel
+wheel.addEventListener('keydown', e => {
+  if (e.key==='ArrowLeft')  { e.preventDefault(); spin(-1); }
+  if (e.key==='ArrowRight') { e.preventDefault(); spin(1); }
+  if (e.key===' ')          { e.preventDefault(); spin(Math.random()<0.5?-1:1); }
+});
+
+// ── All Button Listeners ──
+document.getElementById('spinCCW').addEventListener('click',    () => spin(-1));
+document.getElementById('spinCW').addEventListener('click',     () => spin(1));
+document.getElementById('spinRandom').addEventListener('click', () => spin(Math.random()<0.5?-1:1));
+
+document.querySelectorAll('.btn-mode').forEach(btn => {
+  btn.addEventListener('click', e => {
+    clearPlayState(); initAudio();
+    document.querySelectorAll('.btn-mode').forEach(b => {
+      b.classList.remove('active'); b.setAttribute('aria-pressed','false');
+    });
+    e.currentTarget.classList.add('active');
+    e.currentTarget.setAttribute('aria-pressed','true');
+    currentMode = e.currentTarget.dataset.mode;
+    updateDisplay(true);
+    playSelection();
+  });
+});
+
+document.querySelectorAll('.btn-fret').forEach(btn => {
+  btn.addEventListener('click', e => {
+    clearPlayState();
+    document.querySelectorAll('.btn-fret').forEach(b => {
+      b.classList.remove('active'); b.setAttribute('aria-pressed','false');
+    });
+    e.currentTarget.classList.add('active');
+    e.currentTarget.setAttribute('aria-pressed','true');
+    fretView = parseInt(e.currentTarget.dataset.frets);
+    updateDisplay(true);
+  });
+});
+
+// ── Init ──
+updateDisplay(true);
+</script>
 </body>
 </html>
