@@ -480,69 +480,51 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </div>
     
     <script>
-        // Access Code Redemption - client-side validation
-        // Valid codes and their tier/access levels defined below
-        const VALID_CODES = {
-            'KCM2026PREMIUM!':  { tier: 'Premium',  label: 'Premium',          badge: '' },
-            'KCM2026FOUNDER!':  { tier: 'Founder',  label: 'Founder',          badge: '🏆' },
-            'BETATESTER2026!':  { tier: 'Beta',      label: 'Beta Tester',      badge: '' },
-            'PRESSACCESS2026!': { tier: 'Press',     label: 'Press',            badge: '' },
-            'FRIENDOFBEN2026!': { tier: 'VIP',       label: 'VIP',              badge: '⭐' },
-            'DEMOACCESS2026!':  { tier: 'Demo',      label: 'Demo',             badge: '' },
-        };
-
-        function redeemAccessCode(event) {
+        // Access Code Redemption - codes validated server-side via Cloudflare Worker
+        // No codes are stored in this file — validation happens entirely on the server
+        async function redeemAccessCode(event) {
             event.preventDefault();
 
             const codeInput = document.getElementById('accessCodeInput');
             const submitBtn = event.target.querySelector('button[type="submit"]');
-            const code = codeInput.value.trim().toUpperCase().replace(/[^A-Z0-9!]/g, '')
-                         || codeInput.value.trim(); // preserve original for exact match
-            const codeExact = codeInput.value.trim();
+            const code = codeInput.value.trim();
 
             submitBtn.textContent = 'Checking...';
             submitBtn.disabled = true;
 
-            // Small delay so "Checking..." is visible — feels intentional
-            setTimeout(() => {
+            try {
+                const response = await fetch('/api/validate-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
+                });
 
-                // Case-insensitive lookup
-                const matchKey = Object.keys(VALID_CODES).find(
-                    k => k.toLowerCase() === codeExact.toLowerCase()
-                );
+                const result = await response.json();
 
-                if (matchKey) {
-                    const info = VALID_CODES[matchKey];
-
-                    // Set all the same localStorage keys the original set
+                if (result.valid) {
                     localStorage.setItem('validAccessCode', 'true');
-                    localStorage.setItem('accessCodeUsed', matchKey);
+                    localStorage.setItem('accessCodeUsed', code);
                     localStorage.setItem('paidMember', 'true');
-                    localStorage.setItem('userTier', info.tier);
+                    localStorage.setItem('userTier', result.tier);
                     localStorage.setItem('accessGranted', 'true');
-                    localStorage.setItem('accessLevel', info.tier);
+                    localStorage.setItem('accessLevel', result.tier);
 
-                    submitBtn.textContent = '✓ Code Accepted!';
-                    submitBtn.style.background = 'linear-gradient(135deg, #008080, #005f5f)';
-
-                    // Redirect to offerings
-                    setTimeout(() => { window.location.href = 'offerings.html'; }, 800);
+                    alert('✅ Access code validated! Welcome to Keys, Codes & Modes!');
+                    setTimeout(() => { window.location.href = 'offerings.html'; }, 500);
 
                 } else {
-                    // Invalid code — inline error, no alert()
-                    codeInput.style.borderColor = '#FF4040';
-                    codeInput.placeholder = 'Invalid code — please try again';
+                    alert('❌ Invalid access code. Please check and try again.\n\nNeed help? Contact ben@keyscodesandmodes.com');
                     codeInput.value = '';
                     codeInput.focus();
                     submitBtn.textContent = 'Redeem Access Code →';
                     submitBtn.disabled = false;
-                    setTimeout(() => {
-                        codeInput.style.borderColor = '';
-                        codeInput.placeholder = 'Enter your access code';
-                    }, 3000);
                 }
 
-            }, 600);
+            } catch (err) {
+                alert('⚠️ Unable to validate code right now. Please try again shortly.');
+                submitBtn.textContent = 'Redeem Access Code →';
+                submitBtn.disabled = false;
+            }
         }
         
         // Track Stripe success returns
