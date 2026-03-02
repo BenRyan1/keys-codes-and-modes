@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sonic Physics Lab</title>
+
+
+
+<style>
+
+html,body{
+
+  margin:0;
+
+  background:#000;
+
+  overflow:hidden;
+
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+
+  color:#dfe8ff;
+
+}
+
+
+
+/* intro screen */
+
+#intro{
+
+  position:fixed;
+
+  inset:0;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:#000;
+
+  font-size:1.2rem;
+
+  letter-spacing:.25em;
+
+  opacity:1;
+
+  transition:opacity 2s ease;
+
+  z-index:10;
+
+}
+
+
+
+/* header */
+
+header{
+
+  position:absolute;
+
+  top:18px;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  text-align:center;
+
+  letter-spacing:.35em;
+
+  font-size:.75rem;
+
+  opacity:.8;
+
+}
+
+
+
+/* overlay text */
+
+#overlay{
+
+  position:absolute;
+
+  top:70px;
+
+  width:100%;
+
+  text-align:center;
+
+  font-size:.85rem;
+
+  opacity:.8;
+
+}
+
+
+
+/* control panel */
+
+.panel{
+
+  position:absolute;
+
+  bottom:16px;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  backdrop-filter:blur(20px);
+
+  background:rgba(10,15,25,.65);
+
+  padding:12px;
+
+  border-radius:14px;
+
+  width:min(92%,420px);
+
+}
+
+
+
+select,button{
+
+  width:100%;
+
+  margin-top:6px;
+
+  padding:9px;
+
+  background:rgba(255,255,255,.05);
+
+  border:1px solid rgba(255,255,255,.12);
+
+  color:white;
+
+  border-radius:8px;
+
+  font-size:.85rem;
+
+}
+
+
+
+canvas{
+
+  position:absolute;
+
+  inset:0;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div id="intro">ENTER THE FIELD</div>
+
+
+
+<header>
+
+SONIC PHYSICS LAB<br>
+
+frequency organizes space
+
+</header>
+
+
+
+<div id="overlay"></div>
+
+
+
+<canvas id="canvas"></canvas>
+
+
+
+<div class="panel">
+
+<select id="mode">
+
+<option value="harmonic">Harmonic Waves</option>
+
+<option value="resonance">Resonance</option>
+
+<option value="chaos">Chaos</option>
+
+<option value="cymatic">Cymatic Geometry</option>
+
+</select>
+
+
+
+<button id="micBtn">Enable Microphone</button>
+
+<button id="midiBtn">Enable MIDI Keyboard</button>
+
+</div>
+
+
+
+<script>
+
+const canvas=document.getElementById("canvas");
+
+const ctx=canvas.getContext("2d");
+
+const overlay=document.getElementById("overlay");
+
+const intro=document.getElementById("intro");
+
+const modeSelect=document.getElementById("mode");
+
+
+
+const DPR=window.devicePixelRatio||1;
+
+
+
+function resize(){
+
+  canvas.width=innerWidth*DPR;
+
+  canvas.height=innerHeight*DPR;
+
+}
+
+resize();
+
+addEventListener("resize",resize);
+
+
+
+/* intro fade */
+
+setTimeout(()=>intro.style.opacity=0,1200);
+
+setTimeout(()=>intro.remove(),3200);
+
+
+
+/* ---------- AUDIO INPUT ---------- */
+
+
+
+let audioCtx, analyser, buffer;
+
+
+
+document.getElementById("micBtn").onclick=async()=>{
+
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+
+  audioCtx=new AudioContext();
+
+  const source=audioCtx.createMediaStreamSource(stream);
+
+  analyser=audioCtx.createAnalyser();
+
+  analyser.fftSize=2048;
+
+  source.connect(analyser);
+
+  buffer=new Float32Array(analyser.fftSize);
+
+};
+
+
+
+/* pitch detection (autocorrelation) */
+
+function autoCorrelate(buf,sampleRate){
+
+  let SIZE=buf.length,rms=0;
+
+  for(let i=0;i<SIZE;i++) rms+=buf[i]*buf[i];
+
+  rms=Math.sqrt(rms/SIZE);
+
+  if(rms<0.01) return -1;
+
+
+
+  let r1=0,r2=SIZE-1,thres=.2;
+
+  for(let i=0;i<SIZE/2;i++){ if(Math.abs(buf[i])<thres){ r1=i; break; } }
+
+  for(let i=1;i<SIZE/2;i++){ if(Math.abs(buf[SIZE-i])<thres){ r2=SIZE-i; break; } }
+
+
+
+  buf=buf.slice(r1,r2);
+
+  SIZE=buf.length;
+
+
+
+  let c=new Array(SIZE).fill(0);
+
+  for(let i=0;i<SIZE;i++)
+
+    for(let j=0;j<SIZE-i;j++)
+
+      c[i]+=buf[j]*buf[j+i];
+
+
+
+  let d=0; while(c[d]>c[d+1]) d++;
+
+
+
+  let maxval=-1,maxpos=-1;
+
+  for(let i=d;i<SIZE;i++){
+
+    if(c[i]>maxval){ maxval=c[i]; maxpos=i; }
+
+  }
+
+
+
+  return sampleRate/maxpos;
+
+}
+
+
+
+/* note detection */
+
+function freqToNote(freq){
+
+  const A4=440;
+
+  const notes=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+
+  let n=12*Math.log2(freq/A4);
+
+  let index=Math.round(n)+69;
+
+  return notes[index%12];
+
+}
+
+
+
+/* ---------- MIDI ---------- */
+
+
+
+let midiFreq=null;
+
+
+
+document.getElementById("midiBtn").onclick=()=>{
+
+  if(navigator.requestMIDIAccess){
+
+    navigator.requestMIDIAccess().then(midi=>{
+
+      midi.inputs.forEach(input=>{
+
+        input.onmidimessage=msg=>{
+
+          const [cmd,note,vel]=msg.data;
+
+          if(cmd===144 && vel>0){
+
+            midiFreq=440*Math.pow(2,(note-69)/12);
+
+          }
+
+        };
+
+      });
+
+    });
+
+  }
+
+};
+
+
+
+/* ---------- INTERACTION ---------- */
+
+
+
+let mx=0,my=0;
+
+
+
+addEventListener("mousemove",e=>{
+
+  mx=e.clientX/innerWidth-.5;
+
+  my=e.clientY/innerHeight-.5;
+
+});
+
+
+
+addEventListener("touchmove",e=>{
+
+  mx=e.touches[0].clientX/innerWidth-.5;
+
+  my=e.touches[0].clientY/innerHeight-.5;
+
+});
+
+
+
+/* levitating particle */
+
+let ball={y:.5,vy:0};
+
+
+
+/* ---------- MAIN LOOP ---------- */
+
+
+
+function draw(){
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+
+
+  let freq=0;
+
+
+
+  if(analyser){
+
+    analyser.getFloatTimeDomainData(buffer);
+
+    freq=autoCorrelate(buffer,audioCtx.sampleRate);
+
+  }
+
+
+
+  if(midiFreq) freq=midiFreq;
+
+
+
+  if(freq>0){
+
+    overlay.textContent=freqToNote(freq)+"  •  "+Math.round(freq)+" Hz";
+
+  } else {
+
+    overlay.textContent="";
+
+  }
+
+
+
+  const mode=modeSelect.value;
+
+  const h=canvas.height;
+
+
+
+  /* wave field */
+
+  ctx.strokeStyle="rgba(120,240,255,.25)";
+
+  ctx.lineWidth=1*DPR;
+
+
+
+  for(let layer=0;layer<3;layer++){
+
+    ctx.beginPath();
+
+    for(let y=0;y<=h;y+=4*DPR){
+
+      const norm=y/h;
+
+      let wave=Math.sin(norm*10+layer);
+
+
+
+      if(mode==="resonance") wave*=1+Math.sin(freq*0.01)*2;
+
+      if(mode==="chaos") wave+=(Math.random()-.5)*.6;
+
+
+
+      const x=canvas.width/2+wave*120+mx*300;
+
+      if(y===0) ctx.moveTo(x,y);
+
+      else ctx.lineTo(x,y);
+
+    }
+
+    ctx.stroke();
+
+  }
+
+
+
+  /* cymatic geometry */
+
+  if(mode==="cymatic" && freq>0){
+
+    const cx=canvas.width/2;
+
+    const cy=canvas.height/2;
+
+    for(let a=0;a<Math.PI*2;a+=.02){
+
+      const r=200*Math.sin(a*freq*.01);
+
+      const x=cx+r*Math.cos(a);
+
+      const y=cy+r*Math.sin(a);
+
+      ctx.fillRect(x,y,1,1);
+
+    }
+
+  }
+
+
+
+  /* levitation node */
+
+  let target=(Math.sin(freq*.01)*.5+.5)*h || h/2;
+
+  ball.vy+=(target-ball.y*h)*.0006;
+
+  ball.vy*=.96;
+
+  ball.y+=ball.vy;
+
+
+
+  const bx=canvas.width/2+mx*120;
+
+  const by=ball.y*h+my*80;
+
+  const r=10*DPR+(freq?freq*.002:0);
+
+
+
+  const glow=ctx.createRadialGradient(bx,by,0,bx,by,r*4);
+
+  glow.addColorStop(0,"rgba(255,255,255,.9)");
+
+  glow.addColorStop(1,"rgba(0,255,255,0)");
+
+  ctx.fillStyle=glow;
+
+  ctx.beginPath();
+
+  ctx.arc(bx,by,r*4,0,Math.PI*2);
+
+  ctx.fill();
+
+
+
+  requestAnimationFrame(draw);
+
+}
+
+
+
+draw();
+
+</script>
+
+</body>
+
+</html>

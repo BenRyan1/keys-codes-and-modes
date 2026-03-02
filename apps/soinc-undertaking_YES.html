@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sonic Physics Lab</title>
+
+<style>
+:root{
+  --panel-width:min(92vw,420px);
+}
+
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;
+  height:100%;
+  background:#020409;
+  overflow:hidden;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:#e8f6ff;
+}
+
+/* CANVAS */
+#lab{
+  position:fixed;
+  inset:0;
+}
+
+/* HEADER */
+.header{
+  position:fixed;
+  top:env(safe-area-inset-top,18px);
+  width:100%;
+  text-align:center;
+  letter-spacing:.35em;
+  font-size:clamp(10px,1.2vw,14px);
+  opacity:.65;
+  pointer-events:none;
+}
+
+/* CONTROL PANEL */
+.controls{
+  position:fixed;
+  bottom:calc(env(safe-area-inset-bottom,10px) + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  width:var(--panel-width);
+  backdrop-filter: blur(14px);
+  background:rgba(10,14,22,.55);
+  border:1px solid rgba(140,200,255,.15);
+  border-radius:18px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+
+select,button{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(140,200,255,.2);
+  background:rgba(18,26,42,.8);
+  color:#dff3ff;
+  font-size:15px;
+}
+
+button:active{transform:scale(.97);}
+
+@media (max-width:600px){
+  select,button{font-size:16px;padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="lab"></canvas>
+
+<div class="header">
+SONIC PHYSICS LAB<br>
+frequency organizes space
+</div>
+
+<div class="controls">
+<select id="mode">
+<option value="waves">Harmonic Waves</option>
+<option value="cymatics">Cymatic Geometry</option>
+<option value="field">Resonance Field</option>
+</select>
+<button id="micBtn">Enable Microphone</button>
+</div>
+
+<script>
+const canvas = document.getElementById("lab");
+const ctx = canvas.getContext("2d");
+
+let W,H,dpr;
+function resize(){
+  dpr = window.devicePixelRatio || 1;
+  W = canvas.width = innerWidth * dpr;
+  H = canvas.height = innerHeight * dpr;
+  canvas.style.width = innerWidth+"px";
+  canvas.style.height = innerHeight+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener("resize", resize);
+resize();
+
+/* INTERACTION */
+let pointer = {x:0,y:0,active:false};
+
+addEventListener("pointermove", e=>{
+  pointer.x = e.clientX;
+  pointer.y = e.clientY;
+});
+
+addEventListener("pointerdown", ()=>pointer.active=true);
+addEventListener("pointerup", ()=>pointer.active=false);
+
+/* AUDIO INPUT */
+let audioLevel = 0;
+let analyser;
+
+async function enableMic(){
+  const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  const ctxAudio = new AudioContext();
+  const src = ctxAudio.createMediaStreamSource(stream);
+  analyser = ctxAudio.createAnalyser();
+  analyser.fftSize = 256;
+  src.connect(analyser);
+}
+
+function readAudio(){
+  if(!analyser) return 0;
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
+  let sum=0;
+  for(let i=0;i<data.length;i++) sum+=data[i];
+  return sum/data.length/255;
+}
+
+/* MODES */
+const modeSelect = document.getElementById("mode");
+let mode = "waves";
+modeSelect.onchange = e => mode = e.target.value;
+
+document.getElementById("micBtn").onclick = enableMic;
+
+/* DRAWING */
+function drawWaves(t){
+  const lines = 8;
+  for(let i=0;i<lines;i++){
+    ctx.beginPath();
+    for(let x=0;x<innerWidth;x+=8){
+      const y = innerHeight/2 +
+        Math.sin(x*0.01 + t + i)*40*(i/lines+audioLevel*2);
+      ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=`rgba(120,200,255,${.15+i*.1})`;
+    ctx.stroke();
+  }
+}
+
+function drawCymatics(t){
+  const cx = innerWidth/2;
+  const cy = innerHeight/2;
+  const rings = 60;
+  for(let i=0;i<rings;i++){
+    const r = i*6 + audioLevel*80;
+    const a = Math.sin(t+i*.3)*.6+.6;
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(120,200,255,${a*.2})`;
+    ctx.stroke();
+  }
+}
+
+function drawField(t){
+  const spacing = 30;
+  for(let x=0;x<innerWidth;x+=spacing){
+    for(let y=0;y<innerHeight;y+=spacing){
+      const dx = x-pointer.x;
+      const dy = y-pointer.y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      const force = 150/(dist+1);
+      ctx.beginPath();
+      ctx.arc(
+        x+dx/dist*force*(pointer.active?2:1),
+        y+dy/dist*force*(pointer.active?2:1),
+        2+audioLevel*5,0,Math.PI*2
+      );
+      ctx.fillStyle="rgba(140,220,255,.6)";
+      ctx.fill();
+    }
+  }
+}
+
+function animate(t){
+  audioLevel = readAudio();
+
+  ctx.fillStyle="rgba(2,4,9,.25)";
+  ctx.fillRect(0,0,innerWidth,innerHeight);
+
+  const parallaxX = (pointer.x/innerWidth-.5)*20;
+  const parallaxY = (pointer.y/innerHeight-.5)*20;
+  ctx.save();
+  ctx.translate(parallaxX,parallaxY);
+
+  if(mode==="waves") drawWaves(t*0.002);
+  if(mode==="cymatics") drawCymatics(t*0.002);
+  if(mode==="field") drawField(t*0.002);
+
+  ctx.restore();
+
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>

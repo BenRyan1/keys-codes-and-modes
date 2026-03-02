@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sonic Physics Lab</title>
+
+<style>
+:root{
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+html,body{
+  margin:0;
+  background:#000;
+  overflow:hidden;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  color:#dfe8ff;
+}
+
+/* intro */
+#intro{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  font-size:clamp(1rem,3vw,1.4rem);
+  letter-spacing:.25em;
+  z-index:10;
+  transition:opacity 2s ease;
+}
+
+/* header */
+header{
+  position:absolute;
+  top:clamp(10px,3vh,24px);
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  letter-spacing:.35em;
+  font-size:clamp(.6rem,1.8vw,.8rem);
+  opacity:.8;
+}
+
+/* overlay */
+#overlay{
+  position:absolute;
+  top:clamp(50px,10vh,80px);
+  width:100%;
+  text-align:center;
+  font-size:clamp(.75rem,2vw,.95rem);
+  opacity:.85;
+  pointer-events:none;
+}
+
+/* control panel */
+.panel{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:calc(14px + var(--safe-bottom));
+  backdrop-filter:blur(20px);
+  background:rgba(10,15,25,.7);
+  padding:clamp(10px,2vw,14px);
+  border-radius:14px;
+  width:min(94%,420px);
+}
+
+select,button{
+  width:100%;
+  margin-top:6px;
+  padding:10px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.15);
+  color:white;
+  border-radius:8px;
+  font-size:clamp(.8rem,2vw,.9rem);
+}
+
+canvas{
+  position:absolute;
+  inset:0;
+  touch-action:none;
+}
+</style>
+</head>
+<body>
+
+<div id="intro">ENTER THE FIELD</div>
+
+<header>
+SONIC PHYSICS LAB<br>
+frequency organizes space
+</header>
+
+<div id="overlay"></div>
+
+<canvas id="canvas"></canvas>
+
+<div class="panel">
+<select id="mode">
+<option value="harmonic">Harmonic Waves</option>
+<option value="resonance">Resonance</option>
+<option value="chaos">Chaos</option>
+<option value="cymatic">Cymatic Geometry</option>
+</select>
+<button id="micBtn">Enable Microphone</button>
+<button id="midiBtn">Enable MIDI Keyboard</button>
+</div>
+
+<script>
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+const overlay=document.getElementById("overlay");
+const intro=document.getElementById("intro");
+const modeSelect=document.getElementById("mode");
+
+let DPR=Math.min(window.devicePixelRatio||1,2);
+
+/* responsive sizing */
+function resize(){
+  canvas.width=innerWidth*DPR;
+  canvas.height=innerHeight*DPR;
+}
+resize();
+addEventListener("resize",resize);
+
+/* cinematic intro */
+setTimeout(()=>intro.style.opacity=0,1200);
+setTimeout(()=>intro.remove(),3200);
+
+/* audio */
+let audioCtx, analyser, buffer;
+
+document.getElementById("micBtn").onclick=async()=>{
+ const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+ audioCtx=new AudioContext();
+ const src=audioCtx.createMediaStreamSource(stream);
+ analyser=audioCtx.createAnalyser();
+ analyser.fftSize=2048;
+ src.connect(analyser);
+ buffer=new Float32Array(analyser.fftSize);
+};
+
+function autoCorrelate(buf,sampleRate){
+ let SIZE=buf.length,rms=0;
+ for(let i=0;i<SIZE;i++) rms+=buf[i]*buf[i];
+ rms=Math.sqrt(rms/SIZE);
+ if(rms<0.01) return -1;
+ let r1=0,r2=SIZE-1,thres=.2;
+ for(let i=0;i<SIZE/2;i++){ if(Math.abs(buf[i])<thres){ r1=i; break; } }
+ for(let i=1;i<SIZE/2;i++){ if(Math.abs(buf[SIZE-i])<thres){ r2=SIZE-i; break; } }
+ buf=buf.slice(r1,r2); SIZE=buf.length;
+ let c=new Array(SIZE).fill(0);
+ for(let i=0;i<SIZE;i++)
+   for(let j=0;j<SIZE-i;j++)
+     c[i]+=buf[j]*buf[j+i];
+ let d=0; while(c[d]>c[d+1]) d++;
+ let max=-1,pos=-1;
+ for(let i=d;i<SIZE;i++){ if(c[i]>max){ max=c[i]; pos=i; } }
+ return sampleRate/pos;
+}
+
+function freqToNote(freq){
+ const A4=440;
+ const notes=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+ let n=12*Math.log2(freq/A4);
+ return notes[(Math.round(n)+69)%12];
+}
+
+/* MIDI */
+let midiFreq=null;
+document.getElementById("midiBtn").onclick=()=>{
+ if(navigator.requestMIDIAccess){
+  navigator.requestMIDIAccess().then(m=>{
+   m.inputs.forEach(input=>{
+    input.onmidimessage=msg=>{
+     const [cmd,note,vel]=msg.data;
+     if(cmd===144 && vel>0)
+      midiFreq=440*Math.pow(2,(note-69)/12);
+    };
+   });
+  });
+ }
+};
+
+/* interaction */
+let mx=0,my=0;
+addEventListener("mousemove",e=>{
+ mx=e.clientX/innerWidth-.5;
+ my=e.clientY/innerHeight-.5;
+});
+addEventListener("touchmove",e=>{
+ mx=e.touches[0].clientX/innerWidth-.5;
+ my=e.touches[0].clientY/innerHeight-.5;
+});
+
+/* particle */
+let ball={y:.5,vy:0};
+
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ let freq=0;
+ if(analyser){
+  analyser.getFloatTimeDomainData(buffer);
+  freq=autoCorrelate(buffer,audioCtx.sampleRate);
+ }
+ if(midiFreq) freq=midiFreq;
+
+ if(freq>0){
+   overlay.textContent=freqToNote(freq)+" • "+Math.round(freq)+" Hz";
+ } else overlay.textContent="";
+
+ const mode=modeSelect.value;
+ const h=canvas.height;
+
+ /* scale visuals based on screen */
+ const scale=Math.min(innerWidth,innerHeight)/700;
+
+ ctx.strokeStyle="rgba(120,240,255,.25)";
+ ctx.lineWidth=1*DPR;
+
+ for(let layer=0;layer<3;layer++){
+  ctx.beginPath();
+  for(let y=0;y<=h;y+=4*DPR){
+    const norm=y/h;
+    let wave=Math.sin(norm*10+layer);
+
+    if(mode==="resonance") wave*=1+Math.sin(freq*0.01)*2;
+    if(mode==="chaos") wave+=(Math.random()-.5)*.6;
+
+    const x=canvas.width/2 + wave*120*scale + mx*300*scale;
+    if(y===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+ }
+
+ /* cymatic mode */
+ if(mode==="cymatic" && freq>0){
+  const cx=canvas.width/2;
+  const cy=canvas.height/2;
+  for(let a=0;a<Math.PI*2;a+=.02){
+   const r=200*scale*Math.sin(a*freq*.01);
+   ctx.fillRect(cx+r*Math.cos(a),cy+r*Math.sin(a),1,1);
+  }
+ }
+
+ /* levitation node */
+ let target=(Math.sin(freq*.01)*.5+.5)*h || h/2;
+ ball.vy+=(target-ball.y*h)*.0006;
+ ball.vy*=.96;
+ ball.y+=ball.vy;
+
+ const bx=canvas.width/2 + mx*120*scale;
+ const by=ball.y*h + my*80*scale;
+ const r=10*DPR*scale + (freq?freq*.002*scale:0);
+
+ const glow=ctx.createRadialGradient(bx,by,0,bx,by,r*4);
+ glow.addColorStop(0,"rgba(255,255,255,.9)");
+ glow.addColorStop(1,"rgba(0,255,255,0)");
+ ctx.fillStyle=glow;
+ ctx.beginPath();
+ ctx.arc(bx,by,r*4,0,Math.PI*2);
+ ctx.fill();
+
+ requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>

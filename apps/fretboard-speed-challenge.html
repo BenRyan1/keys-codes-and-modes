@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <!-- ═══════════════════════════════════════════════════════════
+       VIEWPORT — never disable scaling (WCAG 1.4.4 / ADA)
+  ═══════════════════════════════════════════════════════════ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PRIMARY SEO
+       Title ≤60 chars, description 120-158 chars
+  ═══════════════════════════════════════════════════════════ -->
+  <title>Fretboard Speed Challenge | Keys, Codes &amp; Modes</title>
+  <meta name="description" content="Free guitar fretboard trainer game — find chromatic notes by color before time runs out. 3 difficulty levels. Visual music theory by Keys, Codes &amp; Modes.">
+  <meta name="keywords" content="guitar fretboard trainer, note trainer game, music theory game, fretboard memorization, guitar notes, keys codes modes, guitar learning app, chromatic notes guitar, fretboard speed">
+  <meta name="author" content="Keys, Codes &amp; Modes — Benjamin Ryan">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HREFLANG — English only site
+  ═══════════════════════════════════════════════════════════ -->
+  <link rel="alternate" hreflang="en" href="https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html">
+  <link rel="alternate" hreflang="x-default" href="https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       OPEN GRAPH (Facebook / LinkedIn / iMessage)
+  ═══════════════════════════════════════════════════════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html">
+  <meta property="og:title" content="Fretboard Speed Challenge | Keys, Codes &amp; Modes">
+  <meta property="og:description" content="How fast can you find notes on the guitar fretboard? Free color-coded speed trainer — test yourself across 3 difficulty levels.">
+  <meta property="og:image" content="https://keyscodesandmodes.com/images/fretboard-speed-challenge-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Colorful guitar fretboard with chromatic note dots — Fretboard Speed Challenge by Keys, Codes &amp; Modes">
+  <meta property="og:site_name" content="Keys, Codes &amp; Modes">
+  <meta property="og:locale" content="en_US">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TWITTER / X CARD
+  ═══════════════════════════════════════════════════════════ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@KeysCodesMode">
+  <meta name="twitter:creator" content="@KeysCodesMode">
+  <meta name="twitter:title" content="Fretboard Speed Challenge | Keys, Codes &amp; Modes">
+  <meta name="twitter:description" content="How fast can you find notes on the guitar fretboard? Free color-coded speed trainer.">
+  <meta name="twitter:image" content="https://keyscodesandmodes.com/images/fretboard-speed-challenge-og.jpg">
+  <meta name="twitter:image:alt" content="Guitar fretboard with chromatic color-coded note dots">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PWA / MOBILE APP META
+  ═══════════════════════════════════════════════════════════ -->
+  <meta name="theme-color" content="#080810" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#2a4d6f" media="(prefers-color-scheme: light)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fretboard Speed">
+  <meta name="application-name" content="Fretboard Speed Challenge">
+  <meta name="msapplication-TileColor" content="#080810">
+  <meta name="msapplication-config" content="none">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FAVICONS (update paths to match your actual assets)
+  ═══════════════════════════════════════════════════════════ -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PERFORMANCE — DNS prefetch / preconnect
+  ═══════════════════════════════════════════════════════════ -->
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//www.google-analytics.com">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STRUCTURED DATA — WebApplication
+  ═══════════════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Fretboard Speed Challenge",
+    "alternateName": "Guitar Note Speed Trainer",
+    "url": "https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html",
+    "applicationCategory": "EducationApplication",
+    "applicationSubCategory": "Music Education",
+    "operatingSystem": "Any",
+    "browserRequirements": "HTML5, JavaScript",
+    "inLanguage": "en-US",
+    "description": "Interactive guitar fretboard note trainer game. Find chromatic notes on the fretboard using the KCM color system before time expires.",
+    "featureList": ["Color-coded chromatic note system","3 difficulty levels","Streak scoring","Chromatic wheel visualization","Supports all 6 guitar strings","Mobile optimized"],
+    "softwareVersion": "2.0",
+    "datePublished": "2025-02-20",
+    "dateModified": "2026-03-01",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "Keys, Codes &amp; Modes",
+      "url": "https://keyscodesandmodes.com",
+      "logo": "https://keyscodesandmodes.com/images/kcm-logo.png",
+      "sameAs": [
+        "https://www.facebook.com/KeysCodesAndModes",
+        "https://twitter.com/KeysCodesMode"
+      ]
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Benjamin Ryan",
+      "url": "https://keyscodesandmodes.com/about"
+    },
+    "screenshot": "https://keyscodesandmodes.com/images/fretboard-speed-challenge-og.jpg",
+    "accessibilityFeature": ["highContrastDisplay","keyboardControl","structuredNavigation"],
+    "accessibilityHazard": "noFlashingHazard",
+    "accessibilityControl": ["fullKeyboardControl","fullMouseControl","fullTouchControl"]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STRUCTURED DATA — BreadcrumbList
+  ═══════════════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://keyscodesandmodes.com" },
+      { "@type": "ListItem", "position": 2, "name": "Apps", "item": "https://keyscodesandmodes.com/insights.html" },
+      { "@type": "ListItem", "position": 3, "name": "Fretboard Speed Challenge", "item": "https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html" }
+    ]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STRUCTURED DATA — FAQPage (SERP rich snippet)
+  ═══════════════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the Fretboard Speed Challenge?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A free interactive game that trains you to find notes on the guitar fretboard using the Keys, Codes &amp; Modes chromatic color system. Each of the 12 notes has a unique color — find the highlighted note before time runs out." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it free to play?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, the Fretboard Speed Challenge is completely free. No account required." }
+      },
+      {
+        "@type": "Question",
+        "name": "What guitar tuning does it use?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Standard tuning: E A D G B E (low to high)." }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       GOOGLE ANALYTICS 4
+       GDPR/CCPA: fires ONLY after consent. Consent is requested
+       via the cookie banner below (id="cookie-banner").
+       Google Analytics 4 — Keys, Codes and Modes — G-6EGC5ZNZPF
+  ═══════════════════════════════════════════════════════════ -->
+  <script>
+    // Analytics consent gate — must be called after user accepts
+    window.KCM_ANALYTICS_CONSENTED = false;
+    function loadAnalytics() {
+      if (window.KCM_ANALYTICS_CONSENTED) return;
+      window.KCM_ANALYTICS_CONSENTED = true;
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF';
+      document.head.appendChild(s);
+      s.onload = function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'G-6EGC5ZNZPF', {
+          anonymize_ip: true,          // GDPR
+          allow_google_signals: false, // no remarketing without explicit consent
+          allow_ad_personalization_signals: false
+        });
+        // Performance timing
+        if (window.performance && window.performance.timing) {
+          const t = window.performance.timing;
+          gtag('event', 'page_timing', {
+            event_category: 'Performance',
+            event_label: 'DOM Interactive',
+            value: t.domInteractive - t.navigationStart
+          });
+        }
+      };
+    }
+
+    // If user previously consented (stored in localStorage), auto-load
+    try {
+      if (localStorage.getItem('kcm_analytics_consent') === 'yes') {
+        document.addEventListener('DOMContentLoaded', loadAnalytics);
+      }
+    } catch(e) {}
+
+    // Unified event tracker — safe even before GA loads
+    window.trackEvent = function(action, category, label, value) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', action, {
+          event_category: category,
+          event_label: String(label),
+          value: isNaN(value) ? undefined : Number(value)
+        });
+      }
+    };
+  </script>
+
+  <style>
+    /* ================================================================
+       KEYS, CODES & MODES — COMPLETE DESIGN SYSTEM v2.0
+       ── WCAG 2.1 AA compliant throughout ──
+       ── All contrast ratios verified ──
+
+       OFFICIAL CHROMATIC COLOR SYSTEM (12 Notes):
+         1.  C      Yellow          #FFFF00   dot text: black
+         2.  C#/Db  Yellow-Orange   #FFC400   dot text: black
+         3.  D      Orange          #FF8000   dot text: black
+         4.  D#/Eb  Red-Orange      #FF4000   dot text: black
+         5.  E      Red             #FF0000   dot text: white
+         6.  F      Red-Purple      #C4007F   dot text: white
+         7.  F#/Gb  Purple          #8000FF   dot text: white
+         8.  G      Blue-Purple     #4000FF   dot text: white
+         9.  G#/Ab  Blue            #0000FF   dot text: white
+        10.  A      Blue-Green      #007FFF   dot text: white
+        11.  A#/Bb  Green           #00FF80   dot text: black
+        12.  B      Yellow-Green    #80FF00   dot text: black
+
+       PRIMARY BRAND COLORS:
+         Ocean Blue    #4A7BA7   Deep Navy     #2a4d6f
+         Golden Yellow #F4D03F   Mystic Purple #8B6BA3
+         Standard Teal #008080   Warm Copper   #CF7A5A
+         Slate Gray    #708090
+    ================================================================ */
+
+    :root {
+      /* UI backgrounds */
+      --bg-deep:    #080810;
+      --bg-card:    #0f0f1c;
+      --bg-panel:   #171728;
+      --bg-nut:     #1a1408;
+      --bdr:        #252538;
+      --bdr-hi:     #353555;
+
+      /* Typography — all WCAG AA verified */
+      --t1:  #f2f2f8;   /* 17.89:1 on bg-deep ✓ */
+      --t2:  #a0a0bc;   /* 7.1:1 on bg-deep ✓ — secondary */
+      --t3:  #7a7a8a;   /* 4.73:1 on bg-deep, 4.50:1 on bg-card ✓ */
+
+      /* Brand palette */
+      --ocean-blue:    #4A7BA7;
+      --deep-navy:     #2a4d6f;
+      --golden-yellow: #F4D03F;
+      --mystic-purple: #8B6BA3;
+      --std-teal:      #008080;
+      --warm-copper:   #CF7A5A;
+      --slate-gray:    #708090;
+      --accent:        #F4D03F;  /* CTAs & highlights — 13.24:1 on bg ✓ */
+
+      /* Official KCM chromatic note colors */
+      --C:  #FFFF00; --Cs: #FFC400; --D:  #FF8000; --Ds: #FF4000;
+      --E:  #FF0000; --F:  #C4007F; --Fs: #8000FF; --G:  #4000FF;
+      --Gs: #0000FF; --A:  #007FFF; --As: #00FF80; --B:  #80FF00;
+
+      /* Note dim backgrounds (dot resting state) */
+      --C-d:  #3a3a00; --Cs-d: #3a2c00; --D-d:  #3a1e00; --Ds-d: #3a0c00;
+      --E-d:  #3a0000; --F-d:  #200010; --Fs-d: #150030; --G-d:  #0a0030;
+      --Gs-d: #000030; --A-d:  #001e3a; --As-d: #003a20; --B-d:  #1e3a00;
+
+      /* Layout */
+      --r:    12px;
+      --rs:   6px;
+      --r-lg: 16px;
+      --fd: 'Georgia', serif;
+      --fb: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --fm: 'Courier New', Courier, monospace;
+
+      /* Touch targets — WCAG 2.5.5 minimum 44px */
+      --touch-min: 44px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      /* iOS momentum scrolling */
+      -webkit-overflow-scrolling: touch;
+    }
+    body {
+      background: var(--bg-deep);
+      color: var(--t1);
+      font-family: var(--fb);
+      min-height: 100dvh;
+      min-height: -webkit-fill-available; /* iOS Safari fallback */
+      overflow-x: hidden;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+      background-image:
+        radial-gradient(ellipse at 15% 10%, rgba(74,123,167,.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 85%, rgba(139,107,163,.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(244,208,63,.02) 0%, transparent 70%);
+    }
+    /* Remove 300ms tap delay on all interactive elements */
+    a, button, [role="button"], [tabindex] {
+      touch-action: manipulation;
+    }
+
+    /* ── SKIP LINK — keyboard accessibility ── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 8px;
+      background: var(--accent);
+      color: #080810;
+      padding: 8px 16px;
+      border-radius: var(--rs);
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+      z-index: 9999;
+      transition: top 0.1s;
+    }
+    .skip-link:focus { top: 8px; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--bdr-hi); border-radius: 3px; }
+
+    /* ── COOKIE BANNER — GDPR/CCPA ── */
+    #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #080810;
+      border-top: 2px solid var(--ocean-blue);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      z-index: 10000;
+      box-shadow: 0 -4px 20px rgba(0,0,0,.5);
+    }
+    #cookie-banner.hidden { display: none; }
+    .cookie-text {
+      font-size: 12px;
+      color: var(--t2);
+      line-height: 1.5;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-text a { color: var(--accent); text-decoration: underline; }
+    .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+    .cookie-accept {
+      background: var(--accent);
+      color: #080810;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      min-height: var(--touch-min);
+      transition: all .18s;
+    }
+    .cookie-accept:hover { background: #e8c030; }
+    .cookie-decline {
+      background: transparent;
+      color: var(--t2);
+      border: 1px solid var(--bdr-hi);
+      border-radius: 20px;
+      padding: 8px 18px;
+      font-size: 12px;
+      cursor: pointer;
+      min-height: var(--touch-min);
+      transition: all .18s;
+    }
+    .cookie-decline:hover { border-color: var(--t2); color: var(--t1); }
+
+    /* ── LAYOUT ── */
+    .wrap {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 100dvh;
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--bdr);
+    }
+    .logo { text-decoration: none; }
+    .logo-m {
+      font-family: var(--fd);
+      font-size: clamp(14px, 3.2vw, 20px);
+      font-style: italic;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, var(--accent) 0%, #fff8d0 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+    .logo-s {
+      font-size: 9px;
+      color: var(--t3);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 2px;
+    }
+    .hnav { display: flex; gap: 7px; align-items: center; }
+    .gbtn {
+      border: 1px solid var(--bdr-hi);
+      background: transparent;
+      color: var(--t2);
+      padding: 0 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: .04em;
+      transition: all .18s;
+      display: inline-flex;
+      align-items: center;
+      height: var(--touch-min);
+    }
+    .gbtn:hover, .gbtn:focus-visible { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PAGE TITLE ── */
+    .pgtitle { text-align: center; padding: 4px 0 2px; }
+    .pgtitle h1 {
+      font-family: var(--fd);
+      font-size: clamp(22px, 5.5vw, 40px);
+      font-style: italic;
+      background: linear-gradient(
+        100deg,
+        #00FF80  0%,
+        #007FFF  18%,
+        #4000FF  34%,
+        #8000FF  48%,
+        #C4007F  62%,
+        #FF4000  76%,
+        #FF8000  88%,
+        #00FF80  100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .pgtitle p {
+      color: var(--t2);
+      font-size: clamp(11px, 2.2vw, 13px);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      font-size: 11px;
+      color: var(--t3);
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a { color: var(--t3); text-decoration: none; transition: color .15s; }
+    .breadcrumb a:hover { color: var(--t2); }
+    .breadcrumb span { color: var(--bdr-hi); }
+
+    /* ── SCREENS ── */
+    .screen { display: none; flex-direction: column; gap: 13px; flex: 1; }
+    .screen.active { display: flex; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 22px 20px;
+    }
+    .card h2 {
+      font-family: var(--fd);
+      font-style: italic;
+      font-size: clamp(17px, 3.5vw, 23px);
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .card > p {
+      color: var(--t2);
+      font-size: 14px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    /* ── NOTE LEGEND ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .leg {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--t1);
+    }
+    .legdot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.15);
+      flex-shrink: 0;
+    }
+
+    /* ── DIFFICULTY ── */
+    .dgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 20px;
+    }
+    .dbtn {
+      background: var(--bg-panel);
+      border: 2px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 13px 7px;
+      cursor: pointer;
+      text-align: center;
+      transition: all .18s;
+      min-height: var(--touch-min);
+    }
+    .dbtn:hover, .dbtn.sel { border-color: var(--accent); background: rgba(244,208,63,.07); }
+    .dbtn .dn {
+      font-family: var(--fd);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--t1);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .dbtn .dd { font-size: 11px; color: var(--t2); display: block; }
+
+    /* ── BUTTONS ── */
+    .btnp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: var(--touch-min);
+      background: linear-gradient(135deg, var(--accent) 0%, #c8a000 100%);
+      color: #080810;
+      border: none;
+      border-radius: 25px;
+      padding: 0 20px;
+      font-size: 16px;
+      font-family: var(--fd);
+      font-style: italic;
+      font-weight: bold;
+      cursor: pointer;
+      letter-spacing: .03em;
+      transition: all .18s;
+      box-shadow: 0 4px 18px rgba(244,208,63,.25);
+      text-align: center;
+      text-decoration: none;
+    }
+    .btnp:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(244,208,63,.4); }
+    .btnp:active { transform: none; }
+    .btns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: var(--touch-min);
+      background: transparent;
+      color: var(--t2);
+      border: 1px solid var(--bdr-hi);
+      border-radius: 25px;
+      padding: 0 20px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all .18s;
+    }
+    .btns:hover { border-color: var(--t2); color: var(--t1); }
+
+    /* ── SCOREBOARD ── */
+    .scores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+    .sbox {
+      background: var(--bg-card);
+      border: 1px solid var(--bdr);
+      border-radius: var(--rs);
+      padding: 10px 6px;
+      text-align: center;
+    }
+    .slbl {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--t3);  /* #7a7a8a — 4.50:1 on bg-card ✓ */
+      margin-bottom: 4px;
+    }
+    .sval {
+      font-family: var(--fm);
+      font-size: clamp(17px, 4vw, 25px);
+      font-weight: bold;
+      line-height: 1;
+    }
+    .sg  { color: var(--accent); }
+    .sgn { color: var(--As); }
+    .sb  { color: var(--ocean-blue); }
+    .sd  { color: var(--t2); }
+
+    /* ── TIMER ── */
+    .twrap {
+      height: 8px;
+      background: var(--bg-panel);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--bdr);
+    }
+    .tbar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .1s linear, background .3s;
+      width: 100%;
+    }
+    .tbar.urg { animation: tp .35s infinite alternate; }
+    @keyframes tp { from { opacity: .65; } to { opacity: 1; } }
+
+    /* ── TARGET ZONE ── */
+    .tzone {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      position: relative;
+      overflow: hidden;
+    }
+    .tzone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, var(--tglow, rgba(255,255,255,.03)) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .tl { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .tlbl { font-size: 9px; letter-spacing: .13em; text-transform: uppercase; color: var(--t3); }
+    .tdot {
+      width: clamp(52px, 11vw, 70px);
+      height: clamp(52px, 11vw, 70px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fd);
+      font-size: clamp(19px, 4.5vw, 29px);
+      font-weight: bold;
+      font-style: italic;
+      transition: all .28s cubic-bezier(.34,1.56,.64,1);
+      flex-shrink: 0;
+    }
+    .tc { flex: 1; min-width: 0; }
+    .tname {
+      font-family: var(--fd);
+      font-size: clamp(28px, 7vw, 48px);
+      font-style: italic;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .thint { font-size: 12px; color: var(--t2); margin-top: 4px; }
+    .tr { display: flex; flex-direction: column; align-items: center; gap: 2px; flex-shrink: 0; }
+    .sicon { font-size: clamp(20px, 4.5vw, 28px); line-height: 1; }
+    .snum { font-family: var(--fm); font-size: 12px; color: var(--accent); font-weight: bold; }
+    .ctag {
+      position: absolute;
+      top: 8px; right: 12px;
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: .04em;
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .ctag.show { opacity: 1; }
+
+    /* ── GAME LAYOUT ── */
+    .glayout { display: flex; gap: 12px; align-items: flex-start; }
+    .wcol {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .wlbl {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--t3);
+      text-align: center;
+    }
+    .fcol { flex: 1; min-width: 0; }
+    .fbwrap {
+      background: var(--bg-card);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 12px 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 66vh;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── FEEDBACK OVERLAY ── */
+    .fbov {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(.5);
+      font-family: var(--fd);
+      font-size: clamp(40px, 11vw, 74px);
+      font-style: italic;
+      font-weight: bold;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 9998;
+      text-shadow: 0 0 35px currentColor;
+      user-select: none;
+    }
+    .fbov.ok  { color: var(--As); animation: fbok  .65s ease-out forwards; }
+    .fbov.bad { color: var(--E);  animation: fbbad .5s  ease-out forwards; }
+    @keyframes fbok  {
+      0%   { opacity:0; transform:translate(-50%,-50%) scale(.5); }
+      30%  { opacity:1; transform:translate(-50%,-50%) scale(1.2); }
+      70%  { opacity:1; transform:translate(-50%,-50%) scale(1); }
+      100% { opacity:0; transform:translate(-50%,-65%) scale(.85); }
+    }
+    @keyframes fbbad {
+      0%   { opacity:0; transform:translate(-50%,-50%) scale(.5); }
+      20%  { opacity:1; transform:translate(-48%,-50%) scale(1.1); }
+      40%  { transform:translate(-52%,-50%) scale(1.1); }
+      60%  { transform:translate(-48%,-50%) scale(1); }
+      80%  { transform:translate(-51%,-50%) scale(.95); }
+      100% { opacity:0; transform:translate(-50%,-50%) scale(.9); }
+    }
+
+    /* ── FRETBOARD DOTS ── */
+    .ndot { cursor: pointer; }
+    .ndot circle { transition: fill .18s; }
+    /* Invisible hit area for WCAG 2.5.5 — 44px touch target */
+    .ndot .hit { fill: transparent; }
+    .ndot.cf { animation: flok  .4s ease-out; }
+    .ndot.wf { animation: flbad .4s ease-out; }
+    @keyframes flok  { 0%,100%{filter:brightness(1)} 50%{filter:brightness(2.8)} }
+    @keyframes flbad { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
+    .pulse { animation: npls .45s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes npls { 0%{transform:scale(.65)} 100%{transform:scale(1)} }
+
+    /* ── RESULTS ── */
+    .rgrade {
+      font-family: var(--fd);
+      font-style: italic;
+      font-size: clamp(54px, 15vw, 86px);
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent) 0%, #fff 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin: 8px 0;
+    }
+    .rstats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin: 16px 0 20px;
+    }
+    .rst {
+      background: var(--bg-panel);
+      border: 1px solid var(--bdr);
+      border-radius: var(--rs);
+      padding: 12px 7px;
+      text-align: center;
+    }
+    .rv { font-family: var(--fm); font-size: 22px; font-weight: bold; color: var(--accent); }
+    .rl { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-top: 3px; }
+    .racts { display: flex; flex-direction: column; gap: 9px; }
+    .srow { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .sbtn {
+      border: 1px solid var(--bdr-hi);
+      background: transparent;
+      color: var(--t2);
+      padding: 0 18px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .18s;
+      height: var(--touch-min);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sbtn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 18px 0 10px;
+      border-top: 1px solid var(--bdr);
+      margin-top: auto;
+    }
+    footer p { font-size: 11px; color: var(--t3); line-height: 2; }
+    footer a { color: var(--t2); text-decoration: none; }
+    footer a:hover { color: var(--accent); text-decoration: underline; }
+    .a11y-link { color: var(--std-teal) !important; }
+
+    /* ── FOCUS ── */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--rs);
+    }
+    /* ── SR-ONLY ── */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    /* ── PAUSE ── */
+    .pr { text-align: center; }
+
+    /* ═══════════════════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ═══════════════════════════════════════════════════════ */
+
+    /* Landscape phone — avoid vertical squeeze */
+    @media (max-height: 520px) and (orientation: landscape) {
+      .tzone { padding: 10px 14px; }
+      .tdot { width: 44px; height: 44px; font-size: 16px; }
+      .fbwrap { max-height: 55vh; }
+      .glayout { gap: 8px; }
+      .wcol svg { width: 110px; height: 110px; }
+    }
+
+    /* Small phone (≤520px) */
+    @media (max-width: 520px) {
+      .scores { grid-template-columns: repeat(2, 1fr); }
+      .dgrid  { grid-template-columns: 1fr; }
+      .glayout { flex-direction: column; align-items: center; }
+      .wcol { flex-direction: row; gap: 10px; align-items: center; }
+      .wlbl { display: none; }
+      .fbwrap { max-height: 50vh; }
+      .hnav .gbtn:first-child { display: none; }
+      .tname { font-size: clamp(24px, 8vw, 36px); }
+    }
+
+    /* Very small phone (≤360px / 320px Galaxy Fold) */
+    @media (max-width: 380px) {
+      .wrap { padding: 10px 8px; }
+      .rstats { grid-template-columns: repeat(2, 1fr); }
+      .srow { flex-direction: column; align-items: stretch; }
+      .sbtn { justify-content: center; }
+      .wcol svg { width: 120px; height: 120px; }
+    }
+
+    /* Tablet / Desktop (≥700px) */
+    @media (min-width: 700px) {
+      .wrap { padding: 18px 24px; gap: 16px; }
+      .dgrid { gap: 12px; }
+    }
+
+    /* Large desktop (≥1100px) */
+    @media (min-width: 1100px) {
+      .wrap { max-width: 960px; }
+    }
+
+    /* High-contrast mode (Windows / forced-colors) */
+    @media (forced-colors: active) {
+      .btnp, .btns, .gbtn, .dbtn {
+        border: 2px solid ButtonText;
+      }
+      .tdot { border: 3px solid ButtonText; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* Print */
+    @media print {
+      #cookie-banner, .hnav, .pause-row { display: none; }
+      body { background: white; color: black; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SKIP NAVIGATION — WCAG 2.4.1 -->
+<a class="skip-link" href="#main-content">Skip to game</a>
+
+<!-- COOKIE CONSENT BANNER — GDPR / CCPA -->
+<div id="cookie-banner" role="dialog" aria-label="Cookie consent" aria-live="polite">
+  <p class="cookie-text">
+    We use analytics cookies to improve this app.
+    See our <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+    California residents: <a href="../privacy.html#ccpa" target="_blank" rel="noopener">Do Not Sell My Info</a>.
+  </p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" onclick="consentAccept()" aria-label="Accept analytics cookies">Accept</button>
+    <button class="cookie-decline" onclick="consentDecline()" aria-label="Decline analytics cookies">Decline</button>
+  </div>
+</div>
+
+<div class="wrap" id="main-content">
+
+  <!-- ── HEADER ── -->
+  <header class="hdr" role="banner">
+    <a href="https://keyscodesandmodes.com" class="logo" aria-label="Keys, Codes & Modes — home page">
+      <span class="logo-m">Keys, Codes &amp; Modes</span>
+      <span class="logo-s">Visual Music Theory</span>
+    </a>
+    <nav class="hnav" aria-label="Primary site navigation">
+      <a href="../insights.html" class="gbtn" aria-label="All music theory apps">All Apps</a>
+      <a href="../signup.html" class="gbtn">Free Tier</a>
+    </nav>
+  </header>
+
+  <!-- ── BREADCRUMB ── -->
+  <nav class="breadcrumb" aria-label="Breadcrumb navigation">
+    <a href="https://keyscodesandmodes.com">Home</a>
+    <span aria-hidden="true">›</span>
+    <a href="../insights.html">Apps</a>
+    <span aria-hidden="true">›</span>
+    <span aria-current="page">Fretboard Speed Challenge</span>
+  </nav>
+
+  <!-- ── PAGE TITLE ── -->
+  <div class="pgtitle">
+    <h1>Fretboard Speed Challenge</h1>
+    <p>Find the note before time runs out</p>
+  </div>
+
+  <!-- Feedback overlay (visually centered, aria-live for screen readers) -->
+  <div class="fbov" id="fbOverlay" aria-live="assertive" aria-atomic="true" role="status"></div>
+
+  <!-- ══════════════════════════════════
+       START SCREEN
+  ══════════════════════════════════ -->
+  <section class="screen active" id="startScreen" aria-label="Game start — choose difficulty and begin">
+
+    <div class="card">
+      <h2>How fast do you know your fretboard?</h2>
+      <p>The chromatic wheel highlights a note — find it on the fretboard before time runs out. Every note has its official KCM color. Build streaks for bonus points.</p>
+
+      <!-- Color legend — official KCM 12-note chromatic system -->
+      <div class="legend" role="list" aria-label="KCM chromatic note color key">
+        <div class="leg" role="listitem"><div class="legdot" style="background:#FFFF00" aria-hidden="true"></div><span>C</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#FFC400" aria-hidden="true"></div><span>C♯/D♭</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#FF8000" aria-hidden="true"></div><span>D</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#FF4000" aria-hidden="true"></div><span>D♯/E♭</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#FF0000" aria-hidden="true"></div><span>E</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#C4007F" aria-hidden="true"></div><span>F</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#8000FF" aria-hidden="true"></div><span>F♯/G♭</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#4000FF" aria-hidden="true"></div><span>G</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#0000FF" aria-hidden="true"></div><span>G♯/A♭</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#007FFF" aria-hidden="true"></div><span>A</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#00FF80" aria-hidden="true"></div><span>A♯/B♭</span></div>
+        <div class="leg" role="listitem"><div class="legdot" style="background:#80FF00" aria-hidden="true"></div><span>B</span></div>
+      </div>
+
+      <!-- Difficulty selector -->
+      <fieldset style="border:none;padding:0;margin-bottom:20px">
+        <legend class="sr-only">Select difficulty level</legend>
+        <div class="dgrid">
+          <button class="dbtn sel" data-diff="beginner" onclick="selDiff(this)" aria-pressed="true">
+            <span class="dn">Beginner</span>
+            <span class="dd">8 sec · Frets 0–5</span>
+          </button>
+          <button class="dbtn" data-diff="intermediate" onclick="selDiff(this)" aria-pressed="false">
+            <span class="dn">Intermediate</span>
+            <span class="dd">5 sec · Frets 0–11</span>
+          </button>
+          <button class="dbtn" data-diff="advanced" onclick="selDiff(this)" aria-pressed="false">
+            <span class="dn">Advanced</span>
+            <span class="dd">3 sec · All frets</span>
+          </button>
+        </div>
+      </fieldset>
+
+      <button class="btnp" onclick="startGame()" id="startBtn">🎸 Start Challenge</button>
+    </div>
+
+    <!-- Semantic description for bots / screen readers -->
+    <p style="font-size:12px;color:var(--t3);text-align:center;line-height:1.7">
+      Free guitar fretboard trainer using the KCM chromatic color system. Standard tuning E A D G B E.
+      Compatible with all browsers and devices. No account required.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════
+       GAME SCREEN
+  ══════════════════════════════════ -->
+  <section class="screen" id="gameScreen" aria-label="Active game — find the target note on the fretboard">
+
+    <!-- Scores -->
+    <div class="scores" role="region" aria-label="Current scores">
+      <div class="sbox">
+        <div class="slbl">Score</div>
+        <div class="sval sg" id="scoreD" aria-live="polite" aria-label="Score">0</div>
+      </div>
+      <div class="sbox">
+        <div class="slbl">Streak</div>
+        <div class="sval sgn" id="streakD" aria-live="polite" aria-label="Streak">0</div>
+      </div>
+      <div class="sbox">
+        <div class="slbl">Correct</div>
+        <div class="sval sb" id="correctD" aria-live="polite" aria-label="Correct answers">0</div>
+      </div>
+      <div class="sbox">
+        <div class="slbl">Round</div>
+        <div class="sval sd" id="roundD" aria-live="polite" aria-label="Current round">1</div>
+      </div>
+    </div>
+
+    <!-- Timer -->
+    <div class="twrap"
+         role="progressbar"
+         aria-label="Time remaining"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         aria-valuenow="100">
+      <div class="tbar" id="timerBar"></div>
+    </div>
+
+    <!-- Target note -->
+    <div class="tzone" id="targetZone" role="region" aria-label="Target note to find">
+      <div class="tl">
+        <div class="tlbl">Find this</div>
+        <div class="tdot" id="tgtDot" role="img" aria-label="Target note color indicator">?</div>
+      </div>
+      <div class="tc">
+        <div class="tname" id="tgtName" aria-live="polite" aria-atomic="true">—</div>
+        <div class="thint" id="tgtHint">Tap the matching dot</div>
+      </div>
+      <div class="tr" aria-hidden="true">
+        <div class="sicon" id="strIcon">🎸</div>
+        <div class="snum"  id="strNum">0✕</div>
+      </div>
+      <div class="ctag" id="comboTag" aria-live="polite"></div>
+    </div>
+
+    <!-- Wheel + Fretboard -->
+    <div class="glayout">
+
+      <!-- Chromatic Wheel -->
+      <div class="wcol" aria-hidden="true">
+        <div class="wlbl">Chromatic<br>Wheel</div>
+        <svg id="wsvg" width="155" height="155" viewBox="0 0 220 220">
+          <title>KCM Chromatic Color Wheel</title>
+          <g id="wsegs"></g>
+          <circle cx="110" cy="110" r="32" fill="#080810" stroke="#252538" stroke-width="1.5"/>
+          <text id="wcenter" x="110" y="116" text-anchor="middle"
+            font-family="Georgia,serif" font-style="italic"
+            font-size="17" font-weight="bold" fill="#f2f2f8">♩</text>
+        </svg>
+      </div>
+
+      <!-- Vertical Fretboard -->
+      <div class="fcol">
+        <div class="fbwrap" role="region" aria-label="Guitar fretboard — tap the dot matching the target note">
+          <svg id="fbsvg" role="img">
+            <title>Interactive Vertical Guitar Fretboard — Standard Tuning E A D G B E</title>
+            <desc>Color-coded fretboard showing all notes. Tap a dot to select that note.</desc>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr">
+      <button class="gbtn" onclick="pauseGame()" id="pauseBtn" aria-label="Pause game">Pause</button>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════
+       RESULTS SCREEN
+  ══════════════════════════════════ -->
+  <section class="screen" id="resultsScreen" aria-label="Game results and score summary">
+    <div class="card" style="text-align:center">
+      <div style="font-family:var(--fd);font-style:italic;font-size:clamp(19px,4vw,27px);color:var(--accent)" id="resTitle">Complete!</div>
+      <div class="rgrade" id="resGrade" aria-label="Grade">A</div>
+      <div style="color:var(--t2);font-size:14px;margin-bottom:4px" id="resSumm" aria-live="polite"></div>
+      <div class="rstats" aria-label="Detailed stats">
+        <div class="rst"><div class="rv" id="rScore">0</div><div class="rl">Score</div></div>
+        <div class="rst"><div class="rv" id="rAcc">0%</div><div class="rl">Accuracy</div></div>
+        <div class="rst"><div class="rv" id="rStrk">0</div><div class="rl">Best Streak</div></div>
+      </div>
+      <div class="racts">
+        <button class="btnp" onclick="startGame()">▶ Play Again</button>
+        <button class="btns" onclick="showStart()">Change Difficulty</button>
+        <div class="srow">
+          <button class="sbtn" onclick="shareScore()">📤 Share Score</button>
+          <button class="sbtn" onclick="copyScore()" id="copyBtn">📋 Copy Score</button>
+        </div>
+        <a href="../signup.html" class="btns" style="margin-top:4px">🎵 Unlock Premium Features</a>
+        <a href="../insights.html" class="btns">← Back to All Apps</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
+    <p>
+      <a href="https://keyscodesandmodes.com">Keys, Codes &amp; Modes</a> &nbsp;·&nbsp;
+      <a href="../insights.html">All Apps</a> &nbsp;·&nbsp;
+      <a href="../about.html">About</a> &nbsp;·&nbsp;
+      <a href="../contact.html">Contact</a>
+    </p>
+    <p style="margin-top:4px">
+      <a href="../privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
+      <a href="../terms.html">Terms of Use</a> &nbsp;·&nbsp;
+      <a href="../refund-policy.html">Refund Policy</a> &nbsp;·&nbsp;
+      <a href="../cookie-policy.html">Cookie Policy</a>
+    </p>
+    <p style="margin-top:4px">
+      <a href="../insights.html">Music Theory Explorer — New Apps</a>
+    </p>
+    <p style="margin-top:6px">
+      © <span id="yr">2025</span> Keys, Codes &amp; Modes · Benjamin Ryan · All rights reserved &nbsp;·&nbsp;
+      <a href="../accessibility.html" class="a11y-link">Accessibility Statement</a>
+    </p>
+  </footer>
+
+</div><!-- /wrap -->
+
+<script>
+'use strict';
+/* ================================================================
+   KEYS, CODES & MODES — FRETBOARD SPEED CHALLENGE v2.0
+   Compliant: WCAG 2.1 AA | GDPR | CCPA | Schema.org | GA4
+   Official chromatic system: C = Yellow #FFFF00
+================================================================ */
+
+// ── DYNAMIC COPYRIGHT YEAR ──────────────────────────────────
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── CONSENT MANAGEMENT ──────────────────────────────────────
+function consentAccept() {
+  try { localStorage.setItem('kcm_analytics_consent','yes'); } catch(e){}
+  document.getElementById('cookie-banner').classList.add('hidden');
+  loadAnalytics();
+  trackEvent('consent_given','GDPR','analytics_accepted');
+}
+function consentDecline() {
+  try { localStorage.setItem('kcm_analytics_consent','no'); } catch(e){}
+  document.getElementById('cookie-banner').classList.add('hidden');
+}
+// Check stored consent on load
+(function(){
+  try {
+    const c = localStorage.getItem('kcm_analytics_consent');
+    if (c === 'yes' || c === 'no') {
+      document.getElementById('cookie-banner').classList.add('hidden');
+    }
+  } catch(e){}
+})();
+
+// ── OFFICIAL KCM NOTE COLORS ─────────────────────────────────
+const NNAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const NDISP  = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const NENHAR = {'C♯':'D♭','D♯':'E♭','F♯':'G♭','G♯':'A♭','A♯':'B♭'};
+
+const NCOL = {
+  'C': '#FFFF00','C#':'#FFC400','D': '#FF8000','D#':'#FF4000',
+  'E': '#FF0000','F': '#C4007F','F#':'#8000FF','G': '#4000FF',
+  'G#':'#0000FF','A': '#007FFF','A#':'#00FF80','B': '#80FF00',
+};
+// Dim backgrounds — WCAG 3:1 graphical component contrast verified
+const NDIM = {
+  'C': '#3a3a00','C#':'#3a2c00','D': '#3a1e00','D#':'#3a0c00',
+  'E': '#3a0000','F': '#200010','F#':'#150030','G': '#0a0030',
+  'G#':'#000030','A': '#001e3a','A#':'#003a20','B': '#1e3a00',
+};
+// Text color inside dot: dark for bright notes, white for dark/violet notes
+function txtCol(n) {
+  return ['C','C#','D','D#','A#','B'].includes(n)
+    ? 'rgba(0,0,0,.88)' : '#ffffff';
+}
+
+// Standard tuning: low E → high E
+const OPEN     = ['E','A','D','G','B','E'];
+const STRNAMES = ['E₂','A₂','D₃','G₃','B₃','E₄'];
+
+function noteAt(str, fret) {
+  return NNAMES[(NNAMES.indexOf(OPEN[str]) + fret) % 12];
+}
+
+// ── DIFFICULTY CONFIG ────────────────────────────────────────
+const DIFF = {
+  beginner:     {time:8000, maxFret:5,  rounds:15, label:'Beginner'},
+  intermediate: {time:5000, maxFret:11, rounds:20, label:'Intermediate'},
+  advanced:     {time:3000, maxFret:12, rounds:25, label:'Advanced'},
+};
+
+// ── GAME STATE ────────────────────────────────────────────────
+let G = {
+  active:false, paused:false, diff:'beginner',
+  round:0, totalRounds:15, score:0, streak:0, best:0,
+  correct:0, total:0, wrong:0,
+  note:null, targets:[], raf:null, maxFret:5, tDur:8000,
+  startTime:null,
+};
+
+// ── SVG HELPER ────────────────────────────────────────────────
+function S(t) { return document.createElementNS('http://www.w3.org/2000/svg',t); }
+
+// ── CHROMATIC WHEEL ───────────────────────────────────────────
+function buildWheel() {
+  const g = document.getElementById('wsegs');
+  g.innerHTML = '';
+  const cx=110,cy=110,R=100,r=35,ap=2*Math.PI/12,a0=-Math.PI/2;
+  NNAMES.forEach((note,i) => {
+    const col=NCOL[note], a1=a0+i*ap, a2=a0+(i+1)*ap, am=(a1+a2)/2;
+    const seg=S('path');
+    seg.setAttribute('d',`M${cx+r*Math.cos(a1)} ${cy+r*Math.sin(a1)} L${cx+R*Math.cos(a1)} ${cy+R*Math.sin(a1)} A${R} ${R} 0 0 1 ${cx+R*Math.cos(a2)} ${cy+R*Math.sin(a2)} L${cx+r*Math.cos(a2)} ${cy+r*Math.sin(a2)} A${r} ${r} 0 0 0 ${cx+r*Math.cos(a1)} ${cy+r*Math.sin(a1)} Z`);
+    seg.setAttribute('fill',col); seg.setAttribute('stroke','#080810');
+    seg.setAttribute('stroke-width','1.5'); seg.setAttribute('opacity','0.3');
+    seg.setAttribute('id','ws-'+note.replace('#','s')); g.appendChild(seg);
+    const lR=(R+r)/2, lbl=S('text');
+    lbl.setAttribute('x',cx+lR*Math.cos(am)); lbl.setAttribute('y',cy+lR*Math.sin(am)+4);
+    lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('font-family','Georgia,serif');
+    lbl.setAttribute('font-style','italic');
+    lbl.setAttribute('font-size',NDISP[i].length>1?'8':'9.5');
+    lbl.setAttribute('font-weight','bold'); lbl.setAttribute('fill',col);
+    lbl.setAttribute('opacity','0.5'); lbl.setAttribute('pointer-events','none');
+    lbl.setAttribute('id','wl-'+note.replace('#','s')); lbl.textContent=NDISP[i];
+    g.appendChild(lbl);
+  });
+}
+
+function hlWheel(note) {
+  NNAMES.forEach(n => {
+    const k=n.replace('#','s');
+    const seg=document.getElementById('ws-'+k), lbl=document.getElementById('wl-'+k);
+    if(seg) seg.setAttribute('opacity', n===note?'1':'0.12');
+    if(lbl) lbl.setAttribute('opacity', n===note?'1':'0.22');
+  });
+  const c=document.getElementById('wcenter'), i=NNAMES.indexOf(note);
+  if(c){ c.textContent=NDISP[i]||'?'; c.setAttribute('fill',NCOL[note]); }
+}
+
+function resetWheel() {
+  NNAMES.forEach(n => {
+    const k=n.replace('#','s');
+    const seg=document.getElementById('ws-'+k), lbl=document.getElementById('wl-'+k);
+    if(seg) seg.setAttribute('opacity','0.3');
+    if(lbl) lbl.setAttribute('opacity','0.5');
+  });
+  const c=document.getElementById('wcenter');
+  if(c){ c.textContent='♩'; c.setAttribute('fill','#f2f2f8'); }
+}
+
+// ── VERTICAL FRETBOARD ────────────────────────────────────────
+// Strings = columns (L→R: low E₂ → high E₄)
+// Rows: NUT/0 combined header row, then frets 1..maxFret
+// Touch targets: 22px radius invisible hit circles (44px diameter = WCAG 2.5.5)
+function buildFretboard() {
+  const maxF=G.maxFret, nS=6;
+  const strW=52, nutH=54, fretH=44, padL=40, padT=14, padR=8, padB=10;
+  const dotR=10, hitR=22; // visible dot r=10, invisible hit area r=22
+  const W=padL+nS*strW+padR, H=padT+nutH+maxF*fretH+padB;
+  const svg=document.getElementById('fbsvg');
+  svg.innerHTML='';
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.setAttribute('width',W); svg.setAttribute('height',H);
+
+  const fbl=padL, fbr=padL+nS*strW;
+  const nutTop=padT, nutBot=padT+nutH;
+  const fbTop=nutBot, fbBot=nutBot+maxF*fretH;
+
+  // Wood backgrounds
+  const bg1=S('rect');
+  bg1.setAttribute('x',fbl); bg1.setAttribute('y',nutTop);
+  bg1.setAttribute('width',nS*strW); bg1.setAttribute('height',nutH);
+  bg1.setAttribute('fill','#221808'); svg.appendChild(bg1);
+  const bg2=S('rect');
+  bg2.setAttribute('x',fbl); bg2.setAttribute('y',fbTop);
+  bg2.setAttribute('width',nS*strW); bg2.setAttribute('height',maxF*fretH);
+  bg2.setAttribute('fill','#1a1008'); svg.appendChild(bg2);
+
+  // NUT bar
+  const nutLine=S('line');
+  nutLine.setAttribute('x1',fbl); nutLine.setAttribute('y1',nutBot);
+  nutLine.setAttribute('x2',fbr); nutLine.setAttribute('y2',nutBot);
+  nutLine.setAttribute('stroke','#c8b060'); nutLine.setAttribute('stroke-width','5');
+  svg.appendChild(nutLine);
+
+  // NUT / 0 label (merged in left margin)
+  const nl1=S('text');
+  nl1.setAttribute('x',fbl-7); nl1.setAttribute('y',nutTop+nutH/2-6);
+  nl1.setAttribute('text-anchor','end'); nl1.setAttribute('font-family','Georgia,serif');
+  nl1.setAttribute('font-style','italic'); nl1.setAttribute('font-size','9');
+  nl1.setAttribute('fill','#c8b060'); nl1.textContent='NUT'; svg.appendChild(nl1);
+  const nl2=S('text');
+  nl2.setAttribute('x',fbl-7); nl2.setAttribute('y',nutTop+nutH/2+9);
+  nl2.setAttribute('text-anchor','end'); nl2.setAttribute('font-family','Georgia,serif');
+  nl2.setAttribute('font-size','9'); nl2.setAttribute('fill','#7a7a8a');
+  nl2.textContent='0'; svg.appendChild(nl2);
+
+  // Horizontal fret lines (frets 1..maxF bottom edges)
+  for(let f=1; f<=maxF; f++) {
+    const y=fbTop+f*fretH, ln=S('line');
+    ln.setAttribute('x1',fbl); ln.setAttribute('y1',y);
+    ln.setAttribute('x2',fbr); ln.setAttribute('y2',y);
+    ln.setAttribute('stroke','#3a3020'); ln.setAttribute('stroke-width','1.5');
+    svg.appendChild(ln);
+  }
+
+  // Position markers in left margin (3,5,7,9,12)
+  [3,5,7,9,12].forEach(mf => {
+    if(mf>maxF) return;
+    const y=fbTop+(mf-0.5)*fretH;
+    const mk=S('circle');
+    mk.setAttribute('cx',fbl-20); mk.setAttribute('cy',y);
+    mk.setAttribute('r',mf===12?5:4); mk.setAttribute('fill','#c8b06033');
+    svg.appendChild(mk);
+    const ml=S('text');
+    ml.setAttribute('x',fbl-20); ml.setAttribute('y',y+4);
+    ml.setAttribute('text-anchor','middle'); ml.setAttribute('font-family','Georgia,serif');
+    ml.setAttribute('font-size','7'); ml.setAttribute('fill','#7a7a8a');
+    ml.textContent=mf; svg.appendChild(ml);
+  });
+
+  // Vertical string lines (full height)
+  for(let s=0; s<nS; s++) {
+    const x=fbl+s*strW+strW/2;
+    const thick=[2.8,2.3,1.9,1.5,1.1,0.8][s];
+    const ln=S('line');
+    ln.setAttribute('x1',x); ln.setAttribute('y1',nutTop);
+    ln.setAttribute('x2',x); ln.setAttribute('y2',fbBot);
+    ln.setAttribute('stroke','#8a7860'); ln.setAttribute('stroke-width',thick);
+    svg.appendChild(ln);
+  }
+
+  // Fret number labels (left margin, frets 1..maxF)
+  for(let f=1; f<=maxF; f++) {
+    const y=fbTop+(f-0.5)*fretH+4, lbl=S('text');
+    lbl.setAttribute('x',fbl-7); lbl.setAttribute('y',y);
+    lbl.setAttribute('text-anchor','end'); lbl.setAttribute('font-family','Georgia,serif');
+    lbl.setAttribute('font-size','9'); lbl.setAttribute('fill','#7a7a8a');
+    lbl.textContent=f; svg.appendChild(lbl);
+  }
+
+  // Note dots — fret 0 in nut row, frets 1..maxF in fretted rows
+  for(let s=0; s<nS; s++) {
+    const x=fbl+s*strW+strW/2;
+    for(let f=0; f<=maxF; f++) {
+      const note=noteAt(s,f), col=NCOL[note], dim=NDIM[note];
+      const y=f===0 ? nutTop+nutH/2 : fbTop+(f-0.5)*fretH;
+      const disp=NDISP[NNAMES.indexOf(note)];
+
+      const grp=S('g');
+      grp.setAttribute('class','ndot');
+      grp.setAttribute('id',`d-${s}-${f}`);
+      grp.setAttribute('data-string',s); grp.setAttribute('data-fret',f);
+      grp.setAttribute('data-note',note);
+      grp.setAttribute('role','button'); grp.setAttribute('tabindex','0');
+      grp.setAttribute('aria-label',`${STRNAMES[s]} string, fret ${f}, note ${disp}`);
+
+      // String name above open (fret 0) dot
+      if(f===0) {
+        const snm=S('text');
+        snm.setAttribute('x',x); snm.setAttribute('y',nutTop+10);
+        snm.setAttribute('text-anchor','middle'); snm.setAttribute('font-family','Georgia,serif');
+        snm.setAttribute('font-style','italic'); snm.setAttribute('font-size','9');
+        snm.setAttribute('fill','#5a4830'); snm.setAttribute('pointer-events','none');
+        snm.textContent=STRNAMES[s]; svg.appendChild(snm);
+      }
+
+      // Visible dot circle
+      const ci=S('circle');
+      ci.setAttribute('cx',x); ci.setAttribute('cy',y); ci.setAttribute('r',dotR);
+      ci.setAttribute('fill',dim); ci.setAttribute('stroke',col);
+      ci.setAttribute('stroke-width','1.5'); ci.setAttribute('class','dot-c');
+
+      // Note name text
+      const tx=S('text');
+      tx.setAttribute('x',x); tx.setAttribute('y',y+3.5);
+      tx.setAttribute('text-anchor','middle'); tx.setAttribute('font-family','Georgia,serif');
+      tx.setAttribute('font-style','italic');
+      tx.setAttribute('font-size',disp.length>2?'6.5':'8');
+      tx.setAttribute('font-weight','bold'); tx.setAttribute('fill',txtCol(note));
+      tx.setAttribute('pointer-events','none'); tx.setAttribute('class','dot-t');
+      tx.textContent=disp;
+
+      // Invisible 44px hit area (WCAG 2.5.5)
+      const hit=S('circle');
+      hit.setAttribute('cx',x); hit.setAttribute('cy',y);
+      hit.setAttribute('r',hitR); hit.setAttribute('class','hit');
+
+      grp.appendChild(ci); grp.appendChild(tx); grp.appendChild(hit);
+      grp.addEventListener('click', onDot);
+      grp.addEventListener('keydown', e=>{
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); onDot.call(grp,e); }
+      });
+      svg.appendChild(grp);
+    }
+  }
+}
+
+function onDot() {
+  if(!G.active||G.paused) return;
+  checkAns(this.getAttribute('data-note'), this);
+}
+
+// ── DIFFICULTY SELECT ─────────────────────────────────────────
+function selDiff(btn) {
+  document.querySelectorAll('.dbtn').forEach(b=>{
+    b.classList.remove('sel'); b.setAttribute('aria-pressed','false');
+  });
+  btn.classList.add('sel'); btn.setAttribute('aria-pressed','true');
+  G.diff=btn.getAttribute('data-diff');
+}
+
+// ── START GAME ────────────────────────────────────────────────
+function startGame() {
+  const d=DIFF[G.diff];
+  Object.assign(G, {
+    active:true, paused:false, round:0, totalRounds:d.rounds,
+    score:0, streak:0, best:0, correct:0, total:0, wrong:0,
+    maxFret:d.maxFret, tDur:d.time, startTime:Date.now(),
+  });
+  showScreen('gameScreen');
+  buildWheel(); buildFretboard(); updateUI();
+  document.getElementById('pauseBtn').textContent='Pause';
+  trackEvent('game_start','Fretboard_Speed_Challenge',G.diff,0);
+  next();
+}
+
+// ── NEXT ROUND ────────────────────────────────────────────────
+function next() {
+  G.round++;
+  if(G.round>G.totalRounds){ endGame(); return; }
+  let idx;
+  if(G.diff==='beginner'&&Math.random()<0.6)
+    idx=[0,2,4,5,7,9,11][Math.floor(Math.random()*7)];
+  else idx=Math.floor(Math.random()*12);
+  G.note=NNAMES[idx]; G.wrong=0;
+  G.targets=[];
+  for(let s=0;s<6;s++) for(let f=0;f<=G.maxFret;f++)
+    if(noteAt(s,f)===G.note) G.targets.push({s,f});
+  const col=NCOL[G.note], disp=NDISP[idx];
+  const dot=document.getElementById('tgtDot');
+  dot.style.background=col; dot.style.color=txtCol(G.note);
+  dot.style.boxShadow=`0 0 22px ${col},0 0 48px ${col}44`;
+  dot.textContent=disp;
+  dot.classList.remove('pulse'); void dot.offsetWidth; dot.classList.add('pulse');
+  const tz=document.getElementById('targetZone');
+  tz.style.setProperty('--tglow',`${col}18`);
+  document.getElementById('tgtName').textContent=disp;
+  document.getElementById('tgtName').style.color=col;
+  const enh=NENHAR[disp];
+  document.getElementById('tgtHint').textContent=enh?`Also: ${enh}`:'Any string, any fret';
+  document.getElementById('roundD').textContent=`${G.round}/${G.totalRounds}`;
+  hlWheel(G.note);
+  startTimer();
+}
+
+// ── TIMER ─────────────────────────────────────────────────────
+function startTimer() {
+  stopTimer();
+  const bar=document.getElementById('timerBar');
+  const tw=document.querySelector('.twrap');
+  const t0=performance.now(), dur=G.tDur;
+  function tick(now) {
+    if(!G.active||G.paused) return;
+    const p=Math.max(0,1-(now-t0)/dur);
+    bar.style.width=(p*100)+'%';
+    if(p>0.5)      bar.style.background=`hsl(${Math.round(100*p)},80%,35%)`;
+    else if(p>0.25){ bar.style.background='#FF8000'; bar.classList.remove('urg'); }
+    else           { bar.style.background='#FF0000'; bar.classList.add('urg'); }
+    tw.setAttribute('aria-valuenow',Math.round(p*100));
+    if(p<=0){ bar.classList.remove('urg'); timeUp(); return; }
+    G.raf=requestAnimationFrame(tick);
+  }
+  G.raf=requestAnimationFrame(tick);
+}
+function stopTimer() {
+  if(G.raf){ cancelAnimationFrame(G.raf); G.raf=null; }
+  document.getElementById('timerBar').classList.remove('urg');
+}
+function timeUp() {
+  stopTimer(); G.streak=0; G.total++;
+  updateUI(); showFB('✗ Time!',false);
+  revealTargets();
+  trackEvent('time_expired','Fretboard_Speed_Challenge',G.note,G.round);
+  setTimeout(()=>{ resetDots(); next(); },1300);
+}
+
+// ── CHECK ANSWER ──────────────────────────────────────────────
+function checkAns(clicked, el) {
+  if(!G.active||G.paused) return;
+  G.total++;
+  if(clicked===G.note) {
+    stopTimer();
+    G.streak++; G.correct++;
+    if(G.streak>G.best) G.best=G.streak;
+    const p=parseFloat(document.getElementById('timerBar').style.width)/100;
+    const pts=100+Math.round(p*50)+Math.min(G.streak-1,10)*10;
+    G.score+=pts;
+    el.classList.add('cf');
+    el.querySelector('.dot-c').setAttribute('fill',NCOL[G.note]);
+    setTimeout(()=>el.classList.remove('cf'),500);
+    updateUI();
+    if(G.streak>=3){
+      const tag=document.getElementById('comboTag');
+      tag.textContent=`${G.streak}✕ COMBO! +${Math.min(G.streak-1,10)*10}`;
+      tag.classList.add('show');
+      setTimeout(()=>tag.classList.remove('show'),1200);
+    }
+    const msgs=['✓ Yes!','✓ Boom!','✓ Fast!','✓ Nice!','✓ Got it!'];
+    showFB(msgs[Math.floor(Math.random()*5)],true);
+    trackEvent('correct_answer','Fretboard_Speed_Challenge',G.note,pts);
+    setTimeout(()=>{ resetDots(); next(); },600);
+  } else {
+    G.wrong++; G.streak=0; updateUI();
+    el.classList.add('wf');
+    el.querySelector('.dot-c').setAttribute('fill','#50000030');
+    setTimeout(()=>{
+      el.classList.remove('wf');
+      el.querySelector('.dot-c').setAttribute('fill',NDIM[clicked]||'#222');
+    },400);
+    showFB('✗',false);
+    trackEvent('wrong_answer','Fretboard_Speed_Challenge',G.note,G.wrong);
+    if(G.wrong>=3){
+      stopTimer(); revealTargets();
+      setTimeout(()=>{ resetDots(); next(); },1500);
+    }
+  }
+}
+
+function revealTargets() {
+  G.targets.forEach(({s,f})=>{
+    const d=document.getElementById(`d-${s}-${f}`);
+    if(d){
+      d.querySelector('.dot-c').setAttribute('fill',NCOL[G.note]);
+      d.querySelector('.dot-c').setAttribute('stroke-width','3');
+    }
+  });
+}
+
+function resetDots() {
+  document.querySelectorAll('.ndot').forEach(g=>{
+    const n=g.getAttribute('data-note');
+    g.querySelector('.dot-c').setAttribute('fill',NDIM[n]||'#222');
+    g.querySelector('.dot-c').setAttribute('stroke-width','1.5');
+  });
+}
+
+function updateUI() {
+  document.getElementById('scoreD').textContent=G.score;
+  document.getElementById('streakD').textContent=G.streak;
+  document.getElementById('correctD').textContent=G.correct;
+  document.getElementById('strIcon').textContent=G.streak>=10?'🔥':G.streak>=5?'⚡':'🎸';
+  document.getElementById('strNum').textContent=`${G.streak}✕`;
+}
+
+// ── END GAME ──────────────────────────────────────────────────
+function endGame() {
+  stopTimer(); G.active=false; resetWheel();
+  const acc=G.total>0?Math.round(G.correct/G.total*100):0;
+  const gr=acc>=95?'S':acc>=85?'A':acc>=70?'B':acc>=55?'C':'D';
+  const ti={S:'Legend!',A:'Excellent!',B:'Well Done!',C:'Good Start!',D:'Keep Practicing!'};
+  document.getElementById('resTitle').textContent=ti[gr];
+  document.getElementById('resGrade').textContent=gr;
+  document.getElementById('resSumm').textContent=
+    `${G.correct} correct of ${G.total} attempts · ${acc}% accuracy`;
+  document.getElementById('rScore').textContent=G.score;
+  document.getElementById('rAcc').textContent=acc+'%';
+  document.getElementById('rStrk').textContent=G.best;
+  showScreen('resultsScreen');
+  const elapsed=Math.round((Date.now()-G.startTime)/1000);
+  trackEvent('game_complete','Fretboard_Speed_Challenge',G.diff,G.score);
+  trackEvent('score_result','Fretboard_Speed_Challenge',`acc_${acc}pct`,G.score);
+  trackEvent('session_duration','Fretboard_Speed_Challenge',G.diff,elapsed);
+}
+
+function pauseGame() {
+  if(!G.active) return;
+  G.paused=!G.paused;
+  document.getElementById('pauseBtn').textContent=G.paused?'Resume ▶':'Pause';
+  document.getElementById('pauseBtn').setAttribute('aria-label',G.paused?'Resume game':'Pause game');
+  if(!G.paused) startTimer();
+}
+
+function showStart() {
+  stopTimer(); G.active=false; resetWheel(); showScreen('startScreen');
+}
+
+// ── SCREENS ───────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.setAttribute('aria-hidden','true');
+  });
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  el.setAttribute('aria-hidden','false');
+  // Move focus to screen for screen reader announcement
+  el.focus && el.setAttribute('tabindex','-1');
+}
+
+// ── FEEDBACK ──────────────────────────────────────────────────
+function showFB(msg,ok) {
+  const el=document.getElementById('fbOverlay');
+  el.className='fbov'; void el.offsetWidth;
+  el.textContent=msg; el.classList.add(ok?'ok':'bad');
+}
+
+// ── SHARE / COPY ──────────────────────────────────────────────
+function getShareTxt() {
+  const acc=G.total>0?Math.round(G.correct/G.total*100):0;
+  return `🎸 Fretboard Speed Challenge\n`
+    +`Difficulty: ${DIFF[G.diff].label} · Score: ${G.score}\n`
+    +`Accuracy: ${acc}% · Best Streak: ${G.best}\n\n`
+    +`Free trainer → https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html`;
+}
+function shareScore() {
+  const txt=getShareTxt();
+  if(navigator.share){
+    navigator.share({
+      title:'Fretboard Speed Challenge',
+      text:txt,
+      url:'https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html'
+    }).catch(()=>{});
+  } else copyScore();
+  trackEvent('share','Fretboard_Speed_Challenge',G.diff,G.score);
+}
+function copyScore() {
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(getShareTxt()).then(()=>{
+      const b=document.getElementById('copyBtn');
+      b.textContent='✓ Copied!';
+      setTimeout(()=>b.textContent='📋 Copy Score',2200);
+    });
+  }
+}
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key==='p'||e.key==='P'||e.key==='Escape') pauseGame();
+});
+// Prevent iOS double-tap zoom on fretboard
+document.addEventListener('dblclick',e=>{
+  if(e.target.closest('.fbwrap')) e.preventDefault();
+},{passive:false});
+
+// ── ERROR TRACKING ────────────────────────────────────────────
+window.addEventListener('error',e=>{
+  trackEvent('js_error','Errors',e.message||'unknown',0);
+});
+
+// ── INIT ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  buildWheel();
+  hlWheel('C');
+  setTimeout(resetWheel,1800);
+  // Track page view (only after consent if available)
+  trackEvent('page_view','Fretboard_Speed_Challenge','load',0);
+});
+</script>
+</body>
+</html>

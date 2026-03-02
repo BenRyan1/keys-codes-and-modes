@@ -22,28 +22,6 @@
 <meta name="theme-color" content="#0f1b2d">
 <link rel="canonical" href="https://keyscodesandmodes.com/chromatic-roulette.html">
 
-<!-- ── FAVICON & APP ICONS ── -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="msapplication-TileColor" content="#1a3d5f">
-<meta name="msapplication-config" content="/browserconfig.xml">
-
-<!-- ── FAVICONS ── -->
-<link rel="icon"             type="image/x-icon"       href="/favicon.ico">
-<link rel="icon"             type="image/png" sizes="16x16"  href="/favicon-16x16.png">
-<link rel="icon"             type="image/png" sizes="32x32"  href="/favicon-32x32.png">
-<link rel="icon"             type="image/png" sizes="48x48"  href="/favicon-48x48.png">
-<link rel="apple-touch-icon" sizes="180x180"             href="/apple-touch-icon.png">
-<link rel="icon"             type="image/png" sizes="192x192" href="/favicon-192x192.png">
-<link rel="icon"             type="image/png" sizes="512x512" href="/favicon-512x512.png">
-<link rel="icon"             type="image/svg+xml"        href="/favicon.svg">
-<meta name="msapplication-TileImage"  content="/favicon-192x192.png">
-<meta name="msapplication-TileColor" content="#070d1a">
-
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Keys, Codes &amp; Modes">
@@ -479,37 +457,10 @@ body.is-playing #rouletteWheel path:not(.playing-highlight) {
 ::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-track { background:rgba(0,0,0,0.15); border-radius:6px; }
 ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.18); border-radius:6px; }
-
-/* ── TINY PHONES (≤380px) ── */
-@media (max-width: 380px) {
-  .page-title  { font-size:1.3rem; }
-  .subtitle    { font-size:0.55rem; }
-  .main-grid   { grid-template-columns:1fr; }
-  .guitar-col  { order:2; }
-  .controls-col{ order:1; }
-}
-
-/* ── REDUCED MOTION (accessibility) ── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
-}
 </style>
 </head>
 
 <body>
-
-<!-- Accessibility: skip to main content -->
-<a href="#main-content" style="position:absolute;top:-100%;left:12px;background:#FFD700;color:#000;padding:8px 16px;border-radius:0 0 8px 8px;font-weight:700;font-size:0.9rem;z-index:9999;text-decoration:none;transition:top 0.2s" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to main content</a>
-
-<!-- Cookie / Analytics Consent Notice -->
-<div id="cookieBar" role="dialog" aria-label="Cookie consent" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(10,18,36,0.97);border-top:1px solid rgba(255,255,255,0.08);padding:12px 20px;display:none;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;z-index:8000;font-family:'Space Mono',monospace;font-size:0.62rem;color:#556;text-align:center">
-  <span>🍪 This site uses Google Analytics to understand visitor usage. No personal data is sold. &nbsp;
-    <a href="https://keyscodesandmodes.com/cookie-policy.html" rel="noopener noreferrer" style="color:#00aaff">Cookie Policy</a>
-    &nbsp;·&nbsp;
-    <a href="https://keyscodesandmodes.com/privacy-policy.html" rel="noopener noreferrer" style="color:#00aaff">Privacy Policy</a>
-  </span>
-  <button id="cookieOk" style="background:#FFD700;color:#000;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;white-space:nowrap;flex-shrink:0" aria-label="Accept cookies and close">OK, Got It</button>
-</div>
 
 <header class="site-header" role="banner">
   <h1 aria-label="Keys Codes and Modes">Keys, Codes &amp; Modes</h1>
@@ -517,7 +468,7 @@ body.is-playing #rouletteWheel path:not(.playing-highlight) {
   <p class="subtitle">Spin to a key · Select a mode · Hear it play</p>
 </header>
 
-<main role="main" id="main-content">
+<main role="main">
   <div class="main-grid">
 
     <!-- ══ LEFT COLUMN — Guitar Fretboard ══ -->
@@ -577,16 +528,7 @@ body.is-playing #rouletteWheel path:not(.playing-highlight) {
 </main>
 
 <footer class="site-footer" role="contentinfo">
-  <nav style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:8px" aria-label="Footer navigation">
-    <a href="https://keyscodesandmodes.com" rel="noopener noreferrer">Home</a>
-    <a href="https://keyscodesandmodes.com/about.html" rel="noopener noreferrer">About Ben Ryan</a>
-    <a href="https://keyscodesandmodes.com/name-that-note.html" rel="noopener noreferrer">🎮 Name That Note!</a>
-    <a href="https://keyscodesandmodes.com/privacy-policy.html" rel="noopener noreferrer">Privacy Policy</a>
-    <a href="https://keyscodesandmodes.com/terms-of-service.html" rel="noopener noreferrer">Terms of Use</a>
-    <a href="https://keyscodesandmodes.com/cookie-policy.html" rel="noopener noreferrer">Cookie Policy</a>
-    <a href="https://keyscodesandmodes.com/contact.html" rel="noopener noreferrer">Contact</a>
-  </nav>
-  <p>© <span id="yr"></span> <a href="https://keyscodesandmodes.com" rel="noopener noreferrer">Keys, Codes &amp; Modes</a> — Ben Ryan. All rights reserved. &nbsp;|&nbsp; Patent-pending FreeStyle&reg; Musical Device.</p>
+  <p>© <span id="yr"></span> <a href="https://keyscodesandmodes.com" rel="noopener">Keys, Codes &amp; Modes</a> — All rights reserved.</p>
 </footer>
 
 <script>
@@ -596,16 +538,6 @@ body.is-playing #rouletteWheel path:not(.playing-highlight) {
 // ════════════════════════════════════════════════════
 
 document.getElementById('yr').textContent = new Date().getFullYear();
-
-// ── Cookie Consent ──
-(function(){
-  const bar = document.getElementById('cookieBar');
-  if (!localStorage.getItem('kcm_cookie_ok')) bar.style.display = 'flex';
-  document.getElementById('cookieOk').addEventListener('click', function(){
-    localStorage.setItem('kcm_cookie_ok','1');
-    bar.style.display = 'none';
-  });
-})();
 
 // ── Brand Color System ──
 const notes  = ['C','C#/Db','D','D#/Eb','E','F','F#/Gb','G','G#/Ab','A','A#/Bb','B'];
