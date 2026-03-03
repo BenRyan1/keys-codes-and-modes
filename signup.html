@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- MailerLite Universal -->
+    <!-- MailerLite Universal — DO NOT REMOVE OR CHANGE -->
     <script>
         (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
         .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
@@ -22,7 +22,6 @@
         :root {
             --teal: #008080;
             --gold: #F4D03F;
-            --purple: #8B6BA3;
             --dark: #1a1a2e;
             --text: #E8E8E8;
         }
@@ -87,13 +86,7 @@
         .benefits h3 { color: var(--gold); margin-bottom: 0.8rem; }
         .benefits li { list-style: none; padding: 0.3rem 0 0.3rem 1.5rem; position: relative; }
         .benefits li:before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
-
-        /* MailerLite form styling */
         .ml-embedded { margin-top: 1rem; }
-        .ml-embedded .ml-form-embedWrapper {
-            background: transparent !important;
-        }
-
         .note { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #999; }
         .note a { color: var(--teal); text-decoration: none; }
         footer {
@@ -138,8 +131,9 @@
                 </ul>
             </div>
 
-            <!-- MailerLite Embedded Form -->
+            <!-- MailerLite Embedded Form — DO NOT CHANGE -->
             <div class="ml-embedded" data-form="CAc4ZX"></div>
+            <!-- Redirect to welcome-free-picker.html is set inside MailerLite dashboard -->
 
             <p class="note">No spam, ever. Unsubscribe anytime.<br>
                 <a href="/privacy-policy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a>
@@ -152,28 +146,5 @@
         <a href="/privacy-policy.html">Privacy</a> | <a href="/terms.html">Terms</a> | <a href="/contact.html">Contact</a></p>
     </footer>
 
-    <script>
-    // After MailerLite form submits, redirect to app picker
-    document.addEventListener('DOMContentLoaded', function() {
-        // Watch for MailerLite success message and redirect
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                mutation.addedNodes.forEach(function(node) {
-                    if (node.classList && (
-                        node.classList.contains('ml-form-successContent') ||
-                        node.classList.contains('ml-form-successBody')
-                    )) {
-                        localStorage.setItem('userTier', 'free');
-                        localStorage.setItem('signupComplete', 'true');
-                        setTimeout(function() {
-                            window.location.href = '/welcome-free-picker.html';
-                        }, 2000);
-                    }
-                });
-            });
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    });
-    </script>
 </body>
 </html>
