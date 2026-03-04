@@ -1,0 +1,24 @@
+# ============================================
+# robots.txt — keyscodesandmodes.com
+# Last updated: 2026-03-03
+# ============================================
+
+User-agent: *
+Allow: /
+
+# Block admin, API, and private paths (add as needed)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /.well-known/
+Disallow: /checkout/
+
+# Block query-string duplicates
+Disallow: /*?ref=
+Disallow: /*?utm_
+
+# Crawl-delay (optional, respected by Bing/Yandex, ignored by Google)
+Crawl-delay: 1
+
+# Sitemap location (required by Google Search Console best practice)
+Sitemap: https://keyscodesandmodes.com/sitemap.xml
