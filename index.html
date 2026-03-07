@@ -1,125 +1,22 @@
-<!--
-================================================================================
-COPYRIGHT NOTICE - LEGAL WARNING
-================================================================================
-
-© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved
-
-This website and all content, code, design, applications, and materials are the 
-exclusive intellectual property of Benjamin Ryan and Keys, Codes & Modes™.
-
-STRICTLY PROHIBITED:
-Copying, reproducing, duplicating, distributing, or any unauthorized use of 
-these Works is STRICTLY PROHIBITED without express written permission.
-
-VIOLATORS WILL BE PROSECUTED TO THE FULLEST EXTENT OF THE LAW.
-
-Legal consequences include:
-• Statutory damages up to $150,000 per work infringed
-• Injunctive relief and cease and desist orders
-• Attorneys fees and court costs
-• Criminal prosecution where applicable
-
-Protected by U.S. Copyright Law (17 U.S.C. § 101 et seq.)
-FreeStyle® is a registered trademark. U.S. Patents.
-
-For licensing: ben.ryan@keyscodesandmodes.com
-Santa Barbara, California | All Rights Reserved
-================================================================================
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="msvalidate.01" content="0D401DF2E42C5D4B5D4DBAFEA51EF1BE" />
-<!-- Cookie Consent CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
-
-<style>
-/* Custom styling for cookie consent banner */
-.cc-window {
-    font-family: 'Montserrat', sans-serif !important;
-    background: #0a0a15 !important;
-    border: 2px solid #008080 !important;
-    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3) !important;
-}
-.cc-btn {
-    background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important;
-    border: none !important;
-    padding: 0.75rem 2rem !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-}
-.cc-btn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 5px 15px rgba(0, 128, 128, 0.4) !important;
-}
-.cc-link { color: #F4D03F !important; }
-.cc-link:hover { color: #008080 !important; }
-</style>
-
-<!-- Cookie Consent Script -->
-<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
 <script>
-window.addEventListener('load', function() {
-  window.cookieconsent.initialise({
-    palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
-    theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
-    onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
-    onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
-  });
-});
-function loadGoogleAnalytics() {
-  if (window.gaLoaded) return; window.gaLoaded = true;
-  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
-  gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
-}
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
 </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#4A7BA7">
     <title>Keys, Codes & Modes | Revolutionary Visual Music Theory</title>
     <meta name="description" content="Transform your musical journey with interactive visual learning. Master music theory, guitar, and composition through our revolutionary 20+ applications.">
-
-    <!-- SEO: Canonical URL (prevents www vs non-www duplicate penalty) -->
-    <link rel="canonical" href="https://keyscodesandmodes.com/">
-
-    <!-- SEO: Tell Google to index this page -->
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph (Facebook, LinkedIn previews) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://keyscodesandmodes.com/">
-    <meta property="og:title" content="Keys, Codes & Modes | Revolutionary Visual Music Theory">
-    <meta property="og:description" content="Transform your musical journey with interactive visual learning. Master music theory, guitar, and composition through our revolutionary 20+ applications.">
-    <meta property="og:site_name" content="Keys, Codes & Modes">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Keys, Codes & Modes | Revolutionary Visual Music Theory">
-    <meta name="twitter:description" content="Transform your musical journey with interactive visual learning. Master music theory, guitar, and composition through our revolutionary 20+ applications.">
-
-    <!-- JSON-LD Structured Data for Google -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Keys, Codes & Modes",
-      "url": "https://keyscodesandmodes.com",
-      "description": "Revolutionary visual music theory education platform with 20+ interactive applications.",
-      "author": {
-        "@type": "Person",
-        "name": "Benjamin Ryan"
-      }
-    }
-    </script>
-
+    
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/kcm-official-logo-32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="kcm-official-logo-32.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -481,7 +378,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <!-- HEADER WITH OFFICIAL LOGO -->
     <header>
         <nav class="main-nav">
-            <a href="/index.html" class="logo-container">
+            <a href="index.html" class="logo-container">
                 <svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="header-logo" style="filter: drop-shadow(0 6px 15px rgba(74, 123, 167, 0.6));">
                     <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
                     <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
@@ -501,9 +398,10 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/contact.html">Contact</a></li>
-                <li><a href="/signup.html" class="cta-btn">Start Free</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="offerings.html">Apps</a></li>
+                <li><a href="offering-password.html">Pricing</a></li>
+                <li><a href="welcome-free-picker-updated.html" class="cta-btn">Start Free</a></li>
             </ul>
         </nav>
     </header>
@@ -513,8 +411,8 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             <h2>Transform Your Musical Journey</h2>
             <p>Experience the visual breakthrough that makes music theory finally click. Master guitar, piano, and composition with our revolutionary 20+ interactive applications.</p>
             <div class="hero-cta">
-                <a href="/signup.html" class="btn-primary">Start Free - Choose 3 Apps</a>
-                <a href="/pricing.html" class="btn-secondary">View Pricing</a>
+                <a href="welcome-free-picker-updated.html" class="btn-primary">Start Free - Choose 3 Apps</a>
+                <a href="offering-password.html" class="btn-secondary">View Pricing</a>
             </div>
         </section>
         
@@ -570,18 +468,18 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </div>
             
             <div style="text-align: center;">
-                <a href="/signup.html" class="btn-primary" style="margin-right: 1rem;">Start Free - Pick 3 Apps</a>
-                <a href="/pricing.html" class="btn-secondary">View All Plans</a>
+                <a href="welcome-free-picker-updated.html" class="btn-primary" style="margin-right: 1rem;">Start Free - Pick 3 Apps</a>
+                <a href="offering-password.html" class="btn-secondary">View All Plans</a>
             </div>
             
             <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(139, 107, 163, 0.1); border-radius: 15px; border: 2px solid var(--primary-purple);">
                 <h3 style="color: var(--primary-gold); font-family: var(--font-display); font-size: 2rem; margin-bottom: 1rem;">
-                    🏆 Founder's Circle - Lifetime Access
+                    🏆 Founder's Circle - $697 Lifetime Access
                 </h3>
                 <p style="color: #ccc; font-size: 1.2rem; margin-bottom: 1.5rem;">
                     Lock in lifetime access to EVERYTHING we ever build. First 250 members only.
                 </p>
-                <a href="/pricing.html#founders" class="btn-primary">
+                <a href="offering-password.html#founders" class="btn-primary">
                     Join Founder's Circle →
                 </a>
             </div>
@@ -603,19 +501,10 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
             <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
         </svg>
-        <div style="background: linear-gradient(135deg, rgba(0, 128, 128, 0.15) 0%, rgba(139, 107, 163, 0.15) 100%); border-top: 2px solid #008080; border-bottom: 2px solid #F4D03F; padding: 2.5rem 2rem; text-align: center; margin-top: 2rem; border-radius: 12px; backdrop-filter: blur(10px); max-width: 900px; margin-left: auto; margin-right: auto;">
-            <p style="color: #F4D03F; font-weight: 700; font-size: 1.15rem; margin-bottom: 1.2rem; font-family: 'Cinzel', serif; letter-spacing: 1px;">
-                © 2026 Keys, Codes & Modes™ | All Rights Reserved
-            </p>
-            <p style="font-size: 0.95rem; margin-bottom: 0.9rem; color: rgba(232,232,232,0.85); line-height: 1.7;">
-                Protected by U.S. Copyright, Patent, and Trademark Law. Unauthorized reproduction, distribution, or use of any materials from this website is <strong style="color: #F4D03F;">strictly prohibited</strong> and will be prosecuted to the fullest extent of the law.
-            </p>
-            <p style="font-size: 0.85rem; color: rgba(232,232,232,0.6); line-height: 1.6; margin-bottom: 0.8rem;">
-                FreeStyle® is a registered trademark • U.S. Patents • All teaching methods, visual representations, and interactive applications are proprietary and confidential.
-            </p>
-            <p style="font-size: 0.85rem; color: rgba(232,232,232,0.5); margin-top: 1rem;">
-                Created by <strong style="color: #F4D03F;">Benjamin Ryan</strong> • Based on "Keys, Codes, and Modes: A Visual Approach to Understanding Music" • Santa Barbara, California
-            </p>
+        <div class="copyright">
+            <p>&copy; 2026 Keys, Codes & Modes. Created by <strong>Benjamin Ryan</strong>.</p>
+            <p style="margin-top: 0.5rem;">Based on the book "Keys, Codes, and Modes: A Visual Approach to Understanding Music"</p>
+            <p style="margin-top: 0.5rem; color: #666;">Santa Barbara, California | All rights reserved</p>
         </div>
     </footer>
 </body>
