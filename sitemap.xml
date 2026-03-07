@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- sitemap.xml — keyscodesandmodes.com — Updated: 2026-03-03 -->
+<!-- sitemap.xml — keyscodesandmodes.com — Updated: 2026-03-06 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- ══════════════════════════════════════════ -->
@@ -7,56 +7,43 @@
   <!-- ══════════════════════════════════════════ -->
   <url>
     <loc>https://keyscodesandmodes.com/</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/offerings.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/insights.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/pricing.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
+  <url>
+    <loc>https://keyscodesandmodes.com/signup.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
   <url>
     <loc>https://keyscodesandmodes.com/about.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <url>
-    <loc>https://keyscodesandmodes.com/book.html</loc>
-    <lastmod>2026-03-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://keyscodesandmodes.com/freestyle-device.html</loc>
-    <lastmod>2026-03-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/contact.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -66,129 +53,215 @@
   <!-- ══════════════════════════════════════════ -->
   <url>
     <loc>https://keyscodesandmodes.com/apps/chromatic-spoke-clock.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/apps/name-that-note.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/apps/circle-of-fifths.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/apps/music-theory-explorer.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/circle-of-modes.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/apps/guitar-fretboard-trainer.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/chord-builder.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/apps/chromatic-roulette.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/holy-mole-grail.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/chromatic-circle.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/chromatic-mandala.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/chromatic-wheel-of-sound.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/guitar-fretboard-explorer.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/keys-codes-modes-guitar-fretboard.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/caged-145-master.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- SIGNUP / CONVERSION                        -->
-  <!-- ══════════════════════════════════════════ -->
   <url>
-    <loc>https://keyscodesandmodes.com/signup.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/caged-stencil-fretboard.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- WELCOME / ONBOARDING (post-signup)         -->
-  <!-- Note: consider noindex if behind auth      -->
-  <!-- ══════════════════════════════════════════ -->
   <url>
-    <loc>https://keyscodesandmodes.com/welcome-free-picker.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/harmonized-chromatic-scale.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/welcome-free.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/holy-mole-grail.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/welcome-premium.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/kcm-cymatics-visualizer.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/welcome-founder.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/apps/kcm-tuner.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/modal-stencil-player.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/music-theory-pro.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/chladni-visualizer.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/octave-wave-visualizer.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/pitch-detector.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/radial-chart-visualizer.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/rhythm-clock.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/rhythm-geometry-lab.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/rhythm-harmony.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/sonic-undertaking.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/tonic-subdominant-dominant.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/wheel-of-sound.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://keyscodesandmodes.com/apps/guitar-improvisations.html</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 
   <!-- ══════════════════════════════════════════ -->
   <!-- LEGAL / COMPLIANCE                         -->
   <!-- ══════════════════════════════════════════ -->
   <url>
-    <loc>https://keyscodesandmodes.com/privacy-policy.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/privacy.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
-
   <url>
-    <loc>https://keyscodesandmodes.com/terms-of-service.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://keyscodesandmodes.com/terms.html</loc>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/refund-policy.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
-
   <url>
     <loc>https://keyscodesandmodes.com/cookie-policy.html</loc>
-    <lastmod>2026-03-03</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
