@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
@@ -10,381 +10,474 @@
   gtag('config', 'G-6EGC5ZNZPF');
 </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keys, Codes & Modes - CAGED I-IV-V Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="color-scheme" content="dark">
+    <title>CAGED System I-IV-V Explorer | Keys, Codes &amp; Modes – Interactive Guitar Theory</title>
+    <meta name="description" content="Master the CAGED guitar system with interactive I-IV-V chord progressions, chromatic color-coded fretboard, ear training, and 2-5-1 jazz progressions. Free interactive music theory tool.">
+    <meta name="keywords" content="CAGED system guitar, I IV V chord progression, guitar music theory, interactive fretboard, ear training, chord shapes, chromatic scale, guitar education, keys codes modes">
+    <meta name="author" content="Benjamin Ryan – Keys, Codes &amp; Modes">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://keyscodesandmodes.com/caged-145-master.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Keys, Codes &amp; Modes">
+    <meta property="og:title" content="CAGED System I-IV-V Explorer | Keys, Codes &amp; Modes">
+    <meta property="og:description" content="Interactive guitar CAGED system explorer — chromatic color-coded fretboard, I-IV-V progressions, ear training, 2-5-1 jazz voicings.">
+    <meta property="og:url" content="https://keyscodesandmodes.com/caged-145-master.html">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://keyscodesandmodes.com/og-caged.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="CAGED System I-IV-V Explorer – colorful chromatic fretboard with note visualization">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CAGED System I-IV-V Explorer | Keys, Codes &amp; Modes">
+    <meta name="twitter:description" content="Master guitar chords with interactive CAGED explorer – chromatic colors, ear training, I-IV-V &amp; 2-5-1 progressions.">
+    <meta name="twitter:image" content="https://keyscodesandmodes.com/og-caged.png">
+    <meta name="twitter:image:alt" content="CAGED System I-IV-V Explorer fretboard visualization">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://keyscodesandmodes.com/caged-145-master.html","name":"CAGED System I-IV-V Explorer","description":"Interactive guitar CAGED system explorer with chromatic color-coded fretboard, I-IV-V chord progressions, ear training, and 2-5-1 jazz voicings.","url":"https://keyscodesandmodes.com/caged-145-master.html","applicationCategory":"EducationalApplication","operatingSystem":"Any","isAccessibleForFree":true,"inLanguage":"en-US","author":{"@type":"Person","name":"Benjamin Ryan","url":"https://keyscodesandmodes.com"},"publisher":{"@type":"Organization","name":"Keys, Codes & Modes","url":"https://keyscodesandmodes.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["CAGED System Guitar Forms","I-IV-V Chord Progressions","Chromatic Color-Coded Fretboard","Ear Training","ii-V-I Jazz Progressions","Real-time Audio Playback","Chord Builder","Mobile Responsive"],"accessibilityFeature":["highContrast","structuredNavigation","ARIA","keyboardNavigation"],"accessibilityHazard":"noFlashingHazard","accessibilityControl":["fullKeyboardControl","fullMouseControl","fullTouchControl"],"accessMode":["visual","auditory","textual"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://keyscodesandmodes.com"},{"@type":"ListItem","position":2,"name":"CAGED I-IV-V Explorer","item":"https://keyscodesandmodes.com/caged-145-master.html"}]}]}
+    </script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
-            min-height: 100vh;
-            padding: 15px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            color: #ffd700;
-        }
-        .main-layout {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-        
-        /* LEFT PANEL - Forms */
-        .form-panel {
-            width: 280px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            padding: 12px;
-            flex-shrink: 0;
-        }
-        .panel-title {
-            font-size: 0.9em;
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        /* CAGED Cycle Display */
-        .cycle-display {
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-        .cycle-text {
-            font-size: 0.9em;
-            margin-bottom: 6px;
-        }
-        .cycle-text span { font-weight: bold; }
-        .cycle-text .c { color: #ff6b6b; }
-        .cycle-text .a { color: #4ecdc4; }
-        .cycle-text .g { color: #ffd700; }
-        .cycle-text .e { color: #a855f7; }
-        .cycle-text .d { color: #22c55e; }
-        
-        /* Form Buttons */
-        .form-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 8px;
-            border: 2px solid #444;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-        }
-        .form-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        .form-btn.active {
-            border-width: 3px;
-        }
-        .form-btn .name {
-            font-size: 1.1em;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        .form-btn .chords {
-            font-size: 0.85em;
-            color: #aaa;
-        }
-        
-        /* Position Slider */
-        .position-control {
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 12px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .position-display {
-            text-align: center;
-            font-size: 2em;
-            font-weight: bold;
-            color: #ffd700;
-            margin: 10px 0;
-        }
-        .position-btns {
-            display: flex;
-            gap: 10px;
-        }
-        .position-btns button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-        .position-btns button:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        
-        /* Current Key */
-        .key-display {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .key-display .label { font-size: 0.7em; color: #888; }
-        .key-display .key { font-size: 2.5em; font-weight: bold; }
-        .key-display .progression { font-size: 1em; margin-top: 5px; }
-        
-        /* I-IV-V Buttons */
-        .chord-buttons {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .chord-btn {
-            flex: 1;
-            padding: 12px 8px;
-            border: 3px solid #444;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            cursor: pointer;
-            text-align: center;
-        }
-        .chord-btn.active {
-            background: rgba(255,255,255,0.2);
-        }
-        .chord-btn .degree { font-size: 0.8em; color: #888; }
-        .chord-btn .name { font-size: 1.5em; font-weight: bold; }
-        .chord-btn .shape { font-size: 0.7em; color: #666; }
-        
-        /* Play Button */
-        .play-btn {
-            width: 100%;
-            max-width: 400px;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            color: #000;
-            margin-bottom: 15px;
-        }
-        
-        /* CENTER - Fretboard */
-        .fretboard-panel {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        /* Chromatic Circle */
-        .chromatic-circle-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-        }
-        .chromatic-circle {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .note-sphere {
-            position: absolute;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-weight: bold;
-        }
-        .note-sphere:hover {
-            transform: scale(1.2);
-            z-index: 100;
-        }
-        .note-sphere.active {
-            transform: scale(1.3);
-            z-index: 101;
-        }
-        .note-sphere .note-name {
-            font-size: 0.8em;
-            color: #000;
-            text-shadow: 0 0 2px #fff;
-        }
-        .note-sphere .midi-num {
-            font-size: 0.5em;
-            color: #000;
-            opacity: 0.7;
-        }
-        .circle-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            pointer-events: none;
-        }
-        .circle-center .key-name {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .circle-center .chord-name {
-            font-size: 0.85em;
-            color: #aaa;
-        }
-        
-        .fretboard {
-            position: relative;
-            background: linear-gradient(90deg, #8B4513 0%, #654321 100%);
-            border-radius: 5px;
-            width: 280px;
-            height: 500px;
-            margin: 0 auto 10px auto;
-            margin-left: 40px;
-            margin-right: 30px;
-            overflow: visible;
-        }
-        .nut {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 25px;
-            background: #f5f5dc;
-            border-bottom: 3px solid #333;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 0.65em;
-            color: #333;
-        }
-        .string {
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #ccc, #999);
-        }
-        .fret-line {
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #888;
-        }
-        .fret-marker {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .note-dot {
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7em;
-            font-weight: bold;
-            color: #fff;
-            border: 2px solid rgba(255,255,255,0.5);
-        }
-        .note-dot.root { background: #ff6b6b; }
-        .note-dot.third { background: #4ecdc4; }
-        .note-dot.fifth { background: #ffd700; color: #000; }
-        .note-dot.seventh { background: #a855f7; }
-        .note-dot.open {
-            top: 12px !important;
-            background: transparent;
-            border: 3px solid;
-        }
-        .note-dot.muted {
-            top: 12px !important;
-            background: transparent;
-            border: none;
-            color: #666;
-            font-size: 1.2em;
-        }
-        .barre {
-            position: absolute;
-            left: 10%;
-            right: 10%;
-            height: 12px;
-            background: rgba(100,100,100,0.8);
-            border-radius: 6px;
-            transform: translateY(-50%);
-        }
-        .fret-numbers {
-            display: flex;
-            justify-content: space-around;
-            padding: 0 30px;
-            color: #888;
-            font-size: 0.8em;
-        }
-        
-        /* Audio Controls */
-        .audio-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .audio-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            background: #4a5568;
-            color: #fff;
-        }
-        .audio-btn:hover { background: #5a6578; }
-    </style>
+/* ═══════════════════════════════════════════════════════
+   KEYS, CODES & MODES — CAGED Explorer
+   4-Column Grid Layout + Full-width Ear Trainer Strip
+═══════════════════════════════════════════════════════ */
+
+/* ── RESET & BASE ───────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
+  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);
+  background-attachment:fixed;
+  color:#fff;min-height:100vh;
+  padding:12px;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+
+/* ── FOCUS ─────────────────────────────────────────── */
+:focus-visible{outline:3px solid #ffd700!important;outline-offset:3px!important;border-radius:4px;}
+:focus:not(:focus-visible){outline:none;}
+
+/* ── SKIP NAV ───────────────────────────────────────── */
+.skip-nav{
+  position:absolute;top:-999px;left:50%;transform:translateX(-50%);
+  z-index:9999;padding:12px 28px;background:#ffd700;color:#000;
+  font-weight:700;font-size:1rem;border-radius:0 0 10px 10px;
+  text-decoration:none;white-space:nowrap;
+}
+.skip-nav:focus{top:0;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+/* ── CONTAINER ──────────────────────────────────────── */
+.container{max-width:1280px;margin:0 auto;width:100%;}
+
+/* ══════════════════════════════════════════════════════
+   MAIN 4-COLUMN GRID
+   col1: CAGED forms + tempo (fixed ~210px)
+   col2: Fretboard             (fixed ~195px)
+   col3: Circle + Chord Builder (fixed ~240px)
+   col4: Controls panel         (fills remainder)
+══════════════════════════════════════════════════════ */
+.main-layout{
+  display:grid;
+  grid-template-columns:210px 195px 240px 1fr;
+  grid-template-rows:auto auto;
+  gap:10px;
+  align-items:start;
+}
+
+/* Ear trainer spans all 4 columns as a bottom strip */
+.ear-trainer-strip{
+  grid-column:1/-1;
+}
+
+/* ── PANEL COMMON ───────────────────────────────────── */
+.panel{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:12px;
+}
+
+/* ── COL 1: CAGED FORMS ─────────────────────────────── */
+.col-forms{
+  display:flex;flex-direction:column;gap:6px;
+}
+
+.panel-title{
+  font-size:0.7rem;font-weight:700;color:#ffd700;
+  text-align:center;letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+/* CAGED Cycle display */
+.cycle-display{
+  background:rgba(0,0,0,0.3);border-radius:6px;
+  padding:7px 8px;margin-bottom:6px;text-align:center;
+}
+.cycle-text{font-size:0.82rem;margin-bottom:3px;}
+.cycle-text span{font-weight:700;}
+.cycle-text .c{color:#FFFF00;}.cycle-text .a{color:#007FFF;}
+.cycle-text .g{color:#4000FF;}.cycle-text .e{color:#FF0000;}
+.cycle-text .d{color:#FF8000;}
+
+/* CAGED form buttons — compact horizontal */
+.form-btn{
+  display:flex;align-items:center;gap:8px;
+  width:100%;min-height:40px;padding:7px 10px;
+  border:2px solid #444;border-radius:8px;
+  background:rgba(255,255,255,0.04);color:#fff;
+  cursor:pointer;text-align:left;
+  transition:background 0.18s,border-color 0.18s;
+  font-size:0.9rem;
+}
+.form-btn:hover,:focus-visible{background:rgba(255,255,255,0.1);}
+.form-btn.active{border-width:3px;}
+.form-btn .name{font-size:0.95rem;font-weight:700;white-space:nowrap;}
+.form-btn .chords{font-size:0.62rem;color:#888;line-height:1.3;}
+
+/* Tempo */
+.tempo-panel{
+  background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;margin-top:4px;
+}
+.tempo-presets{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;}
+.tempo-presets button{
+  flex:1;min-height:30px;padding:3px 4px;
+  border:1px solid rgba(255,255,255,0.15);border-radius:4px;
+  background:rgba(255,255,255,0.08);color:#fff;
+  cursor:pointer;font-size:0.65rem;
+  transition:background 0.15s;
+}
+.tempo-presets button:hover{background:rgba(255,255,255,0.2);}
+
+/* ── COL 2: FRETBOARD ───────────────────────────────── */
+.col-fretboard{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  min-height:0;
+}
+
+.fretboard{
+  position:relative;
+  background:linear-gradient(90deg,#8B4513 0%,#654321 100%);
+  border-radius:5px;
+  width:160px;
+  height:440px;
+  margin:0 auto;
+  margin-left:40px;   /* room for CAGED zone labels */
+  margin-right:24px;  /* room for fret numbers */
+  overflow:visible;
+}
+.nut{
+  position:absolute;top:0;left:0;right:0;height:22px;
+  background:linear-gradient(180deg,#f5f5dc,#fff8dc,#f5f5dc);
+  border-bottom:3px solid #333;
+  display:flex;justify-content:space-around;align-items:center;
+  font-size:0.58rem;font-weight:700;color:#333;
+  border-radius:3px 3px 0 0;z-index:5;
+}
+
+/* Position control — compact horizontal bar under fretboard */
+.position-bar{
+  display:flex;align-items:center;gap:6px;
+  width:100%;
+  background:rgba(0,0,0,0.3);border-radius:8px;
+  padding:6px 10px;margin-top:8px;box-sizing:border-box;
+}
+.position-bar button{
+  min-height:32px;padding:4px 10px;
+  border:1px solid rgba(255,255,255,0.2);border-radius:5px;
+  background:rgba(255,255,255,0.1);color:#fff;
+  cursor:pointer;font-size:0.8rem;white-space:nowrap;flex-shrink:0;
+}
+.position-bar button:hover{background:rgba(255,255,255,0.25);}
+.position-label{
+  font-size:0.9rem;font-weight:700;color:#ffd700;
+  min-width:58px;text-align:center;white-space:nowrap;flex-shrink:0;
+}
+.position-bar input[type=range]{flex:1;min-width:0;height:18px;}
+
+/* ── COL 3: CIRCLE + CHORD BUILDER ─────────────────── */
+.col-circle{
+  display:flex;flex-direction:column;gap:8px;
+}
+
+.chromatic-circle-container{
+  position:relative;
+  width:220px;height:220px;
+  margin:0 auto;
+}
+.chromatic-circle{position:relative;width:100%;height:100%;}
+.note-sphere{
+  position:absolute;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;font-weight:700;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.note-sphere:hover{transform:scale(1.2);z-index:100;}
+.note-sphere.active{transform:scale(1.3);z-index:101;}
+.note-sphere .note-name{font-size:0.68rem;color:#000;text-shadow:0 0 2px #fff;}
+.note-sphere .midi-num{font-size:0.42rem;color:#000;opacity:0.7;}
+.circle-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;pointer-events:none;
+}
+.circle-center .key-name{font-size:1.7rem;font-weight:700;}
+.circle-center .chord-name{font-size:0.72rem;color:#888;}
+
+/* Active chord tones row */
+.chord-tones-row{
+  background:rgba(0,0,0,0.3);border-radius:6px;padding:6px 8px;text-align:center;
+}
+
+/* Chord Builder */
+.chord-builder{
+  background:rgba(0,0,0,0.4);border-radius:8px;padding:8px;
+}
+.root-btn,.type-btn{
+  padding:3px 5px;border:1px solid rgba(255,255,255,0.1);border-radius:3px;
+  background:rgba(255,255,255,0.06);color:#fff;
+  cursor:pointer;font-size:0.58rem;min-height:26px;
+  transition:background 0.12s;
+}
+.root-btn:hover,.type-btn:hover{background:rgba(255,255,255,0.2);}
+
+/* ── COL 4: CONTROLS ────────────────────────────────── */
+.col-controls{
+  display:flex;flex-direction:column;gap:8px;
+}
+
+/* Key display */
+.key-display{
+  text-align:center;padding:10px 12px;border-radius:10px;
+}
+.key-display .label{font-size:0.65rem;color:#888;text-transform:uppercase;letter-spacing:0.1em;}
+.key-display .key{font-size:2rem;font-weight:700;line-height:1.1;}
+.key-display .progression{font-size:0.85rem;margin-top:3px;}
+
+/* I/IV/V chord buttons */
+.chord-buttons{
+  display:flex;gap:6px;
+}
+.chord-btn{
+  flex:1;min-height:56px;padding:8px 4px;
+  border:3px solid #444;border-radius:10px;
+  background:rgba(255,255,255,0.04);color:#fff;
+  cursor:pointer;text-align:center;
+  transition:background 0.18s;font-size:0.9rem;
+}
+.chord-btn:hover{background:rgba(255,255,255,0.12);}
+.chord-btn.active{background:rgba(255,255,255,0.18);}
+.chord-btn .degree{font-size:0.72rem;color:#888;}
+.chord-btn .name{font-size:1.3rem;font-weight:700;}
+.chord-btn .shape{font-size:0.62rem;color:#666;}
+
+/* Play buttons */
+.play-btn{
+  display:block;width:100%;min-height:40px;
+  padding:9px 14px;border:none;border-radius:9px;
+  font-size:0.82rem;font-weight:700;cursor:pointer;color:#000;
+  transition:filter 0.18s,transform 0.1s;
+}
+.play-btn:hover{filter:brightness(1.12);}
+.play-btn:active{transform:scale(0.98);}
+
+/* Audio controls */
+.audio-controls{
+  display:flex;gap:6px;flex-wrap:wrap;
+}
+.audio-btn{
+  flex:1;min-height:36px;padding:7px 6px;
+  border:1px solid rgba(255,255,255,0.15);border-radius:6px;
+  font-size:0.78rem;font-weight:600;cursor:pointer;
+  background:#3a4558;color:#fff;
+  transition:background 0.18s;white-space:nowrap;
+}
+.audio-btn:hover{background:#4a5568;}
+
+/* Octave row */
+.octave-row{
+  display:flex;gap:6px;justify-content:center;align-items:center;
+}
+.octave-row button{
+  min-height:34px;padding:6px 12px;
+  border:1px solid rgba(255,255,255,0.15);border-radius:5px;
+  background:rgba(255,255,255,0.1);color:#fff;
+  cursor:pointer;font-size:0.8rem;
+}
+
+/* ── EAR TRAINER STRIP ──────────────────────────────── */
+.ear-strip{
+  background:linear-gradient(135deg,rgba(90,20,160,0.35),rgba(50,0,100,0.35));
+  border:1px solid #6b21a8;
+  border-radius:12px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:nowrap;
+  overflow:visible;
+}
+
+.ear-section{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.ear-divider{width:1px;height:36px;background:rgba(255,255,255,0.15);flex-shrink:0;}
+
+/* Mode buttons */
+.ear-mode-btn{
+  min-height:34px;padding:5px 10px;
+  border:1px solid rgba(255,255,255,0.15);border-radius:5px;
+  background:rgba(255,255,255,0.08);color:#ccc;
+  cursor:pointer;font-size:0.72rem;font-weight:600;
+  transition:background 0.15s,color 0.15s;white-space:nowrap;
+}
+.ear-mode-btn.active,
+.ear-mode-btn[aria-pressed="true"]{background:#7c3aed;color:#fff;border-color:#7c3aed;}
+
+/* Play sound button */
+.ear-play-btn{
+  min-height:34px;padding:6px 14px;
+  border:none;border-radius:6px;
+  background:linear-gradient(135deg,#9932cc,#7c3aed);
+  color:#fff;font-weight:700;cursor:pointer;font-size:0.8rem;
+  white-space:nowrap;flex-shrink:0;
+  transition:filter 0.18s;
+}
+.ear-play-btn:hover{filter:brightness(1.15);}
+
+/* Question text */
+.ear-question{
+  font-size:0.78rem;color:#dda0dd;
+  min-width:110px;text-align:center;flex-shrink:0;
+}
+
+/* Answer buttons */
+.ear-answers{
+  display:flex;flex-wrap:wrap;gap:3px;flex:1;
+}
+.ear-answer-btn{
+  min-height:28px;padding:3px 6px;
+  border:1px solid rgba(255,255,255,0.1);border-radius:4px;
+  color:#fff;cursor:pointer;font-size:0.62rem;font-weight:600;
+  transition:filter 0.15s,transform 0.1s;
+}
+.ear-answer-btn:hover{filter:brightness(1.3);transform:scale(1.05);}
+
+/* Score */
+.ear-score{
+  display:flex;flex-direction:column;gap:2px;
+  font-size:0.72rem;text-align:right;flex-shrink:0;
+}
+
+/* ── RANGE INPUT ────────────────────────────────────── */
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  background:transparent;cursor:pointer;height:22px;
+}
+input[type=range]::-webkit-slider-runnable-track{
+  height:6px;border-radius:3px;
+  background:linear-gradient(90deg,rgba(255,215,0,0.4),rgba(255,255,255,0.15));
+}
+input[type=range]:focus::-webkit-slider-runnable-track{
+  background:linear-gradient(90deg,rgba(255,215,0,0.6),rgba(255,255,255,0.25));
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle,#ffe066,#ffd700);
+  border:2px solid rgba(255,255,255,0.9);margin-top:-8px;cursor:pointer;
+  box-shadow:0 0 6px rgba(255,215,0,0.5);
+}
+input[type=range]::-moz-range-track{
+  height:6px;border-radius:3px;
+  background:linear-gradient(90deg,rgba(255,215,0,0.4),rgba(255,255,255,0.15));
+}
+input[type=range]::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle,#ffe066,#ffd700);
+  border:2px solid rgba(255,255,255,0.9);cursor:pointer;
+  box-shadow:0 0 6px rgba(255,215,0,0.5);
+}
+
+/* ── ACCESSIBILITY ───────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;
+    animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+}
+@media (forced-colors:active){
+  button{forced-color-adjust:none;border:2px solid ButtonText!important;}
+  :focus-visible{outline:3px solid Highlight;}
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────── */
+@keyframes pulse{
+  from{transform:scale(1.2);}
+  to{transform:scale(1.35);}
+}
+@keyframes pulseHighlight{
+  from{transform:translate(-50%,-50%) scale(1);opacity:0.8;}
+  to{transform:translate(-50%,-50%) scale(1.15);opacity:1;}
+}
+
+/* ── FOOTER TAGS ────────────────────────────────────── */
+.footer-tags{
+  display:flex!important;flex-wrap:wrap!important;
+  justify-content:center!important;gap:16px!important;
+  list-style:none;padding:0;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width:1100px){
+  .main-layout{grid-template-columns:200px 185px 220px 1fr;}
+  .fretboard{width:150px;}
+  .chromatic-circle-container{width:200px;height:200px;}
+}
+@media (max-width:900px){
+  .main-layout{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto auto auto;
+  }
+  .col-forms{grid-column:1;grid-row:1;}
+  .col-fretboard{grid-column:2;grid-row:1;}
+  .col-circle{grid-column:1;grid-row:2;}
+  .col-controls{grid-column:2;grid-row:2;}
+  .ear-trainer-strip{grid-column:1/-1;grid-row:3;}
+  .fretboard{width:160px;height:400px;}
+  .chromatic-circle-container{width:220px;height:220px;}
+  .ear-strip{flex-wrap:wrap;}
+}
+@media (max-width:600px){
+  .main-layout{grid-template-columns:1fr;}
+  .col-forms,.col-fretboard,.col-circle,.col-controls{grid-column:1;}
+  .ear-strip{flex-direction:column;align-items:stretch;}
+  .ear-divider{width:100%;height:1px;}
+  .ear-answers{justify-content:center;}
+  .fretboard{width:min(160px,60vw);height:400px;}
+  .chromatic-circle-container{width:min(220px,80vw);height:min(220px,80vw);}
+}
+@media print{
+  body{background:#fff;color:#000;}
+  .audio-controls,.play-btn,.position-bar button{display:none!important;}
+}
+</style>
 </head>
 <body>
+    <!-- WCAG 2.4.1: Skip Navigation -->
+    <a href="#main-content" class="skip-nav">Skip to main content</a>
+    <!-- Screen reader live announcements -->
+    <div id="a11y-live" role="status" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
     <div class="container">
         <!-- HERO LOGO HEADER -->
-        <div style="text-align: center; margin-bottom: 20px; padding: 25px; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 50%, #1a1a2e 100%); border-radius: 20px; border: 3px solid transparent; background-clip: padding-box; position: relative; overflow: hidden;">
-            <!-- Rainbow border effect -->
-            <div style="position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #C4007F, #8000FF, #4000FF, #0000FF, #007FFF, #00FF80, #80FF00, #FFFF00); border-radius: 22px; z-index: -1;"></div>
-            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 50%, #1a1a2e 100%); border-radius: 17px; z-index: -1;"></div>
+        <header role="banner" style="text-align: center; margin-bottom: 20px; padding: 25px; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 50%, #1a1a2e 100%); border-radius: 20px; border: 3px solid transparent; background-clip: padding-box; position: relative; overflow: hidden;">
+            <div aria-hidden="true" style="position:absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #C4007F, #8000FF, #4000FF, #0000FF, #007FFF, #00FF80, #80FF00, #FFFF00); border-radius: 22px; z-index: -1;"></div>
+            <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1a1a2e 0%,#0f0f1a 50%,#1a1a2e 100%);border-radius:17px;z-index:-1;"></div>
             
             <!-- Main Logo Row -->
-            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 15px;">
+            <div style="display:flex;justify-content:center;align-items:center;gap:clamp(8px,2vw,20px);margin-bottom:15px;flex-wrap:wrap;">
                 <!-- Animated Chromatic Circle Icon -->
-                <svg width="80" height="80" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));">
+                <svg aria-hidden="true" focusable="false" width="80" height="80" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 10px rgba(255,215,0,0.5));">
                     <defs>
                         <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#FFFF00"/>
@@ -431,7 +524,7 @@
                 </div>
                 
                 <!-- Guitar/Piano Icon -->
-                <svg width="70" height="80" viewBox="0 0 70 90" style="filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));">
+                <svg aria-hidden="true" focusable="false" width="70" height="80" viewBox="0 0 70 90" style="filter:drop-shadow(0 0 8px rgba(255,215,0,0.4));">
                     <!-- Guitar body -->
                     <ellipse cx="35" cy="60" rx="28" ry="25" fill="url(#guitarBody)" stroke="#ffd700" stroke-width="2"/>
                     <defs>
@@ -460,8 +553,8 @@
                 </svg>
             </div>
             
-            <!-- Chromatic color bar -->
-            <div style="display: flex; justify-content: center; gap: 3px; margin: 15px 0;">
+            <!-- Chromatic color bar (decorative) -->
+            <div aria-hidden="true" style="display:flex;justify-content:center;gap:3px;margin:15px 0;">
                 <div style="width: 25px; height: 8px; background: #FFFF00; border-radius: 4px;"></div>
                 <div style="width: 25px; height: 8px; background: #FFC400; border-radius: 4px;"></div>
                 <div style="width: 25px; height: 8px; background: #FF8000; border-radius: 4px;"></div>
@@ -477,285 +570,320 @@
             </div>
             
             <!-- Subtitle -->
-            <div style="font-size: 1.4em; color: #ffd700; font-weight: bold; text-shadow: 0 0 20px rgba(255,215,0,0.5);">🎸 CAGED System I-IV-V Explorer</div>
+            <h1 style="font-size:clamp(1.1rem,2.5vw,1.4rem);color:#ffd700;font-weight:700;text-shadow:0 0 20px rgba(255,215,0,0.5);margin:0;">🎸 CAGED System I&#8209;IV&#8209;V Explorer</h1>
             <div style="font-size: 0.85em; color: #aaa; margin-top: 8px;">
                 <span style="color: #FFFF00;">●</span> Master Chord Forms 
                 <span style="color: #FF0000;">●</span> Train Your Ear 
                 <span style="color: #0000FF;">●</span> Visualize the Fretboard
                 <span style="color: #00FF80;">●</span> Learn 2-5-1 Jazz
             </div>
-        </div>
+        </header>
         
-        <div class="main-layout">
-            <!-- LEFT PANEL -->
-            <div class="form-panel">
-                <div class="panel-title">THE CAGED CYCLE</div>
-                
-                <div class="cycle-display">
-                    <div class="cycle-text">
-                        <span class="c">C</span> → <span class="a">A</span> → <span class="g">G</span> → <span class="e">E</span> → <span class="d">D</span> → <span class="c">C</span> → <span class="a">A</span> → ...
-                    </div>
-                    <div style="font-size: 0.7em; color: #888;">Same pattern everywhere on the neck!</div>
-                </div>
-                
-                <div class="panel-title">SELECT FORM</div>
-                
-                <button class="form-btn" data-form="C" style="border-color: #ff6b6b;">
-                    <div class="name" style="color: #ff6b6b;">C Form</div>
-                    <div class="chords">I-IV-V: C shape → F shape → G shape</div>
-                </button>
-                
-                <button class="form-btn" data-form="A" style="border-color: #4ecdc4;">
-                    <div class="name" style="color: #4ecdc4;">A Form</div>
-                    <div class="chords">I-IV-V: A shape → D shape → E shape</div>
-                </button>
-                
-                <button class="form-btn" data-form="G" style="border-color: #ffd700;">
-                    <div class="name" style="color: #ffd700;">G Form</div>
-                    <div class="chords">I-IV-V: G shape → C shape → D shape</div>
-                </button>
-                
-                <button class="form-btn" data-form="E" style="border-color: #a855f7;">
-                    <div class="name" style="color: #a855f7;">E Form</div>
-                    <div class="chords">I-IV-V: E shape → A shape → A shape</div>
-                </button>
-                
-                <button class="form-btn" data-form="D" style="border-color: #22c55e;">
-                    <div class="name" style="color: #22c55e;">D Form</div>
-                    <div class="chords">I-IV-V: D shape → G shape → A shape</div>
-                </button>
-                
-                <!-- CHROMATIC CIRCLE - Under Forms -->
-                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #333;">
-                    <div style="font-size: 0.85em; font-weight: bold; color: #ffd700; text-align: center; margin-bottom: 10px;">🎵 CHROMATIC CIRCLE</div>
-                    <div class="chromatic-circle-container" style="width: 240px; height: 240px; margin: 0 auto;">
-                        <div class="chromatic-circle" id="chromaticCircle"></div>
-                        <div class="circle-center">
-                            <div class="key-name" id="circleKeyName" style="font-size: 1.8em;">C</div>
-                            <div class="chord-name" id="circleChordName" style="font-size: 0.75em;">I - IV - V</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Active Notes Display -->
-                    <div style="margin-top: 10px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 8px;">
-                        <div style="font-size: 0.65em; color: #888; text-align: center; margin-bottom: 5px;">CHORD TONES</div>
-                        <div id="activeNotesDisplay" style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;"></div>
-                    </div>
-                    
-                    <!-- Interactive Chord Name Selector -->
-                    <div style="margin-top: 10px; background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px;">
-                        <div style="font-size: 0.65em; color: #888; text-align: center; margin-bottom: 8px;">BUILD A CHORD</div>
-                        
-                        <!-- Root Note Selector -->
-                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
-                            <span style="font-size: 0.7em; color: #aaa; width: 40px;">Root:</span>
-                            <div id="rootSelector" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1;">
-                                <button onclick="setChordRoot(0)" class="root-btn" data-root="0" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FFFF0066; color: #fff; cursor: pointer; font-size: 0.55em; border: 1px solid #FFFF00;">C</button>
-                                <button onclick="setChordRoot(1)" class="root-btn" data-root="1" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FFC40044; color: #fff; cursor: pointer; font-size: 0.55em;">C#</button>
-                                <button onclick="setChordRoot(2)" class="root-btn" data-root="2" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF800044; color: #fff; cursor: pointer; font-size: 0.55em;">D</button>
-                                <button onclick="setChordRoot(3)" class="root-btn" data-root="3" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF400044; color: #fff; cursor: pointer; font-size: 0.55em;">D#</button>
-                                <button onclick="setChordRoot(4)" class="root-btn" data-root="4" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF000044; color: #fff; cursor: pointer; font-size: 0.55em;">E</button>
-                                <button onclick="setChordRoot(5)" class="root-btn" data-root="5" style="padding: 2px 5px; border: none; border-radius: 3px; background: #C4007F44; color: #fff; cursor: pointer; font-size: 0.55em;">F</button>
-                                <button onclick="setChordRoot(6)" class="root-btn" data-root="6" style="padding: 2px 5px; border: none; border-radius: 3px; background: #8000FF44; color: #fff; cursor: pointer; font-size: 0.55em;">F#</button>
-                                <button onclick="setChordRoot(7)" class="root-btn" data-root="7" style="padding: 2px 5px; border: none; border-radius: 3px; background: #4000FF44; color: #fff; cursor: pointer; font-size: 0.55em;">G</button>
-                                <button onclick="setChordRoot(8)" class="root-btn" data-root="8" style="padding: 2px 5px; border: none; border-radius: 3px; background: #0000FF44; color: #fff; cursor: pointer; font-size: 0.55em;">G#</button>
-                                <button onclick="setChordRoot(9)" class="root-btn" data-root="9" style="padding: 2px 5px; border: none; border-radius: 3px; background: #007FFF44; color: #fff; cursor: pointer; font-size: 0.55em;">A</button>
-                                <button onclick="setChordRoot(10)" class="root-btn" data-root="10" style="padding: 2px 5px; border: none; border-radius: 3px; background: #00FF8044; color: #fff; cursor: pointer; font-size: 0.55em;">A#</button>
-                                <button onclick="setChordRoot(11)" class="root-btn" data-root="11" style="padding: 2px 5px; border: none; border-radius: 3px; background: #80FF0044; color: #fff; cursor: pointer; font-size: 0.55em;">B</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Flat/Sharp Toggle Row -->
-                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
-                            <span style="font-size: 0.7em; color: #aaa; width: 40px;">Flats:</span>
-                            <div style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1;">
-                                <button onclick="setChordRoot(1)" class="root-btn" data-root="1" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FFC40033; color: #aaa; cursor: pointer; font-size: 0.55em;">D♭</button>
-                                <button onclick="setChordRoot(3)" class="root-btn" data-root="3" style="padding: 2px 5px; border: none; border-radius: 3px; background: #FF400033; color: #aaa; cursor: pointer; font-size: 0.55em;">E♭</button>
-                                <button onclick="setChordRoot(6)" class="root-btn" data-root="6" style="padding: 2px 5px; border: none; border-radius: 3px; background: #8000FF33; color: #aaa; cursor: pointer; font-size: 0.55em;">G♭</button>
-                                <button onclick="setChordRoot(8)" class="root-btn" data-root="8" style="padding: 2px 5px; border: none; border-radius: 3px; background: #0000FF33; color: #aaa; cursor: pointer; font-size: 0.55em;">A♭</button>
-                                <button onclick="setChordRoot(10)" class="root-btn" data-root="10" style="padding: 2px 5px; border: none; border-radius: 3px; background: #00FF8033; color: #aaa; cursor: pointer; font-size: 0.55em;">B♭</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Chord Type Selector -->
-                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;">
-                            <span style="font-size: 0.7em; color: #aaa; width: 40px;">Type:</span>
-                            <div id="typeSelector" style="display: flex; flex-wrap: wrap; gap: 3px; flex: 1;">
-                                <button onclick="setChordType('maj')" class="type-btn" data-type="maj" style="padding: 3px 6px; border: none; border-radius: 3px; background: #ffd70044; color: #fff; cursor: pointer; font-size: 0.6em;">Maj</button>
-                                <button onclick="setChordType('min')" class="type-btn" data-type="min" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">min</button>
-                                <button onclick="setChordType('7')" class="type-btn" data-type="7" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">7</button>
-                                <button onclick="setChordType('maj7')" class="type-btn" data-type="maj7" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Maj7</button>
-                                <button onclick="setChordType('min7')" class="type-btn" data-type="min7" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">m7</button>
-                                <button onclick="setChordType('dim')" class="type-btn" data-type="dim" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">dim</button>
-                                <button onclick="setChordType('aug')" class="type-btn" data-type="aug" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">aug</button>
-                                <button onclick="setChordType('sus4')" class="type-btn" data-type="sus4" style="padding: 3px 6px; border: none; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">sus4</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Current Chord Display -->
-                        <div id="builtChordDisplay" style="text-align: center; padding: 8px; background: rgba(255,215,0,0.15); border: 2px solid #ffd700; border-radius: 8px; margin-top: 5px;">
-                            <span style="font-size: 1.4em; font-weight: bold; color: #ffd700;">C Major</span>
-                            <div style="font-size: 0.65em; color: #aaa; margin-top: 3px;">C - E - G</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Play Circle Button -->
-                    <button onclick="playCircleChord()" style="width: 100%; margin-top: 8px; padding: 10px; border: none; border-radius: 8px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer; font-size: 0.85em;">
-                        🎹 Play Chord Tones
-                    </button>
-                    
-                    <!-- Tempo Control -->
-                    <div style="margin-top: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <span style="font-size: 0.7em; color: #888;">🎵 TEMPO</span>
-                            <span id="tempoDisplay" style="font-size: 1em; font-weight: bold; color: #ffd700;">120 BPM</span>
-                        </div>
-                        <input type="range" id="tempoSlider" min="40" max="240" value="120" 
-                               style="width: 100%; height: 20px; cursor: pointer;"
-                               oninput="setTempo(this.value)">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.55em; color: #666; margin-top: 2px;">
-                            <span>40</span>
-                            <span>Slow</span>
-                            <span>Fast</span>
-                            <span>240</span>
-                        </div>
-                        <div style="display: flex; gap: 4px; margin-top: 8px; justify-content: center; flex-wrap: wrap;">
-                            <button onclick="setTempo(60)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">60</button>
-                            <button onclick="setTempo(90)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">90</button>
-                            <button onclick="setTempo(120)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.15); color: #ffd700; cursor: pointer; font-size: 0.65em; border: 1px solid #ffd700;">120</button>
-                            <button onclick="setTempo(150)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">150</button>
-                            <button onclick="setTempo(180)" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.65em;">180</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Ear Trainer -->
-                    <div style="margin-top: 15px; background: linear-gradient(135deg, rgba(138,43,226,0.2), rgba(75,0,130,0.2)); border: 1px solid #8a2be2; border-radius: 8px; padding: 10px;">
-                        <div style="font-size: 0.8em; font-weight: bold; color: #dda0dd; text-align: center; margin-bottom: 10px;">👂 EAR TRAINER</div>
-                        
-                        <!-- Trainer Mode -->
-                        <div style="display: flex; gap: 4px; margin-bottom: 10px; justify-content: center;">
-                            <button onclick="setEarTrainerMode('note')" id="modeNote" style="padding: 5px 10px; border: none; border-radius: 4px; background: #8a2be2; color: #fff; cursor: pointer; font-size: 0.7em;">Notes</button>
-                            <button onclick="setEarTrainerMode('interval')" id="modeInterval" style="padding: 5px 10px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.7em;">Intervals</button>
-                            <button onclick="setEarTrainerMode('chord')" id="modeChord" style="padding: 5px 10px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.7em;">Chords</button>
-                        </div>
-                        
-                        <!-- Play Question -->
-                        <button onclick="playEarTrainerQuestion()" style="width: 100%; padding: 10px; border: none; border-radius: 6px; background: linear-gradient(135deg, #9932cc, #8a2be2); color: #fff; font-weight: bold; cursor: pointer; font-size: 0.85em; margin-bottom: 8px;">
-                            🔊 Play Sound
-                        </button>
-                        
-                        <!-- Answer Display -->
-                        <div id="earTrainerQuestion" style="text-align: center; font-size: 0.75em; color: #aaa; margin-bottom: 8px;">Click "Play Sound" to start</div>
-                        
-                        <!-- Answer Buttons (for intervals) -->
-                        <div id="earTrainerAnswers" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
-                            <button onclick="checkEarTrainerAnswer(0)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFFF0044; color: #fff; cursor: pointer; font-size: 0.6em;">C</button>
-                            <button onclick="checkEarTrainerAnswer(1)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFC40044; color: #fff; cursor: pointer; font-size: 0.6em;">C#</button>
-                            <button onclick="checkEarTrainerAnswer(2)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF800044; color: #fff; cursor: pointer; font-size: 0.6em;">D</button>
-                            <button onclick="checkEarTrainerAnswer(3)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF400044; color: #fff; cursor: pointer; font-size: 0.6em;">D#</button>
-                            <button onclick="checkEarTrainerAnswer(4)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF000044; color: #fff; cursor: pointer; font-size: 0.6em;">E</button>
-                            <button onclick="checkEarTrainerAnswer(5)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #C4007F44; color: #fff; cursor: pointer; font-size: 0.6em;">F</button>
-                            <button onclick="checkEarTrainerAnswer(6)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #8000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">F#</button>
-                            <button onclick="checkEarTrainerAnswer(7)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #4000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G</button>
-                            <button onclick="checkEarTrainerAnswer(8)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #0000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G#</button>
-                            <button onclick="checkEarTrainerAnswer(9)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #007FFF44; color: #fff; cursor: pointer; font-size: 0.6em;">A</button>
-                            <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #00FF8044; color: #fff; cursor: pointer; font-size: 0.6em;">A#</button>
-                            <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #80FF0044; color: #fff; cursor: pointer; font-size: 0.6em;">B</button>
-                        </div>
-                        
-                        <!-- Score -->
-                        <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 0.7em;">
-                            <span style="color: #4ade80;">✓ <span id="earCorrect">0</span></span>
-                            <span style="color: #888;">Score: <span id="earScore">0</span>%</span>
-                            <span style="color: #f87171;">✗ <span id="earWrong">0</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- CENTER - Fretboard & Controls -->
-            <div class="fretboard-panel">
-                <!-- Position Slider -->
-                <div class="position-control">
-                    <div style="text-align: center; font-size: 0.8em; color: #888;">SLIDE FORM UP/DOWN NECK</div>
-                    <div class="position-display" id="positionDisplay">OPEN</div>
-                    <input type="range" id="positionSlider" min="0" max="12" value="0" 
-                           style="width: 100%; height: 30px; cursor: pointer; margin: 10px 0;"
-                           oninput="setPosition(this.value)">
-                    <div class="position-btns">
-                        <button onclick="movePosition(-1)">◀ Down</button>
-                        <button onclick="movePosition(1)">Up ▶</button>
-                    </div>
-                </div>
-                
-                <!-- Key Display -->
-                <div class="key-display" id="keyDisplay" style="background: rgba(255,107,107,0.2); border: 2px solid #ff6b6b;">
-                    <div class="label">KEY OF</div>
-                    <div class="key" style="color: #ff6b6b;">C</div>
-                    <div class="progression">C → F → G</div>
-                </div>
-                
-                <!-- I-IV-V Chord Buttons -->
-                <div class="chord-buttons" id="chordButtons">
-                    <button class="chord-btn active" onclick="showChord(0)">
-                        <div class="degree">I</div>
-                        <div class="name">C</div>
-                        <div class="shape">C shape</div>
-                    </button>
-                    <button class="chord-btn" onclick="showChord(1)">
-                        <div class="degree">IV</div>
-                        <div class="name">F</div>
-                        <div class="shape">C shape</div>
-                    </button>
-                    <button class="chord-btn" onclick="showChord(2)">
-                        <div class="degree">V</div>
-                        <div class="name">G</div>
-                        <div class="shape">C shape</div>
-                    </button>
-                </div>
-                
-                <!-- Play Progression Button -->
-                <button class="play-btn" id="playBtn" onclick="playProgression()" style="background: linear-gradient(135deg, #ff6b6b, #ff6b6b99);">
-                    🎸 Play C → F → G → C
-                </button>
-                
-                <!-- Play 2-5-1 Progression Button -->
-                <button class="play-btn" id="play251Btn" onclick="play251Progression()" style="background: linear-gradient(135deg, #9333ea, #9333ea99); margin-top: 8px;">
-                    🎹 Play ii → V → I (2-5-1)
-                </button>
-                
-                <!-- FRETBOARD -->
-                <div class="fretboard" id="fretboard">
-                    <div class="nut">
-                        <span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>
-                    </div>
-                </div>
-                
-                <!-- Audio Controls -->
-                <div class="audio-controls">
-                    <button class="audio-btn" onclick="initAudio()">🔊 Init Audio</button>
-                    <button class="audio-btn" onclick="playCurrentChord(false)">▶ Play</button>
-                    <button class="audio-btn" onclick="playCurrentChord(true)">🎸 Strum</button>
-                </div>
-                
-                <!-- Octave Control -->
-                <div style="margin-top: 10px; display: flex; gap: 5px; justify-content: center; align-items: center;">
-                    <button onclick="changeOctave(-1)" style="padding: 8px 15px; border: none; border-radius: 5px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer;">◀ Octave</button>
-                    <span id="octaveDisplay" style="padding: 5px 15px; color: #ffd700; font-weight: bold; min-width: 80px; text-align: center;">Octave 4</span>
-                    <button onclick="changeOctave(1)" style="padding: 8px 15px; border: none; border-radius: 5px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer;">Octave ▶</button>
-                </div>
-            </div>
+        <main id="main-content" role="main">
+<div class="main-layout">
+
+  <!-- ══ COL 1: CAGED FORMS + TEMPO ══════════════════════════════ -->
+  <aside class="col-forms panel" aria-label="CAGED form selection and tempo">
+
+    <div class="panel-title">The CAGED Cycle</div>
+    <div class="cycle-display" role="note">
+      <div class="cycle-text">
+        <span class="c">C</span>→<span class="a">A</span>→<span class="g">G</span>→<span class="e">E</span>→<span class="d">D</span>→<span class="c">C</span>→<span class="a">A</span>→…
+      </div>
+      <div style="font-size:0.65rem;color:#888;">Same pattern up the neck</div>
+    </div>
+
+    <div class="panel-title">Select Form</div>
+    <nav aria-label="CAGED forms">
+      <button class="form-btn" data-form="C" style="border-color:#FFFF00;" aria-label="C Form" aria-pressed="true">
+        <div>
+          <div class="name" style="color:#FFFF00;text-shadow:0 0 8px #cccc00,0 1px 3px rgba(0,0,0,0.8);">C Form</div>
+          <div class="chords">I·IV·V: C→F→G shapes</div>
         </div>
+      </button>
+      <button class="form-btn" data-form="A" style="border-color:#007FFF;" aria-label="A Form" aria-pressed="false">
+        <div>
+          <div class="name" style="color:#007FFF;">A Form</div>
+          <div class="chords">I·IV·V: A→D→E shapes</div>
+        </div>
+      </button>
+      <button class="form-btn" data-form="G" style="border-color:#4000FF;" aria-label="G Form" aria-pressed="false">
+        <div>
+          <div class="name" style="color:#4000FF;text-shadow:0 0 8px #4000FF88,0 1px 2px rgba(0,0,0,0.7);">G Form</div>
+          <div class="chords">I·IV·V: G→C→D shapes</div>
+        </div>
+      </button>
+      <button class="form-btn" data-form="E" style="border-color:#FF0000;" aria-label="E Form" aria-pressed="false">
+        <div>
+          <div class="name" style="color:#FF0000;text-shadow:0 0 8px #FF000088,0 1px 2px rgba(0,0,0,0.7);">E Form</div>
+          <div class="chords">I·IV·V: E→A→A shapes</div>
+        </div>
+      </button>
+      <button class="form-btn" data-form="D" style="border-color:#FF8000;" aria-label="D Form" aria-pressed="false">
+        <div>
+          <div class="name" style="color:#FF8000;text-shadow:0 0 8px #FF800088,0 1px 2px rgba(0,0,0,0.7);">D Form</div>
+          <div class="chords">I·IV·V: D→G→A shapes</div>
+        </div>
+      </button>
+    </nav>
+
+    <!-- Tempo -->
+    <div class="tempo-panel" role="group" aria-label="Tempo control">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+        <span style="font-size:0.68rem;color:#888;">🎵 TEMPO</span>
+        <span id="tempoDisplay" style="font-size:0.92rem;font-weight:700;color:#ffd700;" aria-live="polite" aria-atomic="true">120 BPM</span>
+      </div>
+      <label for="tempoSlider" class="sr-only">Tempo 40–240 BPM</label>
+      <input type="range" id="tempoSlider" min="40" max="240" value="120"
+             aria-valuemin="40" aria-valuemax="240" aria-valuenow="120"
+             oninput="setTempo(this.value)" style="width:100%;">
+      <div class="tempo-presets">
+        <button onclick="setTempo(60)"  aria-label="60 BPM">60</button>
+        <button onclick="setTempo(90)"  aria-label="90 BPM">90</button>
+        <button onclick="setTempo(120)" aria-label="120 BPM" style="color:#ffd700;border-color:#ffd700;">120</button>
+        <button onclick="setTempo(150)" aria-label="150 BPM">150</button>
+        <button onclick="setTempo(180)" aria-label="180 BPM">180</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ══ COL 2: FRETBOARD ════════════════════════════════════════ -->
+  <div class="col-fretboard panel">
+
+    <div style="font-size:0.68rem;color:#888;text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;">Fretboard</div>
+
+    <div class="fretboard" id="fretboard" role="img" aria-label="Guitar fretboard showing current chord fingering">
+      <div class="nut" aria-hidden="true">
+        <span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>
+      </div>
+    </div>
+
+    <!-- Position control compact bar -->
+    <div class="position-bar" role="group" aria-label="Fret position">
+      <button onclick="movePosition(-1)" aria-label="Down one fret">◀</button>
+      <label for="positionSlider" class="sr-only">Fret position</label>
+      <input type="range" id="positionSlider" min="0" max="12" value="0"
+             aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"
+             oninput="setPosition(this.value)">
+      <div class="position-label" id="positionDisplay" aria-live="polite" aria-atomic="true">OPEN</div>
+      <button onclick="movePosition(1)" aria-label="Up one fret">▶</button>
+    </div>
+
+    <!-- Audio controls -->
+    <div class="audio-controls" role="group" aria-label="Audio" style="margin-top:8px;">
+      <button class="audio-btn" onclick="initAudio()" aria-label="Initialize audio">🔊</button>
+      <button class="audio-btn" onclick="playCurrentChord(false)" aria-label="Play chord">▶ Play</button>
+      <button class="audio-btn" onclick="playCurrentChord(true)" aria-label="Strum chord">🎸 Strum</button>
+    </div>
+
+    <!-- Octave -->
+    <div class="octave-row" role="group" aria-label="Octave" style="margin-top:6px;">
+      <button onclick="changeOctave(-1)" aria-label="Lower octave" style="min-height:30px;padding:4px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:5px;background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;font-size:0.75rem;">◀ Oct</button>
+      <span id="octaveDisplay" style="font-size:0.85rem;font-weight:700;color:#ffd700;min-width:64px;text-align:center;" aria-live="polite" aria-atomic="true">Octave 4</span>
+      <button onclick="changeOctave(1)" aria-label="Raise octave" style="min-height:30px;padding:4px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:5px;background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;font-size:0.75rem;">Oct ▶</button>
+    </div>
+
+  </div>
+
+  <!-- ══ COL 3: CHROMATIC CIRCLE + CHORD BUILDER ═════════════════ -->
+  <div class="col-circle panel" aria-label="Chromatic circle and chord builder">
+
+    <div class="panel-title">🎵 Chromatic Circle</div>
+
+    <div class="chromatic-circle-container">
+      <div class="chromatic-circle" id="chromaticCircle"
+           role="group" aria-label="12 chromatic notes – click to toggle and play"></div>
+      <div class="circle-center" aria-hidden="true">
+        <div class="key-name" id="circleKeyName">C</div>
+        <div class="chord-name" id="circleChordName">I – IV – V</div>
+      </div>
+    </div>
+
+    <!-- Active chord tones -->
+    <div class="chord-tones-row">
+      <div style="font-size:0.6rem;color:#888;margin-bottom:4px;">CHORD TONES</div>
+      <div id="activeNotesDisplay" style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;"
+           role="status" aria-live="polite" aria-label="Active chord tones"></div>
+    </div>
+
+    <!-- Chord Builder -->
+    <div class="chord-builder">
+      <div class="panel-title" style="margin-bottom:6px;">Build a Chord</div>
+
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:5px;" role="group" aria-label="Root note">
+        <span style="font-size:0.65rem;color:#888;width:32px;">Root:</span>
+        <div id="rootSelector" style="display:flex;flex-wrap:wrap;gap:2px;flex:1;">
+          <button onclick="setChordRoot(0)"  class="root-btn" aria-label="C"       data-root="0"  style="background:#FFFF0055;border:1px solid #FFFF00;">C</button>
+          <button onclick="setChordRoot(1)"  class="root-btn" aria-label="C sharp" data-root="1"  style="background:#FFC40033;">C#</button>
+          <button onclick="setChordRoot(2)"  class="root-btn" aria-label="D"       data-root="2"  style="background:#FF800033;">D</button>
+          <button onclick="setChordRoot(3)"  class="root-btn" aria-label="D sharp" data-root="3"  style="background:#FF400033;">D#</button>
+          <button onclick="setChordRoot(4)"  class="root-btn" aria-label="E"       data-root="4"  style="background:#FF000033;">E</button>
+          <button onclick="setChordRoot(5)"  class="root-btn" aria-label="F"       data-root="5"  style="background:#C4007F33;">F</button>
+          <button onclick="setChordRoot(6)"  class="root-btn" aria-label="F sharp" data-root="6"  style="background:#8000FF33;">F#</button>
+          <button onclick="setChordRoot(7)"  class="root-btn" aria-label="G"       data-root="7"  style="background:#4000FF33;">G</button>
+          <button onclick="setChordRoot(8)"  class="root-btn" aria-label="G sharp" data-root="8"  style="background:#0000FF33;">G#</button>
+          <button onclick="setChordRoot(9)"  class="root-btn" aria-label="A"       data-root="9"  style="background:#007FFF33;">A</button>
+          <button onclick="setChordRoot(10)" class="root-btn" aria-label="A sharp" data-root="10" style="background:#00FF8033;">A#</button>
+          <button onclick="setChordRoot(11)" class="root-btn" aria-label="B"       data-root="11" style="background:#80FF0033;">B</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:5px;" role="group" aria-label="Root note flats">
+        <span style="font-size:0.65rem;color:#666;width:32px;">♭:</span>
+        <div style="display:flex;flex-wrap:wrap;gap:2px;">
+          <button onclick="setChordRoot(1)"  class="root-btn" aria-label="D flat"  data-root="1"  style="background:#FFC40022;color:#aaa;">D♭</button>
+          <button onclick="setChordRoot(3)"  class="root-btn" aria-label="E flat"  data-root="3"  style="background:#FF400022;color:#aaa;">E♭</button>
+          <button onclick="setChordRoot(6)"  class="root-btn" aria-label="G flat"  data-root="6"  style="background:#8000FF22;color:#aaa;">G♭</button>
+          <button onclick="setChordRoot(8)"  class="root-btn" aria-label="A flat"  data-root="8"  style="background:#0000FF22;color:#aaa;">A♭</button>
+          <button onclick="setChordRoot(10)" class="root-btn" aria-label="B flat"  data-root="10" style="background:#00FF8022;color:#aaa;">B♭</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;" role="group" aria-label="Chord type">
+        <span style="font-size:0.65rem;color:#888;width:32px;">Type:</span>
+        <div id="typeSelector" style="display:flex;flex-wrap:wrap;gap:2px;flex:1;">
+          <button onclick="setChordType('maj')"   class="type-btn" aria-label="Major"        data-type="maj"   style="background:#ffd70033;border:1px solid #ffd700;">Maj</button>
+          <button onclick="setChordType('min')"   class="type-btn" aria-label="minor"        data-type="min"  >min</button>
+          <button onclick="setChordType('7')"     class="type-btn" aria-label="Dominant 7"   data-type="7"    >7</button>
+          <button onclick="setChordType('maj7')"  class="type-btn" aria-label="Major 7"      data-type="maj7" >Maj7</button>
+          <button onclick="setChordType('min7')"  class="type-btn" aria-label="minor 7"      data-type="min7" >m7</button>
+          <button onclick="setChordType('dim')"   class="type-btn" aria-label="Diminished"   data-type="dim"  >dim</button>
+          <button onclick="setChordType('aug')"   class="type-btn" aria-label="Augmented"    data-type="aug"  >aug</button>
+          <button onclick="setChordType('sus4')"  class="type-btn" aria-label="Sus4"         data-type="sus4" >sus4</button>
+        </div>
+      </div>
+
+      <div id="builtChordDisplay"
+           style="text-align:center;padding:6px;background:rgba(255,215,0,0.12);border:1px solid #ffd700;border-radius:6px;"
+           role="status" aria-live="polite" aria-label="Built chord">
+        <span style="font-size:1.1rem;font-weight:700;color:#ffd700;">C Major</span>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:2px;">C – E – G</div>
+      </div>
+
+      <button onclick="playCircleChord()"
+              aria-label="Play selected chord tones"
+              style="width:100%;margin-top:6px;min-height:34px;padding:7px;border:none;border-radius:6px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:700;cursor:pointer;font-size:0.8rem;">
+        🎹 Play Chord Tones
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ══ COL 4: CHORD CONTROLS ════════════════════════════════════ -->
+  <section class="col-controls panel" aria-label="Chord controls and playback">
+
+    <!-- Key display -->
+    <div class="key-display" id="keyDisplay"
+         style="background:rgba(255,107,107,0.15);border:2px solid #FFFF00;border-radius:10px;"
+         aria-live="polite" aria-atomic="true" role="status" aria-label="Current key">
+      <div class="label">KEY OF</div>
+      <div class="key" style="color:#FFFF00;">C</div>
+      <div class="progression">C → F → G</div>
+    </div>
+
+    <!-- I / IV / V buttons -->
+    <div class="chord-buttons" id="chordButtons" role="group" aria-label="Select chord degree">
+      <button class="chord-btn active" onclick="showChord(0)" aria-label="I chord – C" aria-pressed="true">
+        <div class="degree">I</div><div class="name">C</div><div class="shape">C shape</div>
+      </button>
+      <button class="chord-btn" onclick="showChord(1)" aria-label="IV chord – F" aria-pressed="false">
+        <div class="degree">IV</div><div class="name">F</div><div class="shape">C shape</div>
+      </button>
+      <button class="chord-btn" onclick="showChord(2)" aria-label="V chord – G" aria-pressed="false">
+        <div class="degree">V</div><div class="name">G</div><div class="shape">C shape</div>
+      </button>
+    </div>
+
+    <!-- Play buttons -->
+    <button class="play-btn" id="playBtn" onclick="playProgression()"
+            aria-label="Play I-IV-V-I progression"
+            style="background:linear-gradient(135deg,#FFFF00,#FFFF0099);">
+      🎸 Play C → F → G → C
+    </button>
+    <button class="play-btn" id="play251Btn" onclick="play251Progression()"
+            aria-label="Play ii-V-I jazz progression"
+            style="background:linear-gradient(135deg,#9333ea,#9333ea99);">
+      🎹 Play ii → V → I (2-5-1)
+    </button>
+
+    <!-- Info / instructions block -->
+    <div style="background:rgba(0,0,0,0.25);border-radius:8px;padding:10px;font-size:0.7rem;color:#888;line-height:1.5;">
+      <div style="color:#ffd700;font-weight:700;margin-bottom:4px;font-size:0.72rem;">HOW TO USE</div>
+      1. Pick a <b style="color:#fff;">CAGED Form</b> on the left<br>
+      2. Slide the <b style="color:#fff;">fretboard</b> position up/down<br>
+      3. Click <b style="color:#fff;">I · IV · V</b> to highlight each chord<br>
+      4. Press <b style="color:#fff;">Play</b> or <b style="color:#fff;">Strum</b> to hear it<br>
+      5. Use the <b style="color:#fff;">circle</b> to explore note colors
+    </div>
+
+  </section>
+
+  <!-- ══ BOTTOM: EAR TRAINER STRIP ═══════════════════════════════ -->
+  <section class="ear-trainer-strip" aria-label="Ear trainer">
+    <div class="ear-strip">
+
+      <!-- Label -->
+      <div style="font-size:0.72rem;font-weight:700;color:#dda0dd;white-space:nowrap;flex-shrink:0;">👂 Ear Trainer</div>
+      <div class="ear-divider"></div>
+
+      <!-- Mode buttons -->
+      <div class="ear-section" role="group" aria-label="Training mode">
+        <button onclick="setEarTrainerMode('note')"     id="modeNote"     class="ear-mode-btn active" aria-pressed="true"  aria-label="Notes mode">Notes</button>
+        <button onclick="setEarTrainerMode('interval')" id="modeInterval" class="ear-mode-btn"        aria-pressed="false" aria-label="Intervals mode">Intervals</button>
+        <button onclick="setEarTrainerMode('chord')"    id="modeChord"    class="ear-mode-btn"        aria-pressed="false" aria-label="Chords mode">Chords</button>
+      </div>
+      <div class="ear-divider"></div>
+
+      <!-- Play button -->
+      <button onclick="playEarTrainerQuestion()" class="ear-play-btn" aria-label="Play ear training sound">🔊 Play</button>
+
+      <!-- Question display -->
+      <div id="earTrainerQuestion" class="ear-question"
+           role="status" aria-live="assertive" aria-atomic="true">
+        Click Play to start
+      </div>
+      <div class="ear-divider"></div>
+
+      <!-- Answer buttons -->
+      <div id="earTrainerAnswers" class="ear-answers" role="group" aria-label="Answer choices">
+        <button onclick="checkEarTrainerAnswer(0)"  class="ear-answer-btn" aria-label="C"       style="background:#FFFF0044;">C</button>
+        <button onclick="checkEarTrainerAnswer(1)"  class="ear-answer-btn" aria-label="C sharp" style="background:#FFC40044;">C#</button>
+        <button onclick="checkEarTrainerAnswer(2)"  class="ear-answer-btn" aria-label="D"       style="background:#FF800044;">D</button>
+        <button onclick="checkEarTrainerAnswer(3)"  class="ear-answer-btn" aria-label="D sharp" style="background:#FF400044;">D#</button>
+        <button onclick="checkEarTrainerAnswer(4)"  class="ear-answer-btn" aria-label="E"       style="background:#FF000044;">E</button>
+        <button onclick="checkEarTrainerAnswer(5)"  class="ear-answer-btn" aria-label="F"       style="background:#C4007F44;">F</button>
+        <button onclick="checkEarTrainerAnswer(6)"  class="ear-answer-btn" aria-label="F sharp" style="background:#8000FF44;">F#</button>
+        <button onclick="checkEarTrainerAnswer(7)"  class="ear-answer-btn" aria-label="G"       style="background:#4000FF44;">G</button>
+        <button onclick="checkEarTrainerAnswer(8)"  class="ear-answer-btn" aria-label="G sharp" style="background:#0000FF44;">G#</button>
+        <button onclick="checkEarTrainerAnswer(9)"  class="ear-answer-btn" aria-label="A"       style="background:#007FFF44;">A</button>
+        <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" aria-label="A sharp" style="background:#00FF8044;">A#</button>
+        <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" aria-label="B"       style="background:#80FF0044;">B</button>
+      </div>
+      <div class="ear-divider"></div>
+
+      <!-- Score -->
+      <div class="ear-score" role="status" aria-live="polite" aria-label="Score">
+        <span style="color:#4ade80;">✓ <span id="earCorrect">0</span></span>
+        <span style="color:#888;"><span id="earScore">0</span>%</span>
+        <span style="color:#f87171;">✗ <span id="earWrong">0</span></span>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /main-layout -->
+</main>
     </div>
     
     <!-- FOOTER BRANDING -->
-    <footer style="text-align: center; margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-radius: 15px; border: 2px solid transparent; position: relative; overflow: hidden;">
+    <footer role="contentinfo" style="text-align: center; margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-radius: 15px; border: 2px solid transparent; position: relative; overflow: hidden;">
         <!-- Rainbow border -->
         <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80, #FFFF00); border-radius: 17px; z-index: -1; opacity: 0.5;"></div>
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-radius: 13px; z-index: -1;"></div>
         
-        <!-- Chromatic bar -->
-        <div style="display: flex; justify-content: center; gap: 2px; margin-bottom: 15px;">
+        <!-- Chromatic bar (decorative) -->
+        <div aria-hidden="true" style="display:flex;justify-content:center;gap:2px;margin-bottom:15px;">
             <div style="width: 20px; height: 4px; background: #FFFF00; border-radius: 2px;"></div>
             <div style="width: 20px; height: 4px; background: #FFC400; border-radius: 2px;"></div>
             <div style="width: 20px; height: 4px; background: #FF8000; border-radius: 2px;"></div>
@@ -772,7 +900,7 @@
         
         <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 12px;">
             <!-- Mini chromatic circle -->
-            <svg width="40" height="40" viewBox="0 0 100 100">
+            <svg aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" fill="none" stroke="url(#footerGrad)" stroke-width="4"/>
                 <defs>
                     <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -787,14 +915,14 @@
             <span style="font-size: 1.2em; font-weight: bold; background: linear-gradient(90deg, #FFFF00, #FF8000, #FF0000, #8000FF, #0000FF, #00FF80); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">KEYS, CODES & MODES</span>
         </div>
         
-        <div style="font-size: 0.8em; color: #888;">© 2025 Benjamin • A Visual Approach to Understanding Music</div>
+        <p style="font-size:0.8em;color:#888;">&copy; <span id="copyright-year">2025</span> Benjamin Ryan &mdash; <a href="https://keyscodesandmodes.com" style="color:#aaa;text-decoration:underline;">keyscodesandmodes.com</a></p>
         
-        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 12px; font-size: 0.7em;">
-            <span style="color: #FFFF00;">◆ Chromatic Color System</span>
-            <span style="color: #FF0000;">◆ MIDI Integration</span>
-            <span style="color: #0000FF;">◆ FreeStyle® Musical Device</span>
-            <span style="color: #00FF80;">◆ Ear Training</span>
-        </div>
+        <ul class="footer-tags" style="list-style:none;padding:0;margin-top:12px;font-size:0.7em;" aria-label="Platform features">
+            <li style="color:#FFFF00;">◆ Chromatic Color System</li>
+            <li style="color:#FF0000;">◆ MIDI Integration</li>
+            <li style="color:#0000FF;">◆ FreeStyle<sup>®</sup> Musical Device</li>
+            <li style="color:#00FF80;">◆ Ear Training</li>
+        </ul>
     </footer>
 
     <script>
@@ -1097,11 +1225,11 @@ public class ChromaticSphere : MonoBehaviour
         const TUNING = [4, 9, 2, 7, 11, 4]; // E A D G B E
         
         const COLORS = {
-            C: '#ff6b6b',
-            A: '#4ecdc4',
-            G: '#ffd700',
-            E: '#a855f7',
-            D: '#22c55e'
+            C: '#FFFF00',   // Yellow      — C chromatic color
+            A: '#007FFF',   // Blue        — A chromatic color
+            G: '#4000FF',   // Blue-Purple — G chromatic color
+            E: '#FF0000',   // Red         — E chromatic color
+            D: '#FF8000',   // Orange      — D chromatic color
         };
         
         // Open chord shapes - frets for each string (6 to 1), -1 = muted, 0 = open
@@ -1147,13 +1275,37 @@ public class ChromaticSphere : MonoBehaviour
             ];
         }
         
-        // Calculate fret position for a shape to play a specific root
+        // Calculate fret position for a shape to play a specific root.
+        // We use the global `position` slider directly so frets always increase
+        // linearly 0→12 with no octave-wrap jump.
+        // shapeOffset is the fixed fret difference between this shape's root
+        // and the A shape root within the same CAGED form.
+        const SHAPE_OFFSETS = {
+            // Within each form, IV and V shapes start at these fret offsets
+            // relative to the I-chord barre position:
+            // Determined by: (openRootMidi[shape] - openRootMidi[I_shape]) mod 12
+            // All offsets are 0 for the simple case (all shapes in a form move together)
+            C: { C:0, F:0, G:0 },
+            A: { A:0, D:0, E:0 },
+            G: { G:0, C:0, D:0 },
+            E: { E:0, A:0 },
+            D: { D:0, G:0 }
+        };
+
         function getShapePosition(shapeName, targetRoot) {
             const shape = SHAPES[shapeName];
             const rootStringIdx = 6 - shape.rootString;
             const openNote = TUNING[rootStringIdx];
             const shapeRoot = (openNote + shape.rootFret) % 12;
-            return (targetRoot - shapeRoot + 12) % 12;
+            // Linear: don't wrap with % 12 so that fret 12 stays at fret 12
+            // and doesn't teleport back to 0.
+            const rawOffset = (targetRoot - shapeRoot + 12) % 12;
+            // If the slider is at `position` and this chord's natural offset
+            // would wrap (rawOffset < position - 6), add 12 to keep it above.
+            // This ensures smooth upward movement as the slider increases.
+            let fretPos = rawOffset;
+            if (fretPos < position - 2) fretPos += 12;
+            return Math.max(0, fretPos);
         }
         
         // Get full chord info for I, IV, or V
@@ -1197,10 +1349,12 @@ public class ChromaticSphere : MonoBehaviour
             // Chord buttons
             const btnsContainer = document.getElementById('chordButtons');
             btnsContainer.innerHTML = chords.map((chord, i) => `
-                <button class="chord-btn ${i === activeChord ? 'active' : ''}" 
+                <button class="chord-btn ${i === activeChord ? 'active' : ''}"
                         onclick="showChord(${i})"
-                        style="border-color: ${i === activeChord ? color : '#444'};">
-                    <div class="degree" style="color: ${i === activeChord ? color : '#888'};">${chord.degree}</div>
+                        aria-label="${chord.degree} chord: ${chord.name} – ${chord.shape} shape"
+                        aria-pressed="${i === activeChord}"
+                        style="border-color:${i === activeChord ? color : '#444'};">
+                    <div class="degree" style="color:${i === activeChord ? color : '#888'};">${chord.degree}</div>
                     <div class="name">${chord.name}</div>
                     <div class="shape">${chord.shape} shape${chord.isBarre ? ' ⊏' : ''}</div>
                 </button>
@@ -1232,371 +1386,298 @@ public class ChromaticSphere : MonoBehaviour
         
         function renderFretboard() {
             const fb = document.getElementById('fretboard');
+            if (!fb) return;
             const chord = getChordInfo(activeChord);
             const shape = SHAPES[chord.shape];
-            const pos = chord.position;
+            const pos   = chord.position;   // 0=open, 1–12=barre fret
             const color = COLORS[currentForm];
-            
-            // Clear and rebuild
+
             fb.innerHTML = '';
-            
-            const width = fb.offsetWidth || 280;
-            const height = fb.offsetHeight || 500;
-            const nutHeight = 25;
-            const playableHeight = height - nutHeight;
-            const numFrets = 15;
-            const fretHeight = playableHeight / numFrets;
-            const stringSpacing = width / 7;
-            
-            // Draw nut at top
+
+            // ── Dimensions ────────────────────────────────────────────────
+            const W          = fb.offsetWidth  || 160;
+            const H          = fb.offsetHeight || 440;
+            const NUT_H      = 24;             // ivory nut strip height
+            const NUM_FRETS  = 17;             // always show frets 0–17 (fits octave pos 12+4)
+            const playableH  = H - NUT_H;
+            const fretH      = playableH / NUM_FRETS;
+            const stringSp   = W / 7;          // 6 strings + margins
+
+            // String MIDI open notes: E2=40  A2=45  D3=50  G3=55  B3=59  E4=64
+            const STRING_MIDI = [40, 45, 50, 55, 59, 64];
+
+            // ── NUT ────────────────────────────────────────────────────────
             const nut = document.createElement('div');
             nut.style.cssText = `
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: ${nutHeight}px;
-                background: linear-gradient(180deg, #f5f5dc, #fff8dc, #f5f5dc);
-                border-bottom: 3px solid #333;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                font-size: 0.6em;
-                font-weight: bold;
-                color: #333;
-                border-radius: 3px 3px 0 0;
-                z-index: 5;
+                position:absolute;top:0;left:0;right:0;height:${NUT_H}px;
+                background:linear-gradient(180deg,#f0ead6,#fff8dc,#e8dfc0);
+                border-bottom:3px solid #555;
+                display:flex;justify-content:space-around;align-items:center;
+                font-size:0.58em;font-weight:700;color:#333;
+                border-radius:3px 3px 0 0;z-index:5;user-select:none;
             `;
+            nut.setAttribute('aria-hidden','true');
             nut.innerHTML = '<span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>';
             fb.appendChild(nut);
-            
-            // Draw strings (vertical)
+
+            // ── STRINGS ────────────────────────────────────────────────────
             for (let s = 0; s < 6; s++) {
-                const string = document.createElement('div');
-                const xPos = stringSpacing * (s + 1);
-                const thickness = 4 - s * 0.5;
-                string.style.cssText = `
-                    position: absolute;
-                    left: ${xPos}px;
-                    top: ${nutHeight}px;
-                    bottom: 0;
-                    width: ${thickness}px;
-                    background: linear-gradient(180deg, 
-                        rgba(255,255,255,0.1), 
-                        rgba(192,192,192,0.8) 10%, 
-                        rgba(192,192,192,0.8) 90%, 
-                        rgba(255,255,255,0.1));
-                    transform: translateX(-50%);
-                    z-index: 2;
+                const xPx = stringSp * (s + 1);
+                const thk = Math.max(0.8, 3.2 - s * 0.45);
+                const st  = document.createElement('div');
+                st.style.cssText = `
+                    position:absolute;left:${xPx}px;top:${NUT_H}px;bottom:0;
+                    width:${thk}px;
+                    background:linear-gradient(180deg,
+                        rgba(255,255,255,0.05),
+                        rgba(200,200,200,0.8) 8%,
+                        rgba(200,200,200,0.8) 92%,
+                        rgba(255,255,255,0.05));
+                    transform:translateX(-50%);z-index:2;
                 `;
-                fb.appendChild(string);
+                fb.appendChild(st);
             }
-            
-            // Draw fret lines (horizontal)
-            for (let f = 1; f <= numFrets; f++) {
-                const fret = document.createElement('div');
-                fret.style.cssText = `
-                    position: absolute;
-                    top: ${nutHeight + f * fretHeight}px;
-                    left: 0;
-                    right: 0;
-                    height: 3px;
-                    background: linear-gradient(90deg, #c0c0c0, #808080, #c0c0c0);
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+
+            // ── FRET WIRES ─────────────────────────────────────────────────
+            for (let f = 1; f <= NUM_FRETS; f++) {
+                const yPx     = NUT_H + f * fretH;
+                const isOct   = (f % 12 === 0);
+                const fr      = document.createElement('div');
+                fr.style.cssText = `
+                    position:absolute;top:${yPx}px;left:0;right:0;
+                    height:${isOct ? 4 : 2}px;z-index:3;
+                    background:${isOct
+                        ? 'linear-gradient(90deg,#ffd700,#b89000,#ffd700)'
+                        : 'linear-gradient(90deg,#bbb,#777,#bbb)'};
+                    box-shadow:0 1px 2px rgba(0,0,0,0.35);
                 `;
-                fb.appendChild(fret);
+                fb.appendChild(fr);
             }
-            
-            // Draw fret numbers on RIGHT side
-            for (let f = 1; f <= numFrets; f++) {
-                const num = document.createElement('div');
+
+            // ── FRET NUMBERS (right side) ──────────────────────────────────
+            for (let f = 1; f <= NUM_FRETS; f++) {
+                const yPx   = NUT_H + (f - 0.5) * fretH;
+                const isOct = (f === 12);
+                const num   = document.createElement('div');
                 num.style.cssText = `
-                    position: absolute;
-                    right: -28px;
-                    top: ${nutHeight + (f - 0.5) * fretHeight}px;
-                    font-size: 0.7em;
-                    font-weight: bold;
-                    color: ${f === 12 ? '#ffd700' : '#888'};
-                    transform: translateY(-50%);
-                    text-align: center;
-                    width: 20px;
+                    position:absolute;right:-26px;top:${yPx}px;
+                    font-size:0.6em;font-weight:700;
+                    color:${isOct ? '#ffd700' : f >= 12 ? '#aaa' : '#666'};
+                    transform:translateY(-50%);text-align:center;width:22px;
+                    ${isOct ? 'text-shadow:0 0 6px #ffd70099;' : ''}
                 `;
                 num.textContent = f;
                 fb.appendChild(num);
             }
-            
-            // Draw CAGED zone labels on LEFT side
-            const cagedZones = [
-                { form: 'C', startFret: 0, span: 4 },
-                { form: 'A', startFret: 3, span: 4 },
-                { form: 'G', startFret: 5, span: 4 },
-                { form: 'E', startFret: 8, span: 4 },
-                { form: 'D', startFret: 10, span: 4 }
-            ];
-            
-            // Adjust CAGED zones based on position
-            cagedZones.forEach(zone => {
-                const adjustedStart = (zone.startFret + position) % 12;
-                if (adjustedStart <= numFrets) {
-                    const zoneEl = document.createElement('div');
-                    const isActive = zone.form === currentForm;
-                    const zoneColor = COLORS[zone.form];
-                    
-                    zoneEl.style.cssText = `
-                        position: absolute;
-                        left: -45px;
-                        top: ${nutHeight + adjustedStart * fretHeight}px;
-                        width: 38px;
-                        height: ${Math.min(zone.span, numFrets - adjustedStart) * fretHeight}px;
-                        background: ${isActive ? zoneColor + '33' : 'rgba(255,255,255,0.05)'};
-                        border: 2px solid ${isActive ? zoneColor : 'rgba(255,255,255,0.15)'};
-                        border-radius: 5px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 0.7em;
-                        font-weight: bold;
-                        color: ${isActive ? zoneColor : 'rgba(255,255,255,0.3)'};
-                        cursor: pointer;
-                        transition: all 0.2s;
+
+            // ── FRET INLAYS ────────────────────────────────────────────────
+            [3,5,7,9,12,15].forEach(f => {
+                if (f > NUM_FRETS) return;
+                const yMid = NUT_H + (f - 0.5) * fretH;
+                const pts  = (f === 12) ? [30, 70] : [50];
+                pts.forEach(lp => {
+                    const d = document.createElement('div');
+                    d.style.cssText = `
+                        position:absolute;left:${lp}%;top:${yMid}px;
+                        width:8px;height:8px;border-radius:50%;
+                        background:radial-gradient(circle,#ddd,#999);
+                        transform:translate(-50%,-50%);z-index:1;opacity:0.55;
                     `;
-                    zoneEl.textContent = zone.form;
-                    zoneEl.title = `${zone.form} Form`;
-                    zoneEl.onclick = () => {
-                        currentForm = zone.form;
-                        updateUI();
-                    };
-                    fb.appendChild(zoneEl);
+                    fb.appendChild(d);
+                });
+            });
+
+            // ── CAGED ZONE LABELS (left side) ──────────────────────────────
+            // Zones repeat every 12 frets. Show any zone overlapping frets 0–NUM_FRETS.
+            const ZONE_OFF = { C:0, A:3, G:5, E:8, D:10 };
+            Object.entries(ZONE_OFF).forEach(([form, off]) => {
+                for (let cyc = 0; cyc <= 1; cyc++) {
+                    const zs = off + cyc * 12;   // absolute fret start
+                    const ze = zs + 4;
+                    const vs = Math.max(zs, 0);
+                    const ve = Math.min(ze, NUM_FRETS);
+                    if (ve <= vs) continue;
+                    const isAct = (form === currentForm);
+                    const zc    = COLORS[form];
+                    const yTop  = zs === 0 ? 0 : NUT_H + zs * fretH;
+                    const yBot  = NUT_H + ve * fretH;
+                    const zEl   = document.createElement('div');
+                    zEl.style.cssText = `
+                        position:absolute;left:-42px;top:${yTop}px;
+                        width:34px;height:${yBot - yTop}px;
+                        background:${isAct ? zc+'28' : 'rgba(255,255,255,0.03)'};
+                        border:2px solid ${isAct ? zc : 'rgba(255,255,255,0.10)'};
+                        border-radius:5px;display:flex;align-items:center;
+                        justify-content:center;font-size:0.65em;font-weight:700;
+                        color:${isAct ? zc : 'rgba(255,255,255,0.2)'};
+                        cursor:pointer;transition:all 0.15s;
+                    `;
+                    zEl.textContent = form;
+                    zEl.title = `${form} Form`;
+                    zEl.onclick = () => { currentForm = form; updateUI(); };
+                    fb.appendChild(zEl);
                 }
             });
-            
-            // Draw fret markers
-            [3, 5, 7, 9, 12, 15].forEach(f => {
-                if (f <= numFrets) {
-                    if (f === 12) {
-                        // Double dot at fret 12
-                        [30, 70].forEach(leftPercent => {
-                            const marker = document.createElement('div');
-                            marker.style.cssText = `
-                                position: absolute;
-                                left: ${leftPercent}%;
-                                top: ${nutHeight + (f - 0.5) * fretHeight}px;
-                                width: 10px;
-                                height: 10px;
-                                background: radial-gradient(circle, #f0f0f0, #c0c0c0);
-                                border-radius: 50%;
-                                transform: translate(-50%, -50%);
-                                z-index: 1;
-                            `;
-                            fb.appendChild(marker);
-                        });
-                    } else {
-                        const marker = document.createElement('div');
-                        marker.style.cssText = `
-                            position: absolute;
-                            left: 50%;
-                            top: ${nutHeight + (f - 0.5) * fretHeight}px;
-                            width: 10px;
-                            height: 10px;
-                            background: radial-gradient(circle, #f0f0f0, #c0c0c0);
-                            border-radius: 50%;
-                            transform: translate(-50%, -50%);
-                            z-index: 1;
-                        `;
-                        fb.appendChild(marker);
-                    }
-                }
-            });
-            
-            // DRAGGABLE WINDOW - shows current form position
-            const windowSize = 4;
-            const windowStart = pos === 0 ? 0 : nutHeight + (pos - 0.5) * fretHeight;
-            const windowHeight = (windowSize + 0.5) * fretHeight;
-            
-            const chordWindow = document.createElement('div');
-            chordWindow.id = 'chordWindow';
-            chordWindow.style.cssText = `
-                position: absolute;
-                left: 3px;
-                right: 3px;
-                top: ${windowStart}px;
-                height: ${windowHeight}px;
-                background: linear-gradient(180deg, ${color}22 0%, ${color}11 50%, ${color}22 100%);
-                border: 3px solid ${color}aa;
-                border-radius: 10px;
-                cursor: ns-resize;
-                z-index: 3;
-                box-shadow: 0 0 15px ${color}44, inset 0 0 20px ${color}11;
+
+            // ── POSITION WINDOW OVERLAY ────────────────────────────────────
+            // The window covers the 4-fret CAGED chord block at current position.
+            // pos=0 → window starts at nut (y=0), spans NUT_H + 4*fretH
+            // pos>0 → window starts at top of that fret space
+            const winTop = pos === 0 ? 0 : NUT_H + (pos - 1) * fretH;
+            const winH   = (pos === 0 ? NUT_H : fretH) + 4 * fretH;
+            const win    = document.createElement('div');
+            win.id = 'chordWindow';
+            win.style.cssText = `
+                position:absolute;left:2px;right:2px;
+                top:${winTop}px;height:${winH}px;
+                background:linear-gradient(180deg,${color}18 0%,${color}0c 50%,${color}18 100%);
+                border:2.5px solid ${color}99;border-radius:9px;
+                cursor:grab;z-index:6;
+                box-shadow:0 0 18px ${color}33,inset 0 0 14px ${color}0a;
+                pointer-events:all;
             `;
-            
-            // Window label
-            const windowLabel = document.createElement('div');
-            windowLabel.style.cssText = `
-                position: absolute;
-                top: 5px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: ${color}ee;
-                color: #000;
-                font-size: 0.7em;
-                font-weight: bold;
-                padding: 2px 10px;
-                border-radius: 4px;
-                white-space: nowrap;
-                pointer-events: none;
+            // Label top
+            const wLab = document.createElement('div');
+            wLab.style.cssText = `
+                position:absolute;top:4px;left:50%;transform:translateX(-50%);
+                background:${color}ee;color:#000;
+                font-size:0.62em;font-weight:700;padding:2px 8px;
+                border-radius:3px;white-space:nowrap;pointer-events:none;user-select:none;
             `;
-            windowLabel.textContent = `${currentForm} Form`;
-            chordWindow.appendChild(windowLabel);
-            
-            // Chord name label
-            const chordLabel = document.createElement('div');
-            chordLabel.style.cssText = `
-                position: absolute;
-                bottom: 5px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0,0,0,0.8);
-                color: ${color};
-                font-size: 0.85em;
-                font-weight: bold;
-                padding: 3px 12px;
-                border-radius: 4px;
-                white-space: nowrap;
-                pointer-events: none;
+            wLab.textContent = `${currentForm} Form — ${pos === 0 ? 'Open' : 'Fret '+pos}`;
+            win.appendChild(wLab);
+            // Chord name bottom
+            const cLab = document.createElement('div');
+            cLab.style.cssText = `
+                position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+                background:rgba(0,0,0,0.72);color:${color};
+                font-size:0.75em;font-weight:700;padding:2px 9px;
+                border-radius:3px;white-space:nowrap;pointer-events:none;user-select:none;
             `;
-            chordLabel.textContent = chord.name;
-            chordWindow.appendChild(chordLabel);
-            
-            // Make window draggable
-            chordWindow.addEventListener('mousedown', startWindowDrag);
-            chordWindow.addEventListener('touchstart', startWindowDrag, { passive: false });
-            
-            fb.appendChild(chordWindow);
-            
-            // Draw barre if needed
+            cLab.textContent = chord.name;
+            win.appendChild(cLab);
+            win.addEventListener('mousedown', startWindowDrag);
+            win.addEventListener('touchstart', startWindowDrag, { passive: false });
+            fb.appendChild(win);
+
+            // ── BARRE LINE ─────────────────────────────────────────────────
             if (pos > 0) {
-                const barre = document.createElement('div');
-                barre.style.cssText = `
-                    position: absolute;
-                    left: 12%;
-                    right: 12%;
-                    top: ${nutHeight + (pos - 0.5) * fretHeight - 8}px;
-                    height: 16px;
-                    background: linear-gradient(180deg, ${color}cc, ${color}88);
-                    border-radius: 8px;
-                    z-index: 8;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                const by  = NUT_H + (pos - 0.5) * fretH;
+                const bar = document.createElement('div');
+                bar.style.cssText = `
+                    position:absolute;left:8%;right:8%;top:${by - 7}px;
+                    height:14px;
+                    background:linear-gradient(180deg,${color}cc,${color}66);
+                    border-radius:7px;z-index:8;
+                    box-shadow:0 2px 6px rgba(0,0,0,0.5);
                 `;
-                fb.appendChild(barre);
+                fb.appendChild(bar);
             }
-            
-            // Draw chord notes
+
+            // ── NOTE DOTS ─────────────────────────────────────────────────
+            // Two layers:
+            // 1. CAGED chord fingerings — bright colored dots at exact finger positions
+            // 2. Chord-builder highlights — all pitch-class matches across the neck (dimmer)
+            //
+            // We iterate frets 0–NUM_FRETS for each string.
+
             for (let s = 0; s < 6; s++) {
-                const baseFret = shape.frets[s];
+                const baseFret   = shape.frets[s];   // -1 = muted
+                const fingerFret = baseFret === -1 ? -1 : baseFret + pos;  // absolute fret
+
+                // Muted string → show ✕ above nut
                 if (baseFret === -1) {
-                    // Muted string
-                    const dot = document.createElement('div');
-                    dot.style.cssText = `
-                        position: absolute;
-                        left: ${stringSpacing * (s + 1)}px;
-                        top: ${nutHeight / 2}px;
-                        transform: translate(-50%, -50%);
-                        color: #888;
-                        font-size: 1.2em;
-                        font-weight: bold;
-                        z-index: 10;
+                    const x = document.createElement('div');
+                    x.style.cssText = `
+                        position:absolute;left:${stringSp*(s+1)}px;top:${NUT_H/2}px;
+                        transform:translate(-50%,-50%);
+                        color:#555;font-size:1em;font-weight:700;z-index:12;user-select:none;
                     `;
-                    dot.textContent = '✕';
-                    fb.appendChild(dot);
-                } else {
-                    const actualFret = baseFret + pos;
-                    
-                    // Get note and its branded color
-                    const stringNote = (TUNING[s] + actualFret) % 12;
-                    const noteColor = getNoteColor(stringNote);
-                    const chordRoot = getChordRoots()[activeChord];
-                    const interval = (stringNote - chordRoot + 12) % 12;
-                    
-                    // Check if this note is part of the active chord (in activeNotes)
-                    const isActiveChordTone = activeNotes.has(stringNote);
-                    
-                    // Use branded color for the note, with special styling for root
-                    const isRoot = interval === 0;
-                    
-                    const yPos = actualFret === 0 
-                        ? nutHeight / 2 
-                        : nutHeight + (actualFret - 0.5) * fretHeight;
-                    
-                    const dot = document.createElement('div');
-                    
-                    // Style based on whether note is in active chord
-                    if (isActiveChordTone) {
+                    x.textContent = '✕';
+                    fb.appendChild(x);
+                }
+
+                // Draw dots across all visible frets 0–NUM_FRETS
+                for (let f = 0; f <= NUM_FRETS; f++) {
+                    const midiNote   = STRING_MIDI[s] + f;
+                    const pitchClass = midiNote % 12;
+                    const noteColor  = getNoteColor(pitchClass);
+                    const chordRoot  = getChordRoots()[activeChord];
+                    const isRoot     = (pitchClass - chordRoot + 12) % 12 === 0;
+
+                    const isFingered     = (f === fingerFret && baseFret !== -1);
+                    const isBuilderTone  = activeNotes.has(pitchClass);  // from chord builder
+
+                    // y position
+                    const yPx = f === 0
+                        ? NUT_H / 2                  // open string → inside nut
+                        : NUT_H + (f - 0.5) * fretH; // fretted → mid-fret
+
+                    const xPx = stringSp * (s + 1);
+
+                    if (isFingered) {
+                        // ── BRIGHT fingered dot ──────────────────────────────
+                        const dot = document.createElement('div');
+                        const sz  = isRoot ? 30 : 24;
                         dot.style.cssText = `
-                            position: absolute;
-                            left: ${stringSpacing * (s + 1)}px;
-                            top: ${yPos}px;
-                            width: ${isRoot ? 34 : 28}px;
-                            height: ${isRoot ? 34 : 28}px;
-                            background: ${actualFret === 0 ? 'transparent' : noteColor};
-                            border: ${isRoot ? 4 : 3}px solid ${noteColor};
-                            border-radius: 50%;
-                            transform: translate(-50%, -50%);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 0.6em;
-                            font-weight: bold;
-                            color: ${actualFret === 0 ? noteColor : '#000'};
-                            ${isRoot ? 'box-shadow: 0 0 12px ' + noteColor + ';' : ''}
-                            z-index: 10;
-                            cursor: pointer;
+                            position:absolute;left:${xPx}px;top:${yPx}px;
+                            width:${sz}px;height:${sz}px;
+                            background:${f === 0 ? 'transparent' : noteColor};
+                            border:${isRoot ? 3 : 2}px solid ${noteColor};
+                            border-radius:50%;
+                            transform:translate(-50%,-50%);
+                            display:flex;align-items:center;justify-content:center;
+                            font-size:0.55em;font-weight:700;
+                            color:${f === 0 ? noteColor : '#111'};
+                            ${isRoot ? 'box-shadow:0 0 10px '+noteColor+',0 0 22px '+noteColor+'55;' : ''}
+                            z-index:11;cursor:pointer;
                         `;
-                    } else {
-                        // Dimmed style
+                        dot.textContent = NOTE_NAMES[pitchClass];
+                        dot.title = `${NOTE_NAMES[pitchClass]} — String ${s+1}, Fret ${f}`;
+                        dot.onclick = () => {
+                            if (activeNotes.has(pitchClass)) activeNotes.delete(pitchClass);
+                            else activeNotes.add(pitchClass);
+                            renderChromaticCircle();
+                            updateActiveNotesDisplay();
+                            initAudio();
+                            playNote(getFrequency(s, f), 0.8);
+                            renderFretboard();
+                        };
+                        fb.appendChild(dot);
+
+                    } else if (isBuilderTone && !isFingered) {
+                        // ── DIM chord-builder tone dot ────────────────────────
+                        // Show at every fret where this pitch class appears.
+                        // Keep them small and ghostly so they don't clutter.
+                        // Skip fret 0 ghost unless it's truly an open string note.
+                        if (f === 0 && baseFret !== 0) continue;
+                        const dot = document.createElement('div');
                         dot.style.cssText = `
-                            position: absolute;
-                            left: ${stringSpacing * (s + 1)}px;
-                            top: ${yPos}px;
-                            width: 20px;
-                            height: 20px;
-                            background: transparent;
-                            border: 2px dashed ${noteColor}55;
-                            border-radius: 50%;
-                            transform: translate(-50%, -50%);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 0.5em;
-                            font-weight: normal;
-                            color: ${noteColor}77;
-                            opacity: 0.6;
-                            z-index: 10;
-                            cursor: pointer;
+                            position:absolute;left:${xPx}px;top:${yPx}px;
+                            width:16px;height:16px;
+                            background:${noteColor}22;
+                            border:1.5px solid ${noteColor}88;
+                            border-radius:50%;
+                            transform:translate(-50%,-50%);
+                            display:flex;align-items:center;justify-content:center;
+                            font-size:0.42em;font-weight:600;
+                            color:${noteColor}cc;
+                            z-index:9;cursor:pointer;opacity:0.75;
                         `;
+                        dot.textContent = NOTE_NAMES[pitchClass];
+                        dot.title = `${NOTE_NAMES[pitchClass]} (chord tone) — String ${s+1}, Fret ${f}`;
+                        dot.onclick = () => {
+                            initAudio();
+                            playNote(getFrequency(s, f), 0.8);
+                        };
+                        fb.appendChild(dot);
                     }
-                    
-                    dot.textContent = NOTE_NAMES[stringNote];
-                    
-                    // Click to play and toggle on circle
-                    dot.onclick = () => {
-                        if (activeNotes.has(stringNote)) {
-                            activeNotes.delete(stringNote);
-                        } else {
-                            activeNotes.add(stringNote);
-                        }
-                        renderChromaticCircle();
-                        updateActiveNotesDisplay();
-                        highlightNotesOnFretboard();
-                        initAudio();
-                        playNote(getFrequency(s, actualFret), 0.8);
-                    };
-                    
-                    fb.appendChild(dot);
                 }
             }
-            
-            // Update slider position
-            document.getElementById('positionSlider').value = position;
+
+            // ── SYNC SLIDER ────────────────────────────────────────────────
+            const slider = document.getElementById('positionSlider');
+            if (slider) { slider.value = position; slider.setAttribute('aria-valuenow', position); }
         }
         
         // ==================== DRAGGABLE WINDOW ====================
@@ -1622,33 +1703,34 @@ public class ChromaticSphere : MonoBehaviour
         function onWindowDrag(e) {
             if (!isDragging) return;
             e.preventDefault();
-            
+
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            const fb = document.getElementById('fretboard');
-            const height = fb.offsetHeight || 500;
-            const nutHeight = 25;
-            const playableHeight = height - nutHeight;
-            const fretHeight = playableHeight / 15;
-            
-            const deltaY = clientY - dragStartY;
-            const deltaFrets = Math.round(deltaY / fretHeight);
-            const newPosition = Math.max(0, Math.min(12, dragStartPosition + deltaFrets));
-            
-            if (newPosition !== position) {
-                position = newPosition;
+            const fb      = document.getElementById('fretboard');
+            const H       = fb.offsetHeight || 440;
+            const NUT_H   = 24;
+            const fretH   = (H - NUT_H) / 17;   // static board: always 17 frets
+
+            const deltaY     = clientY - dragStartY;
+            const deltaFrets = Math.round(deltaY / fretH);
+            const newPos     = Math.max(0, Math.min(12, dragStartPosition + deltaFrets));
+
+            if (newPos !== position) {
+                position = newPos;
                 updateUI();
-                // Play root note feedback
                 initAudio();
-                const keyRoot = getKeyRoot();
-                const midi = getMidi(keyRoot, currentOctave);
-                playNote(midiToFreq(midi), 0.3);
+                // Play the actual root note from the guitar string, not an abstract MIDI
+                const chord = getChordInfo(activeChord);
+                const shape = SHAPES[chord.shape];
+                const rootStrIdx = 6 - shape.rootString; // convert 1-indexed to 0-indexed
+                const rootAbsFret = shape.rootFret + chord.position;
+                playNote(getFrequency(rootStrIdx, rootAbsFret), 0.25);
             }
         }
         
         function endWindowDrag() {
             isDragging = false;
             const window = document.getElementById('chordWindow');
-            if (window) window.style.cursor = 'ns-resize';
+            if (window) window.style.cursor = 'grab';
             
             document.removeEventListener('mousemove', onWindowDrag);
             document.removeEventListener('mouseup', endWindowDrag);
@@ -1663,11 +1745,28 @@ public class ChromaticSphere : MonoBehaviour
             position = 0;
             activeChord = 0;
             updateUI();
+            updateFormButtonStates(name);
+            const keyName = NOTE_NAMES[(FORMS[name].baseRoot) % 12];
+            announce(name + ' Form selected – key of ' + keyName);
         }
         
         function setPosition(newPos) {
             position = parseInt(newPos);
             updateUI();
+            const slider = document.getElementById('positionSlider');
+            if (slider) { slider.value = position; slider.setAttribute('aria-valuenow', position); }
+            // Work out the key at this position for the announcement
+            const keyRoot = getKeyRoot();
+            const keyName = NOTE_NAMES[keyRoot];
+            const label   = position === 0 ? 'Open — Key of ' + keyName : 'Fret ' + position + ' — Key of ' + keyName;
+            announce(label);
+            // Play the actual root note from the guitar string
+            initAudio();
+            const chord2 = getChordInfo(activeChord);
+            const shape2 = SHAPES[chord2.shape];
+            const rootStrIdx2 = 6 - shape2.rootString;
+            const rootAbsFret2 = shape2.rootFret + chord2.position;
+            playNote(getFrequency(rootStrIdx2, rootAbsFret2), 0.25);
         }
         
         function movePosition(delta) {
@@ -1675,6 +1774,12 @@ public class ChromaticSphere : MonoBehaviour
             if (newPos >= 0 && newPos <= 12) {
                 position = newPos;
                 updateUI();
+                initAudio();
+                const chord = getChordInfo(activeChord);
+                const shape = SHAPES[chord.shape];
+                const rootStrIdx = 6 - shape.rootString;
+                const rootAbsFret = shape.rootFret + chord.position;
+                playNote(getFrequency(rootStrIdx, rootAbsFret), 0.3);
             }
         }
         
@@ -1682,6 +1787,8 @@ public class ChromaticSphere : MonoBehaviour
             tempo = parseInt(bpm);
             document.getElementById('tempoSlider').value = tempo;
             document.getElementById('tempoDisplay').textContent = `${tempo} BPM`;
+            const slider = document.getElementById('tempoSlider');
+            if (slider) slider.setAttribute('aria-valuenow', tempo);
         }
         
         // Calculate timing based on tempo
@@ -1697,8 +1804,11 @@ public class ChromaticSphere : MonoBehaviour
         function showChord(index) {
             activeChord = index;
             updateUI();
-            syncCircleWithChord();  // Sync the chromatic circle
+            syncCircleWithChord();
             playCurrentChord(true);
+            updateChordButtonStates(index);
+            const chord = getChordInfo(index);
+            announce(['I','IV','V'][index] + ' chord: ' + chord.name + ' – ' + chord.shape + ' shape');
         }
         
         // ==================== AUDIO ====================
@@ -1710,36 +1820,50 @@ public class ChromaticSphere : MonoBehaviour
             if (audioContext.state === 'suspended') {
                 audioContext.resume();
             }
-            // Test tone
-            playNote(440, 0.3);
         }
         
         function playNote(freq, duration) {
             if (!audioContext) initAudio();
-            
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            // Use triangle wave for warmer, less harsh sound
-            osc.frequency.value = freq;
-            osc.type = 'triangle';
-            
-            // Lower initial volume to prevent distortion
-            const volume = 0.12;
-            
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
             const now = audioContext.currentTime;
-            
-            // Smooth attack and release envelope
-            gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(volume, now + 0.02); // Quick attack
-            gain.gain.setValueAtTime(volume, now + duration * 0.7); // Sustain
-            gain.gain.exponentialRampToValueAtTime(0.001, now + duration); // Smooth release
-            
-            osc.start(now);
-            osc.stop(now + duration + 0.1);
+
+            // Guitar-like pluck: 5 harmonics + low-pass filter sweep + sub-body
+            const masterGain = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(freq * 8, now);
+            filter.frequency.exponentialRampToValueAtTime(freq * 2.5, now + duration * 0.6);
+            filter.Q.value = 1.2;
+
+            const harmonics = [1, 2, 3, 4, 5];
+            const amplitudes = [0.55, 0.25, 0.12, 0.06, 0.02];
+
+            harmonics.forEach((h, idx) => {
+                const osc = audioContext.createOscillator();
+                const g   = audioContext.createGain();
+                osc.type = idx === 0 ? 'sawtooth' : 'sine';
+                osc.frequency.value = freq * h;
+                const vol = amplitudes[idx];
+                g.gain.setValueAtTime(0, now);
+                g.gain.linearRampToValueAtTime(vol, now + 0.005);
+                g.gain.exponentialRampToValueAtTime(vol * 0.3, now + duration * 0.25);
+                g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+                osc.connect(g); g.connect(filter);
+                osc.start(now); osc.stop(now + duration + 0.05);
+            });
+
+            // Sub-octave body resonance
+            const sub = audioContext.createOscillator();
+            const subG = audioContext.createGain();
+            sub.type = 'sine';
+            sub.frequency.value = freq * 0.5;
+            subG.gain.setValueAtTime(0.04, now);
+            subG.gain.exponentialRampToValueAtTime(0.0001, now + duration * 0.4);
+            sub.connect(subG); subG.connect(filter);
+            sub.start(now); sub.stop(now + duration * 0.45);
+
+            masterGain.gain.setValueAtTime(0.7, now);
+            filter.connect(masterGain);
+            masterGain.connect(audioContext.destination);
         }
         
         function getFrequency(stringIdx, fret) {
@@ -1764,12 +1888,12 @@ public class ChromaticSphere : MonoBehaviour
             if (strum) {
                 notes.forEach((note, i) => {
                     setTimeout(() => {
-                        playNote(getFrequency(note.string, note.fret), 1.5);
+                        playNote(getFrequency(note.string, note.fret), 2.2);
                     }, i * strumDelay);
                 });
             } else {
                 notes.forEach(note => {
-                    playNote(getFrequency(note.string, note.fret), 1.5);
+                    playNote(getFrequency(note.string, note.fret), 2.2);
                 });
             }
         }
@@ -1841,9 +1965,9 @@ public class ChromaticSphere : MonoBehaviour
         // Render a 251 chord on the fretboard
         function render251ChordOnFretboard(root, chordType, intervals, chordName) {
             const fb = document.getElementById('fretboard');
-            const width = fb.offsetWidth || 280;
-            const height = fb.offsetHeight || 500;
-            const nutHeight = 35;
+            const width = fb.offsetWidth || 160;
+            const height = fb.offsetHeight || 440;
+            const nutHeight = 22;
             const playableHeight = height - nutHeight;
             const numFrets = 15;
             const fretHeight = playableHeight / numFrets;
@@ -1980,7 +2104,7 @@ public class ChromaticSphere : MonoBehaviour
             sorted.forEach((note, i) => {
                 setTimeout(() => {
                     const freq = getFrequency(note.string, note.fret);
-                    playNote(freq, 1.5);
+                    playNote(freq, 2.0);
                 }, i * strumDelay);
             });
         }
@@ -2104,6 +2228,9 @@ public class ChromaticSphere : MonoBehaviour
             document.getElementById('circleKeyName').textContent = rootName;
             document.getElementById('circleKeyName').style.color = rootColor;
             document.getElementById('circleChordName').textContent = formula.name;
+
+            // Reflect chord builder notes on the fretboard
+            renderFretboard();
         }
         
         // ==================== CHROMATIC CIRCLE ====================
@@ -2115,9 +2242,9 @@ public class ChromaticSphere : MonoBehaviour
             
             container.innerHTML = '';
             
-            const centerX = 120;
-            const centerY = 120;
-            const radius = 95;
+            const centerX = 110;
+            const centerY = 110;
+            const radius = 86;
             
             for (let i = 0; i < 12; i++) {
                 const noteData = CHROMATIC_COLORS[i];
@@ -2138,9 +2265,13 @@ public class ChromaticSphere : MonoBehaviour
                     width: 36px;
                     height: 36px;
                     background: radial-gradient(circle at 30% 30%, ${noteData.color}ff, ${noteData.color}aa, ${noteData.color}66);
-                    border: 2px solid ${noteData.color};
-                    box-shadow: ${isActive ? `0 0 15px ${noteData.color}, 0 0 30px ${noteData.color}88` : `0 3px 10px ${noteData.color}44`};
+                    border: ${isActive ? '3px solid #ffffff' : `2px solid ${noteData.color}`};
+                    box-shadow: ${isActive
+                        ? `0 0 0 2px ${noteData.color}, 0 0 14px ${noteData.color}, 0 0 28px ${noteData.color}88`
+                        : `0 3px 10px ${noteData.color}44`};
                     ${isActive ? `animation: pulse 0.5s ease-in-out infinite alternate;` : ''}
+                    outline: ${isActive ? '2px solid rgba(255,255,255,0.9)' : 'none'};
+                    outline-offset: ${isActive ? '2px' : '0'};
                 `;
                 sphere.innerHTML = `
                     <span class="note-name" style="font-size: 0.7em;">${noteData.note}</span>
@@ -2286,7 +2417,7 @@ public class ChromaticSphere : MonoBehaviour
                     }
                     
                     const freq = midiToFreq(midi);
-                    playNote(freq, 1.5);
+                    playNote(freq, 2.0);
                 }, i * arpDelay);
             });
         }
@@ -2366,15 +2497,17 @@ public class ChromaticSphere : MonoBehaviour
         
         function setEarTrainerMode(mode) {
             earTrainerMode = mode;
-            
-            // Update button styles
-            document.getElementById('modeInterval').style.background = mode === 'interval' ? '#8a2be2' : 'rgba(255,255,255,0.1)';
-            document.getElementById('modeChord').style.background = mode === 'chord' ? '#8a2be2' : 'rgba(255,255,255,0.1)';
-            document.getElementById('modeNote').style.background = mode === 'note' ? '#8a2be2' : 'rgba(255,255,255,0.1)';
-            
-            // Update answer buttons based on mode
+            ['modeNote','modeInterval','modeChord'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const m = id.replace('mode','').toLowerCase();
+                el.classList.toggle('active', m === mode);
+                el.setAttribute('aria-pressed', m === mode ? 'true' : 'false');
+            });
             updateEarTrainerAnswers();
             document.getElementById('earTrainerQuestion').textContent = 'Click "Play Sound" to start';
+            updateEarModeStates(mode);
+            announce('Ear trainer mode: ' + mode);
         }
         
         function updateEarTrainerAnswers() {
@@ -2382,45 +2515,46 @@ public class ChromaticSphere : MonoBehaviour
             
             if (earTrainerMode === 'interval') {
                 container.innerHTML = `
-                    <button onclick="checkEarTrainerAnswer(0)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Uni</button>
-                    <button onclick="checkEarTrainerAnswer(2)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">M2</button>
-                    <button onclick="checkEarTrainerAnswer(3)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">m3</button>
-                    <button onclick="checkEarTrainerAnswer(4)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">M3</button>
-                    <button onclick="checkEarTrainerAnswer(5)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">P4</button>
-                    <button onclick="checkEarTrainerAnswer(7)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">P5</button>
-                    <button onclick="checkEarTrainerAnswer(9)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">M6</button>
-                    <button onclick="checkEarTrainerAnswer(12)" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Oct</button>
+                    <button onclick="checkEarTrainerAnswer(0)"  class="ear-answer-btn" aria-label="Unison">Uni</button>
+                    <button onclick="checkEarTrainerAnswer(2)"  class="ear-answer-btn" aria-label="Major 2nd">M2</button>
+                    <button onclick="checkEarTrainerAnswer(3)"  class="ear-answer-btn" aria-label="minor 3rd">m3</button>
+                    <button onclick="checkEarTrainerAnswer(4)"  class="ear-answer-btn" aria-label="Major 3rd">M3</button>
+                    <button onclick="checkEarTrainerAnswer(5)"  class="ear-answer-btn" aria-label="Perfect 4th">P4</button>
+                    <button onclick="checkEarTrainerAnswer(7)"  class="ear-answer-btn" aria-label="Perfect 5th">P5</button>
+                    <button onclick="checkEarTrainerAnswer(9)"  class="ear-answer-btn" aria-label="Major 6th">M6</button>
+                    <button onclick="checkEarTrainerAnswer(12)" class="ear-answer-btn" aria-label="Octave">Oct</button>
                 `;
             } else if (earTrainerMode === 'chord') {
                 container.innerHTML = `
-                    <button onclick="checkEarTrainerAnswer('major')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Major</button>
-                    <button onclick="checkEarTrainerAnswer('minor')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Minor</button>
-                    <button onclick="checkEarTrainerAnswer('dim')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Dim</button>
-                    <button onclick="checkEarTrainerAnswer('aug')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Aug</button>
-                    <button onclick="checkEarTrainerAnswer('dom7')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Dom7</button>
-                    <button onclick="checkEarTrainerAnswer('maj7')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Maj7</button>
-                    <button onclick="checkEarTrainerAnswer('min7')" class="ear-answer-btn" style="padding: 4px 8px; border: none; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 0.6em;">Min7</button>
+                    <button onclick="checkEarTrainerAnswer('major')" class="ear-answer-btn" aria-label="Major">Major</button>
+                    <button onclick="checkEarTrainerAnswer('minor')" class="ear-answer-btn" aria-label="minor">Minor</button>
+                    <button onclick="checkEarTrainerAnswer('dim')"   class="ear-answer-btn" aria-label="Diminished">Dim</button>
+                    <button onclick="checkEarTrainerAnswer('aug')"   class="ear-answer-btn" aria-label="Augmented">Aug</button>
+                    <button onclick="checkEarTrainerAnswer('dom7')"  class="ear-answer-btn" aria-label="Dominant 7">Dom7</button>
+                    <button onclick="checkEarTrainerAnswer('maj7')"  class="ear-answer-btn" aria-label="Major 7">Maj7</button>
+                    <button onclick="checkEarTrainerAnswer('min7')"  class="ear-answer-btn" aria-label="minor 7">Min7</button>
                 `;
             } else if (earTrainerMode === 'note') {
                 container.innerHTML = `
-                    <button onclick="checkEarTrainerAnswer(0)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFFF0044; color: #fff; cursor: pointer; font-size: 0.6em;">C</button>
-                    <button onclick="checkEarTrainerAnswer(1)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FFC40044; color: #fff; cursor: pointer; font-size: 0.6em;">C#</button>
-                    <button onclick="checkEarTrainerAnswer(2)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF800044; color: #fff; cursor: pointer; font-size: 0.6em;">D</button>
-                    <button onclick="checkEarTrainerAnswer(3)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF400044; color: #fff; cursor: pointer; font-size: 0.6em;">D#</button>
-                    <button onclick="checkEarTrainerAnswer(4)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #FF000044; color: #fff; cursor: pointer; font-size: 0.6em;">E</button>
-                    <button onclick="checkEarTrainerAnswer(5)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #C4007F44; color: #fff; cursor: pointer; font-size: 0.6em;">F</button>
-                    <button onclick="checkEarTrainerAnswer(6)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #8000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">F#</button>
-                    <button onclick="checkEarTrainerAnswer(7)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #4000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G</button>
-                    <button onclick="checkEarTrainerAnswer(8)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #0000FF44; color: #fff; cursor: pointer; font-size: 0.6em;">G#</button>
-                    <button onclick="checkEarTrainerAnswer(9)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #007FFF44; color: #fff; cursor: pointer; font-size: 0.6em;">A</button>
-                    <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #00FF8044; color: #fff; cursor: pointer; font-size: 0.6em;">A#</button>
-                    <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" style="padding: 4px 6px; border: none; border-radius: 4px; background: #80FF0044; color: #fff; cursor: pointer; font-size: 0.6em;">B</button>
+                    <button onclick="checkEarTrainerAnswer(0)"  class="ear-answer-btn" aria-label="C"       style="background:#FFFF0044;">C</button>
+                    <button onclick="checkEarTrainerAnswer(1)"  class="ear-answer-btn" aria-label="C sharp" style="background:#FFC40044;">C#</button>
+                    <button onclick="checkEarTrainerAnswer(2)"  class="ear-answer-btn" aria-label="D"       style="background:#FF800044;">D</button>
+                    <button onclick="checkEarTrainerAnswer(3)"  class="ear-answer-btn" aria-label="D sharp" style="background:#FF400044;">D#</button>
+                    <button onclick="checkEarTrainerAnswer(4)"  class="ear-answer-btn" aria-label="E"       style="background:#FF000044;">E</button>
+                    <button onclick="checkEarTrainerAnswer(5)"  class="ear-answer-btn" aria-label="F"       style="background:#C4007F44;">F</button>
+                    <button onclick="checkEarTrainerAnswer(6)"  class="ear-answer-btn" aria-label="F sharp" style="background:#8000FF44;">F#</button>
+                    <button onclick="checkEarTrainerAnswer(7)"  class="ear-answer-btn" aria-label="G"       style="background:#4000FF44;">G</button>
+                    <button onclick="checkEarTrainerAnswer(8)"  class="ear-answer-btn" aria-label="G sharp" style="background:#0000FF44;">G#</button>
+                    <button onclick="checkEarTrainerAnswer(9)"  class="ear-answer-btn" aria-label="A"       style="background:#007FFF44;">A</button>
+                    <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" aria-label="A sharp" style="background:#00FF8044;">A#</button>
+                    <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" aria-label="B"       style="background:#80FF0044;">B</button>
                 `;
             }
         }
         
         function playEarTrainerQuestion() {
             initAudio();
+            const earOctave = 4; // Fixed octave for ear training consistency
             
             if (earTrainerMode === 'interval') {
                 // Random root note and interval
@@ -2435,7 +2569,7 @@ public class ChromaticSphere : MonoBehaviour
                 setActiveNotes([rootNote, secondNote]);
                 
                 // Play root, then interval
-                const rootMidi = getMidi(rootNote, currentOctave);
+                const rootMidi = getMidi(rootNote, earOctave);
                 const intervalMidi = rootMidi + interval;
                 
                 playNote(midiToFreq(rootMidi), 0.8);
@@ -2458,7 +2592,7 @@ public class ChromaticSphere : MonoBehaviour
                 setActiveNotes(chordTones);
                 
                 // Play chord
-                const rootMidi = getMidi(rootNote, currentOctave);
+                const rootMidi = getMidi(rootNote, earOctave);
                 const intervals = CHORD_TYPES[chordType];
                 
                 intervals.forEach((interval, i) => {
@@ -2477,7 +2611,7 @@ public class ChromaticSphere : MonoBehaviour
                 // Highlight note on chromatic circle
                 setActiveNotes([noteIndex]);
                 
-                const midi = getMidi(noteIndex, currentOctave);
+                const midi = getMidi(noteIndex, earOctave);
                 playNote(midiToFreq(midi), 1.0);
                 
                 document.getElementById('earTrainerQuestion').textContent = 'What note is this?';
@@ -2496,9 +2630,9 @@ public class ChromaticSphere : MonoBehaviour
             // Remove any existing ear trainer highlights
             document.querySelectorAll('.ear-trainer-highlight').forEach(el => el.remove());
             
-            const width = fb.offsetWidth || 280;
-            const height = fb.offsetHeight || 500;
-            const nutHeight = 35;
+            const width = fb.offsetWidth || 160;
+            const height = fb.offsetHeight || 440;
+            const nutHeight = 22;
             const playableHeight = height - nutHeight;
             const numFrets = 15;
             const fretHeight = playableHeight / numFrets;
@@ -2596,6 +2730,39 @@ public class ChromaticSphere : MonoBehaviour
         
         // ==================== INIT ====================
         
+
+        // ── ACCESSIBILITY HELPERS ──────────────────────────────────────────
+        function announce(msg) {
+            const el = document.getElementById('a11y-live');
+            if (el) { el.textContent = ''; setTimeout(() => { el.textContent = msg; }, 50); }
+        }
+
+        // Update aria-pressed on CAGED form buttons
+        function updateFormButtonStates(activeForm) {
+            document.querySelectorAll('.form-btn').forEach(btn => {
+                btn.setAttribute('aria-pressed', btn.dataset.form === activeForm ? 'true' : 'false');
+            });
+        }
+
+        // Update aria-pressed on chord I/IV/V buttons
+        function updateChordButtonStates(activeIdx) {
+            document.querySelectorAll('#chordButtons .chord-btn').forEach((btn, i) => {
+                btn.setAttribute('aria-pressed', i === activeIdx ? 'true' : 'false');
+            });
+        }
+
+        // Update aria-pressed on ear trainer mode buttons
+        function updateEarModeStates(mode) {
+            ['note','interval','chord'].forEach(m => {
+                const el = document.getElementById('mode' + m.charAt(0).toUpperCase() + m.slice(1));
+                if (el) el.setAttribute('aria-pressed', m === mode ? 'true' : 'false');
+            });
+        }
+
+        // Auto-update copyright year
+        const cyEl = document.getElementById('copyright-year');
+        if (cyEl) cyEl.textContent = new Date().getFullYear();
+
         document.querySelectorAll('.form-btn').forEach(btn => {
             btn.addEventListener('click', () => selectForm(btn.dataset.form));
         });
@@ -2624,6 +2791,30 @@ public class ChromaticSphere : MonoBehaviour
         renderChromaticCircle();
         renderChromaticSpheres();
         syncCircleWithChord(); // Initial sync of circle with fretboard
+    </script>
+
+    <!-- Cookie Notice (GDPR/CCPA) -->
+    <div id="cookie-notice" role="dialog" aria-modal="false" aria-label="Cookie notice"
+         style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9000;
+                background:#1a1a2e;border-top:2px solid #ffd700;
+                padding:14px 20px;display:flex;align-items:center;
+                justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:0.82rem;">
+        <p style="margin:0;color:#ccc;flex:1;min-width:200px;">
+            This site uses Google Analytics to understand how visitors interact with our free music theory tools.
+            No personal data is sold. <a href="https://keyscodesandmodes.com/privacy" style="color:#ffd700;">Privacy Policy</a>
+        </p>
+        <button onclick="acceptCookies()" style="padding:8px 20px;min-height:44px;background:#ffd700;color:#000;border:none;border-radius:6px;font-weight:700;cursor:pointer;white-space:nowrap;" aria-label="Accept cookies and close notice">Got it ✓</button>
+    </div>
+    <script>
+    (function(){
+        if(!localStorage.getItem('kcm_cookie_ok')){
+            document.getElementById('cookie-notice').style.display='flex';
+        }
+    })();
+    function acceptCookies(){
+        localStorage.setItem('kcm_cookie_ok','1');
+        document.getElementById('cookie-notice').style.display='none';
+    }
     </script>
 </body>
 </html>
