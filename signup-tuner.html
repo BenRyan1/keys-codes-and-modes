@@ -29,7 +29,7 @@
                         setTimeout(function() {
                             var success = document.querySelector('.ml-form-successContent');
                             if (success) {
-                                window.location.href = '/welcome-free-tuner.html';
+                                window.location.href = '/welcome-free-tuner.html?ref=tuner-signup';
                             }
                         }, 1500);
                     });
@@ -46,7 +46,7 @@
                 window._kcmRedirected = true;
                 sessionStorage.setItem('kcm_tuner_access', '1');
                 setTimeout(function() {
-                    window.location.href = '/welcome-free-tuner.html';
+                    window.location.href = '/welcome-free-tuner.html?ref=tuner-signup';
                 }, 1200);
             }
         }, 500);

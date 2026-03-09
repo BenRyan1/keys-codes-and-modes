@@ -9,17 +9,21 @@
 <meta name="theme-color" content="#4A7BA7">
 <meta name="color-scheme" content="dark">
 <!-- Google Analytics -->
-<!-- KCM SIGNUP GATE: Must arrive via MailerLite form or signup-tuner page -->
+
+<!-- KCM SIGNUP GATE: token ?ref=tuner-signup required -->
 <script>
   (function() {
-    var ref = document.referrer || '';
-    var fromSignup = ref.indexOf('signup-tuner') !== -1 || ref.indexOf('mailerlite') !== -1;
-    var fromMailer = ref.indexOf('keyscodesandmodes.com') !== -1;
-    var hasFlag = sessionStorage.getItem('kcm_tuner_access');
-    if (!fromSignup && !fromMailer && !hasFlag) {
+    var params = new URLSearchParams(window.location.search);
+    var hasToken = params.get('ref') === 'tuner-signup';
+    var hasFlag  = sessionStorage.getItem('kcm_tuner_access') === '1';
+    if (!hasToken && !hasFlag) {
       window.location.replace('/signup-tuner.html');
+      return;
     }
     sessionStorage.setItem('kcm_tuner_access', '1');
+    if (hasToken && window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
   })();
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
