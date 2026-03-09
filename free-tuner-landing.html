@@ -19,6 +19,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#4A7BA7" />
+  <meta name="color-scheme" content="dark" />
 
   <!-- ═══ SEO ═══ -->
   <title>Free Online Guitar Tuner | Bass &amp; Ukulele Tuner | Keys, Codes &amp; Modes</title>
@@ -46,7 +47,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
   <meta name="twitter:site" content="@keyscodesandmodes" />
 
   <!-- ═══ FAVICON ═══ -->
-  <link rel="icon" type="image/png" sizes="32x32" href="kcm-official-logo-32.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/kcm-official-logo-32.png" />
 
   <!-- ═══ PERMISSIONS POLICY — mic restricted to self ═══ -->
   <meta http-equiv="Permissions-Policy" content="microphone=(self)" />
@@ -57,7 +58,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "KCM Instrument Tuner",
-    "url": "https://keyscodesandmodes.com/kcm-tuner.html",
+    "url": "https://keyscodesandmodes.com/apps/kcm-tuner.html",
     "description": "Free professional chromatic tuner for Guitar, Bass, and Ukulele with real-time pitch detection.",
     "applicationCategory": "MusicApplication",
     "operatingSystem": "Any",
@@ -162,11 +163,23 @@ For licensing: ben.ryan@keyscodesandmodes.com
     }
   </script>
 
+  <!-- ═══ MICROSOFT CLARITY (consent-gated) ═══ -->
+  <script>
+    function loadClarity() {
+      if (window.clarityLoaded) return; window.clarityLoaded = true;
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "vhyrbjp63x");
+    }
+  </script>
+
   <!-- ═══ PRINT STYLES ═══ -->
   <style>
     @media print {
       header, footer, .chromatic-strip, .wheel-bg, .hero-cta,
-      .free-band, .upsell-wrap, nav { display: none !important; }
+      .free-band, .upsell-wrap, nav, .mobile-nav { display: none !important; }
       body { background: white !important; color: black !important; }
       .hero h1, .section-title, .feat-card h3 { color: black !important; -webkit-text-fill-color: black !important; }
       .feat-card { border: 1px solid #ccc !important; background: white !important; }
@@ -175,7 +188,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
 
   <style>
     /* ════════════════════════════════════════
-       KCM BRAND VARIABLES — ACCURATE TO SITE
+       KCM BRAND VARIABLES
     ════════════════════════════════════════ */
     :root {
       --ocean-blue:   #4A7BA7;
@@ -282,14 +295,49 @@ For licensing: ben.ryan@keyscodesandmodes.com
       font-size: 0.72rem; color: var(--text-muted);
       letter-spacing: 0.05em; margin-top: 3px;
     }
-    nav ul { display: flex; gap: 1.8rem; list-style: none; }
-    nav a {
+
+    /* ═══ DESKTOP NAV ═══ */
+    .nav-desktop ul { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-desktop a {
       font-family: var(--font-body); font-size: 0.82rem; font-weight: 400;
       color: var(--text-muted); text-decoration: none;
       letter-spacing: 0.08em; text-transform: uppercase;
       transition: color .2s; padding: .25rem .4rem; border-radius: 3px;
     }
-    nav a:hover, nav a:focus { color: var(--gold); }
+    .nav-desktop a:hover, .nav-desktop a:focus { color: var(--gold); }
+
+    /* ═══ MOBILE HAMBURGER ═══ */
+    .hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      padding: 8px; color: var(--text-muted);
+      flex-direction: column; gap: 5px; align-items: center; justify-content: center;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text-muted); border-radius: 2px;
+      transition: all .25s;
+    }
+    .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none;
+      background: var(--darkest);
+      border-bottom: 2px solid var(--ocean-blue);
+      padding: 1rem 2rem 1.5rem;
+    }
+    .mobile-nav.open { display: block; }
+    .mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+    .mobile-nav a {
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 400;
+      color: var(--text-muted); text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: color .2s; padding: .4rem 0; display: block;
+      border-bottom: 1px solid rgba(74,123,167,0.15);
+    }
+    .mobile-nav a:hover, .mobile-nav a:focus { color: var(--gold); }
+    .mobile-nav .btn-primary { display: block; text-align: center; margin-top: .5rem; }
 
     /* ═══ BUTTONS ═══ */
     .btn-primary {
@@ -308,6 +356,22 @@ For licensing: ben.ryan@keyscodesandmodes.com
       background: linear-gradient(135deg, var(--teal), var(--ocean-blue));
       color: #fff; transform: translateY(-2px);
       box-shadow: 0 6px 24px rgba(0,128,128,0.4);
+    }
+    .btn-gold {
+      display: inline-block;
+      padding: 1rem 2.8rem;
+      background: linear-gradient(135deg, var(--gold) 0%, #ffe566 50%, var(--gold) 100%);
+      color: var(--darkest);
+      font-family: var(--font-display); font-size: 0.95rem; font-weight: 900;
+      letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+      border: none; border-radius: 50px;
+      transition: all .25s;
+      box-shadow: 0 6px 28px rgba(244,208,63,0.45);
+      cursor: pointer;
+    }
+    .btn-gold:hover, .btn-gold:focus {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(244,208,63,0.65);
     }
     .btn-secondary {
       display: inline-block;
@@ -455,7 +519,6 @@ For licensing: ben.ryan@keyscodesandmodes.com
       border-color: var(--gold); background: rgba(244,208,63,0.12); color: var(--gold);
       box-shadow: 0 0 14px rgba(244,208,63,0.3);
     }
-    .s-dot[aria-current="true"] { border-color: var(--gold); }
 
     /* ═══ FREE BAND ═══ */
     .free-band {
@@ -469,7 +532,6 @@ For licensing: ben.ryan@keyscodesandmodes.com
       font-family: var(--font-display); font-size: clamp(6rem, 18vw, 14rem);
       font-weight: 900; color: var(--gold); opacity: 0.05;
       letter-spacing: .2em; pointer-events: none; user-select: none; white-space: nowrap;
-      aria-hidden: true;
     }
     .free-band h2 {
       font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.8rem);
@@ -570,12 +632,16 @@ For licensing: ben.ryan@keyscodesandmodes.com
     .footer-legal { margin-top: .8rem; font-size: .75rem; color: var(--text-muted); line-height: 1.6; max-width: 700px; margin-left: auto; margin-right: auto; }
 
     /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .nav-desktop { display: none; }
+      .hamburger { display: flex; }
+    }
     @media (max-width: 640px) {
       .header-inner { height: 60px; }
-      nav ul { display: none; }
-      .hero { padding: 5rem 1.2rem 3.5rem; }
+      .hero { padding: 4rem 1.2rem 3rem; }
       .upsell { padding: 2rem 1.5rem; }
       .logo-tagline { display: none; }
+      .logo-svg { width: 48px; height: 48px; }
     }
   </style>
 </head>
@@ -623,7 +689,8 @@ For licensing: ben.ryan@keyscodesandmodes.com
         <span class="logo-tagline">A Visual Approach to Understanding Music</span>
       </div>
     </a>
-    <nav aria-label="Main navigation">
+    <!-- DESKTOP NAV -->
+    <nav class="nav-desktop" aria-label="Main navigation">
       <ul role="list">
         <li><a href="/index.html">Home</a></li>
         <li><a href="/insights.html">Portals</a></li>
@@ -631,8 +698,22 @@ For licensing: ben.ryan@keyscodesandmodes.com
         <li><a href="/signup.html">Start Free</a></li>
       </ul>
     </nav>
+    <!-- MOBILE HAMBURGER -->
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<!-- MOBILE NAV DRAWER -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
+  <ul role="list">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/insights.html">Portals</a></li>
+    <li><a href="/pricing.html">Pricing</a></li>
+    <li><a href="/signup.html" class="btn-primary" style="margin-top:.5rem">Start Free</a></li>
+  </ul>
+</nav>
 
 <!-- MAIN CONTENT -->
 <main id="main-content">
@@ -647,10 +728,6 @@ For licensing: ben.ryan@keyscodesandmodes.com
     <line x1="30"  y1="300" x2="570" y2="300" stroke="#4A7BA7" stroke-width="0.7"/>
     <line x1="91"  y1="91"  x2="509" y2="509" stroke="#4A7BA7" stroke-width="0.6"/>
     <line x1="509" y1="91"  x2="91"  y2="509" stroke="#4A7BA7" stroke-width="0.6"/>
-    <line x1="56"  y1="190" x2="544" y2="410" stroke="#4A7BA7" stroke-width="0.4"/>
-    <line x1="190" y1="56"  x2="410" y2="544" stroke="#4A7BA7" stroke-width="0.4"/>
-    <line x1="56"  y1="410" x2="544" y2="190" stroke="#4A7BA7" stroke-width="0.4"/>
-    <line x1="410" y1="56"  x2="190" y2="544" stroke="#4A7BA7" stroke-width="0.4"/>
   </svg>
 
   <p class="hero-eyebrow" aria-hidden="true">A Gift from Keys, Codes &amp; Modes</p>
@@ -660,8 +737,8 @@ For licensing: ben.ryan@keyscodesandmodes.com
     right in your browser. No download. No account. Always free.
   </p>
   <div class="hero-cta">
-    <a href="kcm-tuner.html" class="btn-primary" aria-label="Open the free KCM instrument tuner">&#127928; Open Free Tuner</a>
-    <a href="/insights.html" class="btn-secondary" aria-label="Explore all 20 plus apps and pricing">Explore All 20+ Apps &#8594;</a>
+    <a href="/apps/kcm-tuner.html" class="btn-gold" aria-label="Open the free KCM instrument tuner">&#127928; Open Free Tuner</a>
+    <a href="/signup.html" class="btn-secondary" aria-label="Sign up free to unlock 3 more apps">Get 3 Free Apps Too &#8594;</a>
   </div>
   <p class="hero-note">Works on any device &nbsp;&middot;&nbsp; Audio stays on your device &nbsp;&middot;&nbsp; No account needed</p>
 </section>
@@ -736,7 +813,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
 <div class="free-band">
   <h2>Always Free. No Strings Attached.</h2>
   <p>The KCM Tuner is our gift to every musician. Use it forever, share it freely — it's the door into the Keys, Codes &amp; Modes universe.</p>
-  <a href="kcm-tuner.html" class="btn-primary" aria-label="Open the KCM tuner now — it's free">Open the Tuner Now &#8594;</a>
+  <a href="/apps/kcm-tuner.html" class="btn-gold" aria-label="Open the KCM tuner now — it's free">Open the Tuner Now &#8594;</a>
 </div>
 
 <!-- CHECKLIST -->
@@ -764,7 +841,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
   <section class="upsell" aria-labelledby="upsell-heading">
     <div class="upsell-badge" aria-hidden="true">Want More?</div>
     <h2 id="upsell-heading">The Tuner Is Just the Beginning</h2>
-    <p>Keys, Codes &amp; Modes is a complete visual music theory platform. Pick 3 apps free, or unlock everything with a Student or Professional membership.</p>
+    <p>Keys, Codes &amp; Modes is a complete visual music theory platform. Sign up free and pick 3 apps, or unlock everything with a Student or Professional membership.</p>
     <div class="app-pills" role="list" aria-label="Sample apps available on the platform">
       <div class="app-pill" role="listitem">&#127937; Circle of Fifths</div>
       <div class="app-pill" role="listitem">&#127928; Fretboard Mapper</div>
@@ -776,12 +853,14 @@ For licensing: ben.ryan@keyscodesandmodes.com
       <div class="app-pill" role="listitem">&#127932; Mode Explorer</div>
       <div class="app-pill" role="listitem">+ 14 more</div>
     </div>
-    <a href="/pricing.html" class="btn-primary" aria-label="See all plans and pricing for Keys, Codes and Modes">See All Plans &amp; Pricing &#8594;</a>
+    <a href="/signup.html" class="btn-gold" aria-label="Sign up free — pick 3 apps">Sign Up Free — Pick 3 Apps &#8594;</a>
+    <br/><br/>
+    <a href="/pricing.html" class="btn-secondary" aria-label="See all plans and pricing for Keys, Codes and Modes" style="font-size:.75rem;padding:.6rem 1.6rem;">See All Plans &amp; Pricing</a>
     <p class="upsell-price">Free forever &nbsp;&middot;&nbsp; Student from $9/mo &nbsp;&middot;&nbsp; Founder's Circle $697 lifetime</p>
   </section>
 </div>
 
-<!-- FAQ (feeds Schema FAQPage + Google Featured Snippets) -->
+<!-- FAQ -->
 <section class="faq-section" aria-labelledby="faq-heading">
   <h2 id="faq-heading">Frequently Asked Questions</h2>
   <details>
@@ -802,7 +881,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
   </details>
 </section>
 
-</main><!-- /main-content -->
+</main>
 
 <!-- BOTTOM CHROMATIC STRIP -->
 <div class="chromatic-strip" role="presentation" aria-hidden="true">
@@ -840,12 +919,12 @@ For licensing: ben.ryan@keyscodesandmodes.com
   <p>Created by <strong>Benjamin Ryan</strong> &nbsp;&middot;&nbsp; Santa Barbara, California</p>
   <nav class="footer-links" aria-label="Footer navigation">
     <a href="/index.html">Home</a>
-    <a href="kcm-tuner.html">Free Tuner</a>
+    <a href="/apps/kcm-tuner.html">Free Tuner</a>
     <a href="/pricing.html">Pricing</a>
     <a href="/signup.html">Start Free</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms of Use</a>
-    <a href="cookie-policy.html">Cookie Policy</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Use</a>
+    <a href="/cookie-policy.html">Cookie Policy</a>
   </nav>
   <p class="footer-legal">
     FreeStyle® is a registered trademark. U.S. Patents. All teaching methods, visual representations,
@@ -854,6 +933,35 @@ For licensing: ben.ryan@keyscodesandmodes.com
   </p>
   <p style="margin-top:.9rem;font-size:.75rem;">&#169; 2026 Keys, Codes &amp; Modes&#8482; | Benjamin Ryan | All Rights Reserved</p>
 </footer>
+
+<!-- ═══ HAMBURGER JS ═══ -->
+<script>
+  (function() {
+    var btn = document.getElementById('hamburger-btn');
+    var nav = document.getElementById('mobile-nav');
+    btn.addEventListener('click', function() {
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      nav.setAttribute('aria-hidden', open ? 'false' : 'true');
+    });
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        nav.setAttribute('aria-hidden', 'true');
+      }
+    });
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        nav.setAttribute('aria-hidden', 'true');
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
