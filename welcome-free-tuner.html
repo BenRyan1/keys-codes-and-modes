@@ -9,6 +9,19 @@
 <meta name="theme-color" content="#4A7BA7">
 <meta name="color-scheme" content="dark">
 <!-- Google Analytics -->
+<!-- KCM SIGNUP GATE: Must arrive via MailerLite form or signup-tuner page -->
+<script>
+  (function() {
+    var ref = document.referrer || '';
+    var fromSignup = ref.indexOf('signup-tuner') !== -1 || ref.indexOf('mailerlite') !== -1;
+    var fromMailer = ref.indexOf('keyscodesandmodes.com') !== -1;
+    var hasFlag = sessionStorage.getItem('kcm_tuner_access');
+    if (!fromSignup && !fromMailer && !hasFlag) {
+      window.location.replace('/signup-tuner.html');
+    }
+    sessionStorage.setItem('kcm_tuner_access', '1');
+  })();
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
