@@ -1,32 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- GDPR-gated Analytics — loaded only after cookie consent -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
 <script>
-  window.addEventListener('load', function() {
-    window.cookieconsent.initialise({
-      palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
-      theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-      content: {
-        message: "We use cookies to enhance your experience and analyze site traffic. By clicking Accept, you consent to our use of cookies.",
-        dismiss: "Accept", deny: "Decline", link: "Privacy Policy", href: "/privacy.html"
-      },
-      onStatusChange: function(status) { if (this.hasConsented()) loadGA(); },
-      onInitialise: function(status) { if (this.hasConsented()) loadGA(); }
-    });
-  });
-  function loadGA() {
-    if (window.gaLoaded) return; window.gaLoaded = true;
-    var s = document.createElement('script'); s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF';
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6EGC5ZNZPF', { 'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false });
-  }
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -388,75 +369,6 @@
                 font-size: 1.4rem;
             }
         }
-
-        /* ═══ FREE TUNER BUTTON ═══ */
-        .btn-tuner {
-            background: transparent;
-            border: 2px solid var(--ocean-blue);
-            color: var(--ocean-blue);
-            padding: 1.25rem 3rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        .btn-tuner:hover, .btn-tuner:focus {
-            background: var(--ocean-blue);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        /* ═══ MOBILE HAMBURGER ═══ */
-        .hamburger {
-            display: none;
-            background: none; border: none; cursor: pointer;
-            padding: 8px; flex-direction: column; gap: 5px;
-            align-items: center; justify-content: center;
-        }
-        .hamburger span {
-            display: block; width: 24px; height: 2px;
-            background: var(--light-text); border-radius: 2px; transition: all .25s;
-        }
-        .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-        .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-        .mobile-nav-drawer {
-            display: none;
-            background: rgba(15,15,30,0.98);
-            border-bottom: 2px solid var(--ocean-blue);
-            padding: 1rem 2rem 1.5rem;
-        }
-        .mobile-nav-drawer.open { display: block; }
-        .mobile-nav-drawer ul { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
-        .mobile-nav-drawer a {
-            color: var(--light-text); text-decoration: none; font-weight: 600;
-            font-size: 0.95rem; padding: .5rem 0; display: block;
-            border-bottom: 1px solid rgba(74,123,167,0.15);
-            transition: color .2s;
-        }
-        .mobile-nav-drawer a:hover { color: var(--primary-gold); }
-        .mobile-nav-drawer .cta-btn { border-radius: 50px !important; text-align: center; margin-top: .5rem; }
-
-        /* ═══ RESPONSIVE UPDATES ═══ */
-        @media (max-width: 968px) {
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-        }
-
-        /* ═══ FOCUS VISIBLE ═══ */
-        :focus-visible { outline: 3px solid var(--primary-gold); outline-offset: 3px; }
-
-        /* ═══ REDUCED MOTION ═══ */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
-
-        /* ═══ COOKIE CONSENT CUSTOM STYLE ═══ */
-        .cc-window { font-family: 'Montserrat', sans-serif !important; background: #0a0a15 !important; border: 2px solid #008080 !important; }
-        .cc-btn { background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important; border: none !important; }
-        .cc-link { color: var(--primary-gold) !important; }
     </style>
 </head>
 <body>
@@ -491,22 +403,8 @@
                 <li><a href="/pricing.html">Pricing</a></li>
                 <li><a href="/signup.html" class="cta-btn">Start Free</a></li>
             </ul>
-            <!-- MOBILE HAMBURGER -->
-            <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer" id="kcm-hamburger">
-              <span></span><span></span><span></span>
-            </button>
         </nav>
     </header>
-    <!-- MOBILE NAV DRAWER -->
-    <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile navigation" aria-hidden="true">
-      <ul role="list">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/insights.html">Portals</a></li>
-        <li><a href="/pricing.html">Pricing</a></li>
-        <li><a href="/free-tuner-landing.html">🎸 Free Tuner</a></li>
-        <li><a href="/signup.html" class="cta-btn">Start Free</a></li>
-      </ul>
-    </nav>
     
     <main id="main-content">
         <section class="hero">
@@ -514,7 +412,6 @@
             <p>Experience the visual breakthrough that makes music theory finally click. Master guitar, piano, and composition with our revolutionary 20+ interactive applications.</p>
             <div class="hero-cta">
                 <a href="/signup.html" class="btn-primary">Start Free - Choose 3 Apps</a>
-                <a href="/free-tuner-landing.html" class="btn-tuner">🎸 Free Instrument Tuner</a>
                 <a href="/pricing.html" class="btn-secondary">View Pricing</a>
             </div>
         </section>
@@ -610,33 +507,5 @@
             <p style="margin-top: 0.5rem; color: #666;">Santa Barbara, California | All rights reserved</p>
         </div>
     </footer>
-
-    <!-- ═══ HAMBURGER JS ═══ -->
-    <script>
-      (function() {
-        var btn = document.getElementById('kcm-hamburger');
-        var nav = document.getElementById('mobile-nav-drawer');
-        if (!btn || !nav) return;
-        btn.addEventListener('click', function() {
-          var open = nav.classList.toggle('open');
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-          nav.setAttribute('aria-hidden', open ? 'false' : 'true');
-        });
-        document.addEventListener('click', function(e) {
-          if (!btn.contains(e.target) && !nav.contains(e.target)) {
-            nav.classList.remove('open');
-            btn.setAttribute('aria-expanded', 'false');
-            nav.setAttribute('aria-hidden', 'true');
-          }
-        });
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') {
-            nav.classList.remove('open');
-            btn.setAttribute('aria-expanded', 'false');
-            nav.setAttribute('aria-hidden', 'true');
-          }
-        });
-      })();
-    </script>
 </body>
 </html>
