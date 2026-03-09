@@ -23,9 +23,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
 
   <!-- ═══ MAILERLITE UNIVERSAL ═══ -->
   <script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
     ml('account', '2099860');
   </script>
   <!-- End MailerLite Universal -->
@@ -658,7 +656,8 @@ For licensing: ben.ryan@keyscodesandmodes.com
       margin-top: 2.8rem;
       width: 100%;
       max-width: 520px;
-      animation: fadeUp .6s .26s ease both;
+      display: block;
+      /* No fadeUp animation — must be visible immediately for MailerLite to inject into */
     }
     .hero-form-box {
       background: rgba(13,31,53,0.85);
@@ -667,6 +666,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
       padding: 2rem 2rem 1.5rem;
       box-shadow: 0 8px 40px rgba(74,123,167,0.18), 0 0 0 1px rgba(0,128,128,0.1);
       position: relative;
+      min-height: 160px;
     }
     .hero-form-box::before {
       content: '';
@@ -681,8 +681,15 @@ For licensing: ben.ryan@keyscodesandmodes.com
       margin-bottom: 1.2rem; text-transform: uppercase;
     }
     /* Style the MailerLite form to match KCM brand */
+    /* Force the MailerLite container to be visible */
+    .hero-form-box .ml-embedded {
+      display: block !important;
+      min-height: 100px;
+      width: 100%;
+    }
     .hero-form-box .ml-embedded .ml-form-embedWrapper {
       background: transparent !important;
+      display: block !important;
     }
     .hero-form-box .ml-embedded .ml-form-embedBody {
       padding: 0 !important;
@@ -1038,5 +1045,27 @@ For licensing: ben.ryan@keyscodesandmodes.com
   })();
 </script>
 
+<!-- MailerLite form visibility enforcer -->
+<script>
+  // Watch for MailerLite to inject the form and make sure it stays visible
+  (function() {
+    var target = document.querySelector('.hero-form-box .ml-embedded');
+    if (!target) return;
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (node.style) node.style.display = '';
+          var containers = document.querySelectorAll('.hero-form-box .ml-form-embedContainer, .hero-form-box .ml-form-embedWrapper, .hero-form-box .ml-form-embedBody');
+          containers.forEach(function(el) {
+            el.style.display = 'block';
+            el.style.visibility = 'visible';
+            el.style.opacity = '1';
+          });
+        });
+      });
+    });
+    observer.observe(target, { childList: true, subtree: true });
+  })();
+</script>
 </body>
 </html>
