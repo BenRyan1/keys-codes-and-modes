@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Your Free KCM Instrument Tuner | Keys, Codes & Modes</title>
+    <meta name="description" content="Get instant free access to the KCM Instrument Tuner — real-time pitch detection for guitar, bass, and ukulele. No credit card required.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- MailerLite Universal -->
+    <script>
+        (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+        (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+        ml('account', '2099860');
+    </script>
+    <!-- End MailerLite Universal -->
+
+    <!-- Override MailerLite success redirect to welcome-free-tuner.html -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var observer = new MutationObserver(function() {
+                var form = document.querySelector('.ml-embedded form');
+                if (form) {
+                    form.addEventListener('submit', function() {
+                        setTimeout(function() {
+                            var success = document.querySelector('.ml-form-successContent');
+                            if (success) {
+                                window.location.href = '/welcome-free-tuner.html';
+                            }
+                        }, 1500);
+                    });
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+
+        // Also poll for success state in case submit event doesn't fire
+        setInterval(function() {
+            var success = document.querySelector('.ml-form-successContent');
+            if (success && success.style.display !== 'none' && !window._kcmRedirected) {
+                window._kcmRedirected = true;
+                sessionStorage.setItem('kcm_tuner_access', '1');
+                setTimeout(function() {
+                    window.location.href = '/welcome-free-tuner.html';
+                }, 1200);
+            }
+        }, 500);
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: #E8E8E8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chromatic spectrum bar */
+        .spectrum-bar {
+            height: 4px;
+            background: linear-gradient(90deg,
+                #FFFF00 0%, #FFC400 8.3%, #FF8000 16.6%, #FF4000 25%,
+                #FF0000 33.3%, #C4007F 41.6%, #8000FF 50%, #4000FF 58.3%,
+                #0000FF 66.6%, #007FFF 75%, #00FF80 83.3%, #80FF00 100%);
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(26,61,95,0.95), rgba(42,77,111,0.95));
+            border-bottom: 3px solid #008080;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F4D03F, #008080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        nav a { color: #E8E8E8; text-decoration: none; margin-left: 1.5rem; font-weight: 600; }
+        nav a:hover { color: #F4D03F; }
+
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+
+        .box {
+            max-width: 620px; width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(0,128,128,0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        /* Tuner icon */
+        .tuner-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .tuner-icon .icon-ring {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0,128,128,0.2), rgba(74,123,167,0.2));
+            border: 2px solid rgba(0,128,128,0.5);
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #F4D03F, #008080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.3;
+        }
+        .sub { text-align: center; color: #ccc; margin-bottom: 2rem; line-height: 1.6; }
+
+        /* Instrument badges */
+        .instrument-badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 0.4rem 1.1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .badge-guitar  { background: rgba(244,208,63,0.15);  border: 1px solid #F4D03F;  color: #F4D03F; }
+        .badge-bass    { background: rgba(0,128,128,0.15);   border: 1px solid #008080;   color: #008080; }
+        .badge-ukulele { background: rgba(139,107,163,0.15); border: 1px solid #8B6BA3; color: #8B6BA3; }
+
+        .benefits {
+            background: rgba(244,208,63,0.08);
+            border-left: 4px solid #F4D03F;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+        .benefits h3 { color: #F4D03F; margin-bottom: 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+        .benefits ul { list-style: none; }
+        .benefits li { padding: 0.3rem 0 0.3rem 1.5rem; position: relative; color: #ddd; font-size: 0.95rem; }
+        .benefits li:before { content: "✓"; position: absolute; left: 0; color: #F4D03F; font-weight: bold; }
+
+        .ml-embedded { margin-top: 1rem; }
+
+        .note { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #999; }
+        .note a { color: #008080; text-decoration: none; }
+        .note a:hover { text-decoration: underline; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(0,128,128,0.3);
+            color: #999;
+            font-size: 0.85rem;
+        }
+        footer a { color: #008080; text-decoration: none; }
+
+        @media (max-width: 480px) {
+            .box { padding: 2rem 1.5rem; }
+            h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="spectrum-bar"></div>
+    <header>
+        <a href="/index.html" class="logo">Keys, Codes &amp; Modes</a>
+        <nav>
+            <a href="/index.html">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="box">
+            <div class="tuner-icon">
+                <div class="icon-ring">🎸</div>
+            </div>
+
+            <h2>Get Your Free<br>KCM Instrument Tuner</h2>
+            <p class="sub">Real-time pitch detection in your browser — no app download needed.<br>
+                Tune up and start playing in seconds.</p>
+
+            <div class="instrument-badges">
+                <span class="badge badge-guitar">Guitar</span>
+                <span class="badge badge-bass">Bass</span>
+                <span class="badge badge-ukulele">Ukulele</span>
+            </div>
+
+            <div class="benefits">
+                <h3>What You Get — Free:</h3>
+                <ul>
+                    <li>Instant browser-based chromatic tuner — no install</li>
+                    <li>Works for Guitar, Bass, and Ukulele</li>
+                    <li>Color-coded KCM visual pitch display</li>
+                    <li>Plus exclusive music theory tips via email</li>
+                </ul>
+            </div>
+
+            <!-- MailerLite form — success redirects to /welcome-free-tuner.html via JS above -->
+            <div class="ml-embedded" data-form="CAc4ZX"></div>
+
+            <p class="note">No spam, ever. Unsubscribe anytime.<br>
+                <a href="/privacy-policy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Keys, Codes &amp; Modes™ | Benjamin Ryan | Santa Barbara, CA |
+        <a href="/privacy-policy.html">Privacy</a> | <a href="/terms.html">Terms</a> | <a href="/contact.html">Contact</a></p>
+    </footer>
+</body>
+</html>
