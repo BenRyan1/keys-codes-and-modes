@@ -21,12 +21,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
   <meta name="theme-color" content="#4A7BA7" />
   <meta name="color-scheme" content="dark" />
 
-  <!-- ═══ MAILERLITE UNIVERSAL ═══ -->
-  <script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '2099860');
-  </script>
-  <!-- End MailerLite Universal -->
+  <!-- MailerLite Universal NOT needed — form uses direct fetch submit -->
 
   <!-- ═══ SEO ═══ -->
   <title>Free Online Guitar Tuner | Bass &amp; Ukulele Tuner | Keys, Codes &amp; Modes</title>
@@ -656,8 +651,6 @@ For licensing: ben.ryan@keyscodesandmodes.com
       margin-top: 2.8rem;
       width: 100%;
       max-width: 520px;
-      display: block;
-      /* No fadeUp animation — must be visible immediately for MailerLite to inject into */
     }
     .hero-form-box {
       background: rgba(13,31,53,0.85);
@@ -666,7 +659,6 @@ For licensing: ben.ryan@keyscodesandmodes.com
       padding: 2rem 2rem 1.5rem;
       box-shadow: 0 8px 40px rgba(74,123,167,0.18), 0 0 0 1px rgba(0,128,128,0.1);
       position: relative;
-      min-height: 160px;
     }
     .hero-form-box::before {
       content: '';
@@ -676,49 +668,50 @@ For licensing: ben.ryan@keyscodesandmodes.com
     }
     .form-eyebrow {
       font-family: var(--font-body);
-      font-size: 0.78rem; letter-spacing: 0.08em;
-      color: var(--text-muted); text-align: center;
-      margin-bottom: 1.2rem; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); text-align: center; margin-bottom: 1.4rem;
     }
-    /* Style the MailerLite form to match KCM brand */
-    /* Force the MailerLite container to be visible */
-    .hero-form-box .ml-embedded {
-      display: block !important;
-      min-height: 100px;
-      width: 100%;
+    .tuner-email-form { width: 100%; }
+    .form-row {
+      display: flex; gap: 0.6rem; align-items: stretch;
     }
-    .hero-form-box .ml-embedded .ml-form-embedWrapper {
-      background: transparent !important;
-      display: block !important;
+    .tuner-email-input {
+      flex: 1;
+      padding: 0.95rem 1.2rem;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(74,123,167,0.5);
+      border-radius: 50px;
+      color: var(--text-light);
+      font-family: var(--font-body); font-size: 0.95rem;
+      outline: none; transition: border-color .2s, box-shadow .2s;
+      min-width: 0;
     }
-    .hero-form-box .ml-embedded .ml-form-embedBody {
-      padding: 0 !important;
+    .tuner-email-input::placeholder { color: var(--text-muted); }
+    .tuner-email-input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(0,128,128,0.2);
     }
-    .hero-form-box .ml-embedded input[type="email"],
-    .hero-form-box .ml-embedded input[type="text"] {
-      background: rgba(255,255,255,0.06) !important;
-      border: 1px solid rgba(74,123,167,0.4) !important;
-      color: #E8E8E8 !important;
-      border-radius: 8px !important;
-      font-family: 'Montserrat', sans-serif !important;
+    .tuner-submit-btn {
+      flex-shrink: 0;
+      padding: 0.95rem 1.8rem;
+      background: linear-gradient(135deg, var(--gold) 0%, #ffe566 50%, var(--gold) 100%);
+      color: var(--darkest);
+      font-family: var(--font-display); font-size: 0.82rem; font-weight: 900;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; border-radius: 50px; cursor: pointer;
+      box-shadow: 0 6px 28px rgba(244,208,63,0.45);
+      transition: all .25s; white-space: nowrap;
     }
-    .hero-form-box .ml-embedded button[type="submit"] {
-      background: linear-gradient(135deg, var(--gold) 0%, #ffe566 50%, var(--gold) 100%) !important;
-      color: var(--darkest) !important;
-      font-family: 'Cinzel', serif !important;
-      font-weight: 700 !important;
-      border-radius: 50px !important;
-      letter-spacing: 0.1em !important;
-      box-shadow: 0 6px 28px rgba(244,208,63,0.45) !important;
-      border: none !important;
-      transition: all .25s !important;
+    .tuner-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(244,208,63,0.65); }
+    .tuner-submit-btn:disabled { opacity: 0.7; cursor: wait; transform: none; }
+    .form-error {
+      margin-top: 0.75rem; font-size: 0.82rem; color: #ff6b6b;
+      text-align: center;
     }
-    .hero-form-box .ml-embedded button[type="submit"]:hover {
-      transform: translateY(-2px) !important;
-      box-shadow: 0 10px 40px rgba(244,208,63,0.65) !important;
+    @media (max-width: 500px) {
+      .form-row { flex-direction: column; }
+      .tuner-email-input, .tuner-submit-btn { width: 100%; border-radius: 10px; }
     }
-
-    /* ── Also remove direct tuner CTA from free-band so it goes through email ── */
 
   </style>
 </head>
@@ -813,13 +806,30 @@ For licensing: ben.ryan@keyscodesandmodes.com
     Real-time pitch detection for Guitar, Bass &amp; Ukulele —
     right in your browser. No download. No account. Always free.
   </p>
-  <!-- ═══ EMAIL CAPTURE: MailerLite form — same pattern as signup.html ═══ -->
+  <!-- ═══ EMAIL CAPTURE FORM ═══ -->
   <div class="hero-form-wrap" role="region" aria-label="Sign up to access the free tuner">
     <div class="hero-form-box">
-      <p class="form-eyebrow">Enter your email to access the free tuner instantly</p>
-      <!-- MailerLite Embedded Form CAc4ZX — DO NOT ADD ANY JAVASCRIPT BELOW THIS -->
-      <div class="ml-embedded" data-form="CAc4ZX"></div>
-      <!-- Redirect handled by MailerLite Custom Success Page → /welcome-free-tuner.html?ref=tuner-signup -->
+      <p class="form-eyebrow">Enter your email &mdash; get instant free access</p>
+      <form id="tuner-signup-form" class="tuner-email-form" novalidate>
+        <div class="form-row">
+          <input
+            type="email"
+            id="tuner-email"
+            name="email"
+            placeholder="your@email.com"
+            autocomplete="email"
+            required
+            aria-label="Your email address"
+            aria-required="true"
+            class="tuner-email-input"
+          />
+          <button type="submit" class="tuner-submit-btn" aria-label="Get free tuner access">
+            <span class="btn-label">Get Free Access &#8594;</span>
+            <span class="btn-loading" aria-hidden="true" style="display:none">Sending&#8230;</span>
+          </button>
+        </div>
+        <p class="form-error" id="tuner-form-error" role="alert" aria-live="assertive" style="display:none"></p>
+      </form>
     </div>
     <p class="hero-note">No spam, ever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; Works on any device</p>
   </div>
@@ -1045,27 +1055,54 @@ For licensing: ben.ryan@keyscodesandmodes.com
   })();
 </script>
 
-<!-- MailerLite form visibility enforcer -->
+<!-- ═══ TUNER SIGNUP FORM HANDLER ═══ -->
 <script>
-  // Watch for MailerLite to inject the form and make sure it stays visible
-  (function() {
-    var target = document.querySelector('.hero-form-box .ml-embedded');
-    if (!target) return;
-    var observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(m) {
-        m.addedNodes.forEach(function(node) {
-          if (node.style) node.style.display = '';
-          var containers = document.querySelectorAll('.hero-form-box .ml-form-embedContainer, .hero-form-box .ml-form-embedWrapper, .hero-form-box .ml-form-embedBody');
-          containers.forEach(function(el) {
-            el.style.display = 'block';
-            el.style.visibility = 'visible';
-            el.style.opacity = '1';
-          });
-        });
-      });
-    });
-    observer.observe(target, { childList: true, subtree: true });
-  })();
+(function() {
+  var form   = document.getElementById('tuner-signup-form');
+  var input  = document.getElementById('tuner-email');
+  var errEl  = document.getElementById('tuner-form-error');
+  var btnLbl = form.querySelector('.btn-label');
+  var btnLdr = form.querySelector('.btn-loading');
+  var btn    = form.querySelector('.tuner-submit-btn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = input.value.trim();
+
+    // Basic validation
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.style.display = 'block';
+      input.focus();
+      return;
+    }
+
+    // Show loading state
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btnLbl.style.display = 'none';
+    btnLdr.style.display = 'inline';
+
+    // Submit to MailerLite via the site's Cloudflare Worker,
+    // then redirect to the tuner welcome page regardless of response
+    var dest = '/welcome-free-tuner.html?ref=tuner-signup';
+
+    // Store email in sessionStorage so MailerLite Universal can pick it up
+    try { sessionStorage.setItem('kcm_pending_email', email); } catch(e) {}
+
+    // Fire-and-forget to MailerLite via worker (don't block on result)
+    fetch('/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    }).catch(function() {});  // silently ignore — always redirect
+
+    // Always deliver the tuner after a brief moment
+    setTimeout(function() {
+      window.location.href = dest;
+    }, 600);
+  });
+})();
 </script>
 </body>
 </html>
