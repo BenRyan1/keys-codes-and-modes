@@ -3,24 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Your Free KCM Instrument Tuner | Keys, Codes &amp; Modes</title>
+    <title>Get Your Free KCM Instrument Tuner | Keys, Codes & Modes</title>
     <meta name="description" content="Get instant free access to the KCM Instrument Tuner — real-time pitch detection for guitar, bass, and ukulele. No credit card required.">
+    <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- MailerLite Universal -->
+    <script>
+        (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+        (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+        ml('account', '2099860');
+    </script>
+    <!-- End MailerLite Universal -->
+
+    <!-- Override MailerLite success redirect to welcome-free-tuner.html -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var observer = new MutationObserver(function() {
+                var form = document.querySelector('.ml-embedded form');
+                if (form) {
+                    form.addEventListener('submit', function() {
+                        setTimeout(function() {
+                            var success = document.querySelector('.ml-form-successContent');
+                            if (success) {
+                                window.location.href = '/welcome-free-tuner.html';
+                            }
+                        }, 1500);
+                    });
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+
+        // Also poll for success state in case submit event doesn't fire
+        setInterval(function() {
+            var success = document.querySelector('.ml-form-successContent');
+            if (success && success.style.display !== 'none' && !window._kcmRedirected) {
+                window._kcmRedirected = true;
+                setTimeout(function() {
+                    window.location.href = '/welcome-free-tuner.html';
+                }, 1200);
+            }
+        }, 500);
+    </script>
+
     <style>
-        :root { --teal:#008080; --gold:#F4D03F; --purple:#8B6BA3; --text:#E8E8E8; }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
-            color: var(--text);
+            color: #E8E8E8;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+
+        /* Chromatic spectrum bar */
+        .spectrum-bar {
+            height: 4px;
+            background: linear-gradient(90deg,
+                #FFFF00 0%, #FFC400 8.3%, #FF8000 16.6%, #FF4000 25%,
+                #FF0000 33.3%, #C4007F 41.6%, #8000FF 50%, #4000FF 58.3%,
+                #0000FF 66.6%, #007FFF 75%, #00FF80 83.3%, #80FF00 100%);
+        }
+
         header {
             background: linear-gradient(135deg, rgba(26,61,95,0.95), rgba(42,77,111,0.95));
-            border-bottom: 3px solid var(--teal);
+            border-bottom: 3px solid #008080;
             padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -32,15 +85,17 @@
             font-family: 'Cinzel', serif;
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--gold), var(--teal));
+            background: linear-gradient(135deg, #F4D03F, #008080);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
         }
-        nav a { color:var(--text); text-decoration:none; margin-left:1.5rem; font-weight:600; }
-        nav a:hover { color:var(--gold); }
-        main { flex:1; display:flex; align-items:center; justify-content:center; padding:2rem; }
+        nav a { color: #E8E8E8; text-decoration: none; margin-left: 1.5rem; font-weight: 600; }
+        nav a:hover { color: #F4D03F; }
+
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+
         .box {
             max-width: 620px; width: 100%;
             background: rgba(255,255,255,0.05);
@@ -49,48 +104,91 @@
             padding: 3rem;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
+
+        /* Tuner icon */
+        .tuner-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .tuner-icon .icon-ring {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0,128,128,0.2), rgba(74,123,167,0.2));
+            border: 2px solid rgba(0,128,128,0.5);
+            font-size: 2.5rem;
+        }
+
         h2 {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
+            font-size: 2rem;
             text-align: center;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--gold), var(--teal));
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #F4D03F, #008080);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.3;
         }
-        .sub { text-align:center; color:#ccc; margin-bottom:2rem; line-height:1.6; }
-        .instrument-badges { display:flex; justify-content:center; gap:0.75rem; margin-bottom:2rem; flex-wrap:wrap; }
-        .badge { padding:0.4rem 1.1rem; border-radius:20px; font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
-        .badge-guitar  { background:rgba(244,208,63,0.15);  border:1px solid var(--gold);   color:var(--gold); }
-        .badge-bass    { background:rgba(0,128,128,0.15);   border:1px solid var(--teal);   color:var(--teal); }
-        .badge-ukulele { background:rgba(139,107,163,0.15); border:1px solid var(--purple); color:var(--purple); }
+        .sub { text-align: center; color: #ccc; margin-bottom: 2rem; line-height: 1.6; }
+
+        /* Instrument badges */
+        .instrument-badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 0.4rem 1.1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .badge-guitar  { background: rgba(244,208,63,0.15);  border: 1px solid #F4D03F;  color: #F4D03F; }
+        .badge-bass    { background: rgba(0,128,128,0.15);   border: 1px solid #008080;   color: #008080; }
+        .badge-ukulele { background: rgba(139,107,163,0.15); border: 1px solid #8B6BA3; color: #8B6BA3; }
+
         .benefits {
-            background: rgba(244,208,63,0.1);
-            border-left: 4px solid var(--gold);
+            background: rgba(244,208,63,0.08);
+            border-left: 4px solid #F4D03F;
             padding: 1.5rem;
             margin-bottom: 2rem;
             border-radius: 8px;
         }
-        .benefits h3 { color:var(--gold); margin-bottom:0.8rem; }
-        .benefits li { list-style:none; padding:0.3rem 0 0.3rem 1.5rem; position:relative; }
-        .benefits li:before { content:"✓"; position:absolute; left:0; color:var(--gold); font-weight:bold; }
-        .form-wrap { margin-top:1rem; background:#1a2533; border-radius:8px; overflow:hidden; padding:1.5rem; }
-        .note { text-align:center; margin-top:1.5rem; font-size:0.85rem; color:#999; }
-        .note a { color:var(--teal); text-decoration:none; }
+        .benefits h3 { color: #F4D03F; margin-bottom: 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+        .benefits ul { list-style: none; }
+        .benefits li { padding: 0.3rem 0 0.3rem 1.5rem; position: relative; color: #ddd; font-size: 0.95rem; }
+        .benefits li:before { content: "✓"; position: absolute; left: 0; color: #F4D03F; font-weight: bold; }
+
+        .ml-embedded { margin-top: 1rem; }
+
+        .note { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #999; }
+        .note a { color: #008080; text-decoration: none; }
+        .note a:hover { text-decoration: underline; }
+
         footer {
-            text-align:center; padding:2rem;
-            border-top:1px solid rgba(0,128,128,0.3);
-            color:#999; font-size:0.85rem;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(0,128,128,0.3);
+            color: #999;
+            font-size: 0.85rem;
         }
-        footer a { color:var(--teal); text-decoration:none; }
-        @media (max-width:600px) {
-            .box { padding:1.5rem; } h2 { font-size:1.7rem; }
-            header { padding:1rem; } nav a { margin-left:0.8rem; font-size:0.9rem; }
+        footer a { color: #008080; text-decoration: none; }
+
+        @media (max-width: 480px) {
+            .box { padding: 2rem 1.5rem; }
+            h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
+    <div class="spectrum-bar"></div>
     <header>
         <a href="/index.html" class="logo">Keys, Codes &amp; Modes</a>
         <nav>
@@ -100,116 +198,42 @@
             <a href="/contact.html">Contact</a>
         </nav>
     </header>
+
     <main>
         <div class="box">
-            <h2>Get Your Free<br>KCM Instrument Tuner</h2>
-            <p class="sub">Real-time pitch detection in your browser — no app download needed</p>
-            <div class="instrument-badges">
-                <span class="badge badge-guitar">🎸 Guitar</span>
-                <span class="badge badge-bass">🎵 Bass</span>
-                <span class="badge badge-ukulele">🌺 Ukulele</span>
+            <div class="tuner-icon">
+                <div class="icon-ring">🎸</div>
             </div>
+
+            <h2>Get Your Free<br>KCM Instrument Tuner</h2>
+            <p class="sub">Real-time pitch detection in your browser — no app download needed.<br>
+                Tune up and start playing in seconds.</p>
+
+            <div class="instrument-badges">
+                <span class="badge badge-guitar">Guitar</span>
+                <span class="badge badge-bass">Bass</span>
+                <span class="badge badge-ukulele">Ukulele</span>
+            </div>
+
             <div class="benefits">
-                <h3>What You Get (FREE):</h3>
+                <h3>What You Get — Free:</h3>
                 <ul>
-                    <li>Instant browser-based chromatic tuner — no install needed</li>
+                    <li>Instant browser-based chromatic tuner — no install</li>
                     <li>Works for Guitar, Bass, and Ukulele</li>
                     <li>Color-coded KCM visual pitch display</li>
-                    <li>Exclusive music theory tips and lessons via email</li>
+                    <li>Plus exclusive music theory tips via email</li>
                 </ul>
             </div>
-            <div class="form-wrap">
-<style type="text/css">@import url("https://assets.mlcdn.com/fonts.css?version=1772711");</style>
-    <div id="mlb2-38172162" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-38172162">
-      <div class="ml-form-align-center">
-        <div class="ml-form-embedWrapper embedForm">
-          <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-            <div class="ml-form-embedContent">
-              <h4 style="color:#F4D03F; font-family:'Cinzel',serif; font-size:1.3rem; margin-bottom:0.4rem;">Free Tuner</h4>
-              <p style="color:#ccc; font-size:0.9rem;">Sign up here!</p>
-            </div>
-            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2099860/forms/181408001433797856/subscribe" data-code="" method="post" target="_blank">
-              <div class="ml-form-formContent">
-                <div class="ml-form-fieldRow">
-                  <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                    <input aria-label="email" aria-required="true" type="email" class="form-control" name="fields[email]" placeholder="Email" autocomplete="email" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;font-size:14px;margin-bottom:10px;">
-                  </div>
-                </div>
-                <div class="ml-form-fieldRow">
-                  <div class="ml-field-group ml-field-name">
-                    <input aria-label="name" type="text" class="form-control" name="fields[name]" placeholder="First Name" autocomplete="given-name" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;font-size:14px;margin-bottom:10px;">
-                  </div>
-                </div>
-                <div class="ml-form-fieldRow ml-last-item">
-                  <div class="ml-field-group ml-field-last_name">
-                    <input aria-label="last_name" type="text" class="form-control" name="fields[last_name]" placeholder="Last name" autocomplete="family-name" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;font-size:14px;margin-bottom:10px;">
-                  </div>
-                </div>
-              </div>
-              <div class="ml-form-embedPermissions">
-                <div class="ml-form-embedPermissionsContent default privacy-policy">
-                  <p style="font-size:12px;color:#555;">You can unsubscribe anytime. For more details, review our Privacy Policy.</p>
-                </div>
-              </div>
-              <div class="ml-form-interestGroupsRow ml-block-groups ml-validate-required">
-                <div class="ml-form-interestGroupsRowCheckbox last-group">
-                  <label style="font-size:12px;padding-left:24px;position:relative;display:block;cursor:pointer;">
-                    <input type="checkbox" name="groups[]" value="181408046869644369" style="position:absolute;left:0;top:4px;">
-                    <div class="label-description">Free-Tuner-Sign-Up</div>
-                  </label>
-                  <div class="description" style="font-size:11px;color:#777;margin-top:2px;">Free Tuner</div>
-                </div>
-              </div>
-              <div class="ml-form-checkboxRow ml-validate-required">
-                <label class="checkbox" style="font-size:12px;padding-left:24px;position:relative;display:block;cursor:pointer;">
-                  <input type="checkbox" style="position:absolute;left:0;top:4px;">
-                  <div class="label-description">
-                    <p style="font-size:12px;color:#333;">Opt in to receive news and updates.</p>
-                  </div>
-                </label>
-              </div>
-              <div class="ml-form-recaptcha ml-validate-required" style="margin:15px 0;">
-                <script src="https://www.google.com/recaptcha/api.js"></script>
-                <div class="g-recaptcha" data-sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"></div>
-              </div>
-              <input type="hidden" name="ml-submit" value="1">
-              <div class="ml-form-embedSubmit" style="margin-top:15px;">
-                <button type="submit" class="primary" style="width:100%;padding:12px;background:#000;color:#fff;border:none;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;">Subscribe</button>
-                <button disabled="disabled" style="display:none;" type="button" class="loading">
-                  <span>Loading...</span>
-                </button>
-              </div>
-              <input type="hidden" name="anticsrf" value="true">
-            </form>
-          </div>
-          <div class="ml-form-successBody row-success" style="display:none;padding:20px;">
-            <div class="ml-form-successContent">
-              <h4 style="color:#F4D03F;font-size:24px;margin-bottom:10px;">Thank you!</h4>
-              <p>Enjoy your Keys, Codes &amp; Modes Free Tuner</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script>
-      function ml_webform_success_38172162() {
-        try {
-          window.top.location.href = 'https://keyscodesandmodes.com/welcome-free-tuner.html?ref=tuner-signup';
-        } catch(e) {
-          window.location.href = 'https://keyscodesandmodes.com/welcome-free-tuner.html?ref=tuner-signup';
-        }
-      }
-    </script>
-    <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v95037e5bac78f29ed026832ca21a7c7b" type="text/javascript"></script>
-    <script>
-      fetch("https://assets.mailerlite.com/jsonp/2099860/forms/181408001433797856/takel")
-    </script>
-            </div>
+
+            <!-- MailerLite form — success redirects to /welcome-free-tuner.html via JS above -->
+            <div class="ml-embedded" data-form="CAc4ZX"></div>
+
             <p class="note">No spam, ever. Unsubscribe anytime.<br>
                 <a href="/privacy-policy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a>
             </p>
         </div>
     </main>
+
     <footer>
         <p>© 2026 Keys, Codes &amp; Modes™ | Benjamin Ryan | Santa Barbara, CA |
         <a href="/privacy-policy.html">Privacy</a> | <a href="/terms.html">Terms</a> | <a href="/contact.html">Contact</a></p>
