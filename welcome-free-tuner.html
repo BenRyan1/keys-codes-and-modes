@@ -25,7 +25,7 @@ FreeStyle® is a registered trademark. U.S. Patents.
       var hasToken = params.get('ref') === 'tuner-signup';
       var hasFlag  = sessionStorage.getItem('kcm_tuner_access') === '1';
       if (!hasToken && !hasFlag) {
-        window.location.replace('/signup-tuner.html');
+        window.location.replace('/free-tuner-landing.html');
         return;
       }
       sessionStorage.setItem('kcm_tuner_access', '1');
@@ -559,11 +559,11 @@ FreeStyle® is a registered trademark. U.S. Patents.
 
   <!-- WELCOME HEADER -->
   <header class="welcome-header">
-    <p class="welcome-eyebrow">You&rsquo;re in &mdash; Welcome to KCM</p>
-    <h1>Your Free Tuner<br>is Ready</h1>
+    <p class="welcome-eyebrow">You&rsquo;re confirmed &mdash; Welcome to KCM</p>
+    <h1>Your Free Tuner<br>is Waiting!</h1>
     <p class="welcome-sub">
-      Tune up, then explore. Your free gift is waiting below &mdash;<br>
-      and there&rsquo;s even more free stuff when you&rsquo;re done.
+      Check your inbox &mdash; a confirmation is on its way.<br>
+      Your free tuner link is below. Tune up, then explore.
     </p>
   </header>
 

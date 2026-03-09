@@ -21,6 +21,15 @@ For licensing: ben.ryan@keyscodesandmodes.com
   <meta name="theme-color" content="#4A7BA7" />
   <meta name="color-scheme" content="dark" />
 
+  <!-- ═══ MAILERLITE UNIVERSAL ═══ -->
+  <script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2099860');
+  </script>
+  <!-- End MailerLite Universal -->
+
   <!-- ═══ SEO ═══ -->
   <title>Free Online Guitar Tuner | Bass &amp; Ukulele Tuner | Keys, Codes &amp; Modes</title>
   <meta name="description" content="Free professional chromatic tuner for Guitar, Bass, and Ukulele. Real-time pitch detection — no download, no account required. From Keys, Codes &amp; Modes, the visual music theory platform." />
@@ -643,6 +652,67 @@ For licensing: ben.ryan@keyscodesandmodes.com
       .logo-tagline { display: none; }
       .logo-svg { width: 48px; height: 48px; }
     }
+
+    /* ═══ HERO EMAIL FORM ═══ */
+    .hero-form-wrap {
+      margin-top: 2.8rem;
+      width: 100%;
+      max-width: 520px;
+      animation: fadeUp .6s .26s ease both;
+    }
+    .hero-form-box {
+      background: rgba(13,31,53,0.85);
+      border: 1px solid rgba(74,123,167,0.45);
+      border-radius: 16px;
+      padding: 2rem 2rem 1.5rem;
+      box-shadow: 0 8px 40px rgba(74,123,167,0.18), 0 0 0 1px rgba(0,128,128,0.1);
+      position: relative;
+    }
+    .hero-form-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--teal-light), var(--purple));
+      border-radius: 16px 16px 0 0;
+    }
+    .form-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.78rem; letter-spacing: 0.08em;
+      color: var(--text-muted); text-align: center;
+      margin-bottom: 1.2rem; text-transform: uppercase;
+    }
+    /* Style the MailerLite form to match KCM brand */
+    .hero-form-box .ml-embedded .ml-form-embedWrapper {
+      background: transparent !important;
+    }
+    .hero-form-box .ml-embedded .ml-form-embedBody {
+      padding: 0 !important;
+    }
+    .hero-form-box .ml-embedded input[type="email"],
+    .hero-form-box .ml-embedded input[type="text"] {
+      background: rgba(255,255,255,0.06) !important;
+      border: 1px solid rgba(74,123,167,0.4) !important;
+      color: #E8E8E8 !important;
+      border-radius: 8px !important;
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    .hero-form-box .ml-embedded button[type="submit"] {
+      background: linear-gradient(135deg, var(--gold) 0%, #ffe566 50%, var(--gold) 100%) !important;
+      color: var(--darkest) !important;
+      font-family: 'Cinzel', serif !important;
+      font-weight: 700 !important;
+      border-radius: 50px !important;
+      letter-spacing: 0.1em !important;
+      box-shadow: 0 6px 28px rgba(244,208,63,0.45) !important;
+      border: none !important;
+      transition: all .25s !important;
+    }
+    .hero-form-box .ml-embedded button[type="submit"]:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 10px 40px rgba(244,208,63,0.65) !important;
+    }
+
+    /* ── Also remove direct tuner CTA from free-band so it goes through email ── */
+
   </style>
 </head>
 <body>
@@ -736,11 +806,16 @@ For licensing: ben.ryan@keyscodesandmodes.com
     Real-time pitch detection for Guitar, Bass &amp; Ukulele —
     right in your browser. No download. No account. Always free.
   </p>
-  <div class="hero-cta">
-    <a href="/apps/kcm-tuner.html" class="btn-gold" aria-label="Open the free KCM instrument tuner">&#127928; Open Free Tuner</a>
-    <a href="/signup.html" class="btn-secondary" aria-label="Sign up free to unlock 3 more apps">Get 3 Free Apps Too &#8594;</a>
+  <!-- ═══ EMAIL CAPTURE: MailerLite form — same pattern as signup.html ═══ -->
+  <div class="hero-form-wrap" role="region" aria-label="Sign up to access the free tuner">
+    <div class="hero-form-box">
+      <p class="form-eyebrow">Enter your email to access the free tuner instantly</p>
+      <!-- MailerLite Embedded Form CAc4ZX — DO NOT ADD ANY JAVASCRIPT BELOW THIS -->
+      <div class="ml-embedded" data-form="CAc4ZX"></div>
+      <!-- Redirect handled by MailerLite Custom Success Page → /welcome-free-tuner.html?ref=tuner-signup -->
+    </div>
+    <p class="hero-note">No spam, ever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; Works on any device</p>
   </div>
-  <p class="hero-note">Works on any device &nbsp;&middot;&nbsp; Audio stays on your device &nbsp;&middot;&nbsp; No account needed</p>
 </section>
 
 <!-- INSTRUMENT CHIPS -->
@@ -813,7 +888,7 @@ For licensing: ben.ryan@keyscodesandmodes.com
 <div class="free-band">
   <h2>Always Free. No Strings Attached.</h2>
   <p>The KCM Tuner is our gift to every musician. Use it forever, share it freely — it's the door into the Keys, Codes &amp; Modes universe.</p>
-  <a href="/apps/kcm-tuner.html" class="btn-gold" aria-label="Open the KCM tuner now — it's free">Open the Tuner Now &#8594;</a>
+  <a href="#hero-heading" class="btn-gold" aria-label="Enter your email to get free tuner access" onclick="document.querySelector('.hero-form-box').scrollIntoView({behavior:'smooth'}); return false;">Get Instant Access &#8594;</a>
 </div>
 
 <!-- CHECKLIST -->
