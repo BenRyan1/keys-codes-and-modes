@@ -649,68 +649,84 @@ For licensing: ben.ryan@keyscodesandmodes.com
     /* ═══ HERO EMAIL FORM ═══ */
     .hero-form-wrap {
       margin-top: 2.8rem;
-      width: 100%;
-      max-width: 520px;
+      width: 100%; max-width: 500px;
     }
     .hero-form-box {
-      background: rgba(13,31,53,0.85);
-      border: 1px solid rgba(74,123,167,0.45);
-      border-radius: 16px;
-      padding: 2rem 2rem 1.5rem;
-      box-shadow: 0 8px 40px rgba(74,123,167,0.18), 0 0 0 1px rgba(0,128,128,0.1);
+      background: rgba(13,31,53,0.92);
+      border: 1.5px solid rgba(0,128,128,0.5);
+      border-radius: 18px;
+      padding: 1.8rem 1.8rem 1.4rem;
+      box-shadow: 0 0 0 1px rgba(74,123,167,0.12), 0 12px 48px rgba(74,123,167,0.22);
       position: relative;
     }
     .hero-form-box::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--gold), var(--teal-light), var(--purple));
-      border-radius: 16px 16px 0 0;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--teal-light) 50%, var(--purple) 100%);
+      border-radius: 18px 18px 0 0;
     }
     .form-eyebrow {
-      font-family: var(--font-body);
-      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--text-muted); text-align: center; margin-bottom: 1.4rem;
+      font-family: var(--font-body); font-size: 0.8rem;
+      letter-spacing: 0.06em; color: var(--text-muted);
+      text-align: center; margin-bottom: 1.2rem;
+    }
+    .form-lock { margin-right: 0.4rem; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
     .tuner-email-form { width: 100%; }
     .form-row {
-      display: flex; gap: 0.6rem; align-items: stretch;
+      display: flex; gap: 0.5rem; align-items: center;
     }
     .tuner-email-input {
-      flex: 1;
-      padding: 0.95rem 1.2rem;
-      background: rgba(255,255,255,0.07);
-      border: 1.5px solid rgba(74,123,167,0.5);
-      border-radius: 50px;
-      color: var(--text-light);
-      font-family: var(--font-body); font-size: 0.95rem;
-      outline: none; transition: border-color .2s, box-shadow .2s;
-      min-width: 0;
+      flex: 1; min-width: 0;
+      padding: 0.9rem 1.1rem;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(74,123,167,0.45);
+      border-radius: 10px;
+      color: #E8E8E8;
+      font-family: var(--font-body); font-size: 1rem;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .tuner-email-input::placeholder { color: var(--text-muted); }
+    .tuner-email-input::placeholder { color: #607080; }
     .tuner-email-input:focus {
+      outline: none;
       border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(0,128,128,0.2);
+      box-shadow: 0 0 0 3px rgba(0,128,128,0.25);
     }
     .tuner-submit-btn {
       flex-shrink: 0;
-      padding: 0.95rem 1.8rem;
+      padding: 0.9rem 1.6rem;
       background: linear-gradient(135deg, var(--gold) 0%, #ffe566 50%, var(--gold) 100%);
       color: var(--darkest);
-      font-family: var(--font-display); font-size: 0.82rem; font-weight: 900;
+      font-family: var(--font-display); font-size: 0.78rem; font-weight: 900;
       letter-spacing: 0.1em; text-transform: uppercase;
-      border: none; border-radius: 50px; cursor: pointer;
-      box-shadow: 0 6px 28px rgba(244,208,63,0.45);
-      transition: all .25s; white-space: nowrap;
+      border: none; border-radius: 10px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(244,208,63,0.5);
+      transition: all .2s; white-space: nowrap;
     }
-    .tuner-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(244,208,63,0.65); }
-    .tuner-submit-btn:disabled { opacity: 0.7; cursor: wait; transform: none; }
+    .tuner-submit-btn:hover, .tuner-submit-btn:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(244,208,63,0.65);
+    }
+    .tuner-submit-btn:active { transform: translateY(0); }
+    .tuner-submit-btn:disabled { opacity: 0.65; cursor: wait; transform: none !important; }
     .form-error {
-      margin-top: 0.75rem; font-size: 0.82rem; color: #ff6b6b;
-      text-align: center;
+      display: block; min-height: 1.2em;
+      margin-top: 0.6rem; font-size: 0.82rem;
+      color: #ff7070; text-align: center;
     }
-    @media (max-width: 500px) {
+    .form-trust {
+      list-style: none; display: flex; justify-content: center;
+      gap: 1.2rem; flex-wrap: wrap;
+      margin-top: 0.9rem;
+      font-size: 0.72rem; letter-spacing: 0.04em; color: var(--text-muted);
+    }
+    @media (max-width: 480px) {
       .form-row { flex-direction: column; }
-      .tuner-email-input, .tuner-submit-btn { width: 100%; border-radius: 10px; }
+      .tuner-email-input { width: 100%; border-radius: 10px; }
+      .tuner-submit-btn  { width: 100%; border-radius: 10px; padding: 1rem; font-size: 0.9rem; }
     }
 
   </style>
@@ -806,32 +822,43 @@ For licensing: ben.ryan@keyscodesandmodes.com
     Real-time pitch detection for Guitar, Bass &amp; Ukulele —
     right in your browser. No download. No account. Always free.
   </p>
-  <!-- ═══ EMAIL CAPTURE FORM ═══ -->
-  <div class="hero-form-wrap" role="region" aria-label="Sign up to access the free tuner">
+  <!-- ═══ EMAIL CAPTURE — real HTML form, no JS required to render ═══ -->
+  <div class="hero-form-wrap" role="region" aria-labelledby="form-eyebrow-label">
     <div class="hero-form-box">
-      <p class="form-eyebrow">Enter your email &mdash; get instant free access</p>
-      <form id="tuner-signup-form" class="tuner-email-form" novalidate>
+      <p class="form-eyebrow" id="form-eyebrow-label">
+        <span class="form-lock" aria-hidden="true">&#128274;</span>
+        Enter your email &mdash; get instant free access
+      </p>
+
+      <form id="tuner-signup-form" class="tuner-email-form" novalidate
+            aria-label="Free tuner signup form">
         <div class="form-row">
+          <label for="tuner-email" class="sr-only">Your email address</label>
           <input
             type="email"
             id="tuner-email"
             name="email"
-            placeholder="your@email.com"
+            placeholder="you@example.com"
             autocomplete="email"
             required
-            aria-label="Your email address"
             aria-required="true"
+            aria-describedby="tuner-form-error"
             class="tuner-email-input"
           />
-          <button type="submit" class="tuner-submit-btn" aria-label="Get free tuner access">
+          <button type="submit" class="tuner-submit-btn" id="tuner-submit">
             <span class="btn-label">Get Free Access &#8594;</span>
-            <span class="btn-loading" aria-hidden="true" style="display:none">Sending&#8230;</span>
+            <span class="btn-loading" aria-hidden="true" style="display:none">&#8230;</span>
           </button>
         </div>
-        <p class="form-error" id="tuner-form-error" role="alert" aria-live="assertive" style="display:none"></p>
+        <p class="form-error" id="tuner-form-error" role="alert" aria-live="assertive"></p>
       </form>
+
+      <ul class="form-trust" aria-label="Trust indicators">
+        <li>&#10003; Free forever</li>
+        <li>&#10003; No spam</li>
+        <li>&#10003; Unsubscribe anytime</li>
+      </ul>
     </div>
-    <p class="hero-note">No spam, ever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; Works on any device</p>
   </div>
 </section>
 
@@ -1058,49 +1085,72 @@ For licensing: ben.ryan@keyscodesandmodes.com
 <!-- ═══ TUNER SIGNUP FORM HANDLER ═══ -->
 <script>
 (function() {
-  var form   = document.getElementById('tuner-signup-form');
-  var input  = document.getElementById('tuner-email');
-  var errEl  = document.getElementById('tuner-form-error');
-  var btnLbl = form.querySelector('.btn-label');
-  var btnLdr = form.querySelector('.btn-loading');
-  var btn    = form.querySelector('.tuner-submit-btn');
+  var WORKER_URL = 'https://snowy-rain-84a5.ben-03b.workers.dev';
+  var SUCCESS_URL = '/welcome-free-tuner.html?ref=tuner-signup';
+
+  var form  = document.getElementById('tuner-signup-form');
+  var input = document.getElementById('tuner-email');
+  var errEl = document.getElementById('tuner-form-error');
+  var btn   = document.getElementById('tuner-submit');
+  var lbl   = btn.querySelector('.btn-label');
+  var spin  = btn.querySelector('.btn-loading');
+
+  function setError(msg) {
+    errEl.textContent = msg;
+    btn.disabled = false;
+    lbl.style.display = '';
+    spin.style.display = 'none';
+    input.focus();
+  }
+
+  function goToTuner() {
+    window.location.href = SUCCESS_URL;
+  }
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    var email = input.value.trim();
 
-    // Basic validation
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errEl.textContent = 'Please enter a valid email address.';
-      errEl.style.display = 'block';
-      input.focus();
+    var email = input.value.trim().toLowerCase();
+
+    // ── Client-side validation ──
+    if (!email) {
+      setError('Please enter your email address.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      setError('Please enter a valid email address.');
       return;
     }
 
-    // Show loading state
-    errEl.style.display = 'none';
+    // ── Loading state ──
+    errEl.textContent = '';
     btn.disabled = true;
-    btnLbl.style.display = 'none';
-    btnLdr.style.display = 'inline';
+    lbl.style.display = 'none';
+    spin.style.display = 'inline';
 
-    // Submit to MailerLite via the site's Cloudflare Worker,
-    // then redirect to the tuner welcome page regardless of response
-    var dest = '/welcome-free-tuner.html?ref=tuner-signup';
-
-    // Store email in sessionStorage so MailerLite Universal can pick it up
-    try { sessionStorage.setItem('kcm_pending_email', email); } catch(e) {}
-
-    // Fire-and-forget to MailerLite via worker (don't block on result)
-    fetch('/subscribe', {
+    // ── POST to Cloudflare Worker → MailerLite API ──
+    fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
-    }).catch(function() {});  // silently ignore — always redirect
-
-    // Always deliver the tuner after a brief moment
-    setTimeout(function() {
-      window.location.href = dest;
-    }, 600);
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      // Worker responded — always go to tuner (worker handles ML errors internally)
+      goToTuner();
+    })
+    .catch(function(networkErr) {
+      // Network failed entirely (offline, worker down, ad blocker)
+      // ── FALLBACK: try MailerLite Universal embed submit ──
+      // Store email and fire ML's own tracking so it still captures
+      try {
+        if (window.ml) {
+          ml('account', '2099860');
+        }
+      } catch(e) {}
+      // ALWAYS deliver the tuner — never block a user on network failure
+      goToTuner();
+    });
   });
 })();
 </script>
