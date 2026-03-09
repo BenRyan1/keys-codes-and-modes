@@ -1,0 +1,859 @@
+<!--
+================================================================================
+COPYRIGHT NOTICE - LEGAL WARNING
+================================================================================
+© 2026 Keys, Codes & Modes™ | Benjamin Ryan | All Rights Reserved
+This website and all content, code, design, applications, and materials are the
+exclusive intellectual property of Benjamin Ryan and Keys, Codes & Modes™.
+STRICTLY PROHIBITED: Copying, reproducing, duplicating, distributing, or any
+unauthorized use of these Works is STRICTLY PROHIBITED without express written
+permission. VIOLATORS WILL BE PROSECUTED TO THE FULLEST EXTENT OF THE LAW.
+Protected by U.S. Copyright Law (17 U.S.C. § 101 et seq.)
+FreeStyle® is a registered trademark. U.S. Patents.
+For licensing: ben.ryan@keyscodesandmodes.com
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4A7BA7" />
+
+  <!-- ═══ SEO ═══ -->
+  <title>Free Online Guitar Tuner | Bass &amp; Ukulele Tuner | Keys, Codes &amp; Modes</title>
+  <meta name="description" content="Free professional chromatic tuner for Guitar, Bass, and Ukulele. Real-time pitch detection — no download, no account required. From Keys, Codes &amp; Modes, the visual music theory platform." />
+  <meta name="keywords" content="free guitar tuner, online guitar tuner, bass tuner, ukulele tuner, chromatic tuner, instrument tuner, free music tools, music theory" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Benjamin Ryan" />
+  <link rel="canonical" href="https://keyscodesandmodes.com/free-tuner-landing.html" />
+
+  <!-- ═══ BING VERIFICATION ═══ -->
+  <meta name="msvalidate.01" content="0D401DF2E42C5D4B5D4DBAFEA51EF1BE" />
+
+  <!-- ═══ OPEN GRAPH ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Keys, Codes &amp; Modes" />
+  <meta property="og:title" content="Free Guitar, Bass &amp; Ukulele Tuner | Keys, Codes &amp; Modes" />
+  <meta property="og:description" content="Professional-grade chromatic tuner — real-time pitch detection in your browser. Free forever. No download, no account." />
+  <meta property="og:url" content="https://keyscodesandmodes.com/free-tuner-landing.html" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ═══ TWITTER CARD ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free Guitar, Bass &amp; Ukulele Tuner | Keys, Codes &amp; Modes" />
+  <meta name="twitter:description" content="Professional-grade chromatic tuner — real-time pitch detection in your browser. Free forever." />
+  <meta name="twitter:site" content="@keyscodesandmodes" />
+
+  <!-- ═══ FAVICON ═══ -->
+  <link rel="icon" type="image/png" sizes="32x32" href="kcm-official-logo-32.png" />
+
+  <!-- ═══ PERMISSIONS POLICY — mic restricted to self ═══ -->
+  <meta http-equiv="Permissions-Policy" content="microphone=(self)" />
+
+  <!-- ═══ SCHEMA.ORG JSON-LD ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KCM Instrument Tuner",
+    "url": "https://keyscodesandmodes.com/kcm-tuner.html",
+    "description": "Free professional chromatic tuner for Guitar, Bass, and Ukulele with real-time pitch detection.",
+    "applicationCategory": "MusicApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Benjamin Ryan",
+      "url": "https://keyscodesandmodes.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Keys, Codes & Modes",
+      "url": "https://keyscodesandmodes.com"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://keyscodesandmodes.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Free Tuner", "item": "https://keyscodesandmodes.com/free-tuner-landing.html" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the KCM instrument tuner really free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The KCM Tuner is completely free, forever. No account, no download, and no credit card required." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the tuner work on mobile?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The KCM Tuner is fully responsive and works on phones, tablets, and desktop browsers." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my microphone audio stored or transmitted?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. All audio processing happens locally in your browser using the Web Audio API. Your microphone data never leaves your device." }
+      },
+      {
+        "@type": "Question",
+        "name": "What instruments does the tuner support?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Guitar (standard and 8+ alternate tunings), Bass (4, 5, 6-string and drop tunings), Ukulele (soprano, tenor, baritone), and a fully chromatic mode for any instrument." }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ═══ FONTS ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+
+  <!-- ═══ COOKIE CONSENT CSS ═══ -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <style>
+    .cc-window { font-family: 'Montserrat', sans-serif !important; background: #0a0a15 !important; border: 2px solid #008080 !important; box-shadow: 0 8px 30px rgba(0,217,255,0.3) !important; }
+    .cc-btn { background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important; border: none !important; padding: 0.75rem 2rem !important; font-weight: 600 !important; transition: all 0.3s ease !important; }
+    .cc-btn:hover { transform: translateY(-2px) !important; box-shadow: 0 5px 15px rgba(0,128,128,0.4) !important; }
+    .cc-link { color: #F4D03F !important; }
+    .cc-link:hover { color: #008080 !important; }
+  </style>
+
+  <!-- ═══ COOKIE CONSENT + GDPR-GATED ANALYTICS ═══ -->
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      window.cookieconsent.initialise({
+        palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
+        theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
+        content: {
+          message: "We use cookies to enhance your experience and analyze site traffic. By clicking Accept, you consent to our use of cookies.",
+          dismiss: "Accept", deny: "Decline", link: "Privacy Policy", href: "/privacy.html"
+        },
+        onStatusChange: function(status) { if (this.hasConsented()) loadGA(); },
+        onInitialise: function(status) { if (this.hasConsented()) loadGA(); }
+      });
+    });
+    function loadGA() {
+      if (window.gaLoaded) return; window.gaLoaded = true;
+      var s = document.createElement('script'); s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF';
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6EGC5ZNZPF', { 'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false });
+      gtag('consent', 'default', { 'ad_storage': 'denied', 'analytics_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted' });
+    }
+  </script>
+
+  <!-- ═══ PRINT STYLES ═══ -->
+  <style>
+    @media print {
+      header, footer, .chromatic-strip, .wheel-bg, .hero-cta,
+      .free-band, .upsell-wrap, nav { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .hero h1, .section-title, .feat-card h3 { color: black !important; -webkit-text-fill-color: black !important; }
+      .feat-card { border: 1px solid #ccc !important; background: white !important; }
+    }
+  </style>
+
+  <style>
+    /* ════════════════════════════════════════
+       KCM BRAND VARIABLES — ACCURATE TO SITE
+    ════════════════════════════════════════ */
+    :root {
+      --ocean-blue:   #4A7BA7;
+      --deep-navy:    #2a4d6f;
+      --darker-navy:  #1a3349;
+      --darkest:      #0d1f35;
+      --gold:         #F4D03F;
+      --gold-light:   #F9E57A;
+      --gold-dark:    #C9A227;
+      --teal:         #008080;
+      --teal-light:   #00BFFF;
+      --purple:       #8B6BA3;
+      --coral:        #CF7A5A;
+      --text-light:   #E8E8E8;
+      --text-muted:   #A0B4C8;
+      --border:       rgba(74,123,167,0.35);
+      --gradient-bg:     linear-gradient(135deg, #0d1f35 0%, #1a3349 50%, #0d1f35 100%);
+      --gradient-header: linear-gradient(135deg, #0d1f35 0%, #162c48 100%);
+      --gradient-gold:   linear-gradient(135deg, var(--gold) 0%, var(--teal-light) 50%, var(--purple) 100%);
+      --font-display: 'Cinzel', serif;
+      --font-elegant: 'Cormorant Garamond', serif;
+      --font-body:    'Montserrat', sans-serif;
+      --font-tech:    'Orbitron', monospace;
+    }
+
+    /* ═══ RESET ═══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ═══ REDUCED MOTION ═══ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ═══ HIGH CONTRAST ═══ */
+    @media (forced-colors: active) {
+      .btn-primary, .btn-secondary { border: 2px solid ButtonText !important; }
+      .feat-card { border: 1px solid ButtonText !important; }
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--gradient-bg);
+      background-attachment: fixed;
+      color: var(--text-light);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ═══ SKIP LINK (WCAG 2.4.1) ═══ */
+    .skip-link {
+      position: absolute;
+      top: -40px; left: 0;
+      background: var(--gold);
+      color: var(--darkest);
+      padding: 8px 16px;
+      font-weight: 700;
+      text-decoration: none;
+      z-index: 10000;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ═══ FOCUS VISIBLE (WCAG 2.4.7) ═══ */
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    /* ═══ CHROMATIC STRIP ═══ */
+    .chromatic-strip { display: flex; height: 5px; width: 100%; }
+    .chromatic-strip span { flex: 1; }
+
+    /* ═══ HEADER ═══ */
+    header {
+      background: var(--gradient-header);
+      border-bottom: 3px solid var(--ocean-blue);
+      padding: 0 2rem;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 20px rgba(74,123,167,0.3);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 88px;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 1rem; text-decoration: none; }
+    .logo-svg { width: 70px; height: 70px; flex-shrink: 0; filter: drop-shadow(0 6px 15px rgba(74,123,167,0.6)); animation: gentleFloat 4s ease-in-out infinite; transition: transform .3s; }
+    .logo-wrap:hover .logo-svg { transform: scale(1.08); animation-play-state: paused; }
+    .footer-logo-svg { width: 50px; height: 50px; flex-shrink: 0; filter: drop-shadow(0 2px 8px rgba(244,208,63,0.3)); opacity: 0.85; }
+    @keyframes gentleFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+    .logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .logo-title {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 900;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .logo-tagline {
+      font-family: var(--font-elegant); font-style: italic;
+      font-size: 0.72rem; color: var(--text-muted);
+      letter-spacing: 0.05em; margin-top: 3px;
+    }
+    nav ul { display: flex; gap: 1.8rem; list-style: none; }
+    nav a {
+      font-family: var(--font-body); font-size: 0.82rem; font-weight: 400;
+      color: var(--text-muted); text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: color .2s; padding: .25rem .4rem; border-radius: 3px;
+    }
+    nav a:hover, nav a:focus { color: var(--gold); }
+
+    /* ═══ BUTTONS ═══ */
+    .btn-primary {
+      display: inline-block;
+      padding: .85rem 2.2rem;
+      background: linear-gradient(135deg, var(--ocean-blue), var(--deep-navy));
+      color: var(--gold);
+      font-family: var(--font-display); font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+      border: 2px solid var(--teal); border-radius: 50px;
+      transition: all .25s;
+      box-shadow: 0 4px 16px rgba(0,128,128,0.25);
+      cursor: pointer;
+    }
+    .btn-primary:hover, .btn-primary:focus {
+      background: linear-gradient(135deg, var(--teal), var(--ocean-blue));
+      color: #fff; transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0,128,128,0.4);
+    }
+    .btn-secondary {
+      display: inline-block;
+      padding: .85rem 2.2rem;
+      background: transparent; color: var(--gold);
+      font-family: var(--font-display); font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+      border: 2px solid var(--gold-dark); border-radius: 50px;
+      transition: all .25s; cursor: pointer;
+    }
+    .btn-secondary:hover, .btn-secondary:focus {
+      background: rgba(244,208,63,0.12); border-color: var(--gold); transform: translateY(-2px);
+    }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      min-height: 88vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 5rem 1.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(74,123,167,0.18) 0%, rgba(0,128,128,0.08) 45%, transparent 70%);
+    }
+    .wheel-bg {
+      position: absolute; width: 600px; height: 600px;
+      top: 50%; left: 50%; transform: translate(-50%, -52%);
+      opacity: 0.08; animation: spin 80s linear infinite; pointer-events: none;
+    }
+    @keyframes spin { to { transform: translate(-50%, -52%) rotate(360deg); } }
+    .hero-eyebrow {
+      font-family: var(--font-body); font-size: 0.72rem;
+      letter-spacing: 0.25em; text-transform: uppercase; color: var(--teal);
+      margin-bottom: 1.2rem; animation: fadeUp .6s ease both;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6.5vw, 5rem); font-weight: 900;
+      line-height: 1.1; letter-spacing: 0.04em; max-width: 860px;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: fadeUp .6s .08s ease both;
+    }
+    .hero-sub {
+      font-family: var(--font-elegant); font-style: italic;
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem); color: var(--text-muted);
+      max-width: 600px; margin-top: 1.2rem; animation: fadeUp .6s .16s ease both;
+    }
+    .hero-cta {
+      margin-top: 2.8rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+      animation: fadeUp .6s .26s ease both;
+    }
+    .hero-note {
+      margin-top: 1rem; font-size: 0.78rem; color: var(--text-muted);
+      letter-spacing: 0.05em; animation: fadeUp .6s .34s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══ INSTRUMENT CHIPS ═══ */
+    .inst-strip {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: rgba(13,31,53,0.6);
+    }
+    .inst-chip {
+      padding: .5rem 1.4rem;
+      background: rgba(74,123,167,0.15); border: 1px solid var(--border);
+      border-radius: 50px; font-size: 0.85rem; color: var(--text-muted);
+    }
+    .inst-chip strong { color: var(--gold); font-weight: 600; }
+
+    /* ═══ SECTIONS ═══ */
+    .section { max-width: 1060px; margin: 0 auto; padding: 5.5rem 1.5rem; }
+    .section-label {
+      font-family: var(--font-body); font-size: 0.7rem;
+      letter-spacing: 0.25em; text-transform: uppercase; color: var(--teal); margin-bottom: .7rem;
+    }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      font-weight: 700; letter-spacing: 0.04em; line-height: 1.2; max-width: 620px;
+    }
+    .section-title span {
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ═══ FEATURES GRID ═══ */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1px; margin-top: 3rem; border: 1px solid var(--border); background: var(--border);
+    }
+    .feat-card { background: rgba(13,31,53,0.92); padding: 2rem 1.8rem; transition: background .2s; }
+    .feat-card:hover { background: rgba(26,51,73,0.95); }
+    .feat-icon { font-size: 1.7rem; margin-bottom: .9rem; }
+    .feat-icon[role="img"] { display: block; }
+    .feat-card h3 {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.06em; color: var(--gold); margin-bottom: .5rem;
+    }
+    .feat-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+    /* ═══ TUNER MOCKUP ═══ */
+    .tuner-mock {
+      background: rgba(13,31,53,0.9); border: 1px solid var(--ocean-blue);
+      border-radius: 8px; max-width: 440px; margin: 4rem auto 0;
+      padding: 2.2rem 1.8rem 1.8rem; text-align: center;
+      box-shadow: 0 0 40px rgba(74,123,167,0.2), 0 0 80px rgba(0,128,128,0.08);
+      position: relative;
+    }
+    .tuner-mock::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--teal), var(--purple));
+      border-radius: 8px 8px 0 0;
+    }
+    .mock-label {
+      font-family: var(--font-body); font-size: 0.68rem;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.2rem;
+    }
+    .mock-note {
+      font-family: var(--font-tech); font-size: 5rem; font-weight: 900; color: var(--gold);
+      line-height: 1; text-shadow: 0 0 30px rgba(244,208,63,0.4);
+    }
+    .mock-cents { font-family: var(--font-tech); font-size: 0.8rem; color: var(--teal-light); letter-spacing: .15em; margin-top: .3rem; }
+    .mock-meter { margin: 1.6rem 0 .6rem; height: 6px; background: var(--border); border-radius: 4px; position: relative; }
+    .mock-needle {
+      position: absolute; top: 50%; left: 52%; transform: translate(-50%, -50%);
+      width: 3px; height: 20px; background: var(--gold); border-radius: 2px;
+      box-shadow: 0 0 10px var(--gold); animation: wobble 3.5s ease-in-out infinite;
+    }
+    @keyframes wobble { 0%,100% { left: 52%; } 35% { left: 55%; } 70% { left: 50%; } }
+    .mock-scale { font-size: 0.72rem; color: var(--text-muted); letter-spacing: .06em; }
+    .mock-strings { display: flex; justify-content: center; gap: .7rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .s-dot {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-tech); font-size: 0.75rem; color: var(--text-muted);
+    }
+    .s-dot.active {
+      border-color: var(--gold); background: rgba(244,208,63,0.12); color: var(--gold);
+      box-shadow: 0 0 14px rgba(244,208,63,0.3);
+    }
+    .s-dot[aria-current="true"] { border-color: var(--gold); }
+
+    /* ═══ FREE BAND ═══ */
+    .free-band {
+      background: rgba(13,31,53,0.8);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 5rem 1.5rem; text-align: center; position: relative; overflow: hidden;
+    }
+    .free-band::before {
+      content: 'FREE'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display); font-size: clamp(6rem, 18vw, 14rem);
+      font-weight: 900; color: var(--gold); opacity: 0.05;
+      letter-spacing: .2em; pointer-events: none; user-select: none; white-space: nowrap;
+      aria-hidden: true;
+    }
+    .free-band h2 {
+      font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.8rem);
+      font-weight: 700; letter-spacing: 0.04em;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 1rem; position: relative;
+    }
+    .free-band p {
+      font-family: var(--font-elegant); font-style: italic; font-size: 1.1rem;
+      color: var(--text-muted); max-width: 520px; margin: 0 auto 2.2rem; position: relative;
+    }
+
+    /* ═══ CHECKLIST ═══ */
+    .checklist {
+      list-style: none;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: .85rem; margin-top: 2.8rem; text-align: left;
+    }
+    .checklist li { display: flex; align-items: flex-start; gap: .7rem; font-size: 0.9rem; color: var(--text-muted); }
+    .check-icon { color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .checklist strong { color: var(--text-light); font-weight: 500; }
+
+    /* ═══ UPSELL ═══ */
+    .upsell-wrap { padding: 0 1.5rem 6rem; max-width: 1060px; margin: 0 auto; }
+    .upsell {
+      background: linear-gradient(135deg, rgba(26,51,73,0.9) 0%, rgba(13,31,53,0.95) 100%);
+      border: 1px solid var(--ocean-blue); border-radius: 8px;
+      padding: 3rem 2.5rem; text-align: center; position: relative;
+      box-shadow: 0 0 50px rgba(74,123,167,0.15);
+    }
+    .upsell::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--teal-light), var(--purple), var(--gold));
+      border-radius: 8px 8px 0 0;
+    }
+    .upsell-badge {
+      display: inline-block; padding: .25rem 1rem;
+      background: rgba(244,208,63,0.12); border: 1px solid rgba(244,208,63,0.3);
+      color: var(--gold); font-family: var(--font-display);
+      font-size: 0.68rem; letter-spacing: .2em; text-transform: uppercase;
+      border-radius: 50px; margin-bottom: 1.2rem;
+    }
+    .upsell h2 {
+      font-family: var(--font-display); font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+      font-weight: 700; letter-spacing: 0.04em;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: .9rem;
+    }
+    .upsell > p {
+      font-family: var(--font-elegant); font-style: italic; color: var(--text-muted);
+      font-size: 1rem; margin: 0 auto 2rem; max-width: 500px;
+    }
+    .app-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: .55rem; margin-bottom: 2rem; }
+    .app-pill {
+      padding: .3rem .9rem; background: rgba(74,123,167,0.15);
+      border: 1px solid var(--border); border-radius: 50px; font-size: 0.8rem; color: var(--text-muted);
+    }
+    .upsell-price { margin-top: 1rem; font-size: .8rem; color: var(--text-muted); letter-spacing: .04em; }
+
+    /* ═══ FAQ SECTION ═══ */
+    .faq-section { max-width: 760px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+    .faq-section h2 {
+      font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700; letter-spacing: .04em; color: var(--gold); margin-bottom: 2rem;
+    }
+    details {
+      border-bottom: 1px solid var(--border); padding: 1.2rem 0;
+    }
+    summary {
+      font-family: var(--font-display); font-size: 0.95rem; font-weight: 700;
+      color: var(--text-light); letter-spacing: .03em; cursor: pointer; list-style: none;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; color: var(--gold); font-size: 1.2rem; transition: transform .2s; }
+    details[open] summary::after { content: '−'; }
+    details p { font-size: 0.9rem; color: var(--text-muted); margin-top: .8rem; line-height: 1.7; }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      background: var(--darkest); border-top: 3px solid var(--ocean-blue);
+      padding: 2.5rem 2rem; text-align: center;
+    }
+    .footer-brand {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 900;
+      letter-spacing: .15em;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: .35rem;
+    }
+    .footer-tagline { font-family: var(--font-elegant); font-style: italic; font-size: 0.82rem; color: var(--text-muted); margin-bottom: .9rem; }
+    footer p { font-size: 0.8rem; color: var(--text-muted); }
+    footer a { color: var(--text-muted); text-decoration: none; transition: color .2s; }
+    footer a:hover, footer a:focus { color: var(--gold); }
+    .footer-links { margin-top: .5rem; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+    .footer-legal { margin-top: .8rem; font-size: .75rem; color: var(--text-muted); line-height: 1.6; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 640px) {
+      .header-inner { height: 60px; }
+      nav ul { display: none; }
+      .hero { padding: 5rem 1.2rem 3.5rem; }
+      .upsell { padding: 2rem 1.5rem; }
+      .logo-tagline { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SKIP NAV (WCAG 2.4.1) -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- TOP CHROMATIC STRIP -->
+<div class="chromatic-strip" role="presentation" aria-hidden="true">
+  <span style="background:#FFFF00"></span>
+  <span style="background:#FFB300"></span>
+  <span style="background:#FF8000"></span>
+  <span style="background:#FF4500"></span>
+  <span style="background:#FF0000"></span>
+  <span style="background:#CC0066"></span>
+  <span style="background:#007FFF"></span>
+  <span style="background:#4000FF"></span>
+  <span style="background:#8000FF"></span>
+  <span style="background:#0057FF"></span>
+  <span style="background:#00BFFF"></span>
+  <span style="background:#99CC00"></span>
+</div>
+
+<!-- HEADER -->
+<header role="banner">
+  <div class="header-inner">
+    <a href="index.html" class="logo-wrap" aria-label="Keys, Codes and Modes — Home">
+      <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keys, Codes and Modes logo">
+        <title>Keys, Codes &amp; Modes Logo</title>
+        <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+        <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+        <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+        <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+        <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+        <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+        <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+        <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+        <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+        <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+        <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-title">KEYS, CODES &amp; MODES</span>
+        <span class="logo-tagline">A Visual Approach to Understanding Music</span>
+      </div>
+    </a>
+    <nav aria-label="Main navigation">
+      <ul role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="insights.html">Apps</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="signup.html">Start Free</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-heading">
+  <svg class="wheel-bg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <circle cx="300" cy="300" r="270" stroke="#4A7BA7" stroke-width="1"/>
+    <circle cx="300" cy="300" r="190" stroke="#4A7BA7" stroke-width="0.5"/>
+    <circle cx="300" cy="300" r="110" stroke="#4A7BA7" stroke-width="0.5"/>
+    <line x1="300" y1="30"  x2="300" y2="570" stroke="#4A7BA7" stroke-width="0.7"/>
+    <line x1="30"  y1="300" x2="570" y2="300" stroke="#4A7BA7" stroke-width="0.7"/>
+    <line x1="91"  y1="91"  x2="509" y2="509" stroke="#4A7BA7" stroke-width="0.6"/>
+    <line x1="509" y1="91"  x2="91"  y2="509" stroke="#4A7BA7" stroke-width="0.6"/>
+    <line x1="56"  y1="190" x2="544" y2="410" stroke="#4A7BA7" stroke-width="0.4"/>
+    <line x1="190" y1="56"  x2="410" y2="544" stroke="#4A7BA7" stroke-width="0.4"/>
+    <line x1="56"  y1="410" x2="544" y2="190" stroke="#4A7BA7" stroke-width="0.4"/>
+    <line x1="410" y1="56"  x2="190" y2="544" stroke="#4A7BA7" stroke-width="0.4"/>
+  </svg>
+
+  <p class="hero-eyebrow" aria-hidden="true">A Gift from Keys, Codes &amp; Modes</p>
+  <h1 id="hero-heading">Your Free Professional<br/>Instrument Tuner</h1>
+  <p class="hero-sub">
+    Real-time pitch detection for Guitar, Bass &amp; Ukulele —
+    right in your browser. No download. No account. Always free.
+  </p>
+  <div class="hero-cta">
+    <a href="kcm-tuner.html" class="btn-primary" aria-label="Open the free KCM instrument tuner">&#127928; Open Free Tuner</a>
+    <a href="insights.html" class="btn-secondary" aria-label="Explore all 20 plus apps and pricing">Explore All 20+ Apps &#8594;</a>
+  </div>
+  <p class="hero-note">Works on any device &nbsp;&middot;&nbsp; Audio stays on your device &nbsp;&middot;&nbsp; No account needed</p>
+</section>
+
+<!-- INSTRUMENT CHIPS -->
+<div class="inst-strip" role="list" aria-label="Supported instruments">
+  <div class="inst-chip" role="listitem"><strong>&#127928; Guitar</strong> — Standard E A D G B E + 8 alternate tunings</div>
+  <div class="inst-chip" role="listitem"><strong>&#127928; Bass</strong> — 4 / 5 / 6 string + Drop D/C/B</div>
+  <div class="inst-chip" role="listitem"><strong>&#129685; Ukulele</strong> — Soprano, Baritone, Tenor</div>
+  <div class="inst-chip" role="listitem"><strong>&#127925; Chromatic</strong> — All 12 notes detected</div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" aria-labelledby="features-heading">
+  <p class="section-label" aria-hidden="true">What You Get</p>
+  <h2 class="section-title" id="features-heading">Built for <span>serious players</span></h2>
+  <div class="features-grid" role="list">
+    <div class="feat-card" role="listitem">
+      <div class="feat-icon" role="img" aria-label="Microphone">&#127908;</div>
+      <h3>Real-Time Pitch Detection</h3>
+      <p>Web Audio API autocorrelation analyzes your microphone input instantly. The needle responds in real time — no lag, no guessing.</p>
+    </div>
+    <div class="feat-card" role="listitem">
+      <div class="feat-icon" role="img" aria-label="Color palette">&#127912;</div>
+      <h3>KCM Chromatic Color System</h3>
+      <p>C=Yellow, F#=Blue, A=Cobalt — every note carries its signature color from our visual theory framework, reinforcing what you hear with what you see.</p>
+    </div>
+    <div class="feat-card" role="listitem">
+      <div class="feat-icon" role="img" aria-label="Music note">&#127925;</div>
+      <h3>Reference Tone Playback</h3>
+      <p>Tap any string to hear its target pitch with harmonic synthesis. Perfect for tuning by ear or confirming your pitch before playing.</p>
+    </div>
+    <div class="feat-card" role="listitem">
+      <div class="feat-icon" role="img" aria-label="Lightning bolt">&#9889;</div>
+      <h3>25+ Tuning Presets</h3>
+      <p>Standard, Drop D, Open G, DADGAD, Open D/E/A for guitar. Standard 4/5/6-string and drop tunings for bass. Multiple ukulele voicings.</p>
+    </div>
+    <div class="feat-card" role="listitem">
+      <div class="feat-icon" role="img" aria-label="Mobile phone">&#128241;</div>
+      <h3>Mobile-First Design</h3>
+      <p>Prop up your phone on a music stand and tune hands-free. Fully responsive — crisp and readable at any screen size.</p>
+    </div>
+    <div class="feat-card" role="listitem">
+      <div class="feat-icon" role="img" aria-label="Lock">&#128274;</div>
+      <h3>Private by Design</h3>
+      <p>All audio processing happens locally in your browser. Nothing is recorded, transmitted, or stored. Your microphone data never leaves your device.</p>
+    </div>
+  </div>
+
+  <!-- Animated tuner mockup -->
+  <div class="tuner-mock" role="img" aria-label="Animated preview of the KCM tuner showing the note A at plus 2 cents">
+    <div class="mock-label" aria-hidden="true">Live Preview</div>
+    <div class="mock-note" aria-hidden="true">A</div>
+    <div class="mock-cents" aria-hidden="true">+2 cents</div>
+    <div class="mock-meter" aria-hidden="true">
+      <div class="mock-needle"></div>
+    </div>
+    <div class="mock-scale" aria-hidden="true">&#9837; FLAT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN TUNE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SHARP &#9839;</div>
+    <div class="mock-strings" aria-hidden="true">
+      <div class="s-dot" style="border-color:#FFFF00;color:#FFFF00;background:rgba(255,255,0,0.08)">E</div>
+      <div class="s-dot active" aria-current="true">A</div>
+      <div class="s-dot" style="border-color:#FF8000;color:#FF8000;background:rgba(255,128,0,0.08)">D</div>
+      <div class="s-dot" style="border-color:#6060FF;color:#6060FF;background:rgba(64,0,255,0.08)">G</div>
+      <div class="s-dot" style="border-color:#99CC00;color:#99CC00;background:rgba(153,204,0,0.08)">B</div>
+      <div class="s-dot" style="border-color:#FFFF00;color:#FFFF00;background:rgba(255,255,0,0.08)">E</div>
+    </div>
+    <p style="font-size:.72rem;color:var(--text-muted);margin-top:1.1rem;font-family:var(--font-body);letter-spacing:.08em;" aria-hidden="true">&#127928; Guitar — Standard Tuning</p>
+  </div>
+</section>
+
+<!-- FREE BAND -->
+<div class="free-band">
+  <h2>Always Free. No Strings Attached.</h2>
+  <p>The KCM Tuner is our gift to every musician. Use it forever, share it freely — it's the door into the Keys, Codes &amp; Modes universe.</p>
+  <a href="kcm-tuner.html" class="btn-primary" aria-label="Open the KCM tuner now — it's free">Open the Tuner Now &#8594;</a>
+</div>
+
+<!-- CHECKLIST -->
+<section class="section" aria-labelledby="checklist-heading">
+  <p class="section-label" aria-hidden="true">Everything Included</p>
+  <h2 class="section-title" id="checklist-heading">Zero cost. <span>Zero compromise.</span></h2>
+  <ul class="checklist" aria-label="Full list of features included in the free tuner">
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Guitar tuner</strong> — standard &amp; 8 alternate tunings</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Bass tuner</strong> — 4, 5 &amp; 6 string + drop tunings</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Ukulele tuner</strong> — soprano, tenor, baritone</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Chromatic mode</strong> — detect any of the 12 pitches</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Visual needle meter</strong> — flat / in-tune / sharp</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>KCM color-coded notes</strong> — 12-color chromatic system</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Reference tone playback</strong> — hear target pitch</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Play All Strings sequencer</strong></span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Works offline</strong> — no internet needed once loaded</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>No login required</strong> — open and play immediately</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>No ads</strong> — clean, distraction-free experience</span></li>
+    <li><span class="check-icon" aria-hidden="true">&#10003;</span><span><strong>Audio stays local</strong> — mic data never transmitted</span></li>
+  </ul>
+</section>
+
+<!-- UPSELL -->
+<div class="upsell-wrap">
+  <section class="upsell" aria-labelledby="upsell-heading">
+    <div class="upsell-badge" aria-hidden="true">Want More?</div>
+    <h2 id="upsell-heading">The Tuner Is Just the Beginning</h2>
+    <p>Keys, Codes &amp; Modes is a complete visual music theory platform. Pick 3 apps free, or unlock everything with a Student or Professional membership.</p>
+    <div class="app-pills" role="list" aria-label="Sample apps available on the platform">
+      <div class="app-pill" role="listitem">&#127937; Circle of Fifths</div>
+      <div class="app-pill" role="listitem">&#127928; Fretboard Mapper</div>
+      <div class="app-pill" role="listitem">&#127929; Piano Visualizer</div>
+      <div class="app-pill" role="listitem">&#128066; Ear Training</div>
+      <div class="app-pill" role="listitem">&#127744; Chromatic Wheel</div>
+      <div class="app-pill" role="listitem">&#128336; Spoke Clock</div>
+      <div class="app-pill" role="listitem">&#9889; Speed Challenge</div>
+      <div class="app-pill" role="listitem">&#127932; Mode Explorer</div>
+      <div class="app-pill" role="listitem">+ 14 more</div>
+    </div>
+    <a href="pricing.html" class="btn-primary" aria-label="See all plans and pricing for Keys, Codes and Modes">See All Plans &amp; Pricing &#8594;</a>
+    <p class="upsell-price">Free forever &nbsp;&middot;&nbsp; Student from $9/mo &nbsp;&middot;&nbsp; Founder's Circle $697 lifetime</p>
+  </section>
+</div>
+
+<!-- FAQ (feeds Schema FAQPage + Google Featured Snippets) -->
+<section class="faq-section" aria-labelledby="faq-heading">
+  <h2 id="faq-heading">Frequently Asked Questions</h2>
+  <details>
+    <summary>Is the KCM instrument tuner really free?</summary>
+    <p>Yes. The KCM Tuner is completely free, forever. No account, no download, and no credit card required.</p>
+  </details>
+  <details>
+    <summary>Does the tuner work on mobile?</summary>
+    <p>Yes. The KCM Tuner is fully responsive and works on phones, tablets, and desktop browsers. Just allow microphone access when prompted.</p>
+  </details>
+  <details>
+    <summary>Is my microphone audio stored or transmitted?</summary>
+    <p>No. All audio processing happens locally in your browser using the Web Audio API. Your microphone data never leaves your device and is never recorded or stored.</p>
+  </details>
+  <details>
+    <summary>What instruments does the tuner support?</summary>
+    <p>Guitar (standard and 8+ alternate tunings including Drop D, Open G, DADGAD), Bass (4, 5, 6-string and drop tunings), Ukulele (soprano, tenor, baritone), and a fully chromatic mode for any instrument.</p>
+  </details>
+</section>
+
+</main><!-- /main-content -->
+
+<!-- BOTTOM CHROMATIC STRIP -->
+<div class="chromatic-strip" role="presentation" aria-hidden="true">
+  <span style="background:#FFFF00"></span>
+  <span style="background:#FFB300"></span>
+  <span style="background:#FF8000"></span>
+  <span style="background:#FF4500"></span>
+  <span style="background:#FF0000"></span>
+  <span style="background:#CC0066"></span>
+  <span style="background:#007FFF"></span>
+  <span style="background:#4000FF"></span>
+  <span style="background:#8000FF"></span>
+  <span style="background:#0057FF"></span>
+  <span style="background:#00BFFF"></span>
+  <span style="background:#99CC00"></span>
+</div>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <svg class="footer-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+    <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+    <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+    <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+    <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+    <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+    <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+    <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+    <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+    <line x1="40" y1="40" x2="160" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+    <line x1="160" y1="40" x2="40" y2="160" stroke="#008080" stroke-width="2" opacity="0.3"/>
+  </svg>
+  <div class="footer-brand" aria-hidden="true">KEYS, CODES &amp; MODES</div>
+  <div class="footer-tagline">A Visual Approach to Understanding Music</div>
+  <p>Created by <strong>Benjamin Ryan</strong> &nbsp;&middot;&nbsp; Santa Barbara, California</p>
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="index.html">Home</a>
+    <a href="kcm-tuner.html">Free Tuner</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="signup.html">Start Free</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="cookie-policy.html">Cookie Policy</a>
+  </nav>
+  <p class="footer-legal">
+    FreeStyle® is a registered trademark. U.S. Patents. All teaching methods, visual representations,
+    and interactive applications are proprietary and confidential.<br/>
+    Protected by U.S. Copyright Law (17 U.S.C. § 101 et seq.) and applicable international treaties.
+  </p>
+  <p style="margin-top:.9rem;font-size:.75rem;">&#169; 2026 Keys, Codes &amp; Modes&#8482; | Benjamin Ryan | All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
