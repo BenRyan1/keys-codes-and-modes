@@ -269,7 +269,6 @@
         
         .recording-controls {
             display: flex;
-            align-items: center;
             gap: 8px;
         }
         
@@ -311,25 +310,6 @@
         @keyframes record-pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
-        }
-
-        /* Recording note counter badge */
-        #rec-count {
-            display: none;
-            font-family: var(--font-display);
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #fff;
-            background: rgba(200, 35, 51, 0.85);
-            border: 1px solid #c82333;
-            border-radius: 20px;
-            padding: 3px 10px;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
-        #rec-count.visible {
-            display: inline-block;
         }
         
         /* ==================== APP CONTAINER ==================== */
@@ -890,7 +870,6 @@
                     <label class="control-label">Recording Controls</label>
                     <div class="recording-controls">
                         <button id="record-button" class="control-btn">🔴 Record</button>
-                        <span id="rec-count">0 notes</span>
                         <button id="play-recording-button" class="control-btn" disabled>▶ Play</button>
                         <button id="clear-recording-button" class="control-btn" disabled>🗑 Clear</button>
                     </div>
@@ -941,7 +920,7 @@
                         <li><strong>Drag a mode</strong> from the right column into the Play Zone on the left</li>
                         <li><strong>Auto-play</strong> begins immediately, ascending and descending through all 8 degrees</li>
                         <li><strong>Change tonic</strong> to transpose all modes to a different key</li>
-                        <li><strong>Record</strong> captures both auto-play and manual note clicks with precise timing</li>
+                        <li><strong>Record</strong> your performance and play it back with precise timing</li>
                     </ul>
                 </div>
             </div>
@@ -1095,25 +1074,14 @@
         }
         
         function midiToFrequency(midiNote) {
+            // Convert MIDI note number to frequency
+            // A4 (MIDI 69) = 440 Hz
             return 440 * Math.pow(2, (midiNote - 69) / 12);
         }
         
         function playNoteByMidi(midiNote, duration = 0.3) {
             const frequency = midiToFrequency(midiNote);
             playNote(frequency, duration);
-        }
-
-        /* ==================== RECORDING COUNTER ==================== */
-
-        function updateRecCounter() {
-            const badge = document.getElementById("rec-count");
-            if (isRecording) {
-                badge.classList.add("visible");
-                const n = recordedNotes.length;
-                badge.textContent = n === 1 ? "1 note" : `${n} notes`;
-            } else {
-                badge.classList.remove("visible");
-            }
         }
         
         /* ==================== RENDER ==================== */
@@ -1163,7 +1131,7 @@
                 const colorClass = NOTE_COLORS[note];
                 cell.className = `degree-cell note-${colorClass}`;
                 
-                // Manual click handler — records individual note clicks
+                // Add click handler for MIDI playback
                 cell.addEventListener("click", (e) => {
                     e.stopPropagation();
                     playNoteByMidi(midiNote);
@@ -1174,7 +1142,6 @@
                     if (isRecording) {
                         const timestamp = Date.now() - recordingStartTime;
                         recordedNotes.push({ midi: midiNote, time: timestamp, note: note, degree: deg });
-                        updateRecCounter();
                     }
                 });
                 
@@ -1303,18 +1270,6 @@
                     currentCell.classList.add("active");
                     const midiNote = parseInt(currentCell.dataset.midi);
                     playNoteByMidi(midiNote, playSpeed / 1000);
-
-                    // ✅ FIX: Record auto-play notes when recording is active
-                    if (isRecording) {
-                        const timestamp = Date.now() - recordingStartTime;
-                        recordedNotes.push({
-                            midi: midiNote,
-                            time: timestamp,
-                            note: currentCell.dataset.note,
-                            degree: parseInt(currentCell.dataset.degree)
-                        });
-                        updateRecCounter();
-                    }
                 }
                 
                 currentStep += direction;
@@ -1344,19 +1299,15 @@
         
         recordButton.addEventListener("click", () => {
             if (!isRecording) {
-                // Start recording
                 isRecording = true;
                 recordedNotes = [];
                 recordingStartTime = Date.now();
                 recordButton.textContent = "⏸ Stop Recording";
                 recordButton.classList.add("recording");
-                updateRecCounter();
             } else {
-                // Stop recording
                 isRecording = false;
                 recordButton.textContent = "🔴 Record";
                 recordButton.classList.remove("recording");
-                updateRecCounter();
                 
                 if (recordedNotes.length > 0) {
                     playRecordingButton.disabled = false;
