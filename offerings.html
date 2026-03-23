@@ -41,9 +41,9 @@ window.addEventListener('load', function() {
 });
 function loadGoogleAnalytics() {
   if (window.gaLoaded) return; window.gaLoaded = true;
-  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-MMQVHC40B9'; document.head.appendChild(s);
+  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
   window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date()); gtag('config', 'G-MMQVHC40B9', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
+  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
 function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
@@ -2882,5 +2882,46 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         
         // Analytics tracking (placeholder - add your Google Analytics ID)
             </script>
+
+<!-- ══ KCM GA4 TRACKING ══════════════════════════════════════ -->
+<script src="/js/kcm-ga4-tracking.js"></script>
+<script>
+/* Scroll Depth */
+(function(){var m=[25,50,75,100],f={};
+function p(){var e=document.documentElement,t=e.scrollHeight-e.clientHeight;
+return t>0?Math.round(((e.scrollTop||document.body.scrollTop)/t)*100):0;}
+window.addEventListener("scroll",function(){var v=p();
+m.forEach(function(x){if(v>=x&&!f[x]){f[x]=true;
+trackEvent("scroll_depth",{depth_percent:x,page:"offerings"});}});},{passive:true});
+})();
+
+document.addEventListener("DOMContentLoaded", function() {
+  /* App launch button clicks */
+  document.querySelectorAll("a.btn-launch").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var appName = "";
+      var card = btn.closest(".app-card");
+      if (card) { var h4 = card.querySelector("h4"); if (h4) appName = h4.textContent.trim(); }
+      trackEvent("app_launch", {app_name: appName, page: "offerings"});
+    });
+  });
+
+  /* Email capture form submit */
+  var emailForm = document.querySelector(".email-form");
+  if (emailForm) {
+    emailForm.addEventListener("submit", function() {
+      trackEvent("email_signup", {form_location: "offerings_hero", page: "offerings"});
+    });
+  }
+
+  /* Pricing/signup CTA clicks */
+  document.querySelectorAll("a[href*='pricing.html'], a[href*='signup.html']").forEach(function(a) {
+    a.addEventListener("click", function() {
+      trackEvent("cta_click", {cta_text: (a.textContent||"").trim(), destination: "pricing", page: "offerings"});
+    });
+  });
+});
+</script>
+<!-- ══════════════════════════════════════════════════════════ -->
 </body>
 </html>
