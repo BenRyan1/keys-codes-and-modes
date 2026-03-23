@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- MailerLite Universal -->
+    <!-- MailerLite Universal — DO NOT MODIFY -->
     <script>
         (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
         .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
@@ -17,6 +17,47 @@
         ml('account', '2099860');
     </script>
     <!-- End MailerLite Universal -->
+
+    <!-- ── Cookie Consent + GA4 ─────────────────────────────── -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+    <style>
+    .cc-window{font-family:'Montserrat',sans-serif!important;background:#0a0a15!important;border:2px solid #008080!important;box-shadow:0 8px 30px rgba(0,217,255,0.3)!important;}
+    .cc-btn{background:linear-gradient(135deg,#008080 0%,#8B6BA3 100%)!important;border:none!important;padding:.75rem 2rem!important;font-weight:600!important;transition:all .3s ease!important;}
+    .cc-link{color:#F4D03F!important;}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener('load', function() {
+      window.cookieconsent.initialise({
+        palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
+        theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
+        content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
+        onStatusChange: function(status) { if (this.hasConsented()) loadGA(); },
+        onInitialise: function(status) { if (this.hasConsented()) loadGA(); }
+      });
+    });
+    function loadGA() {
+      if (window.gaLoaded) return; window.gaLoaded = true;
+      var s = document.createElement('script'); s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF';
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6EGC5ZNZPF', {
+        anonymize_ip: true, allow_google_signals: false,
+        allow_ad_personalization_signals: false, cookie_expires: 63072000,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+      gtag('consent', 'default', {
+        ad_storage: 'denied', analytics_storage: 'granted',
+        functionality_storage: 'granted', personalization_storage: 'denied',
+        security_storage: 'granted'
+      });
+    }
+    function trackEvent(n,p){try{if(typeof gtag==='function')gtag('event',n,p);}catch(e){}}
+    </script>
+    <!-- ─────────────────────────────────────────────────────── -->
 
     <style>
         :root {
@@ -132,7 +173,7 @@
                 </ul>
             </div>
 
-            <!-- MailerLite Embedded Form — DO NOT ADD ANY JAVASCRIPT BELOW THIS -->
+            <!-- MailerLite Embedded Form — DO NOT MODIFY -->
             <div class="ml-embedded" data-form="CAc4ZX"></div>
             <!-- Redirect handled by MailerLite Custom Success Page setting -->
 
@@ -147,5 +188,47 @@
         <a href="/privacy-policy.html">Privacy</a> | <a href="/terms.html">Terms</a> | <a href="/contact.html">Contact</a></p>
     </footer>
 
+    <!-- ── KCM GA4 Tracking ──────────────────────────────────── -->
+    <script src="/js/kcm-ga4-tracking.js"></script>
+    <script>
+    /* Scroll depth for signup (lightweight, page is short) */
+    (function(){var m=[25,50,75,100],f={};
+    function p(){var e=document.documentElement,t=e.scrollHeight-e.clientHeight;
+    return t>0?Math.round(((e.scrollTop||document.body.scrollTop)/t)*100):0;}
+    window.addEventListener('scroll',function(){var v=p();
+    m.forEach(function(x){if(v>=x&&!f[x]){f[x]=true;
+    trackEvent('scroll_depth',{depth_percent:x,page:'signup'});}});},{passive:true});
+    })();
+
+    /* Watch MailerLite form for success — fire signup_submit event */
+    /* NOTE: We observe the DOM, never touching the form itself */
+    document.addEventListener('DOMContentLoaded', function() {
+      var formEl = document.querySelector('.ml-embedded');
+      if (!formEl) return;
+      var obs = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          m.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1) {
+              var txt = (node.textContent || node.innerText || '').toLowerCase();
+              if (txt.includes('thank') || txt.includes('success') ||
+                  txt.includes('confirm') || txt.includes('check your email')) {
+                trackEvent('signup_submit', { form: 'free_tuner', page: 'signup' });
+                obs.disconnect();
+              }
+            }
+          });
+        });
+      });
+      obs.observe(formEl, { childList: true, subtree: true });
+
+      /* Nav click tracking */
+      document.querySelectorAll('nav a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          trackEvent('nav_click', { destination: a.getAttribute('href'), page: 'signup' });
+        });
+      });
+    });
+    </script>
+    <!-- ─────────────────────────────────────────────────────── -->
 </body>
 </html>

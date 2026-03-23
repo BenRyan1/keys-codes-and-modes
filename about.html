@@ -46,7 +46,8 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+/* ── FIXED: was recursive, now correctly calls gtag ── */
+function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
 </script>
 
     <meta charset="UTF-8">
@@ -471,10 +472,10 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             Choose from free access, premium tools, or lifetime membership.
         </p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/pricing.html" style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #F4D03F, #e6c62f); color: #1a1a2e; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4); transition: all 0.3s;">
+            <a href="/pricing.html" id="cta-pricing" style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, #F4D03F, #e6c62f); color: #1a1a2e; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 6px 25px rgba(244, 208, 63, 0.4); transition: all 0.3s;">
                 View Pricing Plans →
             </a>
-            <a href="/insights.html" style="display: inline-block; padding: 1rem 2rem; background: rgba(0, 128, 128, 0.2); color: #008080; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; border: 2px solid #008080; transition: all 0.3s;">
+            <a href="/insights.html" id="cta-apps" style="display: inline-block; padding: 1rem 2rem; background: rgba(0, 128, 128, 0.2); color: #008080; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; border: 2px solid #008080; transition: all 0.3s;">
                 Explore All Apps
             </a>
         </div>
@@ -494,5 +495,36 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         </p>
         <p style="margin-top: 10px;">© 2026 Keys, Codes & Modes | FreeStyle® is a registered trademark</p>
     </footer>
+
+<!-- ══ KCM GA4 TRACKING ══════════════════════════════════════ -->
+<script>
+/* Scroll Depth */
+(function(){var m=[25,50,75,100],f={};
+function p(){var e=document.documentElement,t=e.scrollHeight-e.clientHeight;
+return t>0?Math.round(((e.scrollTop||document.body.scrollTop)/t)*100):0;}
+window.addEventListener('scroll',function(){var v=p();
+m.forEach(function(x){if(v>=x&&!f[x]){f[x]=true;
+trackEvent('scroll_depth',{depth_percent:x,page:'about'});}});},{passive:true});
+})();
+
+/* CTA Button Clicks */
+document.addEventListener('DOMContentLoaded',function(){
+  var pricingBtn = document.getElementById('cta-pricing');
+  var appsBtn = document.getElementById('cta-apps');
+  if(pricingBtn) pricingBtn.addEventListener('click',function(){
+    trackEvent('cta_click',{cta_text:'View Pricing Plans',destination:'pricing',page:'about'});
+  });
+  if(appsBtn) appsBtn.addEventListener('click',function(){
+    trackEvent('cta_click',{cta_text:'Explore All Apps',destination:'all_apps',page:'about'});
+  });
+  /* Track footer nav clicks */
+  document.querySelectorAll('footer a').forEach(function(a){
+    a.addEventListener('click',function(){
+      trackEvent('footer_nav_click',{destination:a.getAttribute('href'),page:'about'});
+    });
+  });
+});
+</script>
+<!-- ══════════════════════════════════════════════════════════ -->
 </body>
 </html>

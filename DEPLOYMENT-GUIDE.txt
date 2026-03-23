@@ -1,0 +1,107 @@
+================================================================================
+KCM GA4 TRACKING — DEPLOYMENT GUIDE
+Keys, Codes & Modes | GA4 ID: G-6EGC5ZNZPF
+================================================================================
+
+STEP 1 — Upload the shared JS file
+───────────────────────────────────
+Upload kcm-ga4-tracking.js to your GitHub repo at:
+  /js/kcm-ga4-tracking.js
+
+This one file handles ALL page-specific tracking automatically.
+
+
+STEP 2 — Add ONE line to each of the 5 HTML files
+────────────────────────────────────────────────────
+In VS Code, open each file and add this line just before </body>:
+
+  <script src="/js/kcm-ga4-tracking.js"></script>
+
+Do this for: about.html, contact.html, offerings.html, pricing.html, signup.html
+(about.html already has tracking built-in from today's session — still add this line
+ for consistency, it won't break anything)
+
+
+STEP 3 — Fix the GA4 ID bug in offerings.html  ← CRITICAL
+────────────────────────────────────────────────────────────
+offerings.html has the WRONG GA4 ID. Use Find & Replace:
+
+  FIND:    G-MMQVHC40B9
+  REPLACE: G-6EGC5ZNZPF
+
+This is a critical fix — without it, offerings.html is reporting to a
+different (likely empty) GA4 property, not your KCM dashboard.
+
+
+STEP 4 — Fix the recursive bug in about.html and pricing.html
+──────────────────────────────────────────────────────────────
+Both files have this broken trackEvent function that calls itself forever:
+
+  FIND (in about.html AND pricing.html):
+    function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')trackEvent(n,p);}
+
+  REPLACE WITH:
+    function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
+
+The difference: the end changes from  ...trackEvent(n,p);}
+                                  to  ...gtag('event',n,p);}
+
+
+STEP 5 — Add GA4 to signup.html  ← signup has NO GA4 at all
+────────────────────────────────────────────────────────────
+In signup.html, add this block just before </head>:
+
+<!-- Cookie Consent + GA4 for signup -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<style>.cc-window{font-family:'Montserrat',sans-serif!important;background:#0a0a15!important;border:2px solid #008080!important;}.cc-btn{background:linear-gradient(135deg,#008080,#8B6BA3)!important;border:none!important;padding:.75rem 2rem!important;font-weight:600!important;}.cc-link{color:#F4D03F!important;}</style>
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+window.addEventListener('load',function(){
+  window.cookieconsent.initialise({
+    palette:{popup:{background:"#0a0a15",text:"#E8E8E8"},button:{background:"#008080",text:"#ffffff"}},
+    theme:"classic",position:"bottom",type:"opt-in",revokable:true,
+    content:{message:"We use cookies to enhance your experience.",dismiss:"Accept",deny:"Decline",link:"Privacy",href:"/privacy-policy.html"},
+    onStatusChange:function(s){if(this.hasConsented())loadGA();},
+    onInitialise:function(s){if(this.hasConsented())loadGA();}
+  });
+});
+function loadGA(){
+  if(window.gaLoaded)return;window.gaLoaded=true;
+  var s=document.createElement('script');s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF';
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-6EGC5ZNZPF',{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false,cookie_expires:63072000});
+  gtag('consent','default',{ad_storage:'denied',analytics_storage:'granted',functionality_storage:'granted',personalization_storage:'denied',security_storage:'granted'});
+}
+function trackEvent(n,p){try{if(typeof gtag==='function')gtag('event',n,p);}catch(e){}}
+</script>
+
+
+================================================================================
+SUMMARY OF EVENTS TRACKED (visible in GA4 → Events)
+================================================================================
+
+scroll_depth          — 25/50/75/100% scroll on all pages
+cta_click             — "View Pricing Plans", "Explore All Apps" buttons (about)
+social_click          — Instagram, Facebook, TikTok, LinkedIn, Twitter (contact)
+external_link_click   — unlockinfinite.com, guitarfreestyle.com (contact)
+app_launch            — every app card "Launch App" click (offerings)
+email_signup          — email capture form submission (offerings)
+begin_checkout        — each Stripe plan button click (pricing)
+access_code_redeemed  — access code redemption success (pricing)
+signup_submit         — MailerLite form completion (signup)
+contact_form_submit   — contact form send (contact — already existed, kept)
+
+================================================================================
+FILES DELIVERED THIS SESSION
+================================================================================
+1. about.html          — COMPLETE rebuilt file (already deployed above)
+2. kcm-ga4-tracking.js — Shared tracking JS (upload to /js/ in your repo)
+3. DEPLOYMENT-GUIDE.txt — This file
+
+For contact.html, offerings.html, pricing.html, signup.html:
+Apply the 5 steps above in VS Code (< 5 minutes total).
+================================================================================
