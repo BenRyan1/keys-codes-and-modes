@@ -1,26 +1,23 @@
 # ══════════════════════════════════════════════════════════
 # KCM _redirects — Cloudflare Pages
-# Fixes: www→non-www, http→https, extensionless URLs
 # Updated: March 2026
+# NOTE: Cloudflare handles http→https automatically via SSL settings.
+#       Only the www→non-www rule is needed here.
 # ══════════════════════════════════════════════════════════
 
-# ── Force HTTPS + strip www ────────────────────────────────
-# These fix the 5 "Page with redirect" errors in Google Search Console
-http://www.keyscodesandmodes.com/*  https://keyscodesandmodes.com/:splat  301!
-http://keyscodesandmodes.com/*      https://keyscodesandmodes.com/:splat  301!
+# ── www → non-www (HTTPS only) ────────────────────────────
 https://www.keyscodesandmodes.com/* https://keyscodesandmodes.com/:splat  301!
 
 # ── Extensionless URL fixes ────────────────────────────────
-# Fixes: https://keyscodesandmodes.com/offerings (no .html)
-/offerings          /offerings.html     301
-/about              /about.html         301
-/contact            /contact.html       301
-/pricing            /pricing.html       301
-/signup             /signup.html        301
-/insights           /insights.html      301
-/privacy            /privacy-policy.html  301
-/terms              /terms.html         301
-/refund             /refund-policy.html 301
+/offerings          /offerings.html         301
+/about              /about.html             301
+/contact            /contact.html           301
+/pricing            /pricing.html           301
+/signup             /signup.html            301
+/insights           /insights.html          301
+/privacy            /privacy-policy.html    301
+/terms              /terms.html             301
+/refund             /refund-policy.html     301
 
 # ── Welcome page redirects ─────────────────────────────────
 /welcome            /welcome-free-picker.html  301
