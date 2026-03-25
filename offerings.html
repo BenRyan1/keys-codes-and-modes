@@ -63,63 +63,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <!-- ACCESS CONTROL - CRITICAL SECURITY -->
-    <script>
-    // Check authorization before page loads
-    (function() {
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const accessCode = urlParams.get('code');
-        const paidTier = urlParams.get('tier');
-        
-        // Check if user has valid access
-        const hasAccessCode = localStorage.getItem('validAccessCode') === 'true';
-        const hasPaidAccess = localStorage.getItem('paidMember') === 'true';
-        const userTier = localStorage.getItem('userTier');
-        
-        // Validate access code if provided in URL
-        if (accessCode) {
-            // Valid access codes - can be updated as needed
-            const validCodes = [
-                'KCM2026PREMIUM!',
-                'KCM2026FOUNDER!', 
-                'BETATESTER2026!',
-                'PRESSACCESS2026!',
-                'FRIENDOFBEN2026!',
-                'DEMOACCESS2026!'
-            ];
-            
-            if (validCodes.includes(accessCode.toUpperCase())) {
-                localStorage.setItem('validAccessCode', 'true');
-                localStorage.setItem('accessCodeUsed', accessCode.toUpperCase());
-                localStorage.setItem('paidMember', 'true');
-                
-                // Set tier based on code
-                if (accessCode.toUpperCase().includes('FOUNDER')) {
-                    localStorage.setItem('userTier', 'founder');
-                } else {
-                    localStorage.setItem('userTier', 'premium');
-                }
-            }
-        }
-        
-        // Check if user has any valid access method
-        const hasValidAccess = (
-            hasAccessCode || 
-            hasPaidAccess || 
-            paidTier === 'premium' || 
-            paidTier === 'founder' ||
-            userTier === 'premium' ||
-            userTier === 'founder'
-        );
-        
-        // Redirect if no valid access
-        if (!hasValidAccess) {
-            alert('🔒 Access Restricted: This page requires a Premium membership or valid access code.\n\nPlease upgrade or enter your access code on the pricing page.');
-            window.location.href = 'pricing.html';
-        }
-    })();
-    </script>
+   
     
     <style>
         :root {
