@@ -18,7 +18,7 @@
     <title>Choose Your 3 Free Apps | Keys, Codes &amp; Modes</title>
     <meta name="description" content="Pick any 3 music theory apps from our library. Scales, guitar, chords, rhythm — your choice.">
     <meta name="robots" content="noindex, nofollow">
-    <link rel="canonical" href="https://keyscodesandmodes.com/welcome-free-picker.html">
+    <link rel="canonical" href="https://keyscodesandmodes.com/welcome-free-picker">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -310,19 +310,19 @@
     // MASTER APP DATABASE  — IDs MUST match my-apps.html exactly
     // ═══════════════════════════════════════════════════════
     const ALL_APPS = [
-        { id:'holy-grail',             file:'holy-mole-grail.html',                    icon:'✨', category:'Flagship', title:'Holy Grail Chromatic Wheel',     desc:'Sacred geometry meets chromatic theory — scales, chords, modes, and audio in one breathtaking wheel.' },
-        { id:'music-theory-pro',        file:'music-theory-pro.html',             icon:'🎼', category:'Theory',   title:'Music Theory Explorer Pro',      desc:'4-panel sync view: chromatic circle, piano, guitar fretboard, and staff notation live.' },
-        { id:'circle-of-fifths',        file:'circle-of-fifths.html',             icon:'⭕', category:'Theory',   title:'Circle of Fifths Master',        desc:'Rotating circle with triads, progressions, and audio for every key.' },
-        { id:'guitar-fretboard-pro',    file:'guitar-fretboard-explorer.html',       icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Explorer Pro',  desc:'CAGED system, 13 scale types, and color-coded positions across the full neck.' },
-        { id:'guitar-fretboard-complete',file:'guitar-fretboard-explorer.html',            icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Complete',      desc:'Complete fretboard with all scales, chord shapes, and patterns for advanced players.' },
-        { id:'chromatic-roulette',      file:'chromatic-roulette.html',            icon:'🎡', category:'Visual',   title:'Chromatic Roulette Wheel',       desc:'Spin the color-coded chromatic wheel — discover intervals and scales visually.' },
-        { id:'caged-explorer',          file:'caged-145-master.html',                  icon:'🔷', category:'Guitar',   title:'CAGED 1-4-5 Explorer',           desc:'I-IV-V progressions mapped across all 5 CAGED shapes in all 12 keys.' },
-        { id:'chromatic-scale-viz',     file:'chromatic-circle.html',icon:'🌈',category:'Guitar',  title:'Chromatic Scale Visualizer Pro', desc:'Every chromatic note position across the guitar neck — foundation for all scales.' },
-        { id:'rhythm-clock',            file:'rhythm-clock.html',                        icon:'⏱️',category:'Rhythm',   title:'Rhythmic Clock',                 desc:'Time signatures, polyrhythms, and groove patterns on a visual clock face.' },
-        { id:'cymatics',                file:'kcm-cymatics-visualizer.html',             icon:'🎯', category:'Visual',   title:'Cymatics Visualizer',            desc:'See sound as sacred geometry — musical frequencies forming stunning visual patterns.' },
-        { id:'tonic-sub-dom',           file:'tonic-subdominant-dominant.html',          icon:'🎵', category:'Theory',   title:'Tonic · Sub · Dominant',         desc:'Interactive I-IV-V visualizer across all keys — backbone of Western harmony.' },
-        { id:'octave-wave',             file:'octave-wave-visualizer.html',              icon:'〰️',category:'Visual',  title:'Octave Wave Visualizer',         desc:'See frequency doubling as waveforms — the physics of octaves visualized.' },
-        { id:'rhythm-harmony',          file:'rhythm-harmony.html',               icon:'🥁', category:'Rhythm',   title:'Rhythm Harmony Simple',          desc:'Beginner-friendly — rhythm and harmony connections made clear and interactive.' }
+        { id:'holy-grail',             file:'apps/holy-mole-grail.html',                    icon:'✨', category:'Flagship', title:'Holy Grail Chromatic Wheel',     desc:'Sacred geometry meets chromatic theory — scales, chords, modes, and audio in one breathtaking wheel.' },
+        { id:'music-theory-pro',        file:'apps/music-theory-pro.html',             icon:'🎼', category:'Theory',   title:'Music Theory Explorer Pro',      desc:'4-panel sync view: chromatic circle, piano, guitar fretboard, and staff notation live.' },
+        { id:'circle-of-fifths',        file:'apps/circle-of-fifths.html',             icon:'⭕', category:'Theory',   title:'Circle of Fifths Master',        desc:'Rotating circle with triads, progressions, and audio for every key.' },
+        { id:'guitar-fretboard-pro',    file:'apps/guitar-fretboard-explorer.html',       icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Explorer Pro',  desc:'CAGED system, 13 scale types, and color-coded positions across the full neck.' },
+        { id:'guitar-fretboard-complete',file:'apps/guitar-fretboard-explorer.html',            icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Complete',      desc:'Complete fretboard with all scales, chord shapes, and patterns for advanced players.' },
+        { id:'chromatic-roulette',      file:'apps/chromatic-roulette.html',            icon:'🎡', category:'Visual',   title:'Chromatic Roulette Wheel',       desc:'Spin the color-coded chromatic wheel — discover intervals and scales visually.' },
+        { id:'caged-explorer',          file:'apps/caged-145-master.html',                  icon:'🔷', category:'Guitar',   title:'CAGED 1-4-5 Explorer',           desc:'I-IV-V progressions mapped across all 5 CAGED shapes in all 12 keys.' },
+        { id:'chromatic-scale-viz',     file:'apps/chromatic-circle.html',icon:'🌈',category:'Guitar',  title:'Chromatic Scale Visualizer Pro', desc:'Every chromatic note position across the guitar neck — foundation for all scales.' },
+        { id:'rhythm-clock',            file:'apps/rhythm-clock.html',                        icon:'⏱️',category:'Rhythm',   title:'Rhythmic Clock',                 desc:'Time signatures, polyrhythms, and groove patterns on a visual clock face.' },
+        { id:'cymatics',                file:'apps/kcm-cymatics-visualizer.html',             icon:'🎯', category:'Visual',   title:'Cymatics Visualizer',            desc:'See sound as sacred geometry — musical frequencies forming stunning visual patterns.' },
+        { id:'tonic-sub-dom',           file:'apps/tonic-subdominant-dominant.html',          icon:'🎵', category:'Theory',   title:'Tonic · Sub · Dominant',         desc:'Interactive I-IV-V visualizer across all keys — backbone of Western harmony.' },
+        { id:'octave-wave',             file:'apps/octave-wave-visualizer.html',              icon:'〰️',category:'Visual',  title:'Octave Wave Visualizer',         desc:'See frequency doubling as waveforms — the physics of octaves visualized.' },
+        { id:'rhythm-harmony',          file:'apps/rhythm-harmony.html',               icon:'🥁', category:'Rhythm',   title:'Rhythm Harmony Simple',          desc:'Beginner-friendly — rhythm and harmony connections made clear and interactive.' }
     ];
 
     let selected = []; // array of app IDs
