@@ -1,23 +1,10 @@
 # ══════════════════════════════════════════════════════════
 # KCM _redirects — Cloudflare Pages
 # Updated: March 2026
-# NOTE: Cloudflare handles http→https automatically via SSL settings.
-#       Only the www→non-www rule is needed here.
 # ══════════════════════════════════════════════════════════
 
 # ── www → non-www (HTTPS only) ────────────────────────────
 https://www.keyscodesandmodes.com/* https://keyscodesandmodes.com/:splat  301!
-
-# ── Extensionless URL fixes ────────────────────────────────
-/offerings          /offerings.html         301
-/about              /about.html             301
-/contact            /contact.html           301
-/pricing            /pricing.html           301
-/signup             /signup.html            301
-/insights           /insights.html          301
-/privacy            /privacy-policy.html    301
-/terms              /terms.html             301
-/refund             /refund-policy.html     301
 
 # ── Welcome page redirects ─────────────────────────────────
 /welcome            /welcome-free-picker.html  301
