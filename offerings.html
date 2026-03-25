@@ -34,16 +34,16 @@ window.addEventListener('load', function() {
   window.cookieconsent.initialise({
     palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
     theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
-    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy-policy.html" },
+    content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy.html" },
     onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
     onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
   });
 });
 function loadGoogleAnalytics() {
   if (window.gaLoaded) return; window.gaLoaded = true;
-  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-MMQVHC40B9'; document.head.appendChild(s);
+  var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
   window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date()); gtag('config', 'G-MMQVHC40B9', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
+  gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
 function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
@@ -51,6 +51,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Keys, Codes & Modes - Revolutionary interactive music theory applications. Master guitar, piano, and music theory through visual learning.">
     <meta name="keywords" content="music theory, guitar lessons, piano lessons, music education, interactive learning, Keys Codes Modes, circle of fifths, CAGED system">
     <meta name="author" content="Ben Ryan">
@@ -63,63 +64,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <!-- ACCESS CONTROL - CRITICAL SECURITY -->
-    <script>
-    // Check authorization before page loads
-    (function() {
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const accessCode = urlParams.get('code');
-        const paidTier = urlParams.get('tier');
-        
-        // Check if user has valid access
-        const hasAccessCode = localStorage.getItem('validAccessCode') === 'true';
-        const hasPaidAccess = localStorage.getItem('paidMember') === 'true';
-        const userTier = localStorage.getItem('userTier');
-        
-        // Validate access code if provided in URL
-        if (accessCode) {
-            // Valid access codes - can be updated as needed
-            const validCodes = [
-                'KCM2026PREMIUM!',
-                'KCM2026FOUNDER!', 
-                'BETATESTER2026!',
-                'PRESSACCESS2026!',
-                'FRIENDOFBEN2026!',
-                'DEMOACCESS2026!'
-            ];
-            
-            if (validCodes.includes(accessCode.toUpperCase())) {
-                localStorage.setItem('validAccessCode', 'true');
-                localStorage.setItem('accessCodeUsed', accessCode.toUpperCase());
-                localStorage.setItem('paidMember', 'true');
-                
-                // Set tier based on code
-                if (accessCode.toUpperCase().includes('FOUNDER')) {
-                    localStorage.setItem('userTier', 'founder');
-                } else {
-                    localStorage.setItem('userTier', 'premium');
-                }
-            }
-        }
-        
-        // Check if user has any valid access method
-        const hasValidAccess = (
-            hasAccessCode || 
-            hasPaidAccess || 
-            paidTier === 'premium' || 
-            paidTier === 'founder' ||
-            userTier === 'premium' ||
-            userTier === 'founder'
-        );
-        
-        // Redirect if no valid access
-        if (!hasValidAccess) {
-            alert('🔒 Access Restricted: This page requires a Premium membership or valid access code.\n\nPlease upgrade or enter your access code on the pricing page.');
-            window.location.href = 'pricing.html';
-        }
-    })();
-    </script>
     
     <style>
         :root {
@@ -2810,7 +2754,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             </nav>
             
             <nav class="footer-legal-links" aria-label="Legal links" style="margin-top: 1.5rem;">
-                <a href="/privacy-policy.html">Privacy Policy</a>
+                <a href="/privacy.html">Privacy Policy</a>
                 <a href="/terms.html">Terms of Service</a>
                 <a href="/contact.html">Contact Us</a>
                 <a href="/refund-policy.html">Refund Policy</a>
@@ -2880,8 +2824,8 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             });
         });
         
-        // Analytics tracking
-        </script>
+        // Analytics tracking (placeholder - add your Google Analytics ID)
+            </script>
 
 <!-- ══ KCM GA4 TRACKING ══════════════════════════════════════ -->
 <script src="/js/kcm-ga4-tracking.js"></script>
