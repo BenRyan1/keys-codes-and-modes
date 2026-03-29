@@ -698,6 +698,132 @@ Santa Barbara, California
             title:    'Rhythm Harmony Simple',
             desc:     'A clean, beginner-friendly approach to understanding how rhythm and harmony connect — perfect starting point for new learners.',
             features: ['Basic rhythm patterns', 'Harmonic progressions', 'Interactive exercises', 'Beginner-friendly']
+        },
+        {
+            id:       'chromatic-spoke-clock',
+            file:     'apps/chromatic-spoke-clock.html',
+            icon:     '⭕',
+            category: 'Visual',
+            title:    'Chromatic Spoke Clock',
+            desc:     'Revolutionary circular visualization for intervals, scales, modes & chords. 57+ scales with interactive ear training games.',
+            features: ['57+ scales & modes', 'Ear training games', 'All 12 keys', 'MIDI keyboard support']
+        },
+        {
+            id:       'chord-builder',
+            file:     'apps/chord-builder.html',
+            icon:     '🔨',
+            category: 'Theory',
+            title:    'Chord Builder',
+            desc:     'Build and analyze any chord on piano, guitar, and notation simultaneously with full audio playback.',
+            features: ['Custom chord creation', 'Multi-instrument view', 'Audio playback', 'Chord analysis']
+        },
+        {
+            id:       'pitch-detector',
+            file:     'apps/pitch-detector.html',
+            icon:     '🎤',
+            category: 'Tools',
+            title:    'Pitch Detector',
+            desc:     'Real-time pitch detection using your microphone. Perfect for tuning, ear training, and vocal practice.',
+            features: ['Real-time detection', 'Tuning assistance', 'Visual feedback', 'Microphone input']
+        },
+        {
+            id:       'rhythm-geometry-lab',
+            file:     'apps/rhythm-geometry-lab.html',
+            icon:     '⬡',
+            category: 'Rhythm',
+            title:    'Rhythm Geometry Lab',
+            desc:     'Experience rhythm as living geometry — Euclidean polyrhythms visualized as rotating polygons with MIDI export.',
+            features: ['Euclidean algorithm', 'Multi-layer polyrhythms', 'MIDI export', 'Spiral time view']
+        },
+        {
+            id:       'modal-stencil-player',
+            file:     'apps/modal-stencil-player.html',
+            icon:     '🎼',
+            category: 'Theory',
+            title:    'Modal Stencil Player',
+            desc:     'Explore all seven musical modes with chromatic color coding and real-time MIDI playback.',
+            features: ['Seven modal stencils', 'Drag & drop interface', 'Real-time MIDI audio', 'Recording & playback']
+        },
+        {
+            id:       'harmonized-chromatic-scale',
+            file:     'apps/harmonized-chromatic-scale.html',
+            icon:     '🎹',
+            category: 'Theory',
+            title:    'Harmonized Chromatic Scale',
+            desc:     'Explore every possible harmony within the chromatic scale — complete chord and interval relationships.',
+            features: ['Full harmonization', 'Chord relationships', 'Interval mapping', 'Audio examples']
+        },
+        {
+            id:       'chladni-visualizer',
+            file:     'apps/chladni-visualizer.html',
+            icon:     '〰️',
+            category: 'Visual',
+            title:    'Chladni Cymatics Visualizer',
+            desc:     '10,000+ particle physics simulation creating mesmerizing cymatic patterns from musical frequencies.',
+            features: ['10,000+ particles', 'Extended chord library', 'MIDI keyboard support', 'Circle & square plates']
+        },
+        {
+            id:       'sacred-geometry',
+            file:     'apps/sacred-geometry-enhanced-final.html',
+            icon:     '🔷',
+            category: 'Visual',
+            title:    'Sacred Geometry Visualizer',
+            desc:     'Complete sacred geometry music visualization — Flower of Life, Metatron\'s Cube, and harmonic resonance patterns.',
+            features: ['Sacred geometry rendering', 'Interactive rotation', 'Real-time visualization', 'Harmonic patterns']
+        },
+        {
+            id:       'circle-of-modes',
+            file:     'apps/circle-of-modes.html',
+            icon:     '🎭',
+            category: 'Theory',
+            title:    'Circle of Modes',
+            desc:     'Explore all seven musical modes through beautiful circular visualization with scale comparison and audio.',
+            features: ['Mode visualization', 'Scale comparison', 'Audio playback', 'All 12 keys']
+        },
+        {
+            id:       'chromatic-mandala',
+            file:     'apps/chromatic-mandala.html',
+            icon:     '🌸',
+            category: 'Visual',
+            title:    'Chromatic Mandala',
+            desc:     'Experience music theory through sacred geometry mandalas — harmonic relationships made visually stunning.',
+            features: ['Sacred geometry', 'Visual harmony', 'Color-coded notes', 'Interactive patterns']
+        },
+        {
+            id:       'fretboard-speed-challenge',
+            file:     'apps/fretboard-speed-challenge.html',
+            icon:     '⚡',
+            category: 'Guitar',
+            title:    'Fretboard Speed Challenge',
+            desc:     'Gamified fretboard training — build note recognition speed across the entire guitar neck.',
+            features: ['Speed training', 'Note recognition', 'Score tracking', 'Progressive difficulty']
+        },
+        {
+            id:       'name-that-note',
+            file:     'apps/name-that-note.html',
+            icon:     '🎵',
+            category: 'Training',
+            title:    'Name That Note',
+            desc:     'Ear training game — identify notes, intervals, and chords by ear. Build your musical vocabulary fast.',
+            features: ['Ear training', 'Note identification', 'Interval recognition', 'Score tracking']
+        },
+        {
+            id:       'caged-stencil',
+            file:     'apps/caged-stencil-fretboard.html',
+            icon:     '🎯',
+            category: 'Guitar',
+            title:    'CAGED Stencil System',
+            desc:     'Master the CAGED system with interactive stencil overlays across the full fretboard.',
+            features: ['CAGED patterns', 'Movable chord shapes', 'Position guides', 'All 12 keys']
+        },
+        {
+            id:       'kcm-tuner',
+            file:     'apps/kcm-tuner.html',
+            icon:     '🎸',
+            category: 'Tools',
+            title:    'KCM Instrument Tuner',
+            desc:     'Professional real-time instrument tuner using your microphone — guitar, bass, ukulele and more.',
+            features: ['Real-time pitch detection', 'Multiple instruments', 'Visual tuning display', 'Microphone input']
         }
     ];
 
@@ -745,17 +871,57 @@ Santa Barbara, California
     /* ──────────────────────────────────────────
        RENDER — reads localStorage set by welcome-free-picker
     ────────────────────────────────────────── */
+    /* ──────────────────────────────────────────
+       PREMIUM TIER CHECK
+       Returns true if the user has a valid paid / access-code tier
+    ────────────────────────────────────────── */
+    function hasPremiumAccess() {
+        const tier        = (localStorage.getItem('userTier')    || '').toLowerCase();
+        const accessLevel = (localStorage.getItem('accessLevel') || '').toLowerCase();
+        const PREMIUM_TIERS = ['premium','founder','vip','beta tester','press','demo','beta','founder\'s circle'];
+        return PREMIUM_TIERS.includes(tier) || accessLevel === 'all_apps';
+    }
+
     function renderMyApps() {
         const container  = document.getElementById('appsContainer');
         const welcomeMsg = document.getElementById('welcomeMsg');
 
         /* Personalise greeting */
         const userName = localStorage.getItem('userName') || '';
+        const tier     = localStorage.getItem('userTier') || '';
+
         if (userName) {
             welcomeMsg.textContent = `Welcome back, ${userName}! 👋`;
         }
 
-        /* Get selected app IDs from localStorage */
+        /* ── PREMIUM / ACCESS-CODE USERS → show ALL apps ── */
+        if (hasPremiumAccess()) {
+
+            /* Badge showing their tier */
+            const tierBadge = document.createElement('div');
+            tierBadge.style.cssText = 'text-align:center;margin-bottom:1.5rem;';
+            tierBadge.innerHTML = `<span style="background:linear-gradient(135deg,#F4D03F,#d4b030);color:#0a0a15;padding:0.4rem 1.2rem;border-radius:25px;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:1px;">
+                ✅ ${tier.charAt(0).toUpperCase() + tier.slice(1)} Access — All Apps Unlocked
+            </span>`;
+            container.appendChild(tierBadge);
+
+            /* Build grid with every app */
+            const grid = document.createElement('div');
+            grid.className = 'apps-grid';
+            grid.setAttribute('role', 'list');
+            grid.setAttribute('aria-label', 'All music theory apps — full access');
+
+            ALL_APPS.forEach((app, i) => {
+                const card = buildCard(app, i);
+                card.setAttribute('role', 'listitem');
+                grid.appendChild(card);
+            });
+
+            container.appendChild(grid);
+            return;
+        }
+
+        /* ── FREE USERS → show their 3 picked apps ── */
         let selectedIds = [];
         try {
             selectedIds = JSON.parse(localStorage.getItem('freeApps') || '[]');
@@ -769,6 +935,9 @@ Santa Barbara, California
                     <p>You haven't picked your free apps yet.</p>
                     <p style="margin-top:1rem;">
                         <a href="/welcome-free-picker.html">Choose your 3 free apps →</a>
+                    </p>
+                    <p style="margin-top:0.75rem;">
+                        <a href="/access-code-entry.html">Have an access code? Enter it here →</a>
                     </p>
                 </div>`;
             return;
@@ -789,7 +958,14 @@ Santa Barbara, California
             return;
         }
 
-        /* Build grid */
+        /* Build grid — free tier */
+        const freeNote = document.createElement('div');
+        freeNote.style.cssText = 'text-align:center;margin-bottom:1.5rem;';
+        freeNote.innerHTML = `<span style="background:rgba(0,128,128,0.15);border:1px solid #008080;color:#E8E8E8;padding:0.4rem 1.2rem;border-radius:25px;font-size:0.9rem;">
+            Free Tier — Your 3 chosen apps &nbsp;·&nbsp; <a href="/pricing.html" style="color:#F4D03F;font-weight:700;">Upgrade for all 25+ →</a>
+        </span>`;
+        container.appendChild(freeNote);
+
         const grid = document.createElement('div');
         grid.className = 'apps-grid';
         grid.setAttribute('role', 'list');
