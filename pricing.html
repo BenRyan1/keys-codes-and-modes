@@ -31,7 +31,6 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-/* ── FIXED: was recursive (called itself), now correctly calls gtag ── */
 function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
 </script>
 
@@ -135,10 +134,8 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             color: #fff !important; padding: .45rem 1.2rem; margin-left: .5rem;
         }
         .nav-links .nav-cta:hover { opacity: .88; background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple)); }
-        /* Hamburger */
         .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: .5rem; }
         .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--primary-gold); border-radius: 2px; transition: all .3s; }
-        /* Mobile drawer */
         .mobile-nav-drawer {
             display: none; position: fixed; top: 68px; left: 0; right: 0;
             background: rgba(10,10,21,0.97); border-bottom: 1px solid rgba(0,128,128,0.3);
@@ -238,7 +235,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     <div class="container">
         <div class="page-header">
             <h2>Your Musical Journey Starts Here</h2>
-            <p>Choose the plan that fits your goals. Every tier unlocks our revolutionary visual approach to mastering music theory.</p>
+            <p>Choose the plan that fits your goals. Every tier unlocks our visual approach to mastering music theory.</p>
         </div>
         
         <div class="pricing-grid">
@@ -359,12 +356,13 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     
     <script>
         const VALID_CODES = {
-            'KCM2026PREMIUM!':  { tier: 'Premium',  label: 'Premium',     badge: '' },
-            'KCM2026FOUNDER!':  { tier: 'Founder',  label: 'Founder',     badge: '🏆' },
-            'BETATESTER2026!':  { tier: 'Beta',      label: 'Beta Tester', badge: '' },
-            'PRESSACCESS2026!': { tier: 'Press',     label: 'Press',       badge: '' },
-            'FRIENDOFBEN2026!': { tier: 'VIP',       label: 'VIP',         badge: '⭐' },
-            'DEMOACCESS2026!':  { tier: 'Demo',      label: 'Demo',        badge: '' },
+            'KCM2026PREMIUM!':  { tier: 'Premium',        label: 'Premium',        badge: ''   },
+            'KCM2026FOUNDER!':  { tier: 'Founder',        label: 'Founder',        badge: '🏆' },
+            'BETATESTER2026!':  { tier: 'Beta',           label: 'Beta Tester',    badge: ''   },
+            'PRESSACCESS2026!': { tier: 'Press',          label: 'Press',          badge: ''   },
+            'FRIENDOFBEN2026!': { tier: 'VIP',            label: 'VIP',            badge: '⭐' },
+            'DEMOACCESS2026!':  { tier: 'Demo',           label: 'Demo',           badge: ''   },
+            'SUPT2026KCM':      { tier: 'Premium',        label: 'Superintendent', badge: '🎓' },
         };
 
         function redeemAccessCode(event) {
@@ -390,7 +388,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                     localStorage.setItem('accessGranted', 'true');
                     localStorage.setItem('accessLevel', info.tier);
 
-                    /* Track successful redemption */
                     try { trackEvent('access_code_redeemed', {tier: info.tier, page: 'pricing'}); } catch(e) {}
 
                     submitBtn.textContent = '✓ Code Accepted!';
@@ -422,7 +419,6 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
 <!-- ══ KCM GA4 TRACKING ══════════════════════════════════════ -->
 <script src="/js/kcm-ga4-tracking.js"></script>
 <script>
-/* Scroll Depth */
 (function(){var m=[25,50,75,100],f={};
 function p(){var e=document.documentElement,t=e.scrollHeight-e.clientHeight;
 return t>0?Math.round(((e.scrollTop||document.body.scrollTop)/t)*100):0;}
@@ -431,7 +427,6 @@ m.forEach(function(x){if(v>=x&&!f[x]){f[x]=true;
 trackEvent("scroll_depth",{depth_percent:x,page:"pricing"});}});},{passive:true});
 })();
 
-/* Stripe plan button clicks — read plan from data-plan attribute */
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll("a.cta-button[href*='buy.stripe.com']").forEach(function(a) {
     a.addEventListener("click", function() {
