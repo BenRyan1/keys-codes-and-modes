@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Licensing & Pricing — Keys, Codes & Modes™</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #2a4d6f;
+    --navy-dark: #1a3048;
+    --ocean:     #4A7BA7;
+    --gold:      #F4D03F;
+    --gold-dark: #d4a800;
+    --teal:      #008080;
+    --teal-light:#e6f4f4;
+    --gray-light:#f5f7fa;
+    --gray-mid:  #e0e6ed;
+    --text:      #1a2733;
+    --text-muted:#4a5568;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f0f4f8;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 30px 16px 60px;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(42,77,111,0.18);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--navy-dark);
+    padding: 36px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(74,123,167,0.18);
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(244,208,63,0.07);
+    pointer-events: none;
+  }
+  .header-inner { position: relative; z-index: 1; }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .brand {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .brand span { color: var(--gold); }
+  .pilot-badge {
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 40px;
+    white-space: nowrap;
+    animation: pulse-badge 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-badge {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(244,208,63,0.5); }
+    50%       { box-shadow: 0 0 0 8px rgba(244,208,63,0); }
+  }
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .tagline {
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.3px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+  .tagline span::before { content: '◆ '; color: var(--gold); font-size: 8px; }
+
+  /* ── PROP 28 BANNER ── */
+  .prop-banner {
+    background: linear-gradient(135deg, #fffbea 0%, #fff9e0 100%);
+    border-top: 3px solid var(--gold);
+    border-bottom: 3px solid var(--gold);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .prop-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .prop-text strong {
+    font-size: 13px;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .prop-text p {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .prop-text .deadline {
+    color: #c0392b;
+    font-weight: 700;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content { padding: 32px 40px; }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-bottom: 18px;
+    border-radius: 2px;
+  }
+
+  /* ── WHAT IS KCM ── */
+  .intro-text {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+  .intro-text strong { color: var(--navy); }
+
+  /* ── PRICING TABLE ── */
+  .pricing-section { margin-bottom: 28px; }
+
+  .pricing-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(42,77,111,0.08);
+    font-size: 12.5px;
+  }
+  .pricing-table thead tr {
+    background: var(--navy);
+    color: #fff;
+  }
+  .pricing-table thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .pricing-table thead th:nth-child(3),
+  .pricing-table thead th:nth-child(4) { text-align: center; }
+
+  .pricing-table tbody tr:nth-child(odd)  { background: #fff; }
+  .pricing-table tbody tr:nth-child(even) { background: var(--gray-light); }
+  .pricing-table tbody tr:last-child {
+    background: #e8f4f8;
+    font-weight: 600;
+  }
+  .pricing-table tbody tr { transition: background 0.2s; }
+  .pricing-table tbody tr:hover { background: #ddeef7; }
+
+  .pricing-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--gray-mid);
+    vertical-align: middle;
+  }
+  .pricing-table tbody tr:last-child td { border-bottom: none; }
+
+  .price-cell {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 13px;
+    text-align: center;
+  }
+  .price-cell.custom { color: var(--teal); }
+  .per-student { text-align: center; color: var(--text-muted); font-size: 11.5px; }
+  .best-for { font-size: 11.5px; color: var(--text-muted); }
+  .table-note {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    margin-top: 7px;
+    font-style: italic;
+  }
+
+  /* ── TWO COLUMNS ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── WHAT'S INCLUDED ── */
+  .includes-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .includes-list li {
+    font-size: 12px;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .includes-list li::before {
+    content: '✔';
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── HOW TO START ── */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .step-num {
+    background: var(--ocean);
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 15px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body strong {
+    display: block;
+    font-size: 12.5px;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+  .step-body p {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .step-body .hl { color: #c0392b; font-weight: 700; }
+
+  /* ── FREE PILOT CTA ── */
+  .cta-block {
+    background: var(--navy-dark);
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin: 8px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    border-top: 4px solid var(--gold);
+  }
+  .cta-left .cta-headline {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .cta-left p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+    max-width: 360px;
+  }
+  .cta-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  @media (max-width: 580px) {
+    .cta-contact { align-items: flex-start; }
+  }
+  .cta-contact a, .cta-contact span {
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .cta-contact a:hover { text-decoration: underline; }
+  .cta-icon { font-size: 14px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--gray-light);
+    border-top: 1px solid var(--gray-mid);
+    padding: 14px 40px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .footer a { color: var(--ocean); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ── CHROMATIC STRIP ── */
+  .chromatic-strip {
+    height: 6px;
+    background: linear-gradient(to right,
+      #FF0000, #FF4500, #FF8C00, #FFD700, #9ACD32,
+      #00AA00, #00CED1, #1E90FF, #4169E1, #8A2BE2,
+      #C71585, #FF1493);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .page { animation: fadeUp 0.5s ease both; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; }
+    .pilot-badge { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Chromatic strip top -->
+  <div class="chromatic-strip"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="brand">Keys, Codes <span>&amp;</span> Modes™</div>
+        <div class="pilot-badge">🎓 Free 30-Day Pilot Available</div>
+      </div>
+      <div class="header-sub">School Licensing &amp; Pricing</div>
+      <div class="tagline">
+        <span>25+ Interactive Apps</span>
+        <span>Visual Music Theory</span>
+        <span>Browser-Based</span>
+        <span>No Downloads Required</span>
+        <span>Prop 28 Eligible</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROP 28 BANNER -->
+  <div class="prop-banner">
+    <div class="prop-icon">📋</div>
+    <div class="prop-text">
+      <strong>✔ Prop 28 / AMIM Block Grant Eligible</strong>
+      <p>KCM qualifies as arts education software under California's Prop 28 / AMIM Block Grant program.
+        Funds <span class="deadline">must be encumbered by June 30, 2026.</span>
+        A signed purchase order or contract fulfills encumbrance requirements — contact us today to get your quote in time.</p>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+
+    <!-- What is KCM -->
+    <div class="section-title">What is Keys, Codes &amp; Modes?</div>
+    <div class="divider"></div>
+    <p class="intro-text">
+      <strong>Keys, Codes &amp; Modes™ (KCM)</strong> is a browser-based visual music theory platform built around a proprietary
+      <strong>12-Color Chromatic Spectrum™</strong> system. It gives students an intuitive, visual path into music theory —
+      scales, chords, modes, intervals, and improvisation — through <strong>25+ interactive apps</strong> that run on any device.
+      No software to install. No hardware required. Works on Chromebooks, tablets, and desktops.
+    </p>
+
+    <!-- Pricing Table -->
+    <div class="pricing-section">
+      <div class="section-title">School Licensing Options</div>
+      <div class="divider"></div>
+
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>License Type</th>
+            <th>Who It Covers</th>
+            <th>Annual Fee</th>
+            <th>Per Student*</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Single Classroom</strong></td>
+            <td>1 Teacher + Students</td>
+            <td class="price-cell">$299 / yr</td>
+            <td class="per-student">—</td>
+            <td class="best-for">Pilot program</td>
+          </tr>
+          <tr>
+            <td><strong>Small School</strong></td>
+            <td>Up to 300 students</td>
+            <td class="price-cell">$799 / yr</td>
+            <td class="per-student">~$2.66</td>
+            <td class="best-for">Elementary / K–8</td>
+          </tr>
+          <tr>
+            <td><strong>Medium School</strong></td>
+            <td>300–700 students</td>
+            <td class="price-cell">$1,299 / yr</td>
+            <td class="per-student">~$2.40</td>
+            <td class="best-for">Middle / High School</td>
+          </tr>
+          <tr>
+            <td><strong>Large School</strong></td>
+            <td>700–1,500 students</td>
+            <td class="price-cell">$1,999 / yr</td>
+            <td class="per-student">~$1.50</td>
+            <td class="best-for">Large High School</td>
+          </tr>
+          <tr>
+            <td><strong>District-Wide</strong></td>
+            <td>All schools in district</td>
+            <td class="price-cell custom">Custom Quote</td>
+            <td class="per-student">~$1.00–$1.50</td>
+            <td class="best-for">Multi-school rollout</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="table-note">* Per-student cost shown for reference only. KCM licenses are sold as flat site licenses — no per-seat tracking required.</p>
+    </div>
+
+    <!-- Two columns: What's Included + How to Get Started -->
+    <div class="two-col">
+
+      <!-- What's Included -->
+      <div>
+        <div class="section-title">What's Included</div>
+        <div class="divider"></div>
+        <ul class="includes-list">
+          <li>25+ interactive music theory apps</li>
+          <li>12-Color Chromatic Spectrum™ visual system</li>
+          <li>Scales, chords, modes, intervals &amp; ear training</li>
+          <li>Works on Chromebooks, tablets &amp; desktops</li>
+          <li>No downloads — fully browser-based</li>
+          <li>ADA / WCAG 2.1 AA accessible</li>
+          <li>FERPA &amp; COPPA compliant</li>
+          <li>Prop 28 / AMIM eligibility documentation</li>
+          <li>Teacher support &amp; onboarding resources</li>
+          <li>Free pilot available upon request</li>
+        </ul>
+      </div>
+
+      <!-- How to Get Started -->
+      <div>
+        <div class="section-title">How to Get Started</div>
+        <div class="divider"></div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Request a Free Pilot</strong>
+              <p>Try KCM with your music classes at no cost. Contact us to set up a 30-day pilot — no commitment required.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Select Your License Tier</strong>
+              <p>Choose the option that matches your school or district size. We'll provide a formal quote for your PO process.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Issue a Purchase Order</strong>
+              <p>A signed PO or contract before <span class="hl">June 30, 2026</span> satisfies Prop 28 / AMIM encumbrance requirements.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.two-col -->
+
+    <!-- FREE PILOT CTA -->
+    <div class="cta-block">
+      <div class="cta-left">
+        <div class="cta-headline">🎓 Request Your Free 30-Day Pilot</div>
+        <p>Try KCM with your music students — no cost, no commitment. Contact us today to reserve your pilot and get Prop 28-ready before the June 30, 2026 deadline.</p>
+      </div>
+      <div class="cta-contact">
+        <a href="mailto:ben@keyscodesandmodes.com">
+          <span class="cta-icon">✉</span> ben@keyscodesandmodes.com
+        </a>
+        <a href="tel:+18058864092">
+          <span class="cta-icon">☎</span> 805-886-4092
+        </a>
+        <a href="https://keyscodesandmodes.com/contact" target="_blank">
+          <span class="cta-icon">🌐</span> keyscodesandmodes.com
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /.content -->
+
+  <!-- CHROMATIC STRIP BOTTOM -->
+  <div class="chromatic-strip"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Keys, Codes &amp; Modes™ &nbsp;•&nbsp; Santa Barbara, California &nbsp;•&nbsp;
+    <a href="https://keyscodesandmodes.com">keyscodesandmodes.com</a> &nbsp;•&nbsp;
+    © 2026 Ben Ryan
+  </div>
+
+</div><!-- /.page -->
+
+</body>
+</html>
