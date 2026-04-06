@@ -1,0 +1,144 @@
+CANONICAL TAG AUDIT — keyscodesandmodes.com
+Updated: 2026-04-06
+============================================================
+Every page listed in sitemap.xml MUST have this exact tag
+in its <head> section. Copy/paste each one directly.
+
+Rule: canonical URL must match sitemap URL exactly.
+No www. — Cloudflare handles www→non-www redirect.
+No /index.html — canonical for homepage is trailing slash.
+============================================================
+
+── CORE PAGES ──────────────────────────────────────────────
+
+index.html (homepage file):
+  <link rel="canonical" href="https://keyscodesandmodes.com/" />
+
+offerings.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/offerings.html" />
+
+pricing.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/pricing.html" />
+
+about.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/about.html" />
+
+contact.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/contact.html" />
+
+lander.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/lander.html" />
+
+signup.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/signup.html" />
+
+research.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/research.html" />
+
+── GATED PAGES (add noindex, NOT in sitemap) ──────────────
+
+my-apps.html:
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://keyscodesandmodes.com/my-apps.html" />
+
+superintendent.html:
+  <meta name="robots" content="noindex, nofollow" />
+
+welcome-free.html / welcome-free-picker.html / welcome-premium.html / welcome-founder.html:
+  <meta name="robots" content="noindex, nofollow" />
+
+── APPS ────────────────────────────────────────────────────
+
+apps/holy-grail-final.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/holy-grail-final.html" />
+
+apps/guitar-fretboard-complete.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/guitar-fretboard-complete.html" />
+
+apps/caged-145-master.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/caged-145-master.html" />
+
+apps/guitar-improvisations.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/guitar-improvisations.html" />
+
+apps/chromatic-circle.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/chromatic-circle.html" />
+
+apps/circle-of-fifths.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/circle-of-fifths.html" />
+
+apps/circle-of-modes.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/circle-of-modes.html" />
+
+apps/chromatic-roulette.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/chromatic-roulette.html" />
+
+apps/harmonized-chromatic-scale.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/harmonized-chromatic-scale.html" />
+
+apps/chromatic-wheel-of-sound.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/chromatic-wheel-of-sound.html" />
+
+apps/chromatic-mandala-final.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/chromatic-mandala-final.html" />
+
+apps/music-theory-pro.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/music-theory-pro.html" />
+
+apps/tonic-subdominant-dominant.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/tonic-subdominant-dominant.html" />
+
+apps/modal-stencil-player.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/modal-stencil-player.html" />
+
+apps/chord-builder.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/chord-builder.html" />
+
+apps/rhythm-clock.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/rhythm-clock.html" />
+
+apps/rhythm-harmony.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/rhythm-harmony.html" />
+
+apps/octave-wave-visualizer.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/octave-wave-visualizer.html" />
+
+apps/pitch-detector.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/pitch-detector.html" />
+
+apps/radial-chart-visualizer.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/radial-chart-visualizer.html" />
+
+apps/kcm-cymatics-visualizer.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/kcm-cymatics-visualizer.html" />
+
+apps/sacred-geometry-enhanced-final.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/sacred-geometry-enhanced-final.html" />
+
+apps/S-Geo-Enhanced.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/S-Geo-Enhanced.html" />
+
+apps/S-Geo-Music.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/apps/S-Geo-Music.html" />
+
+── LEGAL ────────────────────────────────────────────────────
+
+privacy.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/privacy.html" />
+
+terms.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/terms.html" />
+
+refund-policy.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/refund-policy.html" />
+
+cookie-policy.html:
+  <link rel="canonical" href="https://keyscodesandmodes.com/cookie-policy.html" />
+
+============================================================
+COMMON MISTAKES TO AVOID:
+- DO NOT use https://www.keyscodesandmodes.com/ in canonical tags
+- DO NOT put /index.html in any canonical tag
+- DO NOT have two canonical tags on any page
+- DO NOT let pricing.html redirect to anything — it must serve directly
+============================================================
