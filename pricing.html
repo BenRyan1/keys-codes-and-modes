@@ -164,7 +164,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
                 <li><a href="/pricing.html" aria-current="page">Pricing</a></li>
                 <li><a href="/free-tuner-landing.html">🎸 Free Tuner</a></li>
                 <li><a href="/about.html">About</a></li>
-                <li><a href="/signup.html" class="nav-cta">Start Free</a></li>
+                <li><a href="/signup.html" class="nav-cta" onclick="localStorage.setItem('kcm_access','kcm_free_trial');localStorage.setItem('kcm_access_granted','true');localStorage.setItem('kcm_tier','free');">Start Free</a></li>
             </ul>
             <button class="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="pricing-mobile-nav" id="pricing-hamburger">
                 <span></span><span></span><span></span>
@@ -179,7 +179,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             <li><a href="/pricing.html" aria-current="page">Pricing</a></li>
             <li><a href="/free-tuner-landing.html">🎸 Free Tuner</a></li>
             <li><a href="/about.html">About</a></li>
-            <li><a href="/signup.html" class="nav-cta">Start Free</a></li>
+            <li><a href="/signup.html" class="nav-cta" onclick="localStorage.setItem('kcm_access','kcm_free_trial');localStorage.setItem('kcm_access_granted','true');localStorage.setItem('kcm_tier','free');">Start Free</a></li>
         </ul>
     </nav>
     
@@ -299,6 +299,15 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </div>
     
     <script>
+        // ── STRIPE SUCCESS URL SETUP (do this once in Stripe dashboard) ──────────
+        // For each payment link, set the success URL to:
+        // Student Monthly:      https://keyscodesandmodes.com/pricing.html?success=true&tier=student_monthly
+        // Student Yearly:       https://keyscodesandmodes.com/pricing.html?success=true&tier=student_yearly
+        // Professional Monthly: https://keyscodesandmodes.com/pricing.html?success=true&tier=professional_monthly
+        // Professional Yearly:  https://keyscodesandmodes.com/pricing.html?success=true&tier=professional_yearly
+        // Founder's Circle:     https://keyscodesandmodes.com/pricing.html?success=true&tier=founders_circle
+        // ─────────────────────────────────────────────────────────────────────────
+
         // ── Access code redemption ────────────────────────────────────────────────
         // Codes are validated SERVER-SIDE via Cloudflare Worker.
         // No codes are stored in this file — viewing source reveals nothing useful.
@@ -322,6 +331,11 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 if (data.ok) {
+                    // Set all token keys — matches offerings.html gate exactly
+                    localStorage.setItem('kcm_access', 'kcm_school_2026');
+                    localStorage.setItem('kcm_access_granted', 'true');
+                    localStorage.setItem('kcm_tier', data.tier || 'school');
+                    // Legacy keys (keep for backward compatibility)
                     localStorage.setItem('validAccessCode', 'true');
                     localStorage.setItem('paidMember', 'true');
                     localStorage.setItem('accessGranted', 'true');
@@ -331,7 +345,7 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
 
                     submitBtn.textContent = '✓ Code Accepted!';
                     submitBtn.style.background = 'linear-gradient(135deg, #008080, #005f5f)';
-                    setTimeout(function() { window.location.href = 'offerings.html'; }, 800);
+                    setTimeout(function() { window.location.href = '/offerings.html'; }, 800);
                 } else {
                     codeInput.style.borderColor = '#FF4040';
                     codeInput.placeholder = 'Invalid code — please try again';
@@ -355,12 +369,37 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
 
         /* Handle Stripe success returns */
         var urlParams = new URLSearchParams(window.location.search);
+
+        // Stripe success — set tokens then redirect to offerings
         if (urlParams.get('success') === 'true') {
+            var tier = urlParams.get('tier') || 'premium';
+            var tokenMap = {
+                'student_monthly':      'kcm_premium_2026',
+                'student_yearly':       'kcm_premium_2026',
+                'professional_monthly': 'kcm_premium_2026',
+                'professional_yearly':  'kcm_premium_2026',
+                'founders_circle':      'kcm_founder_2026'
+            };
+            var token = tokenMap[tier] || 'kcm_premium_2026';
+            // Set tokens — matches offerings.html gate exactly
+            localStorage.setItem('kcm_access', token);
+            localStorage.setItem('kcm_access_granted', 'true');
+            localStorage.setItem('kcm_tier', tier);
+            // Legacy keys
             localStorage.setItem('paidMember', 'true');
-            var tier = urlParams.get('tier');
-            if (tier) localStorage.setItem('userTier', tier);
-            try { trackEvent('purchase', {'event_category': 'Pricing', 'event_label': tier || 'unknown'}); } catch(e) {}
-            setTimeout(function() { window.location.href = 'offerings.html'; }, 1000);
+            localStorage.setItem('userTier', tier);
+            try { trackEvent('purchase', {'event_category': 'Pricing', 'event_label': tier}); } catch(e) {}
+            setTimeout(function() { window.location.href = '/offerings.html'; }, 1000);
+        }
+
+        // Bounced from offerings (no access) — show teal banner
+        if (urlParams.get('ref') === 'offerings') {
+            document.addEventListener('DOMContentLoaded', function() {
+                var banner = document.createElement('div');
+                banner.style.cssText = 'background:#008080;color:#fff;text-align:center;padding:1rem 2rem;font-weight:700;font-size:1rem;letter-spacing:.5px;';
+                banner.innerHTML = '🔒 Choose a plan below to unlock all 25+ interactive music theory apps';
+                document.body.insertBefore(banner, document.body.firstChild);
+            });
         }
     </script>
 
