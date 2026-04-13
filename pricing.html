@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <script>
 window.addEventListener('load', function() {
-  window.cookieconsent.initialise({
+  window._ccInstance = window.cookieconsent.initialise({
     palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
     theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
     content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy.html" },
@@ -31,7 +31,7 @@ function loadGoogleAnalytics() {
   gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
   gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
 }
-function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
+function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&window._ccInstance.hasConsented())gtag('event',n,p);}catch(e){}}
 </script>
 
     <meta charset="UTF-8">
@@ -132,6 +132,49 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
         .founder-section h2 { font-family: var(--font-display); color: var(--primary-purple); font-size: 2.5rem; margin-bottom: 1rem; }
         .founder-section .price { color: var(--primary-purple); }
         @media (max-width: 768px) { .page-header h2 { font-size: 2rem; } .pricing-grid { grid-template-columns: 1fr; } }
+
+        /* ── Billing toggle ──────────────────────────────────────────────────── */
+        .billing-toggle-wrap {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.75rem; margin-bottom: 0.75rem;
+        }
+        .billing-toggle-wrap span {
+            font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+            color: rgba(232,232,232,0.7); letter-spacing: 0.5px; transition: color 0.2s;
+        }
+        .billing-toggle-wrap span.active { color: var(--primary-gold); }
+        .toggle-switch {
+            position: relative; width: 52px; height: 28px;
+            background: rgba(255,255,255,0.12); border-radius: 50px;
+            border: 2px solid rgba(0,128,128,0.4);
+            cursor: pointer; transition: background 0.25s, border-color 0.25s;
+            flex-shrink: 0;
+        }
+        .toggle-switch::after {
+            content: ''; position: absolute; top: 3px; left: 3px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: var(--primary-gold);
+            transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+        }
+        .toggle-switch.monthly::after { transform: translateX(24px); }
+        .toggle-switch.monthly { background: rgba(0,128,128,0.2); border-color: var(--primary-teal); }
+        .savings-badge {
+            display: inline-block; background: rgba(0,128,128,0.25);
+            border: 1px solid var(--primary-teal); color: var(--primary-teal);
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
+            padding: 0.2rem 0.65rem; border-radius: 50px; margin-bottom: 1rem;
+            transition: opacity 0.2s;
+        }
+        .savings-badge.hidden { opacity: 0; pointer-events: none; }
+        .switch-link {
+            display: block; text-align: center; margin-top: 1rem;
+            font-size: 0.82rem; color: rgba(232,232,232,0.5);
+        }
+        .switch-link a {
+            color: var(--primary-teal); text-decoration: none; font-weight: 600;
+            border-bottom: 1px dotted rgba(0,128,128,0.4); transition: color 0.2s;
+        }
+        .switch-link a:hover { color: var(--primary-gold); }
     </style>
 </head>
 <body>
@@ -189,68 +232,82 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             <p>Choose the plan that fits your goals. Every tier unlocks our visual approach to mastering music theory.</p>
         </div>
         
-        <div class="pricing-grid">
-            <div class="pricing-card">
+        <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); max-width: 800px; margin: 0 auto 3rem;">
+
+            <!-- ── STUDENT CARD ─────────────────────────────────────────────── -->
+            <div class="pricing-card featured" id="student-card">
+
+                <!-- Billing toggle -->
+                <div class="billing-toggle-wrap" aria-label="Billing frequency">
+                    <span id="student-lbl-annual" class="active">Annual</span>
+                    <div class="toggle-switch" id="student-toggle" role="switch" aria-checked="false" tabindex="0"
+                         aria-label="Switch Student billing to monthly" onclick="toggleBilling('student')"
+                         onkeydown="if(event.key==='Enter'||event.key===' ')toggleBilling('student')"></div>
+                    <span id="student-lbl-monthly">Monthly</span>
+                </div>
+
                 <h3 class="tier-name">Student Tier</h3>
-                <div class="price">$15<span>/month</span></div>
-                <p class="price-note">Begin your journey with full access to our complete library</p>
+
+                <span class="savings-badge" id="student-savings-badge">🎉 Save $33 — 2+ months FREE</span>
+
+                <div class="price" id="student-price">$147<span id="student-period">/year</span></div>
+                <p class="price-note" id="student-note">Best value • Just $12.25/month • Cancel anytime</p>
+
                 <ul class="features-list">
                     <li>Full access to all 25+ interactive apps</li>
                     <li>Visual music theory that actually makes sense</li>
                     <li>Learn at your own pace, on your schedule</li>
-                    <li>Beautiful guitar & piano visualizations</li>
+                    <li>Beautiful guitar &amp; piano visualizations</li>
                     <li>Master the Circle of Fifths intuitively</li>
                     <li>Unlock the CAGED system secrets</li>
                     <li>New apps and features added regularly</li>
                 </ul>
-                <a href="https://buy.stripe.com/3cI9AU8ZT1Fsg3a9pn63K04" class="cta-button" data-plan="student_monthly">Start Learning →</a>
+
+                <a href="https://buy.stripe.com/5kQaEY5NHfwicQY30Z63K05"
+                   class="cta-button" id="student-cta" data-plan="student_yearly">Get Best Value →</a>
+
+                <p class="switch-link" id="student-switch-text">
+                    Or go <a href="#" onclick="toggleBilling('student');return false;">month-to-month at $15/mo</a>
+                </p>
             </div>
-            
-            <div class="pricing-card featured">
-                <h3 class="tier-name">Student Tier</h3>
-                <div class="price">$147<span>/year</span></div>
-                <p class="price-note">Best value! Save $33/year • That's just $12.25/month</p>
-                <ul class="features-list">
-                    <li>Everything in Student Monthly, plus:</li>
-                    <li><strong>2+ months absolutely FREE</strong></li>
-                    <li>Priority support - we're here to help!</li>
-                    <li>Be first to try exciting new features</li>
-                    <li>Exclusive downloadable study guides</li>
-                    <li>Cancel anytime, no questions asked</li>
-                </ul>
-                <a href="https://buy.stripe.com/5kQaEY5NHfwicQY30Z63K05" class="cta-button" data-plan="student_yearly">Get Best Value →</a>
-            </div>
-            
-            <div class="pricing-card">
+
+            <!-- ── PROFESSIONAL CARD ────────────────────────────────────────── -->
+            <div class="pricing-card" id="pro-card">
+
+                <!-- Billing toggle -->
+                <div class="billing-toggle-wrap" aria-label="Billing frequency">
+                    <span id="pro-lbl-annual" class="active">Annual</span>
+                    <div class="toggle-switch" id="pro-toggle" role="switch" aria-checked="false" tabindex="0"
+                         aria-label="Switch Professional billing to monthly" onclick="toggleBilling('pro')"
+                         onkeydown="if(event.key==='Enter'||event.key===' ')toggleBilling('pro')"></div>
+                    <span id="pro-lbl-monthly">Monthly</span>
+                </div>
+
                 <h3 class="tier-name">Professional</h3>
-                <div class="price">$39<span>/month</span></div>
-                <p class="price-note">Elevate your craft with advanced features and direct support</p>
+
+                <span class="savings-badge" id="pro-savings-badge">🎉 Save $71 — 2 months FREE</span>
+
+                <div class="price" id="pro-price">$397<span id="pro-period">/year</span></div>
+                <p class="price-note" id="pro-note">Best value • Just $33/month • Cancel anytime</p>
+
                 <ul class="features-list">
                     <li>Everything in Student Tier, plus:</li>
                     <li>Advanced composition and arrangement tools</li>
                     <li>Export and share your discoveries</li>
                     <li>Seamless access across all your devices</li>
-                    <li>Priority support - we've got your back</li>
+                    <li>Priority support — we've got your back</li>
                     <li>Exclusive masterclasses with Ben Ryan</li>
                     <li>Commercial use license included</li>
                 </ul>
-                <a href="https://buy.stripe.com/8x2cN67VP1Fs4kscBz63K06" class="cta-button" data-plan="professional_monthly">Go Professional →</a>
+
+                <a href="https://buy.stripe.com/14AdRacc5ck6eZ6dFD63K03"
+                   class="cta-button" id="pro-cta" data-plan="professional_yearly">Save Big →</a>
+
+                <p class="switch-link" id="pro-switch-text">
+                    Or go <a href="#" onclick="toggleBilling('pro');return false;">month-to-month at $39/mo</a>
+                </p>
             </div>
-            
-            <div class="pricing-card">
-                <h3 class="tier-name">Professional</h3>
-                <div class="price">$397<span>/year</span></div>
-                <p class="price-note">Commit to your growth • Save $71/year at just $33/month</p>
-                <ul class="features-list">
-                    <li>Everything in Professional Monthly, plus:</li>
-                    <li><strong>2 months absolutely FREE</strong></li>
-                    <li>Personal 1-on-1 onboarding with our team</li>
-                    <li>Custom teaching materials tailored for you</li>
-                    <li>Direct communication line to Ben Ryan</li>
-                    <li>Lifetime access to all recorded workshops</li>
-                </ul>
-                <a href="https://buy.stripe.com/14AdRacc5ck6eZ6dFD63K03" class="cta-button" data-plan="professional_yearly">Save Big →</a>
-            </div>
+
         </div>
         
         <div class="founder-section" id="founders">
@@ -299,6 +356,48 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </div>
     
     <script>
+        // ── Billing toggle logic ─────────────────────────────────────────────────
+        var billingState = { student: 'annual', pro: 'annual' };
+
+        var PLANS = {
+            student: {
+                annual:  { price: '$147', period: '/year',  note: 'Best value • Just $12.25/month • Cancel anytime',    cta: 'Get Best Value →',   href: 'https://buy.stripe.com/5kQaEY5NHfwicQY30Z63K05', plan: 'student_yearly',       badge: '🎉 Save $33 — 2+ months FREE', switchText: 'Or go <a href="#" onclick="toggleBilling(\'student\');return false;">month-to-month at $15/mo</a>' },
+                monthly: { price: '$15',  period: '/month', note: 'Begin your journey with full access to our complete library', cta: 'Start Learning →', href: 'https://buy.stripe.com/3cI9AU8ZT1Fsg3a9pn63K04', plan: 'student_monthly', badge: null,                   switchText: 'Or <a href="#" onclick="toggleBilling(\'student\');return false;">save $33 with Annual — 2+ months FREE</a>' }
+            },
+            pro: {
+                annual:  { price: '$397', period: '/year',  note: 'Best value • Just $33/month • Cancel anytime',       cta: 'Save Big →',         href: 'https://buy.stripe.com/14AdRacc5ck6eZ6dFD63K03', plan: 'professional_yearly',  badge: '🎉 Save $71 — 2 months FREE',  switchText: 'Or go <a href="#" onclick="toggleBilling(\'pro\');return false;">month-to-month at $39/mo</a>' },
+                monthly: { price: '$39',  period: '/month', note: 'Elevate your craft with advanced features and direct support', cta: 'Go Professional →', href: 'https://buy.stripe.com/8x2cN67VP1Fs4kscBz63K06', plan: 'professional_monthly', badge: null,              switchText: 'Or <a href="#" onclick="toggleBilling(\'pro\');return false;">save $71 with Annual — 2 months FREE</a>' }
+            }
+        };
+
+        function toggleBilling(tier) {
+            var current = billingState[tier];
+            var next = current === 'annual' ? 'monthly' : 'annual';
+            billingState[tier] = next;
+            var p = PLANS[tier][next];
+
+            document.getElementById(tier + '-price').childNodes[0].nodeValue = p.price;
+            document.getElementById(tier + '-period').textContent = p.period;
+            document.getElementById(tier + '-note').textContent = p.note;
+            var cta = document.getElementById(tier + '-cta');
+            cta.textContent = p.cta;
+            cta.href = p.href;
+            cta.setAttribute('data-plan', p.plan);
+            document.getElementById(tier + '-switch-text').innerHTML = p.switchText;
+
+            var badge = document.getElementById(tier + '-savings-badge');
+            if (p.badge) { badge.textContent = p.badge; badge.classList.remove('hidden'); }
+            else { badge.classList.add('hidden'); }
+
+            var toggle = document.getElementById(tier + '-toggle');
+            toggle.classList.toggle('monthly', next === 'monthly');
+            toggle.setAttribute('aria-checked', next === 'monthly' ? 'true' : 'false');
+
+            document.getElementById(tier + '-lbl-annual').classList.toggle('active', next === 'annual');
+            document.getElementById(tier + '-lbl-monthly').classList.toggle('active', next === 'monthly');
+        }
+        // ─────────────────────────────────────────────────────────────────────────
+
         // ── STRIPE SUCCESS URL SETUP (do this once in Stripe dashboard) ──────────
         // For each payment link, set the success URL to:
         // Student Monthly:      https://keyscodesandmodes.com/pricing.html?success=true&tier=student_monthly
