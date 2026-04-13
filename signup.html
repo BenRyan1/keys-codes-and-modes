@@ -49,7 +49,7 @@
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
     <script>
     window.addEventListener('load', function() {
-      window.cookieconsent.initialise({
+      window._ccInstance = window.cookieconsent.initialise({
         palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
         theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
         content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy.html" },

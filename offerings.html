@@ -56,7 +56,7 @@
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
     <script>
     window.addEventListener('load', function() {
-      window.cookieconsent.initialise({
+      window._ccInstance = window.cookieconsent.initialise({
         palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
         theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
         content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy.html" },
@@ -71,7 +71,7 @@
       gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
       gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
     }
-    function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsented()&&typeof gtag==='function')gtag('event',n,p);}
+    function trackEvent(n,p){try{if(typeof gtag==="function"&&window._ccInstance&&window._ccInstance.hasConsented())gtag("event",n,p);}catch(e){}}
     </script>
 
     <meta charset="UTF-8">
@@ -921,13 +921,13 @@
             <div class="copyright">
                 <p>&copy; 2026 Keys, Codes & Modes™. Created by <strong>Benjamin Ryan</strong>. All rights reserved.</p>
                 <p style="margin-top:0.5rem;font-size:0.9rem;">Based on the book "Keys, Codes, and Modes: A Visual Approach to Understanding Music"</p>
-                <p style="margin-top:0.5rem;font-size:0.9rem;color:#666;">Santa Barbara, California | 805-886-4092 | ben@keyscodesandmodes.com</p>
+                <p style="margin-top:0.5rem;font-size:0.9rem;color:#666;">Santa Barbara, California | 805-886-4092 | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="583a3d3618333d212b3b373c3d2b39363c35373c3d2b763b3735">[email&#160;protected]</a></p>
             </div>
         </div>
     </footer>
 
     <!-- ══ KCM GA4 TRACKING ══ -->
-    <script src="/js/kcm-ga4-tracking.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/kcm-ga4-tracking.js"></script>
     <script>
     /* Logout function */
     function kcmLogout() {
@@ -959,11 +959,4 @@
     /* Smooth scroll for anchor links */
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            var target = document.querySelector(this.getAttribute('href'));
-            if(target){ target.scrollIntoView({behavior:'smooth',block:'start'}); }
-        });
-    });
-    </script>
-</body>
-</html>
+      
