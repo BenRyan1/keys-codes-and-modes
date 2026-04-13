@@ -614,27 +614,21 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
   <div class="mic-modal-box">
     <span class="mic-icon" aria-hidden="true">🎙️</span>
     <h2>Microphone Access</h2>
-    <p class="mic-modal-p">Something went wrong accessing your microphone.</p>
+    <p class="mic-modal-p">Your browser has blocked microphone access for this page.</p>
     <div class="steps">
       <ul>
-        <li>Click the 🔒 icon in your address bar → Site settings → set Microphone to Allow</li>
-        <li>Check System Settings → Privacy & Security → Microphone → Chrome ON</li>
-        <li>Click Try Again below</li>
+        <li>Click the 🔒 icon in your address bar</li>
+        <li>Set Microphone to <strong style="color:var(--primary-gold)">Allow</strong></li>
+        <li>Click <strong style="color:var(--primary-gold)">Try Again</strong> below</li>
       </ul>
     </div>
-    <p style="font-size:7.5px;margin:0 0 1rem;color:rgba(232,232,232,.35)">
-      No mic? Use the piano keys, chromatic wheel, or guitar neck to play manually.
+    <p style="font-size:7.5px;margin-bottom:1.2rem;color:rgba(232,232,232,.38)">
+      No mic? Click the piano keys, chromatic wheel, or guitar neck to play notes manually — all 8 panels sync automatically.
     </p>
     <div class="mic-modal-btns">
       <button class="mic-modal-btn primary" id="micRetryBtn">🎙 Try Again</button>
       <button class="mic-modal-btn primary" id="micFlagBtn" style="display:none;background:rgba(0,128,128,.25);font-size:7px;">📋 Copy Chrome Flag URL</button>
       <button class="mic-modal-btn secondary" id="micDismissBtn">Play Manually</button>
-    </div>
-    <div style="margin-top:.8rem;text-align:center">
-      <a id="micSettingsLink" href="chrome://settings/content/microphone"
-         style="display:none;font-family:var(--font-mono);font-size:8px;color:var(--primary-teal);
-                letter-spacing:.06em;text-decoration:none;opacity:.8"
-         target="_blank">⚙ Open Chrome Mic Settings</a>
     </div>
   </div>
 </div>
@@ -965,28 +959,37 @@ function setMicUI(state){
 }
 
 async function start(){
-  if(location.protocol==='file:'){ showMicModal('filescheme'); return; }
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ showMicModal('nosupport'); return; }
+  // ── file:// protocol — Chrome blocks mic on local files ──────────────────
+  if(location.protocol === 'file:'){
+    showMicModal('filescheme'); return;
+  }
 
-  // Pre-check permission — auto-retry when user fixes it
+  // Check if getUserMedia is available at all
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    showMicModal('nosupport'); return;
+  }
+
+  // Check permission state first (Chrome/Edge/Firefox support this)
   if(navigator.permissions){
     try{
       const perm = await navigator.permissions.query({name:'microphone'});
       if(perm.state==='denied'){
-        showMicModal('denied','PermissionDenied'); setMicUI('error');
-        perm.onchange=()=>{ if(perm.state==='granted'){ hideMicModal(); start(); }};
-        return;
+        showMicModal('denied'); return;
       }
-    }catch(e){}
+    }catch(e){ /* Firefox may not support query for microphone */ }
   }
 
   setMicUI('waiting');
   try{
+    // Stop any existing stream tracks first
     if(micStream) micStream.getTracks().forEach(t=>t.stop());
-    // Use simple audio:true first — fewest constraints = best chance of success
-    micStream = await navigator.mediaDevices.getUserMedia({audio:true});
 
-    if(audioCtx&&audioCtx.state!=='closed') audioCtx.close();
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:false }
+    });
+
+    // Build/rebuild audio context
+    if(audioCtx && audioCtx.state!=='closed') audioCtx.close();
     audioCtx = new(window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==='suspended') await audioCtx.resume();
 
@@ -1001,19 +1004,23 @@ async function start(){
 
     setMicUI('live');
     hideMicModal();
-    clearManualNotes();
+    clearManualNotes();  // mic takes over — clear held notes
     _stopSyntheticLoop();
+
     if(typeof trackEvent!=='undefined') trackEvent('observatory_mic_activated',{});
     loop();
 
   }catch(e){
     console.warn('Mic error:', e.name, e.message);
-    isOn=false; setMicUI('error');
-    const denied   = e.name==='NotAllowedError'||e.name==='PermissionDeniedError';
+    isOn = false;
+
+    const denied = e.name==='NotAllowedError'||e.name==='PermissionDeniedError';
     const notFound = e.name==='NotFoundError'||e.name==='DevicesNotFoundError';
-    if(denied)        showMicModal('denied',   e.name);
-    else if(notFound) showMicModal('notfound', e.name);
-    else              showMicModal('other',    e.name);
+
+    setMicUI('error');
+    if(denied)   showMicModal('denied');
+    else if(notFound) showMicModal('notfound');
+    else              showMicModal('other');
   }
 }
 
@@ -1032,87 +1039,74 @@ function stop(){
 const _micMessages = {
   filescheme: {
     title: '📁 Local File — Mic Blocked',
-    body:  'Chrome blocks microphone on file:// URLs. Upload to your server or use Live Server in VS Code.',
+    body:  'Chrome blocks microphone access when opening files directly (file://). You have two options:',
     steps: [
-      'Deploy to <strong style="color:var(--primary-gold)">keyscodesandmodes.com/apps/</strong> — mic works instantly on https://',
-      'OR in VS Code: right-click the file → <strong style="color:var(--primary-gold)">Open with Live Server</strong>',
+      '<strong style="color:var(--primary-gold)">Option 1 — Enable in Chrome (30 seconds):</strong> Copy this into your address bar: <code id="chrome-flag-url" style="background:rgba(0,255,128,.1);padding:2px 5px;border-radius:3px;font-size:8px;cursor:pointer;color:#00FF88" onclick="navigator.clipboard.writeText(\'chrome://flags/#unsafely-treat-insecure-origin-as-secure\')">chrome://flags/#unsafely-treat-insecure-origin-as-secure</code> — or use the button below',
+      '<strong style="color:var(--primary-gold)">Option 2 — Serve locally:</strong> Drag the file into VS Code → right-click → "Open with Live Server", then use the http://localhost URL',
+      '<strong style="color:var(--primary-gold)">Option 3 — Upload to KCM:</strong> Place the file on your web server at keyscodesandmodes.com and open it from there',
     ],
-    retry: false
+    retry: false,
+    extra: true
   },
   denied: {
-    title: '🔒 Microphone Blocked by Chrome',
-    body:  'Chrome has blocked mic access for this site. Here\'s how to unblock it:',
+    title: '🔒 Microphone Blocked',
+    body:  'Your browser has blocked microphone access for this page.',
     steps: [
-      'Click the <strong style="color:var(--primary-gold)">🔒 lock icon</strong> in the address bar (left of the URL)',
-      'Click <strong style="color:var(--primary-gold)">Site settings</strong>',
-      'Find <strong style="color:var(--primary-gold)">Microphone</strong> → change from "Block" to <strong style="color:var(--primary-gold)">Allow</strong>',
-      'Come back here and click <strong style="color:var(--primary-gold)">Try Again</strong>',
-    ],
-    retry: true,
-    link: { label:'Open Chrome Mic Settings', url:'chrome://settings/content/microphone' }
-  },
-  notfound: {
-    title: '🎙 No Microphone Detected',
-    body:  'Chrome can\'t find a microphone on this Mac.',
-    steps: [
-      'Go to <strong style="color:var(--primary-gold)">Apple Menu → System Settings → Privacy & Security → Microphone</strong>',
-      'Make sure <strong style="color:var(--primary-gold)">Google Chrome</strong> is toggled ON',
-      'Restart Chrome, then click Try Again',
+      'Click the 🔒 or 🎙 icon in your browser\'s address bar',
+      'Find "Microphone" and set it to <strong style="color:var(--primary-gold)">Allow</strong>',
+      'Then click <strong style="color:var(--primary-gold)">Try Again</strong> below',
+      '<em style="opacity:.6">You may need to reload the page after changing the setting</em>'
     ],
     retry: true
   },
-  other: {
-    title: '⚠ Microphone Error',
-    body:  'Chrome threw an error accessing the microphone.',
+  notfound: {
+    title: '🎙 No Microphone Found',
+    body:  'No microphone device was detected on this computer.',
     steps: [
-      'Go to <strong style="color:var(--primary-gold)">Apple Menu → System Settings → Privacy & Security → Microphone</strong> → make sure Chrome is ON',
-      'Click the <strong style="color:var(--primary-gold)">🔒 lock</strong> in the address bar → Site settings → set Microphone to <strong style="color:var(--primary-gold)">Allow</strong>',
-      'Close all other apps using the mic (Zoom, FaceTime, GarageBand, etc.)',
-      'Hard-reload: <strong style="color:var(--primary-gold)">⌘⇧R</strong>, then click Activate again',
+      'Make sure a microphone is plugged in and recognized by your OS',
+      'Check System Preferences / Settings → Sound → Input',
+      'Try a different browser (Chrome or Edge work best)',
     ],
     retry: true
   },
   nosupport: {
-    title: '⚠ Browser Not Supported',
-    body:  'This browser can\'t access the microphone.',
+    title: '⚠ Not Supported',
+    body:  'Your browser doesn\'t support microphone access.',
     steps: [
-      'Use <strong style="color:var(--primary-gold)">Google Chrome</strong> or Safari on Mac',
-      'Make sure you\'re on https:// (not http://)',
+      'Use Google Chrome, Microsoft Edge, or Firefox',
+      'Make sure you\'re on a secure connection (https://)',
     ],
     retry: false
+  },
+  other: {
+    title: '⚠ Microphone Error',
+    body:  'Something went wrong accessing your microphone.',
+    steps: [
+      'Reload the page and try again',
+      'Make sure no other app is using the microphone',
+      'Try a different browser',
+    ],
+    retry: true
   }
 };
 
-function showMicModal(type='other', errorCode=''){
-  const msg = _micMessages[type] || _micMessages.other;
+function showMicModal(type='denied'){
+  const msg = _micMessages[type] || _micMessages.denied;
   const m = document.getElementById('mic-modal');
   if(!m) return;
 
-  m.querySelector('h2').textContent = msg.title;
-  m.querySelector('.mic-modal-p').innerHTML = msg.body +
-    (errorCode ? ` <span style="font-size:7px;opacity:.45;font-family:var(--font-mono)">[${errorCode}]</span>` : '');
+  m.querySelector('.mic-modal-box h2').textContent = msg.title;
+  m.querySelector('.mic-modal-p').textContent = msg.body;
 
   const ul = m.querySelector('.steps ul');
   ul.innerHTML = msg.steps.map(s=>`<li>${s}</li>`).join('');
 
-  // Show/hide retry button
-  document.getElementById('micRetryBtn').style.display = msg.retry ? '' : 'none';
+  const retryBtn = document.getElementById('micRetryBtn');
+  retryBtn.style.display = msg.retry ? '' : 'none';
 
-  // Show/hide flag button (file:// only)
+  // Show/hide the "Copy Flag URL" button for file:// scheme
   const flagBtn = document.getElementById('micFlagBtn');
   if(flagBtn) flagBtn.style.display = (type==='filescheme') ? '' : 'none';
-
-  // Show/hide settings link
-  const linkBtn = document.getElementById('micSettingsLink');
-  if(linkBtn){
-    if(msg.link){
-      linkBtn.textContent = msg.link.label;
-      linkBtn.href = msg.link.url;
-      linkBtn.style.display = '';
-    } else {
-      linkBtn.style.display = 'none';
-    }
-  }
 
   m.classList.add('visible');
 }
