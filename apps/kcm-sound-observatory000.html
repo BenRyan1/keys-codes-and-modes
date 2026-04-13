@@ -965,40 +965,55 @@ function setMicUI(state){
 }
 
 async function start(){
+  if(location.protocol==='file:'){ showMicModal('filescheme'); return; }
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ showMicModal('nosupport'); return; }
+
+  // Pre-check permission — auto-retry when user fixes it
+  if(navigator.permissions){
+    try{
+      const perm = await navigator.permissions.query({name:'microphone'});
+      if(perm.state==='denied'){
+        showMicModal('denied','PermissionDenied'); setMicUI('error');
+        perm.onchange=()=>{ if(perm.state==='granted'){ hideMicModal(); start(); }};
+        return;
+      }
+    }catch(e){}
+  }
+
   setMicUI('waiting');
   try{
     if(micStream) micStream.getTracks().forEach(t=>t.stop());
+    // Use simple audio:true first — fewest constraints = best chance of success
     micStream = await navigator.mediaDevices.getUserMedia({audio:true});
-    audioCtx  = new AudioContext();
-    analyser  = audioCtx.createAnalyser();
+
+    if(audioCtx&&audioCtx.state!=='closed') audioCtx.close();
+    audioCtx = new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+
+    analyser = audioCtx.createAnalyser();
     analyser.fftSize = FFT;
     analyser.smoothingTimeConstant = parseFloat(smEl.value);
     audioCtx.createMediaStreamSource(micStream).connect(analyser);
+
     tdb = new Float32Array(FFT);
     fdb = new Float32Array(analyser.frequencyBinCount);
     isOn = true;
+
     setMicUI('live');
     hideMicModal();
     clearManualNotes();
     _stopSyntheticLoop();
+    if(typeof trackEvent!=='undefined') trackEvent('observatory_mic_activated',{});
     loop();
+
   }catch(e){
-    console.error('MIC FAILED:', e.name, e.message);
-    isOn = false;
-    setMicUI('error');
-    // Show exact error so we know what's happening
-    const m = document.getElementById('mic-modal');
-    document.querySelector('.mic-modal-p').innerHTML =
-      `<strong style="color:#ff6060">${e.name}</strong>: ${e.message}<br><br>`+
-      `macOS: Chrome ON ✅ &nbsp; Chrome site: Allow ✅<br>`+
-      `<em style="opacity:.5">Check browser console (⌘⌥J) for details</em>`;
-    document.querySelector('.steps ul').innerHTML =
-      '<li>Press <strong style="color:var(--primary-gold)">⌘⌥J</strong> to open Console</li>'+
-      '<li>Look for red errors near "MIC FAILED"</li>'+
-      '<li>Screenshot and share with Ben\'s developer</li>';
-    document.getElementById('micRetryBtn').style.display = '';
-    document.getElementById('micFlagBtn').style.display  = 'none';
-    m.classList.add('visible');
+    console.warn('Mic error:', e.name, e.message);
+    isOn=false; setMicUI('error');
+    const denied   = e.name==='NotAllowedError'||e.name==='PermissionDeniedError';
+    const notFound = e.name==='NotFoundError'||e.name==='DevicesNotFoundError';
+    if(denied)        showMicModal('denied',   e.name);
+    else if(notFound) showMicModal('notfound', e.name);
+    else              showMicModal('other',    e.name);
   }
 }
 
