@@ -10,6 +10,10 @@ https://www.keyscodesandmodes.com/* https://keyscodesandmodes.com/:splat  301!
 /my%20apps              /my-apps.html                       301
 /my%20apps.html         /my-apps.html                       301
 
+# ── Fix bare /index URL (GSC redirect error) ───────────────
+/index                  /                                   301
+/index.html             /                                   301
+
 # ── Welcome / conversion pages ────────────────────────────
 /welcome                /welcome-free-picker.html           301
 /tuner                  /kcm-tuner.html                     301
@@ -21,7 +25,10 @@ https://www.keyscodesandmodes.com/* https://keyscodesandmodes.com/:splat  301!
 /privacy-policy.html    /privacy.html                       301
 /privacy-policy         /privacy.html                       301
 
+# ── Refund policy canonicalization ────────────────────────
+/refund-policy          /refund-policy.html                 301
+
 # ── Unknown app URLs Google crawled — redirect to closest ─
-/apps/caged-stencil-fretboard.html   /apps/caged-145-master.html          301
-/apps/chladni-visualizer.html        /apps/kcm-cymatics-visualizer.html   301
+# NOTE: caged-stencil-fretboard.html and chladni-visualizer.html are REAL files in repo
+# Redirect rules removed — the files serve themselves with correct canonical tags
 /apps/chromatic-spoke-clock.html     /apps/chromatic-circle.html          301
