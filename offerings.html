@@ -76,13 +76,17 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- GATED PAGE — do not index -->
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="Explore 25+ interactive music theory apps by Keys, Codes & Modes. Master the Circle of Fifths, CAGED System, guitar fretboard, ear training, and music modes — visual learning for all levels.">
+
+    <!-- ═══ ROBOTS: GATED PAGE — must not be indexed ═══ -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta name="description" content="Access 25+ interactive music theory apps inside Keys, Codes & Modes — Circle of Fifths, CAGED System, guitar fretboard, ear training, rhythm geometry, and more. Visual learning for all levels.">
     <meta name="keywords" content="music theory apps, circle of fifths, CAGED system, guitar fretboard, ear training, music modes, interactive music theory, Keys Codes Modes">
     <meta name="author" content="Benjamin Ryan">
     <meta name="theme-color" content="#008080">
     <title>25+ Interactive Music Theory Apps | Keys, Codes &amp; Modes</title>
+
+    <!-- ═══ CANONICAL — points to self (noindex keeps it out of search) ═══ -->
     <link rel="canonical" href="https://keyscodesandmodes.com/offerings.html">
 
     <!-- Favicon -->
@@ -921,13 +925,13 @@
             <div class="copyright">
                 <p>&copy; 2026 Keys, Codes & Modes™. Created by <strong>Benjamin Ryan</strong>. All rights reserved.</p>
                 <p style="margin-top:0.5rem;font-size:0.9rem;">Based on the book "Keys, Codes, and Modes: A Visual Approach to Understanding Music"</p>
-                <p style="margin-top:0.5rem;font-size:0.9rem;color:#666;">Santa Barbara, California | 805-886-4092 | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="583a3d3618333d212b3b373c3d2b39363c35373c3d2b763b3735">[email&#160;protected]</a></p>
+                <p style="margin-top:0.5rem;font-size:0.9rem;color:#666;">Santa Barbara, California | 805-886-4092 | ben.ryan@keyscodesandmodes.com</p>
             </div>
         </div>
     </footer>
 
     <!-- ══ KCM GA4 TRACKING ══ -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/kcm-ga4-tracking.js"></script>
+    <script src="/js/kcm-ga4-tracking.js"></script>
     <script>
     /* Logout function */
     function kcmLogout() {
@@ -959,3 +963,11 @@
     /* Smooth scroll for anchor links */
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector(anchor.getAttribute('href'));
+            if(target){ target.scrollIntoView({behavior:'smooth'}); }
+        });
+    });
+    </script>
+</body>
+</html>
