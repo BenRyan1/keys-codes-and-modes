@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cymatics Visualizer | Keys, Codes & Modes</title>
+<meta name="description" content="See the geometry of sound. High-resolution Chladni patterns for every note, interval, and chord — piano, fretboard, circle, staff, TAB and MIDI all in sync.">
+<link rel="canonical" href="https://keyscodesandmodes.com/apps/kcm-cymatics-visualizer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   KCM BRAND DESIGN SYSTEM — from about.html + Graphic Standards
+   Dark bg: #0a0a15 / #050508
+   Teal:    #008080   Purple: #8B6BA3
+   Gold:    #F4D03F   Coral:  #CF7A5A
+   Ocean:   #4A7BA7   Navy:   #2a4d6f
+   Fonts:   Cinzel (display) + Montserrat (body)
+   Grad:    linear-gradient(135deg, #4A7BA7, #008080)
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --teal:    #008080;
+  --gold:    #F4D03F;
+  --purple:  #8B6BA3;
+  --coral:   #CF7A5A;
+  --ocean:   #4A7BA7;
+  --navy:    #2a4d6f;
+  --dark:    #0a0a15;
+  --darker:  #050508;
+  --mid:     #1a1a2e;
+  --panel:   rgba(26,26,46,0.85);
+  --text:    #E8E8E8;
+  --text2:   rgba(232,232,232,0.7);
+  --text3:   rgba(232,232,232,0.4);
+  --border:  rgba(0,128,128,0.35);
+  --border2: rgba(0,128,128,0.6);
+  --glow:    rgba(0,217,255,0.15);
+  --grad:    linear-gradient(135deg,#4A7BA7,#008080);
+  --grad-gold: linear-gradient(135deg,#F4D03F,#CF7A5A);
+  --grad-hero: linear-gradient(135deg,rgba(0,128,128,0.2),rgba(139,107,163,0.2));
+  --font-d:  'Cinzel', serif;
+  --font-b:  'Montserrat', sans-serif;
+  --r:       12px;
+  --r-sm:    8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-b);
+  background:radial-gradient(ellipse at center,#1a1a2e 0%,#0a0a15 100%);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.7;
+}
+
+/* ── HEADER (exact from about.html) ── */
+header{
+  background:var(--grad-hero);
+  border-bottom:2px solid var(--teal);
+  box-shadow:0 4px 30px var(--glow);
+  backdrop-filter:blur(10px);
+  padding:1rem 2rem;
+  position:sticky;top:0;z-index:200;
+}
+.header-content{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.logo-text h1{
+  font-family:var(--font-d);font-size:1.3rem;font-weight:900;
+  background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:2px;
+}
+.logo-text p{font-size:0.7rem;color:var(--text3);letter-spacing:0.05em;margin-top:1px}
+nav ul{list-style:none;display:flex;gap:1.5rem;flex-wrap:wrap}
+nav a{color:var(--text);text-decoration:none;font-weight:600;font-size:0.85rem;transition:color 0.3s}
+nav a:hover{color:var(--gold)}
+nav a.cta-nav{
+  background:var(--grad-gold);color:#1a1a2e;
+  padding:0.4rem 1.2rem;border-radius:20px;font-weight:700;
+}
+nav a.cta-nav:hover{opacity:0.9;-webkit-text-fill-color:unset;color:#1a1a2e}
+.nav-toggle{display:none;background:none;border:1px solid var(--teal);border-radius:6px;cursor:pointer;padding:6px 10px;color:var(--text);font-size:18px}
+
+/* ── PAGE HERO ── */
+.page-hero{
+  max-width:1000px;margin:2.5rem auto 0;padding:0 1.5rem;text-align:center;
+}
+.page-hero .badge{
+  display:inline-block;
+  background:rgba(0,128,128,0.15);border:1px solid var(--teal);
+  color:var(--teal);font-size:0.7rem;font-weight:700;letter-spacing:0.1em;
+  padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;text-transform:uppercase;
+}
+.page-hero h2{
+  font-family:var(--font-d);font-size:2rem;font-weight:900;
+  background:linear-gradient(135deg,#00d9d9,var(--gold),var(--purple));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:0.5rem;letter-spacing:1px;
+}
+.page-hero p{color:var(--text2);font-size:0.9rem;margin-bottom:1.5rem}
+
+/* ── MAIN ── */
+main{max-width:1000px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+/* ── PANEL ── */
+.panel{
+  background:rgba(26,26,46,0.7);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:1.2rem;
+  backdrop-filter:blur(8px);
+  margin-bottom:1rem;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+.panel:hover{border-color:var(--border2)}
+.panel-title{
+  font-family:var(--font-d);font-size:0.7rem;font-weight:700;
+  color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:0.8rem;display:flex;align-items:center;gap:8px;
+}
+.panel-title::before{content:'';width:3px;height:14px;background:var(--grad);border-radius:2px;flex-shrink:0}
+
+/* ── NOW PLAYING BAR ── */
+.now-bar{
+  background:linear-gradient(135deg,rgba(0,128,128,0.15),rgba(139,107,163,0.15));
+  border:1px solid var(--border2);border-radius:var(--r);
+  padding:0.8rem 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;
+  margin-bottom:1rem;
+}
+.now-bar .lbl{font-size:0.65rem;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em}
+.now-bar .val{font-size:1rem;font-weight:700;color:var(--gold);font-family:var(--font-d)}
+.now-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
+.now-stat{text-align:center}
+
+/* ── CONTROLS ── */
+.controls-row{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;
+  background:rgba(10,10,21,0.6);border:1px solid var(--border);
+  border-radius:var(--r);padding:0.8rem 1rem;margin-bottom:1rem;
+}
+.cg{display:flex;flex-direction:column;gap:4px}
+.cg label{font-size:0.65rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em}
+.cg select{
+  font-size:12px;padding:5px 8px;
+  background:#0d0d1e;color:var(--text);
+  border:1px solid var(--border2);border-radius:6px;
+  font-family:var(--font-b);cursor:pointer;outline:none;
+  transition:border-color 0.2s;
+}
+.cg select:focus{border-color:var(--gold)}
+.oct-row{display:flex;gap:4px}
+.oct-btn{
+  font-size:11px;font-weight:700;padding:4px 10px;
+  border:1px solid var(--border);border-radius:6px;cursor:pointer;
+  background:transparent;color:var(--text2);font-family:var(--font-b);transition:all 0.15s;
+}
+.oct-btn:hover{border-color:var(--teal);color:var(--text)}
+.oct-btn.sel{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* ── KEY CHIPS ── */
+.key-chips{display:flex;flex-wrap:wrap;gap:6px}
+.key-chip{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;cursor:pointer;
+  border:2px solid transparent;
+  transition:transform 0.12s,border-color 0.12s,box-shadow 0.12s;
+  user-select:none;font-family:var(--font-b);letter-spacing:-0.02em;
+}
+.key-chip:hover{transform:scale(1.12)}
+.key-chip.sel{
+  border-color:#fff;transform:scale(1.2);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.2),0 0 16px rgba(255,255,255,0.3);
+}
+
+/* ── CYMATICS ── */
+.cymatics-wrap{
+  position:relative;width:100%;
+  background:#030308;
+  border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--teal);
+  box-shadow:0 0 30px rgba(0,128,128,0.2);
+  margin-bottom:1rem;
+}
+#cymaticsCanvas{display:block;width:100%;height:260px}
+.cym-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(3,3,8,0.8));
+  padding:0.6rem 1rem 0.7rem;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  pointer-events:none;
+}
+.cym-label{font-size:11px;color:rgba(255,255,255,0.5);font-style:italic;font-family:var(--font-b)}
+.cym-ratio{
+  font-size:11px;color:var(--gold);font-weight:700;
+  background:rgba(0,0,0,0.5);padding:2px 10px;border-radius:10px;
+  border:1px solid rgba(244,208,63,0.3);font-family:var(--font-d);
+}
+
+/* ── STATS ── */
+.stats-strip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.stat-c{
+  flex:1;min-width:80px;
+  background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:0.6rem 0.8rem;border-top:2px solid var(--teal);
+}
+.stat-c .sv{font-size:13px;font-weight:700;color:var(--gold)}
+.stat-c .sl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
+
+/* ── GRID ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.grid2 .full{grid-column:1/-1}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+
+/* ── PIANO ── */
+.piano-wrap{overflow-x:auto;padding-bottom:4px}
+.piano{position:relative;display:flex;height:88px;gap:1px;width:max-content}
+.wkey{
+  position:relative;width:28px;min-width:28px;height:88px;
+  background:#e8e8e0;border:1px solid #666;border-radius:0 0 5px 5px;
+  cursor:pointer;display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:4px;transition:background 0.1s;user-select:none;
+}
+.wkey:hover{background:#d0e8e8}
+.wkey.active{background:var(--note-color,#FFD700)!important}
+.wkey span{font-size:7px;color:#444;pointer-events:none;font-weight:700}
+.bkey-wrap{position:absolute;top:0;left:0;width:100%;pointer-events:none}
+.bkey{
+  position:absolute;width:18px;height:56px;
+  background:#1a1a2e;border:1px solid #333;border-radius:0 0 4px 4px;
+  cursor:pointer;pointer-events:all;z-index:2;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:3px;transition:background 0.1s;user-select:none;
+}
+.bkey:hover{background:#2a3a5e}
+.bkey.active{background:var(--note-color,#FFD700)!important}
+.bkey span{font-size:7px;color:rgba(255,255,255,0.5);pointer-events:none;font-weight:700}
+
+/* ── CHROMATIC CIRCLE ── */
+.circle-wrap{display:flex;align-items:center;justify-content:center;padding:0.5rem 0}
+
+/* ── STAFF ── */
+#staffCanvas{width:100%;display:block;cursor:pointer}
+
+/* ── FRETBOARD — narrow, str6(E)=left → str1(e)=right ── */
+.fboard-outer{overflow-x:auto}
+table.fboard{border-collapse:collapse;font-size:9px;width:auto}
+table.fboard th.f-corner{
+  width:28px;min-width:28px;background:#0d0d1e;
+  border:1px solid var(--border);font-size:8px;font-weight:600;
+  color:var(--teal);text-align:center;padding:3px 2px;
+}
+table.fboard th.s-head{
+  width:28px;min-width:28px;height:32px;
+  background:rgba(0,128,128,0.1);border:1px solid var(--border2);
+  text-align:center;vertical-align:middle;padding:2px;cursor:pointer;
+  transition:background 0.15s;
+}
+table.fboard th.s-head:hover{background:rgba(0,128,128,0.2)}
+.s-nm{font-size:12px;font-weight:800;display:block;color:var(--gold);line-height:1}
+.s-n{font-size:7px;font-weight:500;color:var(--text3);display:block;margin-top:1px}
+table.fboard td.f-lbl{
+  width:28px;min-width:28px;text-align:right;vertical-align:middle;
+  font-size:8px;color:var(--text3);padding:0 5px 0 2px;
+  background:#0d0d1e;border:1px solid var(--border);white-space:nowrap;font-weight:500;
+}
+table.fboard td.f-lbl.mk{color:var(--teal);font-weight:700}
+table.fboard td.n-cell{
+  width:28px;min-width:28px;height:23px;
+  text-align:center;vertical-align:middle;cursor:pointer;
+  border-right:1px solid var(--border);
+  border-bottom:1px solid rgba(0,128,128,0.15);
+  font-size:9px;font-weight:600;color:var(--text3);
+  transition:background 0.1s;position:relative;user-select:none;
+}
+table.fboard td.n-cell:hover{background:rgba(0,128,128,0.15)}
+table.fboard td.n-cell.o-row{background:rgba(0,128,128,0.08);font-style:italic}
+table.fboard td.n-cell.act{font-weight:800}
+table.fboard tr.mk-row td.f-lbl{border-bottom:1px solid rgba(0,128,128,0.5)}
+table.fboard tr.mk-row td.n-cell{border-bottom:1px solid rgba(0,128,128,0.35)}
+.fb-dot{
+  position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--teal);opacity:0.6;pointer-events:none;
+}
+
+/* ── GUITAR TAB ── */
+.tab-display{
+  background:#0a0a15;border:1px solid var(--border2);border-radius:var(--r-sm);
+  padding:0.8rem 1rem;font-family:'Courier New',monospace;font-size:12px;
+  line-height:2;overflow-x:auto;color:var(--text);
+}
+.tab-row{display:flex;align-items:center;gap:4px}
+.tab-sid{width:16px;font-weight:700;color:var(--teal);flex-shrink:0}
+.tab-bar{color:rgba(0,128,128,0.5)}
+.tab-body{color:var(--text2);letter-spacing:0.05em}
+.tab-num{color:var(--gold);font-weight:800}
+.tab-info{font-size:10px;color:var(--text3);margin-top:6px;font-family:var(--font-b)}
+
+/* ── MIDI ── */
+.midi-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.midi-dot{width:9px;height:9px;border-radius:50%;background:#444;flex-shrink:0;transition:background 0.3s}
+.midi-dot.connected{background:#22c55e;box-shadow:0 0 6px #22c55e}
+.midi-dot.error{background:#ef4444;box-shadow:0 0 6px #ef4444}
+.midi-lbl{font-size:11px;color:var(--text3)}
+.midi-log{
+  background:#050508;border:1px solid var(--border);border-radius:6px;
+  padding:6px 10px;font-size:10px;font-family:'Courier New',monospace;
+  color:rgba(0,128,128,0.7);min-height:44px;max-height:80px;overflow-y:auto;
+}
+.midi-log div{margin-bottom:1px}
+.midi-log .hi{color:var(--gold)}
+button.kcm-btn{
+  font-size:11px;font-weight:700;padding:5px 14px;
+  border:1px solid var(--teal);border-radius:20px;cursor:pointer;
+  font-family:var(--font-b);background:rgba(0,128,128,0.15);color:var(--teal);
+  transition:all 0.2s;
+}
+button.kcm-btn:hover{background:var(--teal);color:#fff}
+.kcm-sel{
+  font-size:11px;padding:3px 7px;
+  background:#050508;color:var(--text);
+  border:1px solid var(--border2);border-radius:5px;font-family:var(--font-b);
+}
+
+/* ── INFO TABLE ── */
+table.info-t{width:100%;border-collapse:collapse;font-size:11px}
+table.info-t th{
+  font-size:9px;font-weight:700;color:var(--teal);
+  text-align:left;padding:5px 7px;
+  border-bottom:1px solid var(--border2);
+  text-transform:uppercase;letter-spacing:0.06em;
+}
+table.info-t td{padding:4px 7px;border-bottom:1px solid rgba(0,128,128,0.1);color:var(--text2)}
+table.info-t tr{cursor:pointer;transition:background 0.15s}
+table.info-t tr:hover td{background:rgba(0,128,128,0.1)}
+table.info-t tr.act-row td{background:rgba(244,208,63,0.08);color:var(--text);font-weight:600}
+.n-chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;font-size:8px;font-weight:800;
+}
+
+/* ── ACHIEVEMENT CARD style for info boxes ── */
+.info-card{
+  background:rgba(0,0,0,0.3);border:1px solid var(--teal);border-radius:var(--r-sm);
+  padding:1rem;transition:all 0.3s;
+}
+.info-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 20px var(--glow)}
+.info-card h4{color:var(--gold);font-size:0.85rem;margin-bottom:0.5rem;font-family:var(--font-d)}
+.info-card p{color:var(--text2);font-size:0.8rem;margin:0}
+
+/* ── FOOTER (from about.html) ── */
+footer{
+  text-align:center;padding:3rem 2rem;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,0.5));
+  border-top:1px solid rgba(0,128,128,0.3);margin-top:4rem;
+}
+footer p{color:rgba(232,232,232,0.6);margin:0.4rem 0;font-size:0.85rem}
+footer a{color:var(--teal);text-decoration:none;margin:0 10px;transition:color 0.3s}
+footer a:hover{color:var(--gold)}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:#0a0a15}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  header{padding:0.8rem 1rem}
+  nav ul{gap:0.8rem}
+  .page-hero h2{font-size:1.4rem}
+  main{padding:1rem 1rem 3rem}
+}
+@media(max-width:540px){
+  nav ul{display:none}
+  .nav-toggle{display:block}
+  nav ul.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#0a0a15;padding:1rem;border-bottom:1px solid var(--teal)}
+  .grid2{grid-template-columns:1fr}
+  .page-hero h2{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ HEADER (from about.html) -->
+<header>
+  <div class="header-content">
+    <div class="logo-text">
+      <h1>KEYS, CODES &amp; MODES</h1>
+      <p>A Visual Approach to Understanding Music</p>
+    </div>
+    <button class="nav-toggle" id="navToggle">&#9776;</button>
+    <nav aria-label="Main navigation">
+      <ul id="navList">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/insights.html">All Apps</a></li>
+        <li><a href="/pricing.html">Pricing</a></li>
+        <li><a href="/free-tuner-landing.html">&#127928; Free Tuner</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/signup.html" class="cta-nav">Start Free</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════════════════ PAGE HERO -->
+<div class="page-hero">
+  <div class="badge">Interactive App &mdash; Keys, Codes &amp; Modes&#8482;</div>
+  <h2>Cymatics Music Theory Visualizer</h2>
+  <p>See the geometry of sound &mdash; Chladni wave patterns, piano, fretboard, circle, staff, TAB &amp; MIDI, all in real-time sync</p>
+</div>
+
+<!-- ══════════════════════ MAIN APP -->
+<main id="main-content">
+
+  <!-- NOW PLAYING -->
+  <div class="now-bar">
+    <div>
+      <div class="lbl">Now playing</div>
+      <div class="val" id="nplabel">&#8212; select a note &#8212;</div>
+    </div>
+    <div class="now-stats">
+      <div class="now-stat"><div class="lbl">Hz</div><div class="val" id="npHz">&#8212;</div></div>
+      <div class="now-stat"><div class="lbl">Ratio</div><div class="val" id="npRatio">&#8212;</div></div>
+      <div class="now-stat"><div class="lbl">Octave</div><div class="val" id="npOct">4</div></div>
+      <div class="now-stat"><div class="lbl">Geometry</div><div class="val" id="npGeo">&#8212;</div></div>
+    </div>
+  </div>
+
+  <!-- KEY SELECTOR -->
+  <div class="panel">
+    <div class="panel-title">Choose your key &mdash; 12-Color Chromatic Spectrum&#8482; (Yellow = C at 12 o&#8217;clock)</div>
+    <div class="key-chips" id="keyChips"></div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls-row">
+    <div class="cg">
+      <label>Octave</label>
+      <div class="oct-row" id="octRow"></div>
+    </div>
+    <div class="cg">
+      <label>Mode</label>
+      <select id="modeSelect">
+        <option value="note">Single note</option>
+        <option value="interval">Interval</option>
+        <option value="chord">Chord</option>
+      </select>
+    </div>
+    <div class="cg" id="intervalGroup" style="display:none">
+      <label>Interval</label>
+      <select id="intervalSelect">
+        <option value="0">Unison 1:1</option>
+        <option value="1">m2 Minor 2nd</option>
+        <option value="2">M2 Major 2nd</option>
+        <option value="3">m3 Minor 3rd</option>
+        <option value="4">M3 Major 3rd 5:4</option>
+        <option value="5">P4 Perfect 4th 4:3</option>
+        <option value="6">TT Tritone &#8730;2</option>
+        <option value="7" selected>P5 Perfect 5th 3:2</option>
+        <option value="8">m6 Minor 6th</option>
+        <option value="9">M6 Major 6th</option>
+        <option value="10">m7 Minor 7th</option>
+        <option value="11">M7 Major 7th</option>
+        <option value="12">P8 Octave 2:1</option>
+      </select>
+    </div>
+    <div class="cg" id="chordGroup" style="display:none">
+      <label>Chord</label>
+      <select id="chordSelect">
+        <option value="maj">Major</option>
+        <option value="min">Minor</option>
+        <option value="aug">Augmented</option>
+        <option value="dim">Diminished</option>
+        <option value="maj7">Major 7th</option>
+        <option value="dom7">Dominant 7th</option>
+        <option value="min7">Minor 7th</option>
+        <option value="sus2">Suspended 2nd</option>
+        <option value="sus4">Suspended 4th</option>
+      </select>
+    </div>
+    <div class="cg">
+      <label>Plate</label>
+      <select id="plateSelect">
+        <option value="circle">Circular</option>
+        <option value="square">Square</option>
+      </select>
+    </div>
+    <div class="cg">
+      <label>Resolution</label>
+      <select id="resSelect">
+        <option value="1">Ultra HD</option>
+        <option value="2" selected>High</option>
+        <option value="3">Fast</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- CYMATICS (high-res Chladni) -->
+  <div class="cymatics-wrap">
+    <canvas id="cymaticsCanvas"></canvas>
+    <div class="cym-overlay">
+      <div class="cym-label" id="cymLabel">Select a note to reveal its wave geometry</div>
+      <div class="cym-ratio" id="cymRatio"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-c"><div class="sv" id="svHz">&#8212;</div><div class="sl">Frequency Hz</div></div>
+    <div class="stat-c"><div class="sv" id="svRatio">&#8212;</div><div class="sl">Wave ratio</div></div>
+    <div class="stat-c"><div class="sv" id="svInt">&#8212;</div><div class="sl">Interval</div></div>
+    <div class="stat-c"><div class="sv" id="svNotes">&#8212;</div><div class="sl">Active notes</div></div>
+    <div class="stat-c"><div class="sv" id="svGeo">&#8212;</div><div class="sl">Geometry</div></div>
+    <div class="stat-c"><div class="sv" id="svCons">&#8212;</div><div class="sl">Consonance</div></div>
+  </div>
+
+  <div class="grid2">
+
+    <!-- PIANO (full width) -->
+    <div class="panel full">
+      <div class="panel-title">Piano keyboard &mdash; click any key &mdash; scroll to play anywhere</div>
+      <div class="piano-wrap"><div class="piano" id="pianoKeys"></div></div>
+    </div>
+
+    <!-- CHROMATIC CIRCLE -->
+    <div class="panel">
+      <div class="panel-title">Chromatic circle &mdash; C=Yellow, 12 o&#8217;clock &mdash; CW=up, CCW=down</div>
+      <div class="circle-wrap"><canvas id="circleCanvas" width="240" height="240"></canvas></div>
+    </div>
+
+    <!-- STAFF -->
+    <div class="panel">
+      <div class="panel-title">Staff notation &mdash; click to play</div>
+      <canvas id="staffCanvas" height="130"></canvas>
+      <canvas id="waveCanvas" height="60" style="width:100%;display:block;margin-top:8px;border-radius:6px;background:#050508"></canvas>
+    </div>
+
+    <!-- FRETBOARD: str6(E)=left → str1(e)=right, frets top→bottom -->
+    <div class="panel full">
+      <div class="panel-title">Guitar fretboard &mdash; str 6(E bass)=left &rarr; str 1(e high)=right &mdash; frets top&rarr;bottom</div>
+      <div class="fboard-outer"><table class="fboard" id="fboard"></table></div>
+    </div>
+
+    <!-- GUITAR TAB -->
+    <div class="panel full">
+      <div class="panel-title">Guitar TAB &mdash; synced to active notes</div>
+      <div id="tabDisplay" class="tab-display"></div>
+      <div class="tab-info" id="tabInfo">Select a note to see TAB positions</div>
+    </div>
+
+    <!-- MIDI -->
+    <div class="panel full">
+      <div class="panel-title">MIDI &mdash; connect a hardware device to play everything live</div>
+      <div class="midi-row">
+        <div class="midi-dot" id="midiDot"></div>
+        <div class="midi-lbl" id="midiLbl">Not connected</div>
+        <button class="kcm-btn" id="midiBtn">Connect MIDI</button>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)">
+          Ch: <select class="kcm-sel" id="midiCh">
+            <option value="all">All</option>
+            <option value="0">1</option><option value="1">2</option><option value="2">3</option>
+            <option value="3">4</option><option value="4">5</option><option value="5">6</option>
+            <option value="6">7</option><option value="7">8</option><option value="8">9</option>
+            <option value="9">10</option><option value="10">11</option><option value="11">12</option>
+            <option value="12">13</option><option value="13">14</option><option value="14">15</option>
+            <option value="15">16</option>
+          </select>
+        </div>
+      </div>
+      <div class="midi-log" id="midiLog"><div>Waiting for MIDI&hellip; (Chrome / Edge required)</div></div>
+    </div>
+
+    <!-- INTERVAL TABLE -->
+    <div class="panel full">
+      <div class="panel-title">Interval reference &mdash; click any row to hear &amp; sync all windows</div>
+      <table class="info-t">
+        <thead><tr>
+          <th>Interval</th><th>Semitones</th><th>Ratio</th>
+          <th>Note (from key)</th><th>Cymatic geometry</th><th>Consonance</th>
+        </tr></thead>
+        <tbody id="infoTbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<!-- ══════════════════════ FOOTER (from about.html) -->
+<footer>
+  <p>Benjamin Ryan | Inventor, Author, Educator</p>
+  <p>Santa Barbara, California</p>
+  <p style="margin-top:12px">
+    <a href="/index.html">Home</a>
+    <a href="/insights.html">All Apps</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/pricing.html">Pricing</a>
+  </p>
+  <p style="margin-top:10px">
+    &copy; 2026 Keys, Codes &amp; Modes&#8482; | FreeStyle&reg; is a registered trademark | CA DRE #01005833
+  </p>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   KCM CYMATICS VISUALIZER v4
+   Brand: dark #0a0a15, Cinzel+Montserrat, teal/gold/purple/coral
+
+   OFFICIAL 12-COLOR CHROMATIC SPECTRUM (KCM brand doc):
+   C=#FFFF00  C#=#FFC400  D=#FF8000  D#=#FF4000  E=#FF0000
+   F=#C4007F  F#=#8000FF  G=#4000FF  G#=#0000FF  A=#007FFF
+   A#=#00FF80  B=#80FF00
+
+   CIRCLE: C=Yellow at 12 o'clock
+           Clockwise = pitch UP (higher)
+           Counter-clockwise = pitch DOWN (lower)
+           Octave increments each time you cross 12 o'clock going CW
+
+   GUITAR FRETBOARD:
+   Columns L→R: String 6(E) 5(A) 4(D) 3(G) 2(B) 1(e)
+   Rows T→B: Open, Fret 1 … Fret 12
+═══════════════════════════════════════════════════════════════════ */
+
+/* OFFICIAL CHROMATIC COLORS */
+const NC = [
+  '#FFFF00','#FFC400','#FF8000','#FF4000','#FF0000','#C4007F',
+  '#8000FF','#4000FF','#0000FF','#007FFF','#00FF80','#80FF00'
+];
+const NN = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+
+/* Readable text color for each note background */
+function chipTxt(i){
+  const r=parseInt(NC[i].slice(1,3),16),g=parseInt(NC[i].slice(3,5),16),b=parseInt(NC[i].slice(5,7),16);
+  return (r*0.299+g*0.587+b*0.114)>140?'#000':'#fff';
+}
+
+const IVLS=[
+  {n:'Unison',  s:0,  r:'1:1',    g:'Standing wave',    c:'Perfect'},
+  {n:'m2',      s:1,  r:'16:15',  g:'Complex chaos',    c:'Dissonant'},
+  {n:'M2',      s:2,  r:'9:8',    g:'Wave clusters',    c:'Mild'},
+  {n:'m3',      s:3,  r:'6:5',    g:'Trefoil',          c:'Consonant'},
+  {n:'M3',      s:4,  r:'5:4',    g:'Triangle',         c:'Consonant'},
+  {n:'P4',      s:5,  r:'4:3',    g:'Square lattice',   c:'Perfect'},
+  {n:'Tritone', s:6,  r:'√2:1',   g:'Disorder/chaos',   c:'Dissonant'},
+  {n:'P5',      s:7,  r:'3:2',    g:'Vesica Piscis',    c:'Perfect'},
+  {n:'m6',      s:8,  r:'8:5',    g:'Pentagon',         c:'Consonant'},
+  {n:'M6',      s:9,  r:'5:3',    g:'Hexagon',          c:'Consonant'},
+  {n:'m7',      s:10, r:'16:9',   g:'Complex lattice',  c:'Mild dissonance'},
+  {n:'M7',      s:11, r:'15:8',   g:'Near-octave',      c:'Dissonant'},
+  {n:'Octave',  s:12, r:'2:1',    g:'Perfect circle',   c:'Perfect'},
+];
+
+const CHORDS={
+  maj:{n:'Major',s:[0,4,7]},min:{n:'Minor',s:[0,3,7]},
+  aug:{n:'Augmented',s:[0,4,8]},dim:{n:'Diminished',s:[0,3,6]},
+  maj7:{n:'Major 7th',s:[0,4,7,11]},dom7:{n:'Dom 7th',s:[0,4,7,10]},
+  min7:{n:'Minor 7th',s:[0,3,7,10]},sus2:{n:'Sus2',s:[0,2,7]},
+  sus4:{n:'Sus4',s:[0,5,7]},
+};
+
+/* Guitar: Str6(E)=left → Str1(e)=right */
+const GSTR=[
+  {num:6,n:'E',o:4},{num:5,n:'A',o:9},{num:4,n:'D',o:2},
+  {num:3,n:'G',o:7},{num:2,n:'B',o:11},{num:1,n:'e',o:4},
+];
+const FMKS=new Set([3,5,7,9,12]);
+
+/* Ratio map for cymatics m,n values (Chladni: sin(m*pi*x)*cos(n*pi*y)) */
+const RMAP={0:[1,1],1:[4,3],2:[3,2],3:[5,3],4:[5,4],5:[4,3],6:[7,5],7:[3,2],8:[8,5],9:[5,3],10:[7,4],11:[15,8],12:[2,1]};
+
+/* ── STATE ── */
+let st={root:0,oct:4,mode:'note',interval:7,chord:'maj',active:[0]};
+let aCtx=null,mGain=null,oscs=[];
+
+function noteFreq(midi){return 440*Math.pow(2,(midi-69)/12)}
+function noteMidi(ni,oct){return(oct+1)*12+ni}
+function getAudio(){
+  if(!aCtx){
+    aCtx=new(window.AudioContext||window.webkitAudioContext)();
+    mGain=aCtx.createGain();mGain.gain.value=0.16;mGain.connect(aCtx.destination);
+  }return aCtx;
+}
+function stopAll(){oscs.forEach(o=>{try{o.stop(0)}catch(e){}});oscs=[]}
+function playMidis(ms){
+  stopAll();const ctx=getAudio();
+  if(ctx.state==='suspended')ctx.resume();
+  ms.forEach(midi=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.value=noteFreq(midi);
+    g.gain.setValueAtTime(0,ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.28/ms.length,ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+2.0);
+    o.connect(g);g.connect(mGain);
+    o.start(ctx.currentTime);o.stop(ctx.currentTime+2.0);
+    oscs.push(o);
+  });
+}
+function playCurrent(){
+  const ms=st.active.map((ni,i)=>{
+    let m=noteMidi(ni,st.oct);
+    if(i>0&&m<noteMidi(st.root,st.oct))m+=12;
+    return m;
+  });
+  playMidis(ms);
+}
+
+function computeActive(){
+  if(st.mode==='note')st.active=[st.root];
+  else if(st.mode==='interval')st.active=[...new Set([st.root,(st.root+st.interval)%12])];
+  else st.active=CHORDS[st.chord].s.map(s=>(st.root+s)%12);
+}
+
+/* MASTER SELECT */
+function selectNote(ni){
+  st.root=ni;computeActive();renderAll();playCurrent();
+}
+
+function getRatio(){
+  if(st.mode==='note')return'1:1';
+  if(st.mode==='interval')return IVLS[st.interval].r;
+  return IVLS[CHORDS[st.chord].s[1]||0].r;
+}
+function getGeo(){
+  if(st.mode==='note')return'Standing wave';
+  if(st.mode==='interval')return IVLS[st.interval].g;
+  return IVLS[CHORDS[st.chord].s[1]||0].g+' lattice';
+}
+function getCons(){
+  if(st.mode==='note')return'Perfect';
+  if(st.mode==='interval')return IVLS[st.interval].c;
+  return IVLS[CHORDS[st.chord].s[1]||0].c;
+}
+function getNowLabel(){
+  const r=NN[st.root];
+  if(st.mode==='note')return`${r}${st.oct}`;
+  if(st.mode==='interval')return`${r} + ${IVLS[st.interval].n} (${IVLS[st.interval].r})`;
+  return`${r} ${CHORDS[st.chord].n}`;
+}
+
+/* ══ KEY CHIPS ══ */
+function buildChips(){
+  const w=document.getElementById('keyChips');
+  NN.forEach((n,i)=>{
+    const c=document.createElement('div');
+    c.className='key-chip'+(i===0?' sel':'');
+    c.textContent=n;c.style.background=NC[i];c.style.color=chipTxt(i);c.dataset.ni=i;
+    c.onclick=()=>selectNote(i);w.appendChild(c);
+  });
+}
+function updateChips(){
+  document.querySelectorAll('.key-chip').forEach(c=>c.classList.toggle('sel',parseInt(c.dataset.ni)===st.root));
+}
+
+/* ══ OCTAVE ══ */
+function buildOct(){
+  const row=document.getElementById('octRow');
+  [2,3,4,5,6].forEach(o=>{
+    const b=document.createElement('button');
+    b.className='oct-btn'+(o===4?' sel':'');b.textContent=o;
+    b.onclick=()=>{
+      st.oct=o;
+      row.querySelectorAll('.oct-btn').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+      document.getElementById('npOct').textContent=o;
+      if(st.active.length)playCurrent();
+    };
+    row.appendChild(b);
+  });
+}
+
+/* ══ PIANO ══ */
+const WO=[0,2,4,5,7,9,11],BN=[1,3,6,8,10],BO=[17,44,97,124,151];
+function buildPiano(){
+  const p=document.getElementById('pianoKeys');p.innerHTML='';
+  for(let oct=3;oct<=6;oct++){
+    WO.forEach(ni=>{
+      const k=document.createElement('div');k.className='wkey';k.dataset.ni=ni;
+      k.style.setProperty('--note-color',NC[ni]);
+      k.innerHTML=`<span>${NN[ni]}${oct}</span>`;
+      k.onclick=()=>{
+        /* When playing, update octave to match key clicked */
+        st.oct=oct;
+        document.querySelectorAll('.oct-btn').forEach(b=>b.classList.toggle('sel',parseInt(b.textContent)===oct));
+        document.getElementById('npOct').textContent=oct;
+        selectNote(ni);
+      };
+      p.appendChild(k);
+    });
+  }
+  const bw=document.createElement('div');bw.className='bkey-wrap';
+  bw.style.cssText='position:absolute;top:0;left:0;width:100%';
+  for(let oct=3;oct<=6;oct++){
+    const off=(oct-3)*7*29;
+    BO.forEach((xOff,bi)=>{
+      const ni=BN[bi];
+      const bk=document.createElement('div');bk.className='bkey';bk.dataset.ni=ni;
+      bk.style.left=(off+xOff)+'px';bk.style.setProperty('--note-color',NC[ni]);
+      bk.innerHTML=`<span>${NN[ni]}</span>`;
+      bk.onclick=()=>{st.oct=oct;document.querySelectorAll('.oct-btn').forEach(b=>b.classList.toggle('sel',parseInt(b.textContent)===oct));document.getElementById('npOct').textContent=oct;selectNote(ni);};
+      bw.appendChild(bk);
+    });
+  }
+  p.style.position='relative';p.appendChild(bw);
+}
+function updatePiano(){
+  document.querySelectorAll('.wkey,.bkey').forEach(k=>k.classList.toggle('active',st.active.includes(parseInt(k.dataset.ni))));
+}
+
+/* ══ CHROMATIC CIRCLE ══
+   C = Yellow = 12 o'clock
+   Clockwise = pitch UP (higher note/semitone)
+   CCW = pitch DOWN
+   Angle for note i: i semitones CW from 12 o'clock
+   angle = i*(2π/12) - π/2  (so i=0 → top)
+*/
+function drawCircle(){
+  const cv=document.getElementById('circleCanvas');
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,R=90,rL=108;
+  ctx.clearRect(0,0,W,H);
+
+  /* Background */
+  ctx.beginPath();ctx.arc(cx,cy,R+20,0,Math.PI*2);
+  ctx.strokeStyle='rgba(0,128,128,0.12)';ctx.lineWidth=1;ctx.stroke();
+
+  /* CW arrow indicator */
+  ctx.save();ctx.translate(cx,cy);
+  ctx.beginPath();
+  ctx.arc(0,0,R+14,(-Math.PI/2),(-Math.PI/2)+Math.PI*1.7,false);
+  ctx.strokeStyle='rgba(0,128,128,0.2)';ctx.lineWidth=1.5;
+  ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);
+  ctx.restore();
+
+  NN.forEach((n,i)=>{
+    /* i semitones CW from 12 o'clock:
+       angle = (i/12)*2π - π/2  */
+    const angle=(i/12)*Math.PI*2 - Math.PI/2;
+    const x=cx+R*Math.cos(angle),y=cy+R*Math.sin(angle);
+    const isAct=st.active.includes(i);
+    const isRoot=i===st.root&&st.active.length>0;
+
+    /* Spoke */
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+(R-24)*Math.cos(angle),cy+(R-24)*Math.sin(angle));
+    ctx.strokeStyle='rgba(0,128,128,0.07)';ctx.lineWidth=0.5;ctx.stroke();
+
+    /* Note circle */
+    ctx.beginPath();ctx.arc(x,y,isAct?15:10,0,Math.PI*2);
+    ctx.fillStyle=NC[i];ctx.globalAlpha=isAct?1:0.28;ctx.fill();ctx.globalAlpha=1;
+
+    /* Root ring — teal glow */
+    if(isRoot){
+      ctx.beginPath();ctx.arc(x,y,17,0,Math.PI*2);
+      ctx.strokeStyle='rgba(0,128,128,0.8)';ctx.lineWidth=2.5;ctx.stroke();
+      /* Glow */
+      ctx.beginPath();ctx.arc(x,y,20,0,Math.PI*2);
+      ctx.strokeStyle='rgba(0,128,128,0.25)';ctx.lineWidth=4;ctx.stroke();
+    }
+
+    /* Label */
+    const lx=cx+rL*Math.cos(angle),ly=cy+rL*Math.sin(angle);
+    ctx.fillStyle=isAct?'#E8E8E8':'rgba(232,232,232,0.4)';
+    ctx.font=`${isAct?'700':'400'} 9px Montserrat,sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(n,lx,ly);
+  });
+
+  /* Connecting lines */
+  if(st.active.length>1){
+    ctx.beginPath();
+    st.active.forEach((ni,idx)=>{
+      const angle=(ni/12)*Math.PI*2-Math.PI/2;
+      idx===0?ctx.moveTo(cx+R*Math.cos(angle),cy+R*Math.sin(angle))
+             :ctx.lineTo(cx+R*Math.cos(angle),cy+R*Math.sin(angle));
+    });
+    if(st.mode==='chord')ctx.closePath();
+    ctx.strokeStyle='rgba(0,128,128,0.7)';ctx.lineWidth=1.5;
+    ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  /* Center */
+  ctx.fillStyle='rgba(0,128,128,0.8)';
+  ctx.font='600 11px Cinzel,serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(st.active.length?NN[st.root]:'KCM',cx,cy);
+
+  /* CW UP / CCW DOWN labels */
+  ctx.font='600 8px Montserrat,sans-serif';
+  ctx.fillStyle='rgba(0,128,128,0.5)';
+  ctx.textAlign='right';ctx.fillText('CW = UP ▲',W-6,14);
+  ctx.textAlign='left';ctx.fillText('▼ CCW = DOWN',6,14);
+}
+
+function initCircle(){
+  document.getElementById('circleCanvas').onclick=e=>{
+    const cv=document.getElementById('circleCanvas');
+    const rect=cv.getBoundingClientRect();
+    const sx=cv.width/rect.width,sy=cv.height/rect.height;
+    const dx=(e.clientX-rect.left)*sx-cv.width/2;
+    const dy=(e.clientY-rect.top)*sy-cv.height/2;
+    if(Math.sqrt(dx*dx+dy*dy)<120){
+      /* angle from 12 o'clock, CW */
+      let angle=Math.atan2(dy,dx)+Math.PI/2;
+      if(angle<0)angle+=Math.PI*2;
+      const ni=Math.round(angle/(Math.PI*2/12))%12;
+      selectNote(ni);
+    }
+  };
+}
+
+/* ══ FRETBOARD ══ */
+function buildFretboard(){
+  const tbl=document.getElementById('fboard');
+  let html='<thead><tr><th class="f-corner">Fret</th>';
+  GSTR.forEach(s=>{
+    const tint=NC[s.o%12]+'20';
+    html+=`<th class="s-head" style="background:${tint}"><span class="s-nm">${s.n}</span><span class="s-n">${s.num}</span></th>`;
+  });
+  html+='</tr></thead><tbody>';
+
+  /* Open row */
+  html+='<tr><td class="f-lbl">O</td>';
+  GSTR.forEach(s=>{const ni=s.o%12;html+=`<td class="n-cell o-row" data-ni="${ni}">${NN[ni]}</td>`;});
+  html+='</tr>';
+
+  for(let f=1;f<=12;f++){
+    const mk=FMKS.has(f);
+    html+=`<tr class="${mk?'mk-row':''}"><td class="f-lbl${mk?' mk':''}">${f}${f===12?'●':''}</td>`;
+    GSTR.forEach((s,si)=>{
+      const ni=(s.o+f)%12;
+      const dot=mk&&(s.num===3||(f===12&&s.num===2));
+      html+=`<td class="n-cell" data-ni="${ni}">${NN[ni]}${dot?'<div class="fb-dot"></div>':''}</td>`;
+    });
+    html+='</tr>';
+  }
+  html+='</tbody>';
+  tbl.innerHTML=html;
+  tbl.addEventListener('click',e=>{
+    const cell=e.target.closest('td.n-cell');
+    if(cell)selectNote(parseInt(cell.dataset.ni));
+  });
+}
+
+function updateFretboard(){
+  document.querySelectorAll('td.n-cell').forEach(cell=>{
+    const ni=parseInt(cell.dataset.ni);
+    const on=st.active.includes(ni);
+    cell.classList.toggle('act',on);
+    cell.style.background=on?NC[ni]+'80':'';
+    cell.style.color=on?chipTxt(ni):'';
+    cell.style.borderColor=on?NC[ni]:'';
+  });
+}
+
+/* ══ GUITAR TAB ══ */
+function buildTab(){
+  const strFrets={};GSTR.forEach((_,i)=>strFrets[i]=null);
+  const used=new Set();
+
+  st.active.forEach(ni=>{
+    for(let si=0;si<GSTR.length;si++){
+      if(used.has(si))continue;
+      for(let f=0;f<=12;f++){
+        if((GSTR[si].o+f)%12===ni){
+          strFrets[si]=f;used.add(si);break;
+        }
+      }
+    }
+  });
+
+  const rows=GSTR.map((s,si)=>{
+    const f=strFrets[si];
+    const fStr=f===null?'--':f===0?'-0':String(f).padStart(2,'-');
+    const act=f!==null;
+    return{name:s.n,fStr,act};
+  });
+
+  document.getElementById('tabDisplay').innerHTML=rows.map(r=>{
+    const body=r.act
+      ?`<span class="tab-body"><span class="tab-num">${r.fStr}</span>--</span>`
+      :`<span class="tab-body">${r.fStr}--</span>`;
+    return`<div class="tab-row"><span class="tab-sid">${r.name}</span><span class="tab-bar">|</span>${body}<span class="tab-bar">|</span></div>`;
+  }).join('');
+
+  const pos=GSTR.map((s,si)=>strFrets[si]!==null?`${s.n}:${strFrets[si]===0?'open':strFrets[si]}`:null).filter(Boolean);
+  document.getElementById('tabInfo').textContent=pos.length?'Positions: '+pos.join(' · '):'Select a note';
+}
+
+/* ══ STAFF ══ */
+function drawStaff(){
+  const cv=document.getElementById('staffCanvas');
+  const W=cv.width=cv.offsetWidth||300;cv.height=130;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,W,130);
+  const top=28,sp=9;
+
+  /* Staff lines */
+  for(let l=0;l<5;l++){
+    const y=top+l*sp;
+    ctx.beginPath();ctx.moveTo(28,y);ctx.lineTo(W-6,y);
+    ctx.strokeStyle='rgba(0,128,128,0.3)';ctx.lineWidth=0.5;ctx.stroke();
+  }
+  /* Treble clef */
+  ctx.fillStyle='rgba(0,128,128,0.7)';ctx.font='56px serif';ctx.fillText('\u{1D11E}',1,top+32);
+
+  const count=st.active.length;
+  const spacing=count>1?(W-58-20)/count:0;
+  st.active.forEach((ni,idx)=>{
+    const noteY=top+(11-ni)*sp*0.5+sp*0.5;
+    const noteX=58+idx*spacing+(count===1?(W-58-20)/2:spacing/2);
+    /* Ledger line */
+    if(ni<=1){ctx.beginPath();ctx.moveTo(noteX-11,top+sp*4);ctx.lineTo(noteX+11,top+sp*4);ctx.strokeStyle='rgba(0,128,128,0.3)';ctx.lineWidth=0.5;ctx.stroke();}
+    /* Note head */
+    ctx.beginPath();ctx.ellipse(noteX,noteY,7,5,-0.2,0,Math.PI*2);
+    ctx.fillStyle=NC[ni];ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=0.5;ctx.stroke();
+    /* Stem */
+    ctx.beginPath();ctx.moveTo(noteX+7,noteY);ctx.lineTo(noteX+7,noteY-30);
+    ctx.strokeStyle='rgba(0,128,128,0.6)';ctx.lineWidth=1;ctx.stroke();
+    /* Label */
+    ctx.fillStyle='rgba(232,232,232,0.6)';ctx.font='9px Montserrat,sans-serif';
+    ctx.textAlign='center';ctx.fillText(NN[ni],noteX,122);
+  });
+
+  if(!cv._sb){cv._sb=true;cv.onclick=e=>{
+    const rect=cv.getBoundingClientRect();
+    const my=(e.clientY-rect.top)*(130/rect.height);
+    const sem=Math.max(0,Math.min(11,Math.round((11-(my-28)/4.5))));
+    selectNote(sem%12);
+  };}
+}
+
+/* ══ WAVE DISPLAY (shows actual sinusoidal waves) ══ */
+function drawWave(){
+  const cv=document.getElementById('waveCanvas');
+  const W=cv.width=cv.offsetWidth||300;cv.height=60;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle='#050508';ctx.fillRect(0,0,W,60);
+
+  if(!st.active.length)return;
+  const cy=30;
+
+  st.active.forEach((ni,idx)=>{
+    const semi=(ni-st.root+12)%12;
+    const freqMult=1+semi*0.083;
+    const amp=14/(idx+1);
+    ctx.beginPath();
+    for(let px=0;px<W;px++){
+      const x=px/W*4*Math.PI;
+      const y=cy-Math.sin(x*freqMult+idx)*amp;
+      px===0?ctx.moveTo(px,y):ctx.lineTo(px,y);
+    }
+    ctx.strokeStyle=NC[ni];ctx.lineWidth=1.5;ctx.globalAlpha=0.8;ctx.stroke();ctx.globalAlpha=1;
+  });
+
+  /* Center line */
+  ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);
+  ctx.strokeStyle='rgba(0,128,128,0.2)';ctx.lineWidth=0.5;ctx.stroke();
+}
+
+/* ══ STATS ══ */
+function updateStats(){
+  const freq=noteFreq(noteMidi(st.root,st.oct));
+  const fStr=freq.toFixed(2);
+  const ratio=getRatio(),geo=getGeo(),cons=getCons();
+  document.getElementById('nplabel').textContent=getNowLabel();
+  document.getElementById('npHz').textContent=fStr+' Hz';
+  document.getElementById('npRatio').textContent=ratio;
+  document.getElementById('npGeo').textContent=geo;
+  document.getElementById('svHz').textContent=fStr;
+  document.getElementById('svRatio').textContent=ratio;
+  document.getElementById('svInt').textContent=st.mode==='interval'?IVLS[st.interval].n:st.mode==='chord'?CHORDS[st.chord].n:'Unison';
+  document.getElementById('svNotes').textContent=st.active.map(n=>NN[n]).join(' · ');
+  document.getElementById('svGeo').textContent=geo;
+  document.getElementById('svCons').textContent=cons;
+  document.getElementById('cymLabel').textContent=getNowLabel();
+  document.getElementById('cymRatio').textContent=ratio;
+}
+
+/* ══ INFO TABLE ══ */
+function buildTable(){
+  let html='';
+  IVLS.forEach(iv=>{
+    const ni=(st.root+iv.s)%12;
+    const isAct=(st.mode==='interval'&&iv.s===st.interval)||
+                (st.mode==='chord'&&CHORDS[st.chord].s.includes(iv.s))||
+                (st.mode==='note'&&iv.s===0);
+    html+=`<tr class="${isAct?'act-row':''}" data-semi="${iv.s}">
+      <td>${iv.n}</td><td>${iv.s}</td><td>${iv.r}</td>
+      <td><span class="n-chip" style="background:${NC[ni]};color:${chipTxt(ni)}">${NN[ni]}</span></td>
+      <td>${iv.g}</td><td>${iv.c}</td>
+    </tr>`;
+  });
+  document.getElementById('infoTbody').innerHTML=html;
+  document.querySelectorAll('#infoTbody tr').forEach(row=>{
+    row.onclick=()=>selectNote((st.root+parseInt(row.dataset.semi))%12);
+  });
+}
+
+/* ══ RENDER ALL ══ */
+function renderAll(){
+  updateStats();updateChips();updatePiano();
+  drawCircle();updateFretboard();drawStaff();drawWave();buildTab();buildTable();
+}
+
+/* ══ CYMATICS — High-Resolution Chladni Patterns ══
+   Uses physically-correct m,n values from RMAP
+   Chladni equation: z = sin(m*π*x) * cos(n*π*y)
+   Node lines (sand accumulates) = z ≈ 0
+   Rendered at res=1 (Ultra HD), 2 (High), 3 (Fast)
+*/
+let cymAnim=null,cymT=0;
+
+function startCymatics(){
+  if(cymAnim)cancelAnimationFrame(cymAnim);
+  (function loop(){drawCymatics(cymT);cymT+=0.022;cymAnim=requestAnimationFrame(loop);})();
+}
+
+function drawCymatics(t){
+  const cv=document.getElementById('cymaticsCanvas');if(!cv)return;
+  const pw=cv.parentElement.clientWidth||800;
+  cv.width=pw;cv.height=260;
+  const W=cv.width,H=cv.height;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle='#030308';ctx.fillRect(0,0,W,H);
+  if(!st.active.length)return;
+
+  const isSquare=document.getElementById('plateSelect').value==='square';
+  const res=parseInt(document.getElementById('resSelect').value)||2;
+
+  /* Get m,n values for the interval
+     For chords, use the 3rd of the chord (first non-root interval) */
+  const semi=st.mode==='interval'?st.interval:
+              st.mode==='chord'?(CHORDS[st.chord].s[1]||0):0;
+  const[m,n]=RMAP[Math.min(semi,12)]||[1,1];
+
+  const cx=W/2,cy=H/2,maxR=Math.min(W,H)*0.43;
+
+  /* Draw plate boundary first */
+  ctx.save();ctx.beginPath();
+  if(isSquare)ctx.rect(cx-maxR,cy-maxR,maxR*2,maxR*2);
+  else ctx.arc(cx,cy,maxR,0,Math.PI*2);
+  ctx.clip();
+
+  /* Pixel-by-pixel Chladni pattern */
+  const COLS=Math.ceil(W/res),ROWS=Math.ceil(H/res);
+  const col=NC[st.root];
+  const cr=parseInt(col.slice(1,3),16);
+  const cg=parseInt(col.slice(3,5),16);
+  const cb=parseInt(col.slice(5,7),16);
+
+  /* Node threshold: tighter = sharper lines */
+  const nodeThresh=0.08+semi*0.005;
+
+  for(let px=0;px<COLS;px++){
+    for(let py=0;py<ROWS;py++){
+      const x=(px/COLS)*2-1;
+      const y=(py/ROWS)*2-1;
+
+      /* Multi-note superposition */
+      let wave=0;
+      st.active.forEach((ni,idx)=>{
+        const sm=(ni-st.root+12)%12;
+        const[mi,ni2]=RMAP[Math.min(sm,12)]||[1,1];
+        const phase=idx*Math.PI/4;
+        if(isSquare){
+          /* Chladni square plate: sin(m*pi*x)*cos(n*pi*y) */
+          wave+=Math.sin((mi)*Math.PI*(x+1)+t*0.3+phase)
+               *Math.cos((ni2)*Math.PI*(y+1)+t*0.2+phase);
+        } else {
+          /* Circular plate: Bessel-like approximation */
+          const r=Math.sqrt(x*x+y*y);
+          const th=Math.atan2(y,x);
+          wave+=Math.sin(mi*Math.PI*r*1.4+t*0.32+phase)
+               *Math.cos(ni2*th+idx*Math.PI*0.3+t*0.18);
+        }
+      });
+
+      const z=Math.abs(wave)/st.active.length;
+
+      /* Node lines (sand pattern) — colored with note color */
+      if(z<nodeThresh){
+        const alpha=Math.pow(1-z/nodeThresh,2);
+        ctx.fillStyle=`rgba(${cr},${cg},${cb},${(alpha*0.95).toFixed(2)})`;
+        ctx.fillRect(px*res,py*res,res,res);
+      }
+      /* Bright antinodes */
+      else if(z>0.85){
+        ctx.fillStyle=`rgba(${cr},${cg},${cb},0.04)`;
+        ctx.fillRect(px*res,py*res,res,res);
+      }
+    }
+  }
+  ctx.restore();
+
+  /* Plate border with note color glow */
+  ctx.beginPath();
+  if(isSquare)ctx.rect(cx-maxR,cy-maxR,maxR*2,maxR*2);
+  else ctx.arc(cx,cy,maxR,0,Math.PI*2);
+  ctx.strokeStyle=NC[st.root];ctx.globalAlpha=0.5;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.globalAlpha=0.12;ctx.lineWidth=8;ctx.stroke();
+  ctx.globalAlpha=1;
+}
+
+/* ══ MIDI ══ */
+function mLog(msg,hi){
+  const log=document.getElementById('midiLog');
+  const d=document.createElement('div');if(hi)d.className='hi';
+  d.textContent=msg;log.appendChild(d);
+  while(log.children.length>50)log.removeChild(log.firstChild);
+  log.scrollTop=log.scrollHeight;
+}
+function setMidi(s,cls){
+  document.getElementById('midiLbl').textContent=s;
+  document.getElementById('midiDot').className='midi-dot'+(cls?' '+cls:'');
+}
+function handleMidi(e){
+  const[cmd,note,vel]=e.data;
+  const chSel=document.getElementById('midiCh').value;
+  const ch=cmd&0x0F;
+  if(chSel!=='all'&&parseInt(chSel)!==ch)return;
+  const type=cmd&0xF0;
+  if(type===0x90&&vel>0){
+    const ni=note%12,oct=Math.floor(note/12)-1;
+    mLog(`ON  ch${ch+1} ${NN[ni]}${oct} vel:${vel}`,true);
+    st.oct=Math.max(2,Math.min(6,oct));
+    document.querySelectorAll('.oct-btn').forEach(b=>b.classList.toggle('sel',parseInt(b.textContent)===st.oct));
+    document.getElementById('npOct').textContent=st.oct;
+    selectNote(ni);
+  }else if(type===0x80||(type===0x90&&vel===0)){
+    mLog(`OFF ch${ch+1} ${NN[note%12]}`);
+  }else if(type===0xB0){
+    mLog(`CC ch${ch+1} cc:${note} val:${vel}`);
+    if(note===1){const nr=Math.round(vel/127*11);selectNote(nr);mLog(`→ key: ${NN[nr]}`,true);}
+  }else if(type===0xC0){mLog(`Prog ch${ch+1} p:${note}`);}
+}
+document.getElementById('midiBtn').onclick=()=>{
+  if(!navigator.requestMIDIAccess){setMidi('Web MIDI not supported — use Chrome/Edge','error');return;}
+  setMidi('Requesting access…','');
+  navigator.requestMIDIAccess({sysex:false}).then(acc=>{
+    const inputs=[...acc.inputs.values()];
+    if(!inputs.length){setMidi('No devices found — plug in and retry','error');mLog('No MIDI inputs.');}
+    else{setMidi(`Connected — ${inputs.length} device(s)`,'connected');inputs.forEach(inp=>{inp.onmidimessage=handleMidi;mLog(`In: ${inp.name}`);});}
+    acc.onstatechange=ev=>{
+      if(ev.port.type==='input'){
+        if(ev.port.state==='connected'){ev.port.onmidimessage=handleMidi;mLog(`+ ${ev.port.name}`,true);}
+        else mLog(`- ${ev.port.name}`);
+        const n=[...acc.inputs.values()].length;
+        setMidi(`${n} device(s)`,'connected');
+      }
+    };
+  }).catch(err=>{setMidi('Access denied','error');mLog('Err: '+err.message);});
+};
+
+/* ══ CONTROLS ══ */
+document.getElementById('modeSelect').onchange=function(){
+  st.mode=this.value;
+  document.getElementById('intervalGroup').style.display=this.value==='interval'?'':'none';
+  document.getElementById('chordGroup').style.display=this.value==='chord'?'':'none';
+  computeActive();renderAll();
+};
+document.getElementById('intervalSelect').onchange=function(){
+  st.interval=parseInt(this.value);computeActive();renderAll();if(st.active.length)playCurrent();
+};
+document.getElementById('chordSelect').onchange=function(){
+  st.chord=this.value;computeActive();renderAll();if(st.active.length)playCurrent();
+};
+
+/* ══ MOBILE NAV ══ */
+document.getElementById('navToggle').onclick=()=>{
+  document.getElementById('navList').classList.toggle('open');
+};
+
+/* ══ RESIZE ══ */
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{drawStaff();drawCircle();drawWave();},150);});
+
+/* ══ INIT ══ */
+buildChips();buildOct();buildPiano();buildFretboard();initCircle();
+selectNote(0);startCymatics();
+</script>
+</body>
+</html>
