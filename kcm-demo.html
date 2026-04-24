@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KCM × Suno — Live Demo · Keys, Codes & Modes™</title>
+<meta name="description" content="Interactive demo: play or sing a note, see it in color on the 12-Color Chromatic Spectrum™, choose a mode, and generate a Suno AI prompt + MIDI file — in under 2 minutes.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%234A7BA7'/><polygon points='50,8 92,92 8,92' fill='%23F4D03F' opacity='0.9'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0f0f1e;color:#F2F2F2;
+  font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg1:#0f0f1e;--bg2:#1a1a2e;--bg3:#1e2040;
+  --ocean:#4A7BA7;--navy:#2a4d6f;--gold:#F4D03F;
+  --purple:#8B6BA3;--teal:#008080;--teal-lt:#00A0A0;--coral:#CF7A5A;
+  --text:#F2F2F2;--text2:#ABABC8;--text3:#8080B8;
+  --border:rgba(74,123,167,0.30);
+  --spec:linear-gradient(to right,#FFFF00,#FFC400,#FF8000,#FF4000,#FF0000,#C4007F,#8000FF,#4000FF,#0000FF,#007FFF,#00FF80,#80FF00,#FFFF00);
+}
+
+/* ── LAYOUT ── */
+.strip{height:3px;background:var(--spec);width:100%}
+.shell{display:flex;flex-direction:column;height:100vh}
+.hdr{background:var(--navy);border-bottom:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:52px;flex-shrink:0}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.hdr-logo h1{font-family:'Cinzel',serif;font-size:12px;font-weight:700;
+  letter-spacing:.12em;background:linear-gradient(135deg,var(--gold),var(--ocean));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-logo p{font-size:9px;color:rgba(242,242,242,0.45);font-style:italic}
+.step-dots{display:flex;gap:6px;align-items:center}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--border);
+  transition:all .4s;cursor:default}
+.sdot.done{background:var(--teal)}
+.sdot.active{background:var(--gold);transform:scale(1.4)}
+
+.body{flex:1;display:flex;overflow:hidden}
+
+/* ── STEPS SIDEBAR ── */
+.sidebar{width:200px;background:var(--bg2);border-right:1px solid var(--border);
+  padding:16px 12px;flex-shrink:0;display:flex;flex-direction:column;gap:3px;
+  overflow-y:auto}
+.step-item{display:flex;align-items:flex-start;gap:10px;padding:10px 10px;
+  border-radius:8px;transition:background .2s;cursor:default}
+.step-item.active{background:rgba(244,208,63,0.07);border:1px solid rgba(244,208,63,0.2)}
+.step-item.done{opacity:0.5}
+.step-item.inactive{opacity:0.3}
+.step-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;
+  font-family:'Cinzel',serif;margin-top:1px}
+.step-num.active{background:var(--gold);color:var(--bg1)}
+.step-num.done{background:var(--teal);color:#fff}
+.step-num.inactive{background:var(--bg3);color:var(--text3)}
+.step-text{flex:1}
+.step-title{font-size:11px;font-weight:600;color:var(--text);font-family:'Cinzel',serif;margin-bottom:2px}
+.step-sub{font-size:9px;color:var(--text3);line-height:1.4}
+.step-item.active .step-title{color:var(--gold)}
+
+/* ── MAIN STAGE ── */
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-start;padding:20px;overflow-y:auto;gap:16px;
+  position:relative}
+
+/* ── STEP PANELS ── */
+.panel{width:100%;max-width:560px;display:none;flex-direction:column;align-items:center;gap:14px;
+  animation:fadeIn .4s ease}
+.panel.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.step-label{font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--teal-lt);font-family:'Cinzel',serif;text-align:center}
+.step-heading{font-family:'Cinzel',serif;font-size:clamp(18px,3vw,26px);
+  font-weight:900;text-align:center;color:var(--text);line-height:1.2}
+.step-heading span{color:var(--gold)}
+.step-body{font-size:12px;color:var(--text2);text-align:center;line-height:1.7;
+  max-width:420px}
+
+/* ── MIC SECTION (Step 1) ── */
+.mic-zone{display:flex;flex-direction:column;align-items:center;gap:20px;padding:20px 0}
+.mic-outer{position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center}
+.mic-ring{position:absolute;border-radius:50%;border:2px solid;opacity:0}
+.mic-ring.r1{inset:10px;border-color:var(--ocean)}
+.mic-ring.r2{inset:-5px;border-color:rgba(74,123,167,0.5)}
+.mic-ring.r3{inset:-22px;border-color:rgba(74,123,167,0.25)}
+@keyframes ring{0%{opacity:.7;transform:scale(.9)}100%{opacity:0;transform:scale(1.1)}}
+.mic-ring.pulse{animation:ring 2s ease infinite}
+.mic-ring.pulse.r2{animation-delay:.4s}
+.mic-ring.pulse.r3{animation-delay:.8s}
+.mic-ring.teal{border-color:var(--teal-lt)}
+.mic-ring.teal.r2{border-color:rgba(0,160,160,.5)}
+.mic-ring.teal.r3{border-color:rgba(0,160,160,.25)}
+.mic-circle{width:100px;height:100px;border-radius:50%;background:var(--bg3);
+  border:2px solid var(--ocean);display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;cursor:pointer;transition:all .3s;z-index:2}
+.mic-circle:hover{border-color:var(--gold);transform:scale(1.05)}
+.mic-circle.on{border-color:var(--teal-lt);background:rgba(0,128,128,0.1)}
+.mic-circle svg{transition:all .3s}
+.mic-circle-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.14em;color:var(--text2)}
+.mic-readout{font-family:'Cinzel',serif;font-size:28px;font-weight:900;
+  color:var(--text3);transition:all .3s;min-height:40px;text-align:center}
+.mic-readout.detected{color:var(--gold)}
+.mic-freq{font-size:11px;color:var(--text3);min-height:18px;text-align:center}
+
+/* ── CLOCK SECTION (Step 2) ── */
+.clock-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+#demoClock{border-radius:50%;cursor:pointer;display:block;
+  box-shadow:0 0 50px rgba(74,123,167,0.2),0 0 100px rgba(0,0,0,0.5);
+  width:min(320px,80vw);height:auto}
+.clock-readout-row{display:flex;align-items:center;gap:12px;justify-content:center}
+.cr-note{font-family:'Cinzel',serif;font-size:24px;font-weight:900;color:var(--gold)}
+.cr-color{font-size:11px;color:var(--text2)}
+.cr-hint{font-size:10px;color:var(--text3);font-style:italic}
+
+/* ── MODE SECTION (Step 3) ── */
+.mode-zone{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.mode-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.mpill{background:var(--bg3);border:1px solid var(--border);border-radius:20px;
+  padding:7px 16px;font-size:10px;color:var(--text2);cursor:pointer;
+  transition:all .2s;letter-spacing:.05em;font-family:'Cinzel',serif}
+.mpill:hover{border-color:var(--purple);color:var(--purple)}
+.mpill.active{border-color:var(--purple);color:var(--purple);background:rgba(139,107,163,0.15)}
+.insight-box{background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:12px 18px;text-align:center;width:100%;max-width:420px}
+.insight-text{font-size:12px;color:var(--text2);font-style:italic;line-height:1.7}
+.insight-text strong{color:var(--text);font-style:normal}
+.prog-display{display:flex;align-items:center;gap:8px;justify-content:center;
+  flex-wrap:wrap;margin-top:6px}
+.prog-chord{padding:6px 14px;border-radius:8px;border:1px solid;
+  font-family:'Cinzel',serif;font-size:12px;font-weight:700;transition:all .3s}
+
+/* ── PROMPT SECTION (Step 4) ── */
+.prompt-zone{width:100%;max-width:480px;display:flex;flex-direction:column;gap:10px}
+.prompt-box{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px}
+.prompt-lbl{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ocean);
+  margin-bottom:8px;font-family:'Cinzel',serif}
+.prompt-txt{font-family:'Courier New',monospace;font-size:10px;color:var(--text2);
+  line-height:1.7;min-height:44px;word-break:break-all}
+.btn-copy{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:11px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;
+  color:var(--ocean);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-copy:hover{border-color:var(--ocean);color:var(--text)}
+.btn-copy.ok{border-color:var(--teal);color:var(--teal-lt)}
+.suno-hint{background:rgba(74,123,167,0.06);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;font-size:10px;color:var(--text3);line-height:1.7;
+  text-align:center}
+
+/* ── GENERATE SECTION (Step 5) ── */
+.gen-zone{width:100%;max-width:400px;display:flex;flex-direction:column;gap:10px}
+.btn-gen{width:100%;background:var(--gold);color:var(--bg1);border:none;
+  border-radius:10px;padding:16px;font-family:'Cinzel',serif;font-size:12px;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s}
+.btn-gen:hover{background:#ffe96a;box-shadow:0 4px 24px rgba(244,208,63,0.4)}
+.btn-gen:active{transform:scale(.98)}
+.gen-status{background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;text-align:center}
+.gen-status-lbl{font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:4px;font-family:'Cinzel',serif}
+.gen-status-val{font-size:13px;font-weight:600;color:var(--text);font-family:'Cinzel',serif}
+.gen-params{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.gparam{background:var(--bg3);border:1px solid var(--border);border-radius:7px;
+  padding:8px;text-align:center}
+.gparam-val{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.gparam-lbl{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+
+/* ── EXPORT SECTION (Step 6) ── */
+.export-zone{width:100%;max-width:420px;display:flex;flex-direction:column;gap:10px}
+.export-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-midi{width:100%;background:var(--teal);color:#fff;border:none;
+  border-radius:10px;padding:14px 10px;font-family:'Cinzel',serif;font-size:11px;
+  font-weight:700;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:4px}
+.btn-midi:hover{background:var(--teal-lt);box-shadow:0 4px 20px rgba(0,128,128,0.35)}
+.btn-midi:active{transform:scale(.98)}
+.btn-suno{width:100%;background:var(--purple);color:#fff;border:none;
+  border-radius:10px;padding:14px 10px;font-family:'Cinzel',serif;font-size:11px;
+  font-weight:700;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:4px}
+.btn-suno:hover{background:#a07fc0;box-shadow:0 4px 20px rgba(139,107,163,0.40)}
+.btn-suno:active{transform:scale(.98)}
+.btn-export-sub{font-size:8px;font-weight:400;letter-spacing:.06em;opacity:0.75;font-family:'Montserrat',sans-serif;text-transform:none}
+.export-tracks{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.etrack{display:flex;align-items:center;gap:10px;padding:9px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.04)}
+.etrack:last-child{border-bottom:none}
+.etrack-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.etrack-name{flex:1;font-size:10px;color:var(--text);font-family:'Cinzel',serif}
+.etrack-info{font-size:9px;color:var(--text3)}
+.etrack-ch{font-size:8px;padding:2px 7px;border-radius:8px;
+  background:rgba(139,107,163,0.1);color:var(--purple);border:1px solid rgba(139,107,163,0.25)}
+.daw-hint{font-size:10px;color:var(--text3);text-align:center;line-height:1.7;font-style:italic}
+
+/* ── COMPLETE SECTION (Step 7) ── */
+.complete-zone{display:flex;flex-direction:column;align-items:center;gap:16px;padding:10px 0;text-align:center}
+.complete-logo svg{filter:drop-shadow(0 8px 24px rgba(74,123,167,0.5))}
+.complete-headline{font-family:'Cinzel',serif;font-size:clamp(16px,3vw,24px);
+  font-weight:900;color:var(--text);line-height:1.3}
+.complete-headline span{color:var(--gold)}
+.complete-body{font-size:12px;color:var(--text2);max-width:400px;line-height:1.8}
+.complete-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:380px}
+.cstat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
+.cstat-val{font-family:'Cinzel',serif;font-size:18px;font-weight:900;color:var(--gold);margin-bottom:2px}
+.cstat-lbl{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+.btn-restart{background:transparent;border:1px solid var(--border);border-radius:8px;
+  padding:10px 24px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;
+  color:var(--text2);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-restart:hover{border-color:var(--gold);color:var(--gold)}
+.btn-brief{background:var(--gold);border:none;border-radius:8px;
+  padding:10px 24px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;
+  color:var(--bg1);cursor:pointer;transition:all .2s;text-transform:uppercase;font-weight:700}
+.btn-brief:hover{background:#fff}
+
+/* ── NAV BUTTONS ── */
+.nav-row{width:100%;max-width:560px;display:flex;justify-content:space-between;
+  align-items:center;padding-top:4px}
+.btn-nav{background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:9px 20px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.08em;
+  color:var(--text2);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-nav:hover{border-color:var(--ocean);color:var(--text)}
+.btn-nav:disabled{opacity:.3;cursor:default}
+.btn-next{background:var(--ocean);border:none;color:#fff}
+.btn-next:hover{background:#5a8bb7}
+.step-counter{font-size:10px;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:.1em}
+
+/* ── WAVEFORM ── */
+.waveform{height:36px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:7px;overflow:hidden;display:flex;align-items:center;padding:0 8px;gap:1.5px;width:100%}
+.wfbar{border-radius:1px;width:2.5px;flex-shrink:0;background:rgba(74,123,167,0.4);transition:height .3s}
+
+/* ── TEMPO SLIDER ── */
+.tempo-row{display:flex;align-items:center;gap:10px;width:100%;max-width:360px}
+.tempo-lbl{font-size:10px;color:var(--text2);min-width:60px;font-family:'Cinzel',serif}
+.tempo-slider{flex:1;height:3px;-webkit-appearance:none;appearance:none;
+  border-radius:2px;background:rgba(74,123,167,0.25);outline:none;cursor:pointer}
+.tempo-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;
+  border-radius:50%;background:var(--gold);cursor:pointer}
+.tempo-val{font-size:11px;font-weight:700;color:var(--text);min-width:50px;
+  text-align:right;font-family:'Cinzel',serif}
+
+@media(max-width:680px){
+  .sidebar{display:none}
+  .step-dots{gap:4px}
+  .sdot{width:6px;height:6px}
+  .sbs-wrap{flex-direction:column;align-items:center}
+  .sbs-left,.sbs-right{width:100%;align-items:center}
+}
+
+/* ── SIDE BY SIDE ── */
+.sbs-wrap{display:flex;gap:20px;align-items:flex-start;justify-content:center;width:100%;flex-wrap:wrap}
+.sbs-left,.sbs-right{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.sbs-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-lt);
+  font-family:'Cinzel',serif}
+.sbs-sub{font-size:9px;color:var(--text3);font-style:italic}
+.fret-legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.fleg{display:flex;align-items:center;gap:4px;font-size:8px;color:var(--text3)}
+.fleg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── RECORDER ── */
+.rec-bar{display:flex;align-items:center;gap:8px;width:100%;max-width:560px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px}
+.rec-btn{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  transition:all .2s;flex-shrink:0}
+.rec-btn.record{background:rgba(207,122,90,0.15);border:1.5px solid var(--coral);color:var(--coral)}
+.rec-btn.record:hover{background:rgba(207,122,90,0.3)}
+.rec-btn.record.active{background:var(--coral);color:#fff;animation:recPulse 1s ease infinite}
+@keyframes recPulse{0%,100%{box-shadow:0 0 0 0 rgba(207,122,90,0.6)}50%{box-shadow:0 0 0 8px rgba(207,122,90,0)}}
+.rec-btn.play{background:rgba(0,128,128,0.12);border:1.5px solid var(--teal);color:var(--teal)}
+.rec-btn.play:hover{background:rgba(0,128,128,0.25)}
+.rec-btn.play:disabled{opacity:.3;cursor:default}
+.rec-btn.stop{background:rgba(74,123,167,0.12);border:1.5px solid var(--border);color:var(--text3)}
+.rec-btn.stop:hover{border-color:var(--ocean);color:var(--ocean)}
+.rec-btn.stop:disabled{opacity:.3;cursor:default}
+.rec-info{flex:1;display:flex;flex-direction:column;gap:2px}
+.rec-status{font-size:10px;font-weight:600;color:var(--text2);font-family:'Cinzel',serif;letter-spacing:.06em}
+.rec-timer{font-size:9px;color:var(--text3);font-family:'Courier New',monospace}
+.rec-dl{font-size:9px;padding:4px 11px;border-radius:6px;background:rgba(0,128,128,0.1);
+  border:1px solid rgba(0,128,128,0.3);color:var(--teal-lt);cursor:pointer;
+  font-family:'Cinzel',serif;letter-spacing:.06em;transition:all .2s;text-decoration:none}
+.rec-dl:hover{background:rgba(0,128,128,0.25)}
+.rec-dl[aria-disabled="true"]{opacity:.3;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="strip"></div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-logo">
+    <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+      <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+      <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+      <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+      <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+      <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+      <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+      <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+      <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+    </svg>
+    <div>
+      <h1>KEYS, CODES & MODES™</h1>
+      <p>× Suno Live Demo</p>
+    </div>
+  </div>
+  <div class="step-dots" id="stepDots"></div>
+</header>
+
+<div class="body">
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar"></div>
+
+<!-- STAGE -->
+<div class="stage" id="stage">
+
+  <!-- STEP 1: LISTEN -->
+  <div class="panel" id="p1">
+    <div class="step-label">Step 1 of 7</div>
+    <div class="step-heading">Play. Sing. <span>Be heard.</span></div>
+    <div class="step-body">KCM listens through your microphone and identifies the note in real time. Play your guitar, hum a melody, or tap any note on the clock below.</div>
+    <div class="mic-zone">
+      <div class="mic-outer">
+        <div class="mic-ring r1 pulse" id="mr1"></div>
+        <div class="mic-ring r2 pulse" id="mr2"></div>
+        <div class="mic-ring r3 pulse" id="mr3"></div>
+        <div class="mic-circle" id="micCircle" onclick="toggleMic()">
+          <svg id="micIcon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4A7BA7" stroke-width="1.5">
+            <rect x="9" y="2" width="6" height="11" rx="3"/>
+            <path d="M5 10a7 7 0 0 0 14 0"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+          </svg>
+          <div class="mic-circle-lbl" id="micLbl">Tap to Listen</div>
+        </div>
+      </div>
+      <div class="mic-readout" id="micReadout">—</div>
+      <div class="mic-freq" id="micFreq">or tap any note on the clock below</div>
+    </div>
+    <!-- Mini clock for manual selection -->
+    <canvas id="miniClock" width="280" height="280" style="border-radius:50%;cursor:pointer;width:min(200px,60vw);height:auto;box-shadow:0 0 30px rgba(74,123,167,0.15)"></canvas>
+    <div class="cr-hint" id="p1Hint">Detected note will appear above</div>
+  </div>
+
+  <!-- STEP 2: SEE -->
+  <div class="panel" id="p2">
+    <div class="step-label">Step 2 of 7</div>
+    <div class="step-heading">See it. <span>In color.</span></div>
+    <div class="step-body">Every note has a permanent color identity. <strong style="color:var(--text)">C is always Yellow.</strong> Your note is highlighted on the 12-Color Chromatic Spectrum™.</div>
+    <div class="clock-wrap">
+      <canvas id="demoClock" width="640" height="640"></canvas>
+      <div class="clock-readout-row">
+        <div class="cr-note" id="demoNote">C</div>
+        <div>
+          <div class="cr-color" id="demoColor">Yellow · #FFFF00</div>
+          <div class="cr-hint">Click any segment to change key</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: UNDERSTAND - side by side -->
+  <div class="panel" id="p3">
+    <div class="step-label">Step 3 of 7</div>
+    <div class="step-heading">Choose a mode. <span>See the chords glow.</span></div>
+    <div class="step-body">Select a mode — the chords light up on the clock and the guitar voicing updates in real time.</div>
+    <div class="mode-zone">
+      <div class="mode-pills" id="modePills"></div>
+      <div class="insight-box">
+        <div class="insight-text" id="insightTxt">V&#x2192;I &#x2014; the dominant pull home. Brightest, most resolved sound in music.</div>
+        <div class="prog-display" id="progDisplay"></div>
+      </div>
+      <div class="sbs-wrap">
+        <div class="sbs-left">
+          <div class="sbs-lbl">Chromatic Spectrum™ Clock</div>
+          <canvas id="modeClock" width="480" height="480" style="border-radius:50%;cursor:pointer;width:min(230px,42vw);height:auto;box-shadow:0 0 30px rgba(74,123,167,0.15)"></canvas>
+          <div class="sbs-sub" id="modeClockSub">C · Yellow · Ionian</div>
+        </div>
+        <div class="sbs-right">
+          <div class="sbs-lbl">Guitar voicing — <span id="fretLbl">C Ionian</span></div>
+          <canvas id="fretBoard" width="360" height="80" style="width:min(300px,48vw);height:auto;display:block;background:#13132a;border-radius:7px;border:1px solid rgba(74,123,167,0.2)"></canvas>
+          <div class="sbs-sub" id="fretSub">Scale tones &#xb7; open position</div>
+          <div class="fret-legend" id="fretLegend"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: PROMPT -->
+  <div class="panel" id="p4">
+    <div class="step-label">Step 4 of 7</div>
+    <div class="step-heading">The bridge <span>writes itself.</span></div>
+    <div class="step-body">KCM's proprietary algorithm translates your color, mode, and settings into a precision Suno prompt. No guesswork.</div>
+    <div class="prompt-zone">
+      <div class="tempo-row">
+        <div class="tempo-lbl">Tempo</div>
+        <input type="range" class="tempo-slider" min="40" max="200" value="92" step="1"
+          oninput="p.tempo=+this.value;document.getElementById('tempoDisp').textContent=this.value+' bpm';buildPrompt()">
+        <div class="tempo-val" id="tempoDisp">92 bpm</div>
+      </div>
+      <div class="prompt-box">
+        <div class="prompt-lbl">KCM → Suno bridge prompt · live</div>
+        <div class="prompt-txt" id="livePrompt">C Ionian, bright resolved hopeful, yellow tonal palette, [BPM:92] [Key:C Ionian] [Instrumental] [No Drums] [Walking Bass]</div>
+      </div>
+      <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">Copy Prompt for Suno</button>
+      <div class="suno-hint">Paste into Suno → Custom Mode → Style of Music → Generate<br>
+        <span style="color:var(--teal-lt)">Recommended: Instrumental · Custom Mode · No Lyrics</span></div>
+    </div>
+  </div>
+
+  <!-- STEP 5: GENERATE -->
+  <div class="panel" id="p5">
+    <div class="step-label">Step 5 of 7</div>
+    <div class="step-heading">Generate. <span>Hear it.</span></div>
+    <div class="step-body">Preview the KCM chord progression — exactly what Suno will receive as its harmonic foundation.</div>
+    <div class="gen-zone">
+      <div class="gen-params">
+        <div class="gparam"><div class="gparam-val" id="genNote">C</div><div class="gparam-lbl">Root</div></div>
+        <div class="gparam"><div class="gparam-val" id="genMode">Ionian</div><div class="gparam-lbl">Mode</div></div>
+        <div class="gparam"><div class="gparam-val" id="genTempo">92</div><div class="gparam-lbl">BPM</div></div>
+      </div>
+      <button class="btn-gen" onclick="playPreview();buildWaveform()">▶ Preview Progression</button>
+      <div class="gen-status">
+        <div class="gen-status-lbl">Progression</div>
+        <div class="gen-status-val" id="genProg">I — IV — V — I</div>
+      </div>
+      <div class="waveform" id="waveform"></div>
+    </div>
+  </div>
+
+  <!-- STEP 6: EXPORT -->
+  <div class="panel" id="p6">
+    <div class="step-label">Step 6 of 7</div>
+    <div class="step-heading">Two files. <span>Two destinations.</span></div>
+    <div class="step-body">Download your MIDI for Logic or Ableton, and your KCM Session file for Suno. Both carry your exact harmonic intent.</div>
+    <div class="export-zone">
+      <div class="export-btn-row">
+        <button class="btn-midi" onclick="exportMidi()">
+          ⬇ MIDI File
+          <span class="btn-export-sub">.mid · Logic / Ableton</span>
+        </button>
+        <button class="btn-suno" onclick="exportSession()">
+          ⬇ Suno Session
+          <span class="btn-export-sub">.json · KCM prompt + data</span>
+        </button>
+      </div>
+      <div class="export-tracks">
+        <div class="etrack">
+          <div class="etrack-dot" style="background:var(--gold)"></div>
+          <div class="etrack-name">Chords</div>
+          <div class="etrack-info" id="etChord">C Ionian · 8 bars</div>
+          <div class="etrack-ch">Ch 1</div>
+        </div>
+        <div class="etrack">
+          <div class="etrack-dot" style="background:var(--teal)"></div>
+          <div class="etrack-name">Bass</div>
+          <div class="etrack-info">Root walk · 8 bars</div>
+          <div class="etrack-ch">Ch 2</div>
+        </div>
+        <div class="etrack">
+          <div class="etrack-dot" style="background:var(--purple)"></div>
+          <div class="etrack-name">Melody</div>
+          <div class="etrack-info">Modal scale · 8 bars</div>
+          <div class="etrack-ch">Ch 3</div>
+        </div>
+        <div class="etrack">
+          <div class="etrack-dot" style="background:var(--ocean)"></div>
+          <div class="etrack-name">Tempo</div>
+          <div class="etrack-info" id="etTempo">92 bpm · KCM metadata</div>
+          <div class="etrack-ch">Meta</div>
+        </div>
+      </div>
+      <div class="daw-hint">
+        <strong style="color:var(--teal-lt)">MIDI →</strong> Logic Pro: File → Import → MIDI &nbsp;|&nbsp; Ableton: drag to arrangement<br>
+        <strong style="color:var(--purple)">Session →</strong> Open in Suno Custom Mode · paste the <code style="color:var(--gold)">suno_prompt</code> field
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7: COMPLETE -->
+  <div class="panel" id="p7">
+    <div class="step-label">Step 7 of 7</div>
+    <div class="complete-zone">
+      <div class="complete-logo">
+        <svg width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+          <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+          <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+          <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+          <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+          <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+          <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+          <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+          <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+        </svg>
+      </div>
+      <div class="complete-headline">Play → Detect → <span>Understand → Generate.</span><br>Under 2 minutes.</div>
+      <div class="complete-body">You just went from a note on your instrument to a Suno prompt, a <code style="color:var(--teal-lt)">.mid</code> for your DAW, and a <code style="color:var(--purple)">.json</code> KCM Session file for Suno — guided by the 12-Color Chromatic Spectrum™. That complete workflow doesn't exist anywhere else on Earth.</div>
+      <div class="complete-stats">
+        <div class="cstat"><div class="cstat-val" id="statNote">C</div><div class="cstat-lbl">Root</div></div>
+        <div class="cstat"><div class="cstat-val" id="statMode">Ionian</div><div class="cstat-lbl">Mode</div></div>
+        <div class="cstat"><div class="cstat-val" id="statColor" style="font-size:12px">Yellow</div><div class="cstat-lbl">KCM Color</div></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <button class="btn-restart" onclick="restart()">Start Over</button>
+        <button class="btn-restart" style="border-color:var(--teal);color:var(--teal-lt)" onclick="exportMidi()">⬇ MIDI</button>
+        <button class="btn-restart" style="border-color:var(--purple);color:var(--purple)" onclick="exportSession()">⬇ Suno JSON</button>
+        <button class="btn-brief" onclick="window.open('kcm-suno-brief.html','_blank','noopener,noreferrer')">View Full Brief ↗</button>
+      </div>
+      <div style="font-size:10px;color:var(--text3);font-style:italic;text-align:center;max-width:380px;line-height:1.7">
+        Keys, Codes & Modes™ · 4 U.S. Patents · 25+ Interactive Apps<br>
+        keyscodesandmodes.com · ben@keyscodesandmodes.com
+      </div>
+    </div>
+  </div>
+
+  <!-- RECORD / PLAY / STOP — always visible -->
+  <div class="rec-bar" id="recBar">
+    <button class="rec-btn record" id="recBtn" onclick="toggleRecord()" title="Record">&#9679;</button>
+    <button class="rec-btn play" id="playBtn" onclick="playRecording()" disabled title="Play">&#9654;</button>
+    <button class="rec-btn stop" id="stopBtn" onclick="stopAll()" disabled title="Stop">&#9632;</button>
+    <div class="rec-info">
+      <div class="rec-status" id="recStatus">Ready to record</div>
+      <div class="rec-timer" id="recTimer">00:00</div>
+    </div>
+    <a class="rec-dl" id="recDl" aria-disabled="true">Download</a>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-row" id="navRow">
+    <button class="btn-nav" id="btnBack" onclick="goStep(currentStep-1)">← Back</button>
+    <div class="step-counter" id="stepCounter">1 / 7</div>
+    <button class="btn-nav btn-next" id="btnNext" onclick="goStep(currentStep+1)">Next →</button>
+  </div>
+
+</div><!-- /stage -->
+</div><!-- /body -->
+<div class="strip"></div>
+</div><!-- /shell -->
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   KCM 12-COLOR CHROMATIC SPECTRUM™ — CANONICAL
+   C=Yellow · 12 o'clock · -15° CCW · ©KCM
+═══════════════════════════════════════════════════════ */
+const NOTES=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const COLORS=['Yellow','Amber','Orange','Red-Orange','Red','Magenta','Violet','Indigo','Blue','Sky Blue','Mint','Lime'];
+const HEX=['#FFFF00','#FFC400','#FF8000','#FF4000','#FF0000','#C4007F','#8000FF','#4000FF','#0000FF','#007FFF','#00FF80','#80FF00'];
+const LIGHT=new Set([0,1,10,11]);
+const SEG=2*Math.PI/12,START=-Math.PI/2-Math.PI/12;
+
+const MODES={
+  Ionian:    {scale:[0,2,4,5,7,9,11],prog:[0,3,4,0],romans:['I','IV','V','I'],insight:'<strong>V→I</strong> — the dominant pull home. Brightest, most resolved sound in music.',feel:'bright, resolved, conclusive'},
+  Dorian:    {scale:[0,2,3,5,7,9,10],prog:[0,3,0,4],romans:['i','IV','i','v'],insight:'<strong>IV is major</strong> — the Dorian signature. Minor but cool, not sad.',feel:'cool, introspective, minor with lift'},
+  Phrygian:  {scale:[0,1,3,5,7,8,10],prog:[0,1,0,6],romans:['i','bII','i','bVII'],insight:'<strong>bII is major</strong>, one semitone above root — the Spanish cadence.',feel:'dark, Spanish, tense, exotic'},
+  Lydian:    {scale:[0,2,4,6,7,9,11],prog:[0,1,4,0],romans:['I','II','V','I'],insight:'<strong>II is major</strong> — raised 4th creates dreamy, floating, cinematic quality.',feel:'dreamy, floating, otherworldly'},
+  Mixolydian:{scale:[0,2,4,5,7,9,10],prog:[0,6,3,0],romans:['I','bVII','IV','I'],insight:'<strong>bVII is major</strong> — no leading tone, open driving rock energy.',feel:'rock swagger, folk warmth, driving'},
+  Aeolian:   {scale:[0,2,3,5,7,8,10],prog:[0,6,5,4],romans:['i','bVII','bVI','v'],insight:'<strong>bVII and bVI both major</strong> over minor i — anthemic sadness.',feel:'melancholic, natural minor, anthemic'},
+  Locrian:   {scale:[0,1,3,5,6,8,10],prog:[0,1,3,4],romans:['i°','bII','iv','v'],insight:'<strong>Tonic is diminished</strong> — no stable home, maximum tension.',feel:'dissonant, unstable, angular'}
+};
+
+const MOOD={Ionian:'bright resolved hopeful',Dorian:'cool introspective modal jazz',Phrygian:'dark tense Spanish flamenco',Lydian:'dreamy floating cinematic',Mixolydian:'driving rock swagger folk warmth',Aeolian:'melancholic natural minor anthemic',Locrian:'dissonant unstable angular'};
+
+let p={root:0,mode:'Ionian',tempo:92,bars:8,velocity:88};
+let currentStep=1;
+const TOTAL=7;
+let micOn=false,micStream=null,analyser=null,pitchAF=null,lastPitch=-1;
+let kcmAC=null;
+
+/* ── STEPS CONFIG ── */
+const STEPS=[
+  {num:1,title:'Listen',sub:'Play or sing'},
+  {num:2,title:'See',sub:'Note in color'},
+  {num:3,title:'Understand',sub:'Mode & chords'},
+  {num:4,title:'Prompt',sub:'Bridge writes it'},
+  {num:5,title:'Generate',sub:'Preview sound'},
+  {num:6,title:'Export',sub:'MIDI download'},
+  {num:7,title:'Complete',sub:'Under 2 min'},
+];
+
+/* ── CLOCK DRAW ── */
+function drawWheel(cvId, activeIdx, progSegs, micIdx, size){
+  const cv=document.getElementById(cvId);if(!cv)return;
+  const ctx=cv.getContext('2d'),S=size||cv.width/2;
+  const OUTER=S*0.935,INNER=S*0.30,LR=(OUTER+INNER)/2+S*0.005;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.save();ctx.beginPath();ctx.arc(S,S,OUTER+4,0,2*Math.PI);ctx.fillStyle='#0f0f1e';ctx.fill();ctx.restore();
+  NOTES.forEach((n,i)=>{
+    const a1=START+i*SEG,a2=a1+SEG,mid=(a1+a2)/2;
+    const act=(i===activeIdx),prog=progSegs&&progSegs.includes(i),mic=(i===micIdx&&micIdx>=0);
+    const rgb=HEX[i].slice(1).match(/.{2}/g).map(h=>parseInt(h,16));
+    ctx.save();
+    if(act){ctx.shadowColor=HEX[i];ctx.shadowBlur=S*0.12;}
+    else if(prog){ctx.shadowColor=HEX[i];ctx.shadowBlur=S*0.07;}
+    else if(mic){ctx.shadowColor=HEX[i];ctx.shadowBlur=S*0.09;}
+    ctx.beginPath();
+    ctx.moveTo(S+INNER*Math.cos(a1),S+INNER*Math.sin(a1));
+    ctx.arc(S,S,OUTER,a1,a2);ctx.arc(S,S,INNER,a2,a1,true);ctx.closePath();
+    ctx.fillStyle=`rgba(${rgb[0]},${rgb[1]},${rgb[2]},${act?1:prog?0.78:mic?0.88:0.82})`;
+    ctx.fill();ctx.shadowBlur=0;
+    ctx.strokeStyle='#0f0f1e';ctx.lineWidth=S*0.005;ctx.stroke();
+    ctx.restore();
+    if(prog&&!act){
+      ctx.save();ctx.beginPath();ctx.arc(S,S,OUTER-4,a1+0.03,a2-0.03);
+      ctx.strokeStyle=HEX[i];ctx.lineWidth=3;ctx.globalAlpha=0.65;ctx.stroke();ctx.restore();
+    }
+    const lx=S+LR*Math.cos(mid),ly=S+LR*Math.sin(mid);
+    const isLight=LIGHT.has(i);
+    ctx.save();ctx.translate(lx,ly);
+    ctx.fillStyle=act?(isLight?'#111':'#fff'):(isLight?'rgba(0,0,0,0.85)':'rgba(242,242,242,0.93)');
+    if(act){ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=3;}
+    ctx.font=`bold ${n.length>1?S*0.048:S*0.062}px Cinzel,serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(n,0,0);ctx.restore();
+  });
+  for(let i=0;i<12;i++){
+    const a=START+i*SEG+SEG/2,isC=(i===0);
+    ctx.save();ctx.strokeStyle=isC?'#F4D03F':'rgba(242,242,242,0.12)';
+    ctx.lineWidth=isC?S*0.007:S*0.003;ctx.beginPath();
+    ctx.moveTo(S+(OUTER-1)*Math.cos(a),S+(OUTER-1)*Math.sin(a));
+    ctx.lineTo(S+(OUTER+(isC?S*0.05:S*0.028))*Math.cos(a),S+(OUTER+(isC?S*0.05:S*0.028))*Math.sin(a));
+    ctx.stroke();ctx.restore();
+  }
+  for(let i=0;i<12;i++){
+    const a=START+i*SEG,isC=(i===0);
+    ctx.save();ctx.strokeStyle=isC?'rgba(244,208,63,0.55)':'rgba(15,15,30,0.88)';
+    ctx.lineWidth=isC?S*0.006:S*0.005;ctx.beginPath();
+    ctx.moveTo(S+INNER*Math.cos(a),S+INNER*Math.sin(a));
+    ctx.lineTo(S+OUTER*Math.cos(a),S+OUTER*Math.sin(a));ctx.stroke();ctx.restore();
+  }
+  const hub=ctx.createRadialGradient(S,S,0,S,S,INNER);
+  hub.addColorStop(0,'#1e2040');hub.addColorStop(1,'#0f0f1e');
+  ctx.save();ctx.beginPath();ctx.arc(S,S,INNER,0,2*Math.PI);ctx.fillStyle=hub;ctx.fill();
+  ctx.strokeStyle='#008080';ctx.lineWidth=S*0.008;ctx.stroke();ctx.restore();
+  ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';
+  if(activeIdx>=0){
+    ctx.fillStyle=HEX[activeIdx];ctx.font=`bold ${S*0.11}px Cinzel,serif`;
+    ctx.fillText(NOTES[activeIdx],S,S-S*0.04);
+    ctx.fillStyle='rgba(242,242,242,0.38)';ctx.font=`${S*0.036}px Montserrat,sans-serif`;
+    ctx.fillText(COLORS[activeIdx],S,S+S*0.032);
+  } else {
+    ctx.fillStyle='#F4D03F';ctx.font=`bold ${S*0.034}px Cinzel,serif`;
+    ctx.fillText('12-COLOR',S,S-S*0.04);
+    ctx.fillStyle='rgba(244,208,63,0.5)';ctx.font=`${S*0.027}px Cinzel,serif`;
+    ctx.fillText('CHROMATIC',S,S+S*0.02);ctx.fillText('SPECTRUM™',S,S+S*0.062);
+  }
+  ctx.restore();
+  const triAngle=START+SEG/2; // center of C segment = exactly 12 o'clock
+  ctx.save();
+  ctx.translate(S+(OUTER+S*0.048)*Math.cos(triAngle),S+(OUTER+S*0.048)*Math.sin(triAngle));
+  ctx.rotate(triAngle+Math.PI/2);const ts=S*0.031;
+  ctx.beginPath();ctx.moveTo(0,-ts);ctx.lineTo(-ts*0.65,ts*0.5);ctx.lineTo(ts*0.65,ts*0.5);ctx.closePath();
+  ctx.fillStyle='#F4D03F';ctx.shadowColor='#F4D03F';ctx.shadowBlur=S*0.035;ctx.fill();
+  ctx.restore();
+  ctx.save();ctx.beginPath();ctx.arc(S,S,OUTER+3,0,2*Math.PI);
+  ctx.strokeStyle='rgba(74,123,167,0.28)';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+}
+
+function hitTest(cvId,e,size){
+  const cv=document.getElementById(cvId);if(!cv)return -1;
+  const S=size||cv.width/2,INNER=S*0.30,OUTER=S*0.935;
+  const rc=cv.getBoundingClientRect(),sx=cv.width/rc.width,sy=cv.height/rc.height;
+  let cx,cy;
+  if(e.touches){cx=(e.touches[0].clientX-rc.left)*sx;cy=(e.touches[0].clientY-rc.top)*sy;}
+  else{cx=(e.clientX-rc.left)*sx;cy=(e.clientY-rc.top)*sy;}
+  const dx=cx-S,dy=cy-S,r=Math.sqrt(dx*dx+dy*dy);
+  if(r<INNER||r>OUTER)return -1;
+  let a=Math.atan2(dy,dx)-START;if(a<0)a+=2*Math.PI;
+  return Math.floor(a/SEG)%12;
+}
+
+/* ── CLOCK INTERACTIONS — pointerdown/up only, no double-fire ── */
+['miniClock','demoClock','modeClock'].forEach(id=>{
+  const cv=document.getElementById(id);if(!cv)return;
+  cv.style.touchAction='none'; // prevent scroll interference
+  cv.addEventListener('pointerdown',e=>{
+    e.preventDefault();
+    const i=hitTest(id,e);
+    if(i<0)return;
+    setRoot(i);
+    startNote(i); // hold note while pointer down
+  });
+  cv.addEventListener('pointerup',e=>{releaseNote();});
+  cv.addEventListener('pointerleave',e=>{releaseNote();});
+  cv.addEventListener('pointercancel',e=>{releaseNote();});
+});
+
+/* ── SET ROOT ── */
+function setRoot(idx){
+  p.root=idx;
+  lastManualClickTime=performance.now(); // also used as "was selected" flag
+  updateAll();
+}
+
+/* ── SET MODE ── */
+function setMode(el,mode){
+  document.querySelectorAll('.mpill').forEach(m=>m.classList.remove('active'));
+  el.classList.add('active');p.mode=mode;
+  updateAll();
+}
+
+/* ── FRETBOARD ── */
+// Standard tuning: E2 A2 D3 G3 B3 E4 = MIDI 40 45 50 55 59 64
+/* ══════════════════════════════════════════════════════════
+   KCM GUITAR FRETBOARD — CANONICAL STANDARD
+   Strings = COLUMNS left→right: E(6) A(5) D(4) G(3) B(2) e(1)
+   Frets   = ROWS top→bottom: Open, 1, 2, 3, 4, 5
+   Height  ≈ 130px (~2 inches). Dots = KCM hex colors.
+   Root = larger dot + glow. Labels E A D G B e above columns.
+══════════════════════════════════════════════════════════ */
+// Standard tuning open MIDI: E2 A2 D3 G3 B3 E4
+const OPEN_MIDI=[40,45,50,55,59,64]; // str 6→1 (bass→treble)
+const STR_NAMES=['E','A','D','G','B','e']; // left→right columns
+
+function drawFretboard(){
+  const cv=document.getElementById('fretBoard');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;  // 360 × 80
+  ctx.clearRect(0,0,W,H);
+
+  const md=MODES[p.mode];
+  const scaleNotes=new Set(md.scale.map(s=>(p.root+s)%12));
+
+  const STRINGS=6,FRETS=5;
+  // Layout: string names row at top, then open row, then frets 1-5
+  const LABEL_H=16;         // top row for string names
+  const FRET_H=(H-LABEL_H)/(FRETS+1); // height per fret row (incl open)
+  const STR_W=W/STRINGS;    // width per string column
+
+  // Background
+  ctx.fillStyle='#13132a';ctx.fillRect(0,0,W,H);
+
+  // String name labels — top of each column (E A D G B e)
+  STR_NAMES.forEach((name,s)=>{
+    const cx=STR_W*s+STR_W/2;
+    ctx.fillStyle='rgba(242,242,242,0.45)';
+    ctx.font='bold 8px Montserrat,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(name,cx,LABEL_H/2);
+  });
+
+  // Nut line — horizontal bar between label row and open string row
+  ctx.fillStyle='rgba(242,242,242,0.55)';
+  ctx.fillRect(0,LABEL_H,W,2);
+
+  // Fret lines — horizontal rows (between fret slots)
+  for(let f=1;f<=FRETS;f++){
+    const y=LABEL_H+FRET_H*f;
+    ctx.strokeStyle='rgba(242,242,242,0.12)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  }
+
+  // Fret row labels — left margin showing fret numbers
+  // (show Open, 1, 2, 3, 4, 5 as row labels on right edge)
+  ['O','1','2','3','4','5'].forEach((lbl,f)=>{
+    const y=LABEL_H+FRET_H*f+FRET_H/2;
+    ctx.fillStyle='rgba(242,242,242,0.18)';
+    ctx.font='7px Montserrat,sans-serif';
+    ctx.textAlign='right';ctx.textBaseline='middle';
+    ctx.fillText(lbl,W-2,y);
+  });
+
+  // String lines — vertical columns
+  STR_NAMES.forEach((_,s)=>{
+    const cx=STR_W*s+STR_W/2;
+    // Thickness: string 6 (E bass, s=0) thickest → string 1 (e treble, s=5) thinnest
+    const thick=1.8-s*0.22;
+    ctx.strokeStyle=`rgba(180,180,210,${0.28+0.04*(5-s)})`;
+    ctx.lineWidth=thick;
+    ctx.beginPath();
+    ctx.moveTo(cx,LABEL_H+2);
+    ctx.lineTo(cx,H);
+    ctx.stroke();
+  });
+
+  // Note dots — for each string (column) × fret (row)
+  const legend=[];
+  for(let s=0;s<STRINGS;s++){
+    const cx=STR_W*s+STR_W/2;
+    for(let f=0;f<=FRETS;f++){
+      // f=0 → open string row
+      const midi=OPEN_MIDI[s]+f;
+      const ni=((midi%12)+12)%12;
+      if(!scaleNotes.has(ni))continue;
+
+      const cy=LABEL_H+FRET_H*f+FRET_H/2;
+      const isRoot=(ni===p.root);
+      const col=HEX[ni];
+      const r=isRoot?FRET_H*0.34:FRET_H*0.26;
+
+      ctx.save();
+      ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);
+      ctx.fillStyle=col;
+      if(isRoot){ctx.shadowColor=col;ctx.shadowBlur=8;}
+      ctx.fill();
+      // Note name
+      const isLight=LIGHT.has(ni);
+      ctx.fillStyle=isLight?'rgba(0,0,0,0.85)':'rgba(255,255,255,0.95)';
+      ctx.font=`bold ${Math.round(r*0.85)}px Cinzel,serif`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(NOTES[ni],cx,cy);
+      ctx.restore();
+
+      if(!legend.find(l=>l.ni===ni))legend.push({ni,color:col,isRoot});
+    }
+  }
+
+  // Legend
+  const legEl=document.getElementById('fretLegend');
+  if(legEl){
+    legEl.innerHTML='';
+    legend.sort((a,b)=>a.ni-b.ni).forEach(l=>{
+      const item=document.createElement('div');item.className='fleg';
+      const dot=document.createElement('div');dot.className='fleg-dot';
+      dot.style.background=l.color;
+      if(l.isRoot)dot.style.boxShadow=`0 0 5px ${l.color}`;
+      const lbl=document.createElement('span');
+      lbl.textContent=NOTES[l.ni]+(l.isRoot?' ★':'');
+      if(l.isRoot)lbl.style.color='var(--text)';
+      item.appendChild(dot);item.appendChild(lbl);
+      legEl.appendChild(item);
+    });
+  }
+
+  // Update labels
+  const fl=document.getElementById('fretLbl');
+  if(fl)fl.textContent=`${NOTES[p.root]} ${p.mode}`;
+  const fs=document.getElementById('fretSub');
+  if(fs)fs.textContent=`${scaleNotes.size} scale tones · strings E A D G B e · open–fret ${FRETS}`;
+}
+
+/* ── UPDATE ALL ── */
+function updateAll(){
+  const md=MODES[p.mode];
+  const progSegs=md.prog.map(d=>(p.root+md.scale[d])%12);
+  const h=HEX[p.root];
+
+  // All clocks
+  drawWheel('miniClock',p.root,[],lastPitch,140);
+  drawWheel('demoClock',p.root,[],lastPitch,320);
+  drawWheel('modeClock',p.root,progSegs,lastPitch,240);
+
+  // Step 1 readout — three states: mic-detected, manual-selected, idle
+  const mr=document.getElementById('micReadout');
+  const p1hint=document.getElementById('p1Hint');
+  if(micOn&&lastPitch>=0){
+    mr.textContent=NOTES[p.root];mr.style.color=h;mr.classList.add('detected');
+    if(p1hint)p1hint.textContent=`${NOTES[p.root]} · ${COLORS[p.root]} · mic active`;
+  } else if(!micOn&&lastManualClickTime>0){
+    mr.textContent=NOTES[p.root];mr.style.color=h;mr.classList.add('detected');
+    if(p1hint)p1hint.textContent=`${NOTES[p.root]} · ${COLORS[p.root]} · tap clock to change`;
+  } else if(micOn){
+    mr.textContent='…';mr.style.color='var(--text3)';mr.classList.remove('detected');
+    if(p1hint)p1hint.textContent='Detecting pitch — play or sing a note';
+  } else {
+    mr.textContent='—';mr.style.color='';mr.classList.remove('detected');
+    if(p1hint)p1hint.textContent='Tap the clock below or enable the mic';
+  }
+
+  // Step 2 readout
+  document.getElementById('demoNote').textContent=NOTES[p.root];
+  document.getElementById('demoNote').style.color=h;
+  document.getElementById('demoColor').textContent=`${COLORS[p.root]} · ${h}`;
+
+  // Step 3 side-by-side
+  const mcs=document.getElementById('modeClockSub');
+  if(mcs)mcs.textContent=`${NOTES[p.root]} · ${COLORS[p.root]} · ${p.mode}`;
+  drawFretboard();
+
+  // Step 3 insight
+  const itEl=document.getElementById('insightTxt');if(itEl)itEl.innerHTML=md.insight;
+  updateModePillActive();
+  const pd=document.getElementById('progDisplay');
+  pd.innerHTML='';
+  md.romans.forEach((r,i)=>{
+    if(i>0){const ar=document.createElement('span');ar.textContent='→';ar.style.color='var(--text3)';ar.style.fontSize='12px';pd.appendChild(ar);}
+    const cb=document.createElement('div');cb.className='prog-chord';
+    const si=progSegs[i];cb.style.background=HEX[si]+'22';cb.style.borderColor=HEX[si];
+    cb.style.color=HEX[si];cb.textContent=r;pd.appendChild(cb);
+  });
+
+  // Step 4 prompt
+  buildPrompt();
+
+  // Step 5
+  document.getElementById('genNote').textContent=NOTES[p.root];
+  document.getElementById('genNote').style.color=h;
+  document.getElementById('genMode').textContent=p.mode;
+  document.getElementById('genProg').textContent=md.romans.join(' — ');
+
+  // Step 6
+  document.getElementById('etChord').textContent=`${NOTES[p.root]} ${p.mode} · 8 bars`;
+  document.getElementById('etTempo').textContent=`${p.tempo} bpm · KCM metadata`;
+
+  // Step 7
+  document.getElementById('statNote').textContent=NOTES[p.root];
+  document.getElementById('statNote').style.color=h;
+  document.getElementById('statMode').textContent=p.mode;
+  document.getElementById('statColor').textContent=COLORS[p.root];
+  document.getElementById('statColor').style.color=h;
+
+  // Rebuild waveform colors if on step 5
+  if(currentStep===5)buildWaveform();
+
+  // Header dots
+  renderDots();
+  renderSidebar();
+}
+
+/* ── PROMPT ── */
+function buildPrompt(){
+  const s=`${NOTES[p.root]} ${p.mode}, ${MOOD[p.mode]}, ${COLORS[p.root].toLowerCase()} tonal palette, [BPM:${p.tempo}] [Key:${NOTES[p.root]} ${p.mode}] [Instrumental] [No Drums] [Walking Bass]`;
+  document.getElementById('livePrompt').textContent=s;
+}
+
+function copyPrompt(){
+  const txt=document.getElementById('livePrompt').textContent;
+  const btn=document.getElementById('copyBtn');
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✓ Copied — paste into Suno Custom Mode';
+    btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copy Prompt for Suno';btn.classList.remove('ok');},2500);
+  }).catch(()=>{btn.textContent='Select text above to copy';});
+}
+
+/* ── AUDIO ── */
+/* ══════════════════════════════════════════════════════════
+   KCM AUDIO ENGINE — clean, no double-trigger, no feedback
+══════════════════════════════════════════════════════════ */
+function midiF(m){return 440*Math.pow(2,(m-69)/12);}
+
+// Always resume — Chrome requires user gesture
+function getAC(){
+  if(!kcmAC)kcmAC=new(window.AudioContext||window.webkitAudioContext)();
+  if(kcmAC.state==='suspended')kcmAC.resume();
+  return kcmAC;
+}
+
+// Active oscillator nodes — kill before starting new ones
+let activeOscs=[];
+let lastManualClickTime=0; // 0 = never clicked; >0 = timestamp of last manual note tap
+
+function killActiveOscs(){
+  const ac=getAC();const now=ac.currentTime;
+  activeOscs.forEach(({osc,gain})=>{
+    try{
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(gain.gain.value,now);
+      gain.gain.linearRampToValueAtTime(0,now+0.04); // 40ms fade = clean, not click
+      osc.stop(now+0.05);
+    }catch(e){}
+  });
+  activeOscs=[];
+}
+
+// startNote: holds note while pointer is down
+function startNote(idx){
+  killActiveOscs();
+  lastManualClickTime=performance.now(); // block mic feedback for 600ms
+  const ac=getAC();
+  const f=midiF(60+idx);
+  const t=ac.currentTime+0.01;
+  // 3 harmonics: fundamental + octave + fifth for richness
+  const harmonics=[1,2,3];
+  const gains=[0.40,0.16,0.08];
+  harmonics.forEach((h,i)=>{
+    const osc=ac.createOscillator();
+    const gain=ac.createGain();
+    const filt=ac.createBiquadFilter();
+    filt.type='lowpass';filt.frequency.value=3000;filt.Q.value=0.7;
+    osc.type='sine';
+    osc.frequency.setValueAtTime(f*h,t);
+    // Attack
+    gain.gain.setValueAtTime(0,t);
+    gain.gain.linearRampToValueAtTime(gains[i],t+0.025);
+    osc.connect(filt);filt.connect(gain);gain.connect(ac.destination);
+    osc.start(t);
+    // No scheduled stop — held until releaseNote()
+    activeOscs.push({osc,gain});
+  });
+}
+
+// releaseNote: clean release on pointer up
+function releaseNote(){
+  const ac=getAC();const now=ac.currentTime;
+  activeOscs.forEach(({osc,gain})=>{
+    try{
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(gain.gain.value,now);
+      gain.gain.linearRampToValueAtTime(0,now+0.18); // 180ms natural release
+      osc.stop(now+0.20);
+    }catch(e){}
+  });
+  activeOscs=[];
+}
+
+// playTone: used by pitch detector — short, no overlap, no feedback loop
+function playTone(idx){
+  // Don't play if a manual clock tap was very recent (prevents speaker→mic feedback)
+  if(lastManualClickTime>0&&performance.now()-lastManualClickTime<600)return;
+  killActiveOscs();
+  const ac=getAC();
+  const f=midiF(60+idx);
+  const t=ac.currentTime+0.01;
+  const osc=ac.createOscillator();
+  const gain=ac.createGain();
+  osc.type='sine';
+  osc.frequency.setValueAtTime(f,t);
+  gain.gain.setValueAtTime(0,t);
+  gain.gain.linearRampToValueAtTime(0.30,t+0.02);
+  gain.gain.linearRampToValueAtTime(0,t+0.5); // short, single note
+  osc.connect(gain);gain.connect(ac.destination);
+  osc.start(t);osc.stop(t+0.55);
+}
+function playPreview(){
+  const ac=getAC(),md=MODES[p.mode],rm=48+p.root,spb=60/p.tempo,t=ac.currentTime+0.05;
+  md.prog.forEach((deg,i)=>{
+    const bs=t+i*spb*2,cr=rm+md.scale[deg];
+    [0,2,4].map(si=>{const sd=(deg+si)%md.scale.length;return cr+md.scale[sd]-md.scale[0];})
+    .forEach(note=>{
+      const o=ac.createOscillator(),g=ac.createGain();
+      o.type='sine';o.frequency.value=midiF(note);
+      g.gain.setValueAtTime(0.15,bs);g.gain.exponentialRampToValueAtTime(0.001,bs+spb*1.8);
+      o.connect(g);g.connect(ac.destination);o.start(bs);o.stop(bs+spb*2);
+    });
+  });
+}
+
+/* ── MIC ── */
+function toggleMic(){
+  if(micOn)stopMic();else startMic();
+}
+function startMic(){
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    micStream=stream;micOn=true;
+    const ac=getAC();analyser=ac.createAnalyser();analyser.fftSize=4096;
+    ac.createMediaStreamSource(stream).connect(analyser);
+    document.getElementById('micCircle').classList.add('on');
+    document.getElementById('micLbl').textContent='Listening';
+    document.getElementById('micIcon').setAttribute('stroke','#00A0A0');
+    ['mr1','mr2','mr3'].forEach(id=>{
+      const el=document.getElementById(id);
+      el.classList.add('teal');
+    });
+    document.getElementById('micFreq').textContent='Detecting pitch...';
+    pitchLoop();
+  }).catch(()=>{
+    document.getElementById('micFreq').textContent='Mic unavailable — tap clock to select note';
+  });
+}
+function stopMic(){
+  micOn=false;
+  if(micStream)micStream.getTracks().forEach(t=>t.stop());
+  if(pitchAF){cancelAnimationFrame(pitchAF);pitchAF=null;}
+  document.getElementById('micCircle').classList.remove('on');
+  document.getElementById('micLbl').textContent='Tap to Listen';
+  document.getElementById('micIcon').setAttribute('stroke','#4A7BA7');
+  ['mr1','mr2','mr3'].forEach(id=>document.getElementById(id).classList.remove('teal'));
+  lastPitch=-1;
+}
+let lastPitchTime=0;
+function pitchLoop(){
+  if(!micOn)return;
+  pitchAF=requestAnimationFrame(pitchLoop);
+  const now=performance.now();
+  if(now-lastPitchTime<80)return;
+  lastPitchTime=now;
+  const buf=new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(buf);
+  let rms=0;for(let i=0;i<buf.length;i++)rms+=buf[i]*buf[i];
+  rms=Math.sqrt(rms/buf.length);
+  if(rms<0.01){
+    if(lastPitch>=0){lastPitch=-1;updateAll();}
+    document.getElementById('micFreq').textContent='Play something...';
+    return;
+  }
+  const freq=autoCorr(buf,getAC().sampleRate);
+  if(freq<0)return;
+  const midi=Math.round(12*Math.log2(freq/440)+69);
+  const ni=((midi%12)+12)%12;
+  const oct=Math.floor(midi/12)-1;
+  document.getElementById('micFreq').textContent=`${NOTES[ni]}${oct} · ${Math.round(freq)} Hz`;
+  if(ni!==lastPitch){
+    lastPitch=ni;p.root=ni;updateAll();
+    // Note: playTone NOT called here to prevent speaker→mic feedback loop
+  }
+}
+function autoCorr(buf,sr){
+  const SIZE=buf.length,MAX=Math.floor(SIZE/2);
+  const c=new Float32Array(MAX);
+  for(let i=0;i<MAX;i++){let s=0;for(let j=0;j<MAX;j++)s+=buf[j]*buf[j+i];c[i]=s;}
+  let d=0;while(d<MAX&&c[d]>c[d+1])d++;
+  if(d>=MAX)return -1;
+  let mv=-1,mp=-1;
+  for(let i=d;i<MAX;i++){if(c[i]>mv){mv=c[i];mp=i;}}
+  if(mp<1)return -1;
+  const x1=c[mp-1],x2=c[mp],x3=mp+1<MAX?c[mp+1]:x2;
+  const adj=mp+(x3-x1)/(2*(2*x2-x1-x3));
+  const f=sr/adj;
+  return(f<60||f>1500)?-1:f;
+}
+
+/* ── MIDI EXPORT ── */
+function writeVarLen(a,v){let b=[v&0x7F];v>>=7;while(v){b.unshift((v&0x7F)|0x80);v>>=7;}b.forEach(x=>a.push(x));}
+function writeDWord(a,d){a.push((d>>24)&0xFF,(d>>16)&0xFF,(d>>8)&0xFF,d&0xFF);}
+function buildTrack(evts){
+  const body=[];
+  evts.forEach(([dt,bytes])=>{writeVarLen(body,dt);bytes.forEach(b=>body.push(b));});
+  writeVarLen(body,0);body.push(0xFF,0x2F,0x00);
+  const hdr=[0x4D,0x54,0x72,0x6B];writeDWord(hdr,body.length);
+  return[...hdr,...body];
+}
+function exportMidi(){
+  const PPQ=480,bpm=p.tempo,bars=p.bars,md=MODES[p.mode],rm=60+p.root;
+  const uspb=Math.round(60000000/bpm);
+  const meta=`KCM:${NOTES[p.root]}_${p.mode}_${bpm}bpm|keyscodesandmodes.com`;
+  const tempoT=buildTrack([
+    [0,[0xFF,0x51,0x03,(uspb>>16)&0xFF,(uspb>>8)&0xFF,uspb&0xFF]],
+    [0,[0xFF,0x58,0x04,0x04,0x02,0x18,0x08]],
+    [0,[0xFF,0x01,meta.length,...[...meta].map(c=>c.charCodeAt(0))]],
+  ]);
+  const reps=Math.ceil(bars/md.prog.length),cd=PPQ*4;
+  const chEvts=[];
+  for(let r=0;r<reps;r++){md.prog.forEach((deg,ci)=>{
+    const bar=r*md.prog.length+ci;if(bar>=bars)return;
+    const cr=rm+md.scale[deg];
+    const ns=[0,2,4].map(si=>{const sd=(deg+si)%md.scale.length;return cr+md.scale[sd]-md.scale[0];});
+    // All note-ons simultaneous (delta 0 after first)
+    ns.forEach((n,ni)=>chEvts.push([ni===0?0:0,[0x90,n,p.velocity]]));
+    // Hold full bar, then all note-offs (last gets duration, rest get 0)
+    ns.forEach((n,ni)=>chEvts.push([ni===0?cd-5:0,[0x80,n,0]]));
+  });}
+  const bassEvts=[];const br=rm-24;
+  for(let r=0;r<reps;r++){md.prog.forEach((deg,ci)=>{
+    const bar=r*md.prog.length+ci;if(bar>=bars)return;
+    const bn=Math.max(21,br+md.scale[deg]);
+    [[bn,PPQ],[Math.max(21,br+md.scale[deg]+(md.scale[4]||7)),PPQ],[bn,PPQ],[bn,PPQ]].forEach(([n,dur])=>{
+      bassEvts.push([0,[0x91,n,p.velocity-12]]);bassEvts.push([dur-5,[0x81,n,0]]);
+    });
+  });}
+  const melEvts=[];const mr2=rm+12;const sc=md.scale.map(s=>mr2+s);
+  let bp=0;
+  while(bp<bars*4-0.5){
+    const dur=Math.random()<0.4?PPQ/2:PPQ;
+    const n=sc[Math.floor(Math.random()*sc.length)];
+    melEvts.push([0,[0x92,n,p.velocity-18]]);melEvts.push([Math.round(dur)-5,[0x82,n,0]]);
+    bp+=dur/PPQ;
+  }
+  const numT=4;
+  const hdr=[0x4D,0x54,0x68,0x64,0,0,0,6,0,1,(numT>>8)&0xFF,numT&0xFF,(PPQ>>8)&0xFF,PPQ&0xFF];
+  const chT=buildTrack(chEvts.length?chEvts:[[0,[0xFF,0x01,1,32]]]);
+  const baT=buildTrack(bassEvts.length?bassEvts:[[0,[0xFF,0x01,1,32]]]);
+  const meT=buildTrack(melEvts.length?melEvts:[[0,[0xFF,0x01,1,32]]]);
+  const all=new Uint8Array([...hdr,...tempoT,...chT,...baT,...meT]);
+  const fname=`KCM_${NOTES[p.root].replace('♯','s')}_${p.mode}_${bpm}bpm.mid`;
+  const url=URL.createObjectURL(new Blob([all],{type:'audio/midi'}));
+  const a=document.createElement('a');a.href=url;a.download=fname;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  // Visual feedback
+  const btn=document.querySelector('.btn-midi');
+  if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ MIDI Downloaded<span class="btn-export-sub">drag into Logic or Ableton</span>';
+    setTimeout(()=>{btn.innerHTML=orig;},2800);}
+}
+
+/* ── SESSION EXPORT (Suno JSON) ── */
+function exportSession(){
+  const md=MODES[p.mode];
+  const rootName=NOTES[p.root];
+  const colorName=COLORS[p.root];
+  const colorHex=HEX[p.root];
+  const progNotes=md.prog.map(deg=>{
+    const ni=(p.root+md.scale[deg])%12;
+    return{degree:md.romans[md.prog.indexOf(deg)]||'?',note:NOTES[ni],color:HEX[ni]};
+  });
+  // Rebuild roman numeral progression properly
+  const chords=md.prog.map((deg,i)=>{
+    const ni=(p.root+md.scale[deg])%12;
+    return{roman:md.romans[i],note:NOTES[ni],hex:HEX[ni],color:COLORS[ni]};
+  });
+  const sunoPrompt=`${rootName} ${p.mode}, ${MOOD[p.mode]}, ${colorName.toLowerCase()} tonal palette, [BPM:${p.tempo}] [Key:${rootName} ${p.mode}] [Instrumental] [No Drums] [Walking Bass]`;
+  const session={
+    kcm_version:'1.0',
+    generated:new Date().toISOString(),
+    source:'Keys, Codes & Modes™ — keyscodesandmodes.com',
+    root:{
+      note:rootName,
+      index:p.root,
+      color:colorName,
+      hex:colorHex
+    },
+    mode:{
+      name:p.mode,
+      feel:md.feel,
+      scale_intervals:md.scale,
+      insight:md.insight.replace(/<[^>]+>/g,'')
+    },
+    progression:{
+      bars:p.bars,
+      tempo_bpm:p.tempo,
+      chords:chords,
+      romans:md.romans
+    },
+    suno_prompt:sunoPrompt,
+    suno_instructions:{
+      step1:'Open Suno.com → Create → Custom Mode',
+      step2:'Paste the suno_prompt value into the Style of Music field',
+      step3:'Set Instrumental = true, No Lyrics',
+      step4:'Generate — your KCM harmonic session is the foundation'
+    },
+    midi_tracks:{
+      ch1:'Chords — '+rootName+' '+p.mode+' · '+p.bars+' bars',
+      ch2:'Bass — root walk · '+p.bars+' bars',
+      ch3:'Melody — modal scale · '+p.bars+' bars',
+      meta:'Tempo track · '+p.tempo+' bpm · KCM metadata'
+    },
+    kcm_color_system:'12-Color Chromatic Spectrum™ · C=Yellow=12 o\'clock · clockwise=pitch up',
+    patents:'4 U.S. Patents — FreeStyle® Musical Device'
+  };
+  const blob=new Blob([JSON.stringify(session,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`KCM_${rootName.replace('♯','s')}_${p.mode}_${p.tempo}bpm_session.json`;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  // Visual feedback
+  const btn=document.querySelector('.btn-suno');
+  if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ Session Downloaded<span class="btn-export-sub">open & paste suno_prompt</span>';
+    setTimeout(()=>{btn.innerHTML=orig;},2800);}
+}
+
+/* ── STEP NAV ── */
+function goStep(n){
+  if(n<1||n>TOTAL)return;
+  currentStep=n;
+  document.querySelectorAll('.panel').forEach((p,i)=>{
+    p.classList.toggle('active',i+1===n);
+  });
+  document.getElementById('btnBack').disabled=(n===1);
+  document.getElementById('btnNext').style.display=(n===TOTAL)?'none':'';
+  document.getElementById('stepCounter').textContent=`${n} / ${TOTAL}`;
+  document.getElementById('recBar').style.display=(n===TOTAL)?'none':'flex';
+  updateAll();
+  // Step-specific setup
+  if(n===5)buildWaveform();
+  if(n===3)renderModePills();
+  document.getElementById('navRow').style.display=(n===TOTAL)?'none':'flex';
+}
+
+function previewAndNext(){
+  playPreview();buildWaveform();
+  setTimeout(()=>goStep(currentStep+1),800);
+}
+function exportAndNext(){
+  exportMidi();
+  setTimeout(()=>goStep(currentStep+1),600);
+}
+
+/* ── WAVEFORM ── */
+function buildWaveform(){
+  const wf=document.getElementById('waveform');if(!wf)return;
+  wf.innerHTML='';
+  const n=Math.floor((wf.offsetWidth||300)/4.5);
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div');d.className='wfbar';
+    d.style.height=(4+Math.random()*26)+'px';
+    d.style.opacity=(0.2+Math.random()*0.55).toFixed(2);
+    d.style.background=`rgba(${parseInt(HEX[p.root].slice(1,3),16)},${parseInt(HEX[p.root].slice(3,5),16)},${parseInt(HEX[p.root].slice(5,7),16)},0.5)`;
+    wf.appendChild(d);
+  }
+}
+
+/* ── MODE PILLS ── */
+function renderModePills(){
+  const row=document.getElementById('modePills');if(!row)return;
+  row.innerHTML='';
+  Object.keys(MODES).forEach(m=>{
+    const pill=document.createElement('div');pill.className='mpill'+(m===p.mode?' active':'');
+    pill.textContent=m;pill.onclick=()=>setMode(pill,m);
+    row.appendChild(pill);
+  });
+}
+function updateModePillActive(){
+  document.querySelectorAll('.mpill').forEach(pill=>{
+    pill.classList.toggle('active',pill.textContent===p.mode);
+  });
+}
+
+/* ── SIDEBAR & DOTS ── */
+function renderSidebar(){
+  const sb=document.getElementById('sidebar');if(!sb)return;
+  sb.innerHTML='';
+  STEPS.forEach(st=>{
+    const el=document.createElement('div');
+    const state=st.num===currentStep?'active':st.num<currentStep?'done':'inactive';
+    el.className=`step-item ${state}`;
+    el.innerHTML=`<div class="step-num ${state}">${st.num<currentStep?'✓':st.num}</div>
+      <div class="step-text"><div class="step-title">${st.title}</div><div class="step-sub">${st.sub}</div></div>`;
+    sb.appendChild(el);
+  });
+}
+function renderDots(){
+  const dotsEl=document.getElementById('stepDots');if(!dotsEl)return;
+  dotsEl.innerHTML='';
+  STEPS.forEach(st=>{
+    const d=document.createElement('div');
+    d.className='sdot'+(st.num===currentStep?' active':st.num<currentStep?' done':'');
+    dotsEl.appendChild(d);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   RECORDER — record mic, play back, download .webm
+══════════════════════════════════════════════════════ */
+let mediaRec=null,recChunks=[],recBlob=null,recInterval=null,recSecs=0;
+let recStream=null,playAudio=null,isRecording=false,isPlaying=false;
+
+function toggleRecord(){
+  if(isRecording)stopRecord();else startRecord();
+}
+
+function startRecord(){
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    recStream=stream;
+    recChunks=[];recBlob=null;isRecording=true;recSecs=0;
+    const opts=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ?{mimeType:'audio/webm;codecs=opus'}:{};
+    mediaRec=new MediaRecorder(stream,opts);
+    mediaRec.ondataavailable=e=>{if(e.data.size>0)recChunks.push(e.data);};
+    mediaRec.onstop=()=>{
+      recBlob=new Blob(recChunks,{type:mediaRec.mimeType||'audio/webm'});
+      const url=URL.createObjectURL(recBlob);
+      const dl=document.getElementById('recDl');
+      dl.href=url;dl.download=`KCM_${NOTES[p.root]}_${p.mode}.webm`;
+      dl.removeAttribute('aria-disabled');
+      setRecUI('recorded');
+    };
+    mediaRec.start(200);
+    recInterval=setInterval(()=>{
+      recSecs++;
+      const m=String(Math.floor(recSecs/60)).padStart(2,'0');
+      const s=String(recSecs%60).padStart(2,'0');
+      document.getElementById('recTimer').textContent=m+':'+s;
+    },1000);
+    setRecUI('recording');
+    // Also start pitch detection if mic not already on
+    if(!micOn)startMic();
+  }).catch(()=>{
+    document.getElementById('recStatus').textContent='Mic unavailable';
+  });
+}
+
+function stopRecord(){
+  if(mediaRec&&mediaRec.state!=='inactive')mediaRec.stop();
+  if(recStream)recStream.getTracks().forEach(t=>t.stop());
+  if(recInterval){clearInterval(recInterval);recInterval=null;}
+  isRecording=false;
+}
+
+function playRecording(){
+  if(!recBlob)return;
+  if(isPlaying&&playAudio){playAudio.pause();playAudio.currentTime=0;isPlaying=false;setRecUI('recorded');return;}
+  const url=URL.createObjectURL(recBlob);
+  playAudio=new Audio(url);
+  isPlaying=true;setRecUI('playing');
+  playAudio.onended=()=>{isPlaying=false;setRecUI('recorded');};
+  playAudio.play();
+}
+
+function stopAll(){
+  if(isRecording)stopRecord();
+  if(isPlaying&&playAudio){playAudio.pause();playAudio.currentTime=0;isPlaying=false;}
+  setRecUI(recBlob?'recorded':'idle');
+}
+
+function setRecUI(state){
+  const rb=document.getElementById('recBtn');
+  const pb=document.getElementById('playBtn');
+  const sb=document.getElementById('stopBtn');
+  const rs=document.getElementById('recStatus');
+  const rt=document.getElementById('recTimer');
+  rb.classList.toggle('active',state==='recording');
+  pb.disabled=(state==='recording'||state==='idle');
+  sb.disabled=(state==='idle'||state==='recorded');
+  if(state==='recording'){rs.textContent='Recording...';rs.style.color='var(--coral)';}
+  else if(state==='playing'){rs.textContent='Playing back';rs.style.color='var(--teal-lt)';sb.disabled=false;}
+  else if(state==='recorded'){rs.textContent='Recording ready';rs.style.color='var(--text2)';if(rt.textContent==='00:00')rt.textContent='Saved';}
+  else{rs.textContent='Ready to record';rs.style.color='var(--text2)';rt.textContent='00:00';}
+}
+
+/* ── RESTART ── */
+function restart(){
+  p={root:0,mode:'Ionian',tempo:92,bars:8,velocity:88};
+  stopMic();lastPitch=-1;lastManualClickTime=0;
+  renderModePills();goStep(1);
+}
+
+/* ── INIT ── */
+renderModePills();
+goStep(1);
+</script>
+</body>
+</html>
