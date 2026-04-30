@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,11 +54,10 @@
     function trackEvent(n,p){if(typeof gtag==='function')gtag('event',n,p);}
     </script>
 
-    <!-- React + Tone.js -->
+    <!-- React (no Tone.js — replaced with Web Audio API in Session 5) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
         /* ══════════════════════════════════
@@ -192,18 +192,66 @@
         <div id="root"></div>
     </main>
 
-    <!-- REACT APP -->
+    <!-- REACT APP — Session 5: Tone.js → Web Audio API + KCM bridge listener -->
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
+        // ── Web Audio helpers ────────────────────────────────────────────────
+        // Replaces Tone.js entirely. Uses a shared AudioContext ref.
+        // noteToFreq: converts note name + octave → Hz via equal temperament.
+        const NOTE_SEMITONES = {
+            'C':0,'Db':1,'D':2,'Eb':3,'E':4,'F':5,
+            'Gb':6,'G':7,'Ab':8,'A':9,'Bb':10,'B':11
+        };
+        function noteToHz(note, octave = 4) {
+            const semi = NOTE_SEMITONES[note];
+            if (semi === undefined) return 440;
+            // A4 = 440 Hz, MIDI note 69
+            const midi = (octave + 1) * 12 + semi;
+            return 440 * Math.pow(2, (midi - 69) / 12);
+        }
+
+        function playNotes(ctx, notes, octave, duration, delay = 0) {
+            // Plays an array of note-name strings simultaneously as sine waves.
+            notes.forEach(note => {
+                const osc   = ctx.createOscillator();
+                const gain  = ctx.createGain();
+                const freq  = noteToHz(note, octave);
+                osc.type    = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+                // Envelope: quick attack, sustain, release
+                gain.gain.setValueAtTime(0, ctx.currentTime + delay);
+                gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + delay + 0.02);
+                gain.gain.setValueAtTime(0.18, ctx.currentTime + delay + duration - 0.1);
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + delay + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(ctx.currentTime + delay);
+                osc.stop(ctx.currentTime + delay + duration);
+            });
+        }
+
+        // ── Main React component ─────────────────────────────────────────────
         const MusicCircle = () => {
-            const [activeNote, setActiveNote]         = useState(null);
-            const [activeType, setActiveType]         = useState(null);
+            const [activeNote,     setActiveNote]     = useState(null);
+            const [activeType,     setActiveType]     = useState(null);
             const [isPlayingOuter, setIsPlayingOuter] = useState(false);
             const [isPlayingInner, setIsPlayingInner] = useState(false);
             const [startNoteOuter, setStartNoteOuter] = useState('C');
             const [startNoteInner, setStartNoteInner] = useState('A');
-            const [synth, setSynth]                   = useState(null);
+            const audioCtxRef = useRef(null);
+
+            // Expose state setters on window so the KCM bridge listener can drive them
+            useEffect(() => {
+                window._kcmCoF = {
+                    setStartNoteOuter,
+                    setStartNoteInner,
+                    setActiveNote,
+                    setActiveType,
+                    noteOrder: ['C','G','D','A','E','B','Gb','Db','Ab','Eb','Bb','F']
+                };
+                return () => { delete window._kcmCoF; };
+            }, [setStartNoteOuter, setStartNoteInner]);
 
             const noteOrder  = ['C','G','D','A','E','B','Gb','Db','Ab','Eb','Bb','F'];
             const noteColors = {
@@ -211,175 +259,189 @@
                 'E':'#FF0000','F':'#C4007F','Gb':'#8000FF','G':'#4000FF',
                 'Ab':'#0000FF','A':'#007FFF','Bb':'#00FF80','B':'#80FF00'
             };
-            const noteToFreq = (note,octave=4) => {
-                const m={'C':'C','Db':'C#','D':'D','Eb':'D#','E':'E','F':'F','Gb':'F#','G':'G','Ab':'G#','A':'A','Bb':'A#','B':'B'};
-                return m[note]+octave;
-            };
-            useEffect(()=>{
-                const s=new Tone.PolySynth(Tone.Synth,{oscillator:{type:'sine'},envelope:{attack:0.02,decay:0.1,sustain:0.3,release:1}}).toDestination();
-                setSynth(s); return ()=>s.dispose();
-            },[]);
 
-            const getTriad=(root)=>{const c=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];const i=c.indexOf(root);return[root,c[(i+4)%12],c[(i+7)%12]];};
-            const getMinorTriad=(root)=>{const c=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];const i=c.indexOf(root);return[root,c[(i+3)%12],c[(i+7)%12]];};
-
-            const playTriad=async(note,isMinor=false)=>{
-                await Tone.start();
-                if(!synth||isPlayingOuter||isPlayingInner)return;
-                const triad=isMinor?getMinorTriad(note):getTriad(note);
-                if(isMinor)setIsPlayingInner(true);else setIsPlayingOuter(true);
-                setActiveNote(note);setActiveType(isMinor?'inner':'outer');
-                synth.triggerAttackRelease(triad.map(n=>noteToFreq(n,4)),'2n');
-                trackEvent('note_click',{event_category:'circle_of_fifths',event_label:note+(isMinor?'_minor':'_major')});
-                await new Promise(r=>setTimeout(r,700));
-                setActiveNote(null);setActiveType(null);
-                if(isMinor)setIsPlayingInner(false);else setIsPlayingOuter(false);
+            // Enharmonic map: KCM bus uses sharps; CoF uses flats for some notes
+            const sharpToFlat = {
+                'C#':'Db','D#':'Eb','F#':'Gb','G#':'Ab','A#':'Bb'
             };
 
-            const playSequence=async(notes,isMinor,arpeggiate)=>{
-                await Tone.start();
-                if(!synth||isPlayingOuter||isPlayingInner)return;
-                if(isMinor)setIsPlayingInner(true);else setIsPlayingOuter(true);
-                for(let i=0;i<notes.length;i++){
-                    const note=notes[i];
-                    const triad=isMinor?getMinorTriad(note):getTriad(note);
-                    if(arpeggiate){
-                        for(let j=0;j<triad.length;j++){
-                            synth.triggerAttackRelease(noteToFreq(triad[j],4),'8n');
-                            setActiveNote(triad[j]);setActiveType(isMinor?'inner':'outer');
-                            await new Promise(r=>setTimeout(r,150));
+            function getAudioCtx() {
+                if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+                    audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtxRef.current.state === 'suspended') {
+                    audioCtxRef.current.resume();
+                }
+                return audioCtxRef.current;
+            }
+
+            // Publish root change to Console bus → all panels follow
+            const postToConsole = (patch) => {
+                try { window.parent.postMessage({ type: 'KCM_STATE_PATCH', payload: patch }, '*'); }
+                catch(e) { /* silent if no parent */ }
+            };
+
+            // CoF uses flat notation; KCM bus uses sharps — convert for bus
+            const FLAT_TO_SHARP = {
+                'Db':'C#','Eb':'D#','Gb':'F#','Ab':'G#','Bb':'A#'
+            };
+            const toSharp = note => FLAT_TO_SHARP[note] || note;
+
+            const getTriad      = root => { const c=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']; const i=c.indexOf(root); return [root, c[(i+4)%12], c[(i+7)%12]]; };
+            const getMinorTriad = root => { const c=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']; const i=c.indexOf(root); return [root, c[(i+3)%12], c[(i+7)%12]]; };
+
+            const playTriad = async (note, isMinor = false) => {
+                if (isPlayingOuter || isPlayingInner) return;
+                const ctx   = getAudioCtx();
+                const triad = isMinor ? getMinorTriad(note) : getTriad(note);
+                isMinor ? setIsPlayingInner(true) : setIsPlayingOuter(true);
+                setActiveNote(note); setActiveType(isMinor ? 'inner' : 'outer');
+                playNotes(ctx, triad, 4, 0.9);
+                if (typeof trackEvent === 'function') trackEvent('note_click', { event_category:'circle_of_fifths', event_label: note + (isMinor?'_minor':'_major') });
+                // Publish to Console bus so MTP and MSP follow
+                postToConsole({
+                    root: toSharp(note),
+                    mode: isMinor ? 'aeolian' : 'ionian'
+                });
+                await new Promise(r => setTimeout(r, 700));
+                setActiveNote(null); setActiveType(null);
+                isMinor ? setIsPlayingInner(false) : setIsPlayingOuter(false);
+            };
+
+            const playSequence = async (notes, isMinor, arpeggiate) => {
+                if (isPlayingOuter || isPlayingInner) return;
+                const ctx = getAudioCtx();
+                isMinor ? setIsPlayingInner(true) : setIsPlayingOuter(true);
+                for (let i = 0; i < notes.length; i++) {
+                    const note  = notes[i];
+                    const triad = isMinor ? getMinorTriad(note) : getTriad(note);
+                    if (arpeggiate) {
+                        for (let j = 0; j < triad.length; j++) {
+                            playNotes(ctx, [triad[j]], 4, 0.25);
+                            setActiveNote(triad[j]); setActiveType(isMinor ? 'inner' : 'outer');
+                            await new Promise(r => setTimeout(r, 150));
                         }
-                    }else{
-                        synth.triggerAttackRelease(triad.map(n=>noteToFreq(n,4)),'4n');
-                        setActiveNote(note);setActiveType(isMinor?'inner':'outer');
-                        await new Promise(r=>setTimeout(r,600));
+                    } else {
+                        playNotes(ctx, triad, 4, 0.7);
+                        setActiveNote(note); setActiveType(isMinor ? 'inner' : 'outer');
+                        await new Promise(r => setTimeout(r, 600));
                     }
                 }
-                setActiveNote(null);setActiveType(null);
-                if(isMinor)setIsPlayingInner(false);else setIsPlayingOuter(false);
+                setActiveNote(null); setActiveType(null);
+                isMinor ? setIsPlayingInner(false) : setIsPlayingOuter(false);
             };
 
-            const buildSeq=(base,start)=>{const i=base.indexOf(start);return[...base.slice(i),...base.slice(0,i)];};
-            const outerBase=['C','G','D','A','E','B','Gb','Db','Ab','Eb','Bb','F'];
-            const innerBase=['A','E','B','Gb','Db','Ab','Eb','Bb','F','C','G','D'];
+            const buildSeq  = (base, start) => { const i = base.indexOf(start); return [...base.slice(i), ...base.slice(0,i)]; };
+            const outerBase = ['C','G','D','A','E','B','Gb','Db','Ab','Eb','Bb','F'];
+            const innerBase = ['A','E','B','Gb','Db','Ab','Eb','Bb','F','C','G','D'];
 
-            /* KCM button style */
-            const btn=(bg,mb='8px')=>({
-                width:'100%',padding:'12px',marginBottom:mb,
-                fontSize:'clamp(0.85rem,2.5vw,0.95rem)',fontWeight:'700',
+            const btn = (bg, mb='8px') => ({
+                width:'100%', padding:'12px', marginBottom:mb,
+                fontSize:'clamp(0.85rem,2.5vw,0.95rem)', fontWeight:'700',
                 fontFamily:"'Montserrat',sans-serif",
-                background:bg,color:'white',border:'none',
-                borderRadius:'50px',cursor:'pointer',minHeight:'48px',
+                background:bg, color:'white', border:'none',
+                borderRadius:'50px', cursor:'pointer', minHeight:'48px',
                 boxShadow:'0 4px 12px rgba(0,0,0,0.3)',
-                transition:'all 0.3s ease',letterSpacing:'0.5px'
+                transition:'all 0.3s ease', letterSpacing:'0.5px'
             });
 
-            const renderCircle=()=>{
-                const outerRadius=190,innerRadius=135,cx=250,cy=250,outerR=28,innerR=20;
-                return noteOrder.map((note,index)=>{
-                    const outerAngle=(index*30-90)*(Math.PI/180);
-                    const outerX=cx+outerRadius*Math.cos(outerAngle);
-                    const outerY=cy+outerRadius*Math.sin(outerAngle);
-                    const innerAngle=(index*30-180)*(Math.PI/180);
-                    const innerX=cx+innerRadius*Math.cos(innerAngle);
-                    const innerY=cy+innerRadius*Math.sin(innerAngle);
-                    const isOuterActive=activeNote===note&&activeType==='outer';
-                    const isInnerActive=activeNote===note&&activeType==='inner';
+            const renderCircle = () => {
+                const outerRadius=190, innerRadius=135, cx=250, cy=250, outerR=28, innerR=20;
+                return noteOrder.map((note, index) => {
+                    const outerAngle = (index*30-90)*(Math.PI/180);
+                    const outerX = cx + outerRadius*Math.cos(outerAngle);
+                    const outerY = cy + outerRadius*Math.sin(outerAngle);
+                    const innerAngle = (index*30-180)*(Math.PI/180);
+                    const innerX = cx + innerRadius*Math.cos(innerAngle);
+                    const innerY = cy + innerRadius*Math.sin(innerAngle);
+                    const isOuterActive = activeNote===note && (activeType==='outer' || activeType==='tick');
+                    const isInnerActive = activeNote===note && (activeType==='inner' || activeType==='tick');
 
-                    return React.createElement('g',{key:note},
-                        /* Outer major circle — plain onClick, NO tabIndex, NO role — prevents rectangles */
-                        React.createElement('circle',{
-                            cx:outerX,cy:outerY,r:outerR,
+                    return React.createElement('g', {key:note},
+                        React.createElement('circle', {
+                            cx:outerX, cy:outerY, r:outerR,
                             fill:noteColors[note],
                             stroke:isOuterActive?'#F4D03F':'rgba(255,255,255,0.35)',
                             strokeWidth:isOuterActive?4:2,
                             opacity:isOuterActive?1:0.88,
                             style:{cursor:'pointer'},
-                            onClick:()=>playTriad(note,false)
+                            onClick:()=>playTriad(note, false)
                         }),
-                        /* Gold glow ring when active */
-                        isOuterActive?React.createElement('circle',{
-                            cx:outerX,cy:outerY,r:outerR+7,
-                            fill:'none',stroke:'#F4D03F',strokeWidth:2,opacity:0.5,
+                        isOuterActive ? React.createElement('circle', {
+                            cx:outerX, cy:outerY, r:outerR+7,
+                            fill:'none', stroke:'#F4D03F', strokeWidth:2, opacity:0.5,
                             style:{pointerEvents:'none'}
-                        }):null,
-                        React.createElement('text',{
-                            x:outerX,y:outerY+6,textAnchor:'middle',
-                            fontSize:'16',fontWeight:'bold',fill:'#000',
-                            style:{pointerEvents:'none',userSelect:'none'}
-                        },note),
-
-                        /* Inner minor circle */
-                        React.createElement('circle',{
-                            cx:innerX,cy:innerY,r:innerR,
+                        }) : null,
+                        React.createElement('text', {
+                            x:outerX, y:outerY+6, textAnchor:'middle',
+                            fontSize:'16', fontWeight:'bold', fill:'#000',
+                            style:{pointerEvents:'none', userSelect:'none'}
+                        }, note),
+                        React.createElement('circle', {
+                            cx:innerX, cy:innerY, r:innerR,
                             fill:noteColors[note],
                             stroke:isInnerActive?'#F4D03F':'rgba(255,255,255,0.35)',
                             strokeWidth:isInnerActive?3:1.5,
                             opacity:isInnerActive?1:0.88,
                             style:{cursor:'pointer'},
-                            onClick:()=>playTriad(note,true)
+                            onClick:()=>playTriad(note, true)
                         }),
-                        isInnerActive?React.createElement('circle',{
-                            cx:innerX,cy:innerY,r:innerR+6,
-                            fill:'none',stroke:'#F4D03F',strokeWidth:2,opacity:0.5,
+                        isInnerActive ? React.createElement('circle', {
+                            cx:innerX, cy:innerY, r:innerR+6,
+                            fill:'none', stroke:'#F4D03F', strokeWidth:2, opacity:0.5,
                             style:{pointerEvents:'none'}
-                        }):null,
-                        React.createElement('text',{
-                            x:innerX,y:innerY+5,textAnchor:'middle',
-                            fontSize:'12',fontWeight:'bold',fill:'#000',
-                            style:{pointerEvents:'none',userSelect:'none'}
-                        },note)
+                        }) : null,
+                        React.createElement('text', {
+                            x:innerX, y:innerY+5, textAnchor:'middle',
+                            fontSize:'12', fontWeight:'bold', fill:'#000',
+                            style:{pointerEvents:'none', userSelect:'none'}
+                        }, note)
                     );
                 });
             };
 
-            /* ── Panel card style ── */
-            const card=(borderColor,bgFrom,bgTo)=>({
+            const card = (borderColor, bgFrom, bgTo) => ({
                 background:`linear-gradient(135deg,${bgFrom},${bgTo})`,
                 border:`2px solid ${borderColor}`,
-                borderRadius:'16px',padding:'1.5rem',
+                borderRadius:'16px', padding:'1.5rem',
                 boxShadow:`0 4px 20px ${borderColor}33`
             });
 
-            return React.createElement('div',{style:{
+            return React.createElement('div', {style:{
                 background:'radial-gradient(ellipse at center,#1a1a2e 0%,#0a0a15 100%)',
-                minHeight:'100vh',padding:'2rem 1rem',
+                minHeight:'100vh', padding:'2rem 1rem',
                 fontFamily:"'Montserrat',sans-serif"
             }},
-                /* Page heading */
-                React.createElement('div',{style:{textAlign:'center',marginBottom:'2rem'}},
-                    React.createElement('h2',{style:{
+                React.createElement('div', {style:{textAlign:'center', marginBottom:'2rem'}},
+                    React.createElement('h2', {style:{
                         fontFamily:"'Cinzel',serif",
                         fontSize:'clamp(1.5rem,5vw,2.5rem)',
                         background:'linear-gradient(135deg,#F4D03F,#008080)',
-                        WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',
-                        backgroundClip:'text',marginBottom:'0.5rem'
-                    }},'Circle of Fifths'),
-                    React.createElement('p',{style:{color:'rgba(232,232,232,0.65)',fontSize:'clamp(0.88rem,2.5vw,1rem)'}},
+                        WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+                        backgroundClip:'text', marginBottom:'0.5rem'
+                    }}, 'Circle of Fifths'),
+                    React.createElement('p', {style:{color:'rgba(232,232,232,0.65)', fontSize:'clamp(0.88rem,2.5vw,1rem)'}},
                         'Outer ring = Major • Inner ring = Minor • Click any note to play instantly')
                 ),
 
-                /* Main grid: wheel (2/3) + controls (1/3) */
-                React.createElement('div',{style:{
-                    maxWidth:'1100px',margin:'0 auto',
+                React.createElement('div', {style:{
+                    maxWidth:'1100px', margin:'0 auto',
                     display:'grid',
                     gridTemplateColumns:'minmax(0,2fr) minmax(0,1fr)',
-                    gap:'2rem',alignItems:'start'
+                    gap:'2rem', alignItems:'start'
                 }},
-
-                    /* ── LEFT: Wheel ── */
-                    React.createElement('div',{style:{display:'flex',justifyContent:'center'}},
-                        React.createElement('div',{style:{
-                            width:'100%',maxWidth:'520px',
+                    React.createElement('div', {style:{display:'flex', justifyContent:'center'}},
+                        React.createElement('div', {style:{
+                            width:'100%', maxWidth:'520px',
                             background:'linear-gradient(135deg,rgba(0,128,128,0.08),rgba(139,107,163,0.08))',
                             border:'2px solid rgba(0,128,128,0.3)',
-                            borderRadius:'20px',padding:'1.5rem',
+                            borderRadius:'20px', padding:'1.5rem',
                             boxShadow:'0 8px 40px rgba(0,128,128,0.15)'
                         }},
-                            React.createElement('svg',{
+                            React.createElement('svg', {
                                 viewBox:'0 0 500 500',
                                 style:{
-                                    width:'100%',height:'auto',
+                                    width:'100%', height:'auto',
                                     borderRadius:'50%',
                                     background:'radial-gradient(circle,#e8f4fd 0%,#c8dff0 60%,#9bbbd8 100%)',
                                     boxShadow:'0 8px 32px rgba(0,0,0,0.5),inset 0 0 40px rgba(0,128,128,0.08)',
@@ -388,60 +450,52 @@
                                 role:'img',
                                 'aria-label':'Circle of Fifths — click note circles to play chords'
                             },
-                                /* Outer ring */
-                                React.createElement('circle',{cx:'250',cy:'250',r:'240',fill:'none',stroke:'rgba(0,128,128,0.3)',strokeWidth:'2'}),
-                                /* Center hub */
-                                React.createElement('circle',{cx:'250',cy:'250',r:'82',fill:'#1a3d5f',stroke:'rgba(0,128,128,0.6)',strokeWidth:'3'}),
-                                React.createElement('text',{x:'250',y:'240',textAnchor:'middle',fontSize:'13',fill:'#F4D03F',fontWeight:'bold',fontFamily:'Cinzel,serif'},'Circle of'),
-                                React.createElement('text',{x:'250',y:'258',textAnchor:'middle',fontSize:'13',fill:'#F4D03F',fontWeight:'bold',fontFamily:'Cinzel,serif'},'Fifths'),
-                                /* Key sigs */
-                                noteOrder.map((note,index)=>{
+                                React.createElement('circle', {cx:'250',cy:'250',r:'240',fill:'none',stroke:'rgba(0,128,128,0.3)',strokeWidth:'2'}),
+                                React.createElement('circle', {cx:'250',cy:'250',r:'82',fill:'#1a3d5f',stroke:'rgba(0,128,128,0.6)',strokeWidth:'3'}),
+                                React.createElement('text', {x:'250',y:'240',textAnchor:'middle',fontSize:'13',fill:'#F4D03F',fontWeight:'bold',fontFamily:'Cinzel,serif'},'Circle of'),
+                                React.createElement('text', {x:'250',y:'258',textAnchor:'middle',fontSize:'13',fill:'#F4D03F',fontWeight:'bold',fontFamily:'Cinzel,serif'},'Fifths'),
+                                noteOrder.map((note,index) => {
                                     const angle=(index*30-90)*(Math.PI/180);
-                                    const x=250+100*Math.cos(angle),y=250+100*Math.sin(angle);
+                                    const x=250+100*Math.cos(angle), y=250+100*Math.sin(angle);
                                     const ks=['♮','1♯','2♯','3♯','4♯','5♯','6♭','5♭','4♭','3♭','2♭','1♭'];
-                                    return React.createElement('text',{key:'ks-'+note,x,y:y+4,textAnchor:'middle',fontSize:'10',fontWeight:'bold',fill:'rgba(0,80,80,0.8)'},ks[index]);
+                                    return React.createElement('text', {key:'ks-'+note,x,y:y+4,textAnchor:'middle',fontSize:'10',fontWeight:'bold',fill:'rgba(0,80,80,0.8)'}, ks[index]);
                                 }),
                                 renderCircle()
                             )
                         )
                     ),
 
-                    /* ── RIGHT: Controls ── */
-                    React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:'1.5rem'}},
-
-                        /* Major panel */
-                        React.createElement('div',{style:card('rgba(0,128,128,0.5)','rgba(0,128,128,0.12)','rgba(0,128,128,0.03)')},
-                            React.createElement('h3',{style:{fontFamily:"'Cinzel',serif",color:'#F4D03F',fontSize:'1rem',marginBottom:'1rem',textAlign:'center',letterSpacing:'1px'}},'⬤ OUTER — MAJOR'),
-                            React.createElement('label',{htmlFor:'outerSelect',style:{display:'block',color:'rgba(232,232,232,0.65)',fontSize:'0.8rem',marginBottom:'6px',fontWeight:'600'}},'Starting Note'),
-                            React.createElement('select',{
-                                id:'outerSelect',value:startNoteOuter,
+                    React.createElement('div', {style:{display:'flex', flexDirection:'column', gap:'1.5rem'}},
+                        React.createElement('div', {style:card('rgba(0,128,128,0.5)','rgba(0,128,128,0.12)','rgba(0,128,128,0.03)')},
+                            React.createElement('h3', {style:{fontFamily:"'Cinzel',serif",color:'#F4D03F',fontSize:'1rem',marginBottom:'1rem',textAlign:'center',letterSpacing:'1px'}}, '⬤ OUTER — MAJOR'),
+                            React.createElement('label', {htmlFor:'outerSelect',style:{display:'block',color:'rgba(232,232,232,0.65)',fontSize:'0.8rem',marginBottom:'6px',fontWeight:'600'}}, 'Starting Note'),
+                            React.createElement('select', {
+                                id:'outerSelect', value:startNoteOuter,
                                 onChange:(e)=>setStartNoteOuter(e.target.value),
                                 style:{width:'100%',padding:'10px',fontSize:'16px',borderRadius:'8px',border:'2px solid rgba(0,128,128,0.5)',background:'#0f1e1e',color:'#F4D03F',fontFamily:"'Montserrat',sans-serif",fontWeight:'600',marginBottom:'12px',cursor:'pointer'}
-                            },noteOrder.map(n=>React.createElement('option',{key:n,value:n},n))),
-                            React.createElement('button',{onClick:()=>playSequence(buildSeq(outerBase,startNoteOuter),false,true),disabled:isPlayingOuter||isPlayingInner,style:btn('linear-gradient(135deg,#008080,#006666)')},'🎵 Play Arpeggio'),
-                            React.createElement('button',{onClick:()=>playSequence(buildSeq(outerBase,startNoteOuter),false,false),disabled:isPlayingOuter||isPlayingInner,style:btn('linear-gradient(135deg,#8B6BA3,#6a5080)','0')},'🎹 Play Chords')
+                            }, noteOrder.map(n=>React.createElement('option',{key:n,value:n},n))),
+                            React.createElement('button', {onClick:()=>playSequence(buildSeq(outerBase,startNoteOuter),false,true),  disabled:isPlayingOuter||isPlayingInner, style:btn('linear-gradient(135deg,#008080,#006666)')},  '🎵 Play Arpeggio'),
+                            React.createElement('button', {onClick:()=>playSequence(buildSeq(outerBase,startNoteOuter),false,false), disabled:isPlayingOuter||isPlayingInner, style:btn('linear-gradient(135deg,#8B6BA3,#6a5080)','0')}, '🎹 Play Chords')
                         ),
 
-                        /* Minor panel */
-                        React.createElement('div',{style:card('rgba(139,107,163,0.5)','rgba(139,107,163,0.12)','rgba(139,107,163,0.03)')},
-                            React.createElement('h3',{style:{fontFamily:"'Cinzel',serif",color:'#8B6BA3',fontSize:'1rem',marginBottom:'1rem',textAlign:'center',letterSpacing:'1px'}},'◉ INNER — MINOR'),
-                            React.createElement('label',{htmlFor:'innerSelect',style:{display:'block',color:'rgba(232,232,232,0.65)',fontSize:'0.8rem',marginBottom:'6px',fontWeight:'600'}},'Starting Note'),
-                            React.createElement('select',{
-                                id:'innerSelect',value:startNoteInner,
+                        React.createElement('div', {style:card('rgba(139,107,163,0.5)','rgba(139,107,163,0.12)','rgba(139,107,163,0.03)')},
+                            React.createElement('h3', {style:{fontFamily:"'Cinzel',serif",color:'#8B6BA3',fontSize:'1rem',marginBottom:'1rem',textAlign:'center',letterSpacing:'1px'}}, '◉ INNER — MINOR'),
+                            React.createElement('label', {htmlFor:'innerSelect',style:{display:'block',color:'rgba(232,232,232,0.65)',fontSize:'0.8rem',marginBottom:'6px',fontWeight:'600'}}, 'Starting Note'),
+                            React.createElement('select', {
+                                id:'innerSelect', value:startNoteInner,
                                 onChange:(e)=>setStartNoteInner(e.target.value),
                                 style:{width:'100%',padding:'10px',fontSize:'16px',borderRadius:'8px',border:'2px solid rgba(139,107,163,0.5)',background:'#150f1e',color:'#8B6BA3',fontFamily:"'Montserrat',sans-serif",fontWeight:'600',marginBottom:'12px',cursor:'pointer'}
-                            },noteOrder.map(n=>React.createElement('option',{key:n,value:n},n))),
-                            React.createElement('button',{onClick:()=>playSequence(buildSeq(innerBase,startNoteInner),true,true),disabled:isPlayingOuter||isPlayingInner,style:btn('linear-gradient(135deg,#8B6BA3,#6a5080)')},'🎵 Play Arpeggio'),
-                            React.createElement('button',{onClick:()=>playSequence(buildSeq(innerBase,startNoteInner),true,false),disabled:isPlayingOuter||isPlayingInner,style:btn('linear-gradient(135deg,#CF7A5A,#a05840)','0')},'🎹 Play Chords')
+                            }, noteOrder.map(n=>React.createElement('option',{key:n,value:n},n))),
+                            React.createElement('button', {onClick:()=>playSequence(buildSeq(innerBase,startNoteInner),true,true),  disabled:isPlayingOuter||isPlayingInner, style:btn('linear-gradient(135deg,#8B6BA3,#6a5080)')},  '🎵 Play Arpeggio'),
+                            React.createElement('button', {onClick:()=>playSequence(buildSeq(innerBase,startNoteInner),true,false), disabled:isPlayingOuter||isPlayingInner, style:btn('linear-gradient(135deg,#CF7A5A,#a05840)','0')}, '🎹 Play Chords')
                         ),
 
-                        /* How-to panel */
-                        React.createElement('div',{style:{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(0,128,128,0.2)',borderRadius:'12px',padding:'1.25rem',color:'rgba(232,232,232,0.65)',fontSize:'0.83rem',lineHeight:'1.75'}},
-                            React.createElement('p',{style:{fontWeight:'700',color:'#F4D03F',marginBottom:'8px',fontFamily:"'Cinzel',serif",fontSize:'0.9rem'}},'🎓 HOW TO USE'),
-                            React.createElement('p',{style:{marginBottom:'5px'}},'Click any note on the wheel to hear its chord instantly.'),
-                            React.createElement('p',{style:{marginBottom:'5px'}},'Outer ring → Major chords'),
-                            React.createElement('p',{style:{marginBottom:'5px'}},'Inner ring → Minor chords'),
-                            React.createElement('p',null,'Select a starting note then play the full sequence around the circle.')
+                        React.createElement('div', {style:{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(0,128,128,0.2)',borderRadius:'12px',padding:'1.25rem',color:'rgba(232,232,232,0.65)',fontSize:'0.83rem',lineHeight:'1.75'}},
+                            React.createElement('p', {style:{fontWeight:'700',color:'#F4D03F',marginBottom:'8px',fontFamily:"'Cinzel',serif",fontSize:'0.9rem'}}, '🎓 HOW TO USE'),
+                            React.createElement('p', {style:{marginBottom:'5px'}}, 'Click any note on the wheel to hear its chord instantly.'),
+                            React.createElement('p', {style:{marginBottom:'5px'}}, 'Outer ring → Major chords'),
+                            React.createElement('p', {style:{marginBottom:'5px'}}, 'Inner ring → Minor chords'),
+                            React.createElement('p', null, 'Select a starting note then play the full sequence around the circle.')
                         )
                     )
                 )
@@ -449,8 +503,116 @@
         };
 
         ReactDOM.render(React.createElement(MusicCircle), document.getElementById('root'));
-    </script>
 
+        // ── KCM Console bridge listener ───────────────────────────────────────
+        // Receives KCM_STATE from Console host (bridge.js).
+        // Maps bus root (sharp notation) → CoF note (flat notation where needed).
+        // Sets startNoteOuter to the root's major key.
+        // Sets startNoteInner to the relative minor (root - 3 semitones in CoF order).
+        // Added: Session 5 — 2026-04-25
+        (function mountKCMListener() {
+            // KCM bus uses sharps; CoF uses flats for black keys
+            var SHARP_TO_FLAT = {
+                'C#':'Db','D#':'Eb','F#':'Gb','G#':'Ab','A#':'Bb'
+            };
+            // Circle of Fifths order — used to find relative minor
+            var COF_ORDER = ['C','G','D','A','E','B','Gb','Db','Ab','Eb','Bb','F'];
+            // Relative minor for each major (3 semitones down = 5 positions back in CoF)
+            var RELATIVE_MINOR = {
+                'C':'A','G':'E','D':'B','A':'Gb','E':'Db','B':'Ab',
+                'Gb':'Eb','Db':'Bb','Ab':'F','Eb':'C','Bb':'G','F':'D'
+            };
+
+            window.addEventListener('message', function(ev) {
+                try {
+                    if (!ev.data) return;
+
+                    // ── TICK (master clock beat) ──────────────────────
+                    // Fired by bridge.js on every beat — highlight the
+                    // wedge/note on the CoF wheel that matches the tick.
+                    if (ev.data.type === 'KCM_TICK') {
+                        var tk = ev.data.payload;
+                        if (!window._kcmCoF) return;
+
+                        // Map MIDI notePC (0-11 chromatic) → CoF flat notation
+                        var PC_TO_COF = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+                        var cofNote = PC_TO_COF[tk.notePC];
+                        if (!cofNote) return;
+
+                        // Flash the note on the wheel
+                        window._kcmCoF.setActiveNote(cofNote);
+                        window._kcmCoF.setActiveType('tick');
+
+                        // Clear after 75% of the beat duration so it pulses cleanly
+                        var clearAfter = Math.max(tk.beatMs * 0.7, 120);
+                        setTimeout(function() {
+                            if (window._kcmCoF) {
+                                window._kcmCoF.setActiveNote(null);
+                                window._kcmCoF.setActiveType(null);
+                            }
+                        }, clearAfter);
+                        return;
+                    }
+
+                    // ── TICK STOP ─────────────────────────────────────
+                    if (ev.data.type === 'KCM_TICK_STOP') {
+                        if (window._kcmCoF) {
+                            window._kcmCoF.setActiveNote(null);
+                            window._kcmCoF.setActiveType(null);
+                        }
+                        return;
+                    }
+
+                    // ── STOP ALL ─────────────────────────────────────
+                    if (ev.data.type === 'KCM_STOP') {
+                        if (audioCtxRef && audioCtxRef.current) {
+                            audioCtxRef.current.suspend();
+                        }
+                        if (window._kcmCoF) {
+                            window._kcmCoF.setActiveNote(null);
+                            window._kcmCoF.setActiveType(null);
+                        }
+                        console.log('[KCM→CoF] stop received.');
+                        return;
+                    }
+
+                    if (ev.data.type !== 'KCM_STATE') return;
+                    var payload = ev.data.payload;
+                    if (!payload || !payload.root) return;
+
+                    // Normalise root to CoF notation (sharps → flats)
+                    var root = SHARP_TO_FLAT[payload.root] || payload.root;
+
+                    // Verify root exists in CoF wheel
+                    if (COF_ORDER.indexOf(root) === -1) return;
+
+                    // Drive React state via the exposed _kcmCoF handle
+                    if (window._kcmCoF) {
+                        window._kcmCoF.setStartNoteOuter(root);
+                        var relMinor = RELATIVE_MINOR[root];
+                        if (relMinor) window._kcmCoF.setStartNoteInner(relMinor);
+                        // Flash active note briefly so user sees the update
+                        window._kcmCoF.setActiveNote(root);
+                        window._kcmCoF.setActiveType('outer');
+                        setTimeout(function() {
+                            if (window._kcmCoF) {
+                                window._kcmCoF.setActiveNote(null);
+                                window._kcmCoF.setActiveType(null);
+                            }
+                        }, 800);
+                    }
+
+                    console.log('[KCM→CoF] root=' + payload.root + '→' + root +
+                                ' relMinor=' + RELATIVE_MINOR[root]);
+                } catch(e) {
+                    console.error('[KCM→CoF] listener error:', e);
+                }
+            });
+
+            console.log('[KCM→CoF] bridge listener ready (circle-of-fifths).');
+        })();
+        // ── end KCM Console bridge listener ──────────────────────────────────
+    </script>
     <!-- KCM STANDARD FOOTER -->
     <footer class="app-footer" role="contentinfo">
         <div class="app-footer-content">
