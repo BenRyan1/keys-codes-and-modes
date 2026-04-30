@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -478,38 +479,65 @@
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            cursor: move;
-            transition: transform 0.3s, opacity 0.3s;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             user-select: none;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            padding: 6px 4px;
+            min-width: 0;
+            overflow: hidden;
         }
         
-        .mode-column.dragging {
-            opacity: 0.4;
-            transform: scale(0.9);
+        .mode-column:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 128, 128, 0.3);
+            border-color: rgba(0, 128, 128, 0.4);
+        }
+
+        .mode-column.active-mode {
+            border-color: #F4D03F;
+            box-shadow: 0 0 24px rgba(244, 208, 63, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .mode-column.active-mode .mode-label {
+            border-color: var(--primary-gold);
+            background: rgba(244, 208, 63, 0.15);
+            color: var(--primary-gold);
         }
         
         .mode-column.in-play-zone {
-            cursor: grab;
+            cursor: pointer;
         }
         
-        .mode-column.in-play-zone:active {
-            cursor: grabbing;
+        .mode-column.in-play-zone:hover {
+            border-color: rgba(207, 122, 90, 0.5);
+            box-shadow: 0 0 16px rgba(207, 122, 90, 0.3);
         }
         
         .mode-label {
             font-family: var(--font-display);
-            font-size: 0.8rem;
+            font-size: 0.68rem;
             font-weight: 700;
             color: var(--light-text);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            padding: 10px 16px;
+            letter-spacing: 0.08em;
+            padding: 8px 6px;
             background: rgba(74, 123, 167, 0.3);
             border-radius: 8px;
             border: 2px solid rgba(74, 123, 167, 0.5);
             transition: all 0.3s;
             width: 100%;
             text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
         }
         
         .mode-column:hover .mode-label {
@@ -909,8 +937,8 @@
                     </div>
                     <div class="play-zone-content">
                         <div class="play-zone-hint">
-                            Drag any mode from the right →<br>
-                            to hear it play automatically
+                            Click any mode →<br>
+                            to activate it here
                         </div>
                     </div>
                     <div class="play-zone-footer">
@@ -922,7 +950,7 @@
                 <div class="modes-column">
                     <div class="modes-header">
                         <div class="modes-title">Seven Modal Stencils</div>
-                        <div class="modes-subtitle">Drag any mode to Play Zone • Click notes to play</div>
+                        <div class="modes-subtitle">Click any mode to activate • Click notes to play</div>
                     </div>
                     <div class="modes-grid" id="modes-bank"></div>
                 </div>
@@ -939,7 +967,7 @@
                 <div class="info-content">
                     <ul>
                         <li><strong>Click any note</strong> to hear its MIDI sound (C4-C5 range)</li>
-                        <li><strong>Drag a mode</strong> from the right column into the Play Zone on the left</li>
+                        <li><strong>Click any mode</strong> in the right column to activate it in the Play Zone — click again to deactivate</li>
                         <li><strong>Auto-play</strong> begins immediately, ascending and descending through all 8 degrees</li>
                         <li><strong>Change tonic</strong> to transpose all modes to a different key</li>
                         <li><strong>Record</strong> captures both auto-play and manual note clicks with precise timing</li>
@@ -1065,6 +1093,8 @@
         let isRecording = false;
         let recordedNotes = [];
         let recordingStartTime = 0;
+        // Guard: audio ONLY starts after an explicit user click — never on bus sync
+        let userHasStartedAudio = false;
         
         /* ==================== AUDIO / MIDI ==================== */
         
@@ -1195,10 +1225,29 @@
             modesBank.innerHTML = "";
             
             for (const [modeKey, modeData] of Object.entries(MODES)) {
-                if (playingMode === modeKey) continue;
-                
                 const column = createModeColumn(modeKey, modeData);
-                setupDragAndDrop(column);
+                column.draggable = false; // disable drag — use click instead
+                
+                // Highlight active mode
+                if (playingMode === modeKey) {
+                    column.classList.add("active-mode");
+                }
+
+                // Click to select/deselect mode
+                column.addEventListener("click", (e) => {
+                    if (e.target.closest(".degree-cell")) return; // let cell clicks through
+                    userHasStartedAudio = true; // user explicitly chose to play
+                    if (playingMode === modeKey) {
+                        playingMode = null;
+                    } else {
+                        playingMode = modeKey;
+                    }
+                    renderModes();
+                    renderPlayZone();
+                    // Publish to Console bus
+                    postToConsole({ mode: modeKey });
+                });
+
                 modesBank.appendChild(column);
             }
         }
@@ -1220,121 +1269,54 @@
                 const modeData = MODES[playingMode];
                 const column = createModeColumn(playingMode, modeData);
                 column.classList.add("in-play-zone");
-                setupDragFromPlayZone(column);
+                // Click play zone column to deselect
+                column.addEventListener("click", (e) => {
+                    if (e.target.closest(".degree-cell")) return;
+                    playingMode = null;
+                    renderModes();
+                    renderPlayZone();
+                });
                 playZoneContent.appendChild(column);
-                
-                startPlaying();
+                // Only auto-play if the user has explicitly clicked a mode themselves
+                if (userHasStartedAudio) startPlaying();
             } else {
                 playZone.classList.remove("active");
                 hint.style.display = "block";
                 stopButton.disabled = true;
                 stopPlaying();
-                
                 const existingColumn = playZoneContent.querySelector(".mode-column");
                 if (existingColumn) existingColumn.remove();
             }
         }
         
-        /* ==================== DRAG AND DROP ==================== */
-        
-        function setupDragAndDrop(column) {
-            column.addEventListener("dragstart", (e) => {
-                e.dataTransfer.effectAllowed = "move";
-                e.dataTransfer.setData("text/plain", column.dataset.mode);
-                column.classList.add("dragging");
-            });
-            
-            column.addEventListener("dragend", (e) => {
-                column.classList.remove("dragging");
-            });
+        /* ==================== BUS PUBLISH ==================== */
+        function postToConsole(patch) {
+            try { window.parent.postMessage({ type: 'KCM_STATE_PATCH', payload: patch }, '*'); }
+            catch(e) { /* silent if no parent */ }
         }
-        
-        function setupDragFromPlayZone(column) {
-            column.addEventListener("dragstart", (e) => {
-                e.dataTransfer.effectAllowed = "move";
-                e.dataTransfer.setData("text/plain", "from-play-zone");
-                column.classList.add("dragging");
-            });
-            
-            column.addEventListener("dragend", (e) => {
-                column.classList.remove("dragging");
-            });
-        }
-        
-        const playZone = document.querySelector(".play-zone");
-        
-        playZone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-        });
-        
-        playZone.addEventListener("drop", (e) => {
-            e.preventDefault();
-            const data = e.dataTransfer.getData("text/plain");
-            
-            if (data === "from-play-zone") {
-                playingMode = null;
-                renderPlayZone();
-                renderModes();
-            } else if (data) {
-                playingMode = data;
-                renderPlayZone();
-                renderModes();
-            }
-        });
-        
-        /* ==================== AUTO-PLAY ==================== */
-        
-        function startPlaying() {
-            if (playInterval) clearInterval(playInterval);
-            
-            const modeData = MODES[playingMode];
-            let currentStep = 0;
-            let direction = 1;
-            
-            const column = document.querySelector(".play-zone .mode-column");
-            if (!column) return;
-            
-            playInterval = setInterval(() => {
-                const cells = column.querySelectorAll(".degree-cell");
-                cells.forEach(cell => cell.classList.remove("active"));
-                
-                const currentCell = cells[currentStep];
-                if (currentCell) {
-                    currentCell.classList.add("active");
-                    const midiNote = parseInt(currentCell.dataset.midi);
-                    playNoteByMidi(midiNote, playSpeed / 1000);
 
-                    // ✅ FIX: Record auto-play notes when recording is active
-                    if (isRecording) {
-                        const timestamp = Date.now() - recordingStartTime;
-                        recordedNotes.push({
-                            midi: midiNote,
-                            time: timestamp,
-                            note: currentCell.dataset.note,
-                            degree: parseInt(currentCell.dataset.degree)
-                        });
-                        updateRecCounter();
-                    }
-                }
-                
-                currentStep += direction;
-                
-                if (currentStep >= 8) {
-                    direction = -1;
-                    currentStep = 7;
-                } else if (currentStep < 0) {
-                    direction = 1;
-                    currentStep = 0;
-                }
-            }, playSpeed);
+        /* ==================== CLOCK CONTROL (bridge delegates) ==================== */
+        // MSP no longer runs its own setInterval.
+        // It sends KCM_CLOCK_START to bridge.js, which broadcasts KCM_TICK to ALL panels.
+        // MSP listens for KCM_TICK to advance step, play audio, and highlight cells.
+
+        function startPlaying() {
+            stopPlaying(); // clear any stale state
+            if (!playingMode) return;
+            initAudio();
+            // Tell the bridge to start the master clock
+            window.parent.postMessage({
+                type: 'KCM_CLOCK_START',
+                payload: { modeKey: playingMode, root: currentTonic, beatMs: playSpeed }
+            }, '*');
         }
-        
+
         function stopPlaying() {
-            if (playInterval) {
-                clearInterval(playInterval);
-                playInterval = null;
-            }
+            // Clear any local step highlight
+            const cells = document.querySelectorAll('.degree-cell');
+            cells.forEach(c => c.classList.remove('active'));
+            // Tell bridge to stop the master clock
+            window.parent.postMessage({ type: 'KCM_CLOCK_STOP' }, '*');
         }
         
         /* ==================== RECORDING ==================== */
@@ -1410,32 +1392,139 @@
         });
         
         /* ==================== EVENT LISTENERS ==================== */
+
+        // Helper: post a KCM_STATE_PATCH to the Console host when user
+        // changes root or mode directly inside this panel.
+        function postToConsole(patch) {
+            try {
+                window.parent.postMessage({ type: 'KCM_STATE_PATCH', payload: patch }, '*');
+            } catch(e) { /* silent if no parent */ }
+        }
         
         document.getElementById("tonicSelect").addEventListener("change", (e) => {
             currentTonic = e.target.value;
             renderModes();
             renderPlayZone();
+            // Publish new root to the Console bus → all panels follow
+            postToConsole({ root: currentTonic });
         });
         
         document.getElementById("speedSelect").addEventListener("change", (e) => {
             playSpeed = parseInt(e.target.value);
-            if (playingMode) {
-                startPlaying();
+            if (playingMode && userHasStartedAudio) {
+                startPlaying(); // restarts master clock at new speed
             }
         });
         
         document.getElementById("stop-button").addEventListener("click", () => {
-            if (playingMode) {
-                playingMode = null;
-                renderPlayZone();
-                renderModes();
-            }
+            stopPlaying();
+            userHasStartedAudio = false;
+            document.querySelectorAll(".degree-cell").forEach(c => c.classList.remove("active"));
         });
         
         /* ==================== INITIALIZE ==================== */
         
         renderModes();
         renderPlayZone();
+
+        /* ==================== KCM CONSOLE BRIDGE LISTENER ==================== */
+        // Receives KCM_STATE messages from the Console host (bridge.js).
+        // Maps bus root string → currentTonic, then re-renders all 7 mode columns.
+        // Maps bus mode string → sets playingMode so the active mode updates too.
+        // Does NOT modify any other Modal Stencil behaviour.
+        // Added: Session 7 — 2026-04-25
+        (function mountKCMListener() {
+            // KCM bus mode names match MODES object keys exactly — no mapping needed
+            var VALID_MODES = ['ionian','dorian','phrygian','lydian','mixolydian','aeolian','locrian'];
+
+            window.addEventListener('message', function(ev) {
+                try {
+                    if (!ev.data) return;
+
+                    // ── TICK (master clock beat) ──────────────────────
+                    if (ev.data.type === 'KCM_TICK') {
+                        var tk = ev.data.payload;
+                        if (!playingMode || !userHasStartedAudio) return;
+                        // Advance step highlight in play zone
+                        const column = document.querySelector('.play-zone .mode-column');
+                        if (!column) return;
+                        const cells = column.querySelectorAll('.degree-cell');
+                        cells.forEach(c => c.classList.remove('active'));
+                        const cell = cells[tk.step];
+                        if (cell) {
+                            cell.classList.add('active');
+                            const midiNote = parseInt(cell.dataset.midi);
+                            playNoteByMidi(midiNote, tk.beatMs / 1000 * 0.8);
+                            if (isRecording) {
+                                const timestamp = Date.now() - recordingStartTime;
+                                recordedNotes.push({ midi: midiNote, time: timestamp, note: cell.dataset.note, degree: parseInt(cell.dataset.degree) });
+                                updateRecCounter();
+                            }
+                        }
+                        return;
+                    }
+
+                    // ── TICK_STOP ─────────────────────────────────────
+                    if (ev.data.type === 'KCM_TICK_STOP') {
+                        document.querySelectorAll('.degree-cell').forEach(c => c.classList.remove('active'));
+                        return;
+                    }
+
+                    // ── STOP ALL ─────────────────────────────────────
+                    if (ev.data.type === 'KCM_STOP') {
+                        playingMode = null;
+                        stopPlaying();
+                        renderPlayZone();
+                        renderModes();
+                        if (audioContext) audioContext.suspend();
+                        console.log('[KCM→MSP] stop received.');
+                        return;
+                    }
+
+                    if (ev.data.type !== 'KCM_STATE') return;
+                    var payload = ev.data.payload;
+                    if (!payload) return;
+
+                    var changed = false;
+
+                    // Update tonic if different — VISUAL ONLY, never starts audio
+                    if (payload.root && payload.root !== currentTonic) {
+                        currentTonic = payload.root;
+                        var sel = document.getElementById('tonicSelect');
+                        if (sel) sel.value = currentTonic;
+                        changed = true;
+                    }
+
+                    // ✅ Only update playingMode from bus if user has ALREADY
+                    // started audio in this session — never auto-select a mode on arrival
+                    if (payload.mode && VALID_MODES.indexOf(payload.mode) !== -1) {
+                        if (userHasStartedAudio && payload.mode !== playingMode) {
+                            playingMode = payload.mode;
+                            changed = true;
+                        }
+                    }
+
+                    if (changed) {
+                        // Visual refresh only — startPlaying() is guarded by userHasStartedAudio
+                        var wasPlaying = userHasStartedAudio;
+                        userHasStartedAudio = false;  // block any accidental startPlaying in renderPlayZone
+                        renderModes();
+                        renderPlayZone();
+                        if (wasPlaying) {
+                            userHasStartedAudio = true;
+                            startPlaying(); // resume at new root/mode if already playing
+                        }
+                    }
+
+                    console.log('[KCM→MSP] root=' + currentTonic + ' mode=' + (playingMode || 'none'));
+                } catch(e) {
+                    console.error('[KCM→MSP] listener error:', e);
+                }
+            });
+
+            console.log('[KCM→MSP] bridge listener ready (modal-stencil-player).');
+        })();
+        /* ==================== END KCM BRIDGE LISTENER ==================== */
     </script>
 </body>
 </html>
