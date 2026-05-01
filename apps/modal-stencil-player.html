@@ -410,32 +410,6 @@
             border-top: 2px solid rgba(74, 123, 167, 0.3);
         }
         
-        #play-button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #008080, #005f5f);
-            color: white;
-            border: 2px solid #00c0c0;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            letter-spacing: 2px;
-            font-family: var(--font-display);
-            margin-bottom: 8px;
-            transition: all 0.2s ease;
-        }
-        #play-button:hover:not(:disabled) {
-            background: linear-gradient(135deg, #00a0a0, #008080);
-            box-shadow: 0 6px 24px rgba(0,192,192,0.5);
-            transform: translateY(-2px);
-        }
-        #play-button:disabled {
-            background: rgba(80,80,80,0.3);
-            border-color: rgba(80,80,80,0.3);
-            color: #555;
-            cursor: not-allowed;
-        }
         #stop-button {
             width: 100%;
             padding: 18px;
@@ -968,7 +942,6 @@
                         </div>
                     </div>
                     <div class="play-zone-footer">
-                        <button id="play-button" disabled>▶ Play Mode</button>
                         <button id="stop-button" disabled>⏹ Stop</button>
                     </div>
                 </div>
@@ -1260,19 +1233,10 @@
                     column.classList.add("active-mode");
                 }
 
-<<<<<<< HEAD
-                // Click to select/deselect mode — VISUAL ONLY
-                // Audio never starts here — only ▶ Play button starts it
-                column.addEventListener("click", (e) => {
-                    if (e.target.closest(".degree-cell")) return;
-                    stopPlaying();
-                    userHasStartedAudio = false; // always reset — click is visual only
-=======
                 // Click to select/deselect mode
                 column.addEventListener("click", (e) => {
                     if (e.target.closest(".degree-cell")) return; // let cell clicks through
                     userHasStartedAudio = true; // user explicitly chose to play
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                     if (playingMode === modeKey) {
                         playingMode = null;
                     } else {
@@ -1280,11 +1244,7 @@
                     }
                     renderModes();
                     renderPlayZone();
-<<<<<<< HEAD
-                    // Tell all panels which mode is selected (visual state only)
-=======
                     // Publish to Console bus
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                     postToConsole({ mode: modeKey });
                 });
 
@@ -1297,52 +1257,33 @@
             const playZoneContent = document.querySelector(".play-zone-content");
             const hint = document.querySelector(".play-zone-hint");
             const stopButton = document.getElementById("stop-button");
-            const playButton = document.getElementById("play-button");
-
+            
             if (playingMode) {
                 playZone.classList.add("active");
                 hint.style.display = "none";
                 stopButton.disabled = false;
-                if (playButton) playButton.disabled = false;
-
+                
                 const existingColumn = playZoneContent.querySelector(".mode-column");
                 if (existingColumn) existingColumn.remove();
-
+                
                 const modeData = MODES[playingMode];
                 const column = createModeColumn(playingMode, modeData);
                 column.classList.add("in-play-zone");
-<<<<<<< HEAD
-                column.addEventListener("click", (e) => {
-                    if (e.target.closest(".degree-cell")) return;
-                    playingMode = null;
-                    stopPlaying();
-                    userHasStartedAudio = false;
-=======
                 // Click play zone column to deselect
                 column.addEventListener("click", (e) => {
                     if (e.target.closest(".degree-cell")) return;
                     playingMode = null;
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                     renderModes();
                     renderPlayZone();
                 });
                 playZoneContent.appendChild(column);
-<<<<<<< HEAD
-                // ✅ NEVER auto-start — only ▶ Play button starts audio + animation
-=======
                 // Only auto-play if the user has explicitly clicked a mode themselves
                 if (userHasStartedAudio) startPlaying();
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
             } else {
                 playZone.classList.remove("active");
                 hint.style.display = "block";
                 stopButton.disabled = true;
-                if (playButton) { playButton.disabled = true; }
                 stopPlaying();
-<<<<<<< HEAD
-                userHasStartedAudio = false;
-=======
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                 const existingColumn = playZoneContent.querySelector(".mode-column");
                 if (existingColumn) existingColumn.remove();
             }
@@ -1475,30 +1416,10 @@
             }
         });
         
-        // ▶ Play button — only entry point that starts audio + animation
-        const playBtn = document.getElementById("play-button");
-        if (playBtn) {
-            playBtn.addEventListener("click", () => {
-                if (!playingMode) return;
-                userHasStartedAudio = true;
-                initAudio();
-                startPlaying();
-                playBtn.textContent = "▶ Playing...";
-                playBtn.style.background = "linear-gradient(135deg,#005f5f,#003f3f)";
-            });
-        }
-
         document.getElementById("stop-button").addEventListener("click", () => {
             stopPlaying();
             userHasStartedAudio = false;
             document.querySelectorAll(".degree-cell").forEach(c => c.classList.remove("active"));
-<<<<<<< HEAD
-            if (playBtn) {
-                playBtn.textContent = "▶ Play Mode";
-                playBtn.style.background = "";
-            }
-=======
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
         });
         
         /* ==================== INITIALIZE ==================== */
@@ -1524,26 +1445,6 @@
                     if (ev.data.type === 'KCM_TICK') {
                         var tk = ev.data.payload;
                         if (!playingMode || !userHasStartedAudio) return;
-<<<<<<< HEAD
-
-                        // Advance step highlight in play zone
-                        var column = document.querySelector('.play-zone .mode-column');
-                        if (!column) return;
-                        var cells = column.querySelectorAll('.degree-cell');
-                        cells.forEach(function(c) { c.classList.remove('active'); });
-                        var cell = cells[tk.step];
-                        if (cell) {
-                            cell.classList.add('active');
-                            var midiNote = parseInt(cell.dataset.midi);
-                            playNoteByMidi(midiNote, tk.beatMs / 1000 * 0.8);
-
-                            // ✅ Broadcast active note to ALL panels via bus
-                            // This makes MTP sphere, piano, fretboard, staff ALL light up
-                            postToConsole({ activeNotes: [midiNote] });
-
-                            if (isRecording) {
-                                var timestamp = Date.now() - recordingStartTime;
-=======
                         // Advance step highlight in play zone
                         const column = document.querySelector('.play-zone .mode-column');
                         if (!column) return;
@@ -1556,7 +1457,6 @@
                             playNoteByMidi(midiNote, tk.beatMs / 1000 * 0.8);
                             if (isRecording) {
                                 const timestamp = Date.now() - recordingStartTime;
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                                 recordedNotes.push({ midi: midiNote, time: timestamp, note: cell.dataset.note, degree: parseInt(cell.dataset.degree) });
                                 updateRecCounter();
                             }
@@ -1566,12 +1466,7 @@
 
                     // ── TICK_STOP ─────────────────────────────────────
                     if (ev.data.type === 'KCM_TICK_STOP') {
-<<<<<<< HEAD
-                        document.querySelectorAll('.degree-cell').forEach(function(c) { c.classList.remove('active'); });
-                        postToConsole({ activeNotes: [] }); // clear all panels
-=======
                         document.querySelectorAll('.degree-cell').forEach(c => c.classList.remove('active'));
->>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                         return;
                     }
 
