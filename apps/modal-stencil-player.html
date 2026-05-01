@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1259,12 +1260,19 @@
                     column.classList.add("active-mode");
                 }
 
+<<<<<<< HEAD
                 // Click to select/deselect mode — VISUAL ONLY
                 // Audio never starts here — only ▶ Play button starts it
                 column.addEventListener("click", (e) => {
                     if (e.target.closest(".degree-cell")) return;
                     stopPlaying();
                     userHasStartedAudio = false; // always reset — click is visual only
+=======
+                // Click to select/deselect mode
+                column.addEventListener("click", (e) => {
+                    if (e.target.closest(".degree-cell")) return; // let cell clicks through
+                    userHasStartedAudio = true; // user explicitly chose to play
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                     if (playingMode === modeKey) {
                         playingMode = null;
                     } else {
@@ -1272,7 +1280,11 @@
                     }
                     renderModes();
                     renderPlayZone();
+<<<<<<< HEAD
                     // Tell all panels which mode is selected (visual state only)
+=======
+                    // Publish to Console bus
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                     postToConsole({ mode: modeKey });
                 });
 
@@ -1299,23 +1311,38 @@
                 const modeData = MODES[playingMode];
                 const column = createModeColumn(playingMode, modeData);
                 column.classList.add("in-play-zone");
+<<<<<<< HEAD
                 column.addEventListener("click", (e) => {
                     if (e.target.closest(".degree-cell")) return;
                     playingMode = null;
                     stopPlaying();
                     userHasStartedAudio = false;
+=======
+                // Click play zone column to deselect
+                column.addEventListener("click", (e) => {
+                    if (e.target.closest(".degree-cell")) return;
+                    playingMode = null;
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                     renderModes();
                     renderPlayZone();
                 });
                 playZoneContent.appendChild(column);
+<<<<<<< HEAD
                 // ✅ NEVER auto-start — only ▶ Play button starts audio + animation
+=======
+                // Only auto-play if the user has explicitly clicked a mode themselves
+                if (userHasStartedAudio) startPlaying();
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
             } else {
                 playZone.classList.remove("active");
                 hint.style.display = "block";
                 stopButton.disabled = true;
                 if (playButton) { playButton.disabled = true; }
                 stopPlaying();
+<<<<<<< HEAD
                 userHasStartedAudio = false;
+=======
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                 const existingColumn = playZoneContent.querySelector(".mode-column");
                 if (existingColumn) existingColumn.remove();
             }
@@ -1465,10 +1492,13 @@
             stopPlaying();
             userHasStartedAudio = false;
             document.querySelectorAll(".degree-cell").forEach(c => c.classList.remove("active"));
+<<<<<<< HEAD
             if (playBtn) {
                 playBtn.textContent = "▶ Play Mode";
                 playBtn.style.background = "";
             }
+=======
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
         });
         
         /* ==================== INITIALIZE ==================== */
@@ -1494,6 +1524,7 @@
                     if (ev.data.type === 'KCM_TICK') {
                         var tk = ev.data.payload;
                         if (!playingMode || !userHasStartedAudio) return;
+<<<<<<< HEAD
 
                         // Advance step highlight in play zone
                         var column = document.querySelector('.play-zone .mode-column');
@@ -1512,6 +1543,20 @@
 
                             if (isRecording) {
                                 var timestamp = Date.now() - recordingStartTime;
+=======
+                        // Advance step highlight in play zone
+                        const column = document.querySelector('.play-zone .mode-column');
+                        if (!column) return;
+                        const cells = column.querySelectorAll('.degree-cell');
+                        cells.forEach(c => c.classList.remove('active'));
+                        const cell = cells[tk.step];
+                        if (cell) {
+                            cell.classList.add('active');
+                            const midiNote = parseInt(cell.dataset.midi);
+                            playNoteByMidi(midiNote, tk.beatMs / 1000 * 0.8);
+                            if (isRecording) {
+                                const timestamp = Date.now() - recordingStartTime;
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                                 recordedNotes.push({ midi: midiNote, time: timestamp, note: cell.dataset.note, degree: parseInt(cell.dataset.degree) });
                                 updateRecCounter();
                             }
@@ -1521,8 +1566,12 @@
 
                     // ── TICK_STOP ─────────────────────────────────────
                     if (ev.data.type === 'KCM_TICK_STOP') {
+<<<<<<< HEAD
                         document.querySelectorAll('.degree-cell').forEach(function(c) { c.classList.remove('active'); });
                         postToConsole({ activeNotes: [] }); // clear all panels
+=======
+                        document.querySelectorAll('.degree-cell').forEach(c => c.classList.remove('active'));
+>>>>>>> d67ca94706c58b4bfbc658cc4101a03c31080f83
                         return;
                     }
 
