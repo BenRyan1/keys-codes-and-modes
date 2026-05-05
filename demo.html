@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keys, Codes & Modes™ — Interactive Music Theory</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a15;
+    --teal: #008080;
+    --teal-glow: #00c0c0;
+    --gold: #F4D03F;
+    --purple: #8B6BA3;
+    --coral: #CF7A5A;
+    --text-primary: #e8e8f8;
+    --text-secondary: #b0b0cc;
+    --border: rgba(0,128,128,0.2);
+    --card-bg: rgba(255,255,255,0.03);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 20% 20%, rgba(0,128,128,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 80%, rgba(139,107,163,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 50% 50%, rgba(244,208,63,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Chromatic ring decoration */
+  .chromatic-ring {
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #FFFF00 0deg 30deg,
+      #FFC400 30deg 60deg,
+      #FF8000 60deg 90deg,
+      #FF4000 90deg 120deg,
+      #FF0000 120deg 150deg,
+      #C4007F 150deg 180deg,
+      #8000FF 180deg 210deg,
+      #4000FF 210deg 240deg,
+      #0000FF 240deg 270deg,
+      #007FFF 270deg 300deg,
+      #00FF80 300deg 330deg,
+      #80FF00 330deg 360deg
+    );
+    opacity: 0.06;
+    animation: slowSpin 40s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .chromatic-ring-2 {
+    position: fixed;
+    bottom: -300px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #FFFF00 0deg 30deg,
+      #FFC400 30deg 60deg,
+      #FF8000 60deg 90deg,
+      #FF4000 90deg 120deg,
+      #FF0000 120deg 150deg,
+      #C4007F 150deg 180deg,
+      #8000FF 180deg 210deg,
+      #4000FF 210deg 240deg,
+      #0000FF 240deg 270deg,
+      #007FFF 270deg 300deg,
+      #00FF80 300deg 330deg,
+      #80FF00 330deg 360deg
+    );
+    opacity: 0.04;
+    animation: slowSpin 60s linear infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes slowSpin { to { transform: rotate(360deg); } }
+
+  /* Layout */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .logo-mark {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #FFFF00 0deg 30deg, #FFC400 30deg 60deg, #FF8000 60deg 90deg,
+      #FF4000 90deg 120deg, #FF0000 120deg 150deg, #C4007F 150deg 180deg,
+      #8000FF 180deg 210deg, #4000FF 210deg 240deg, #0000FF 240deg 270deg,
+      #007FFF 270deg 300deg, #00FF80 300deg 330deg, #80FF00 330deg 360deg
+    );
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(0,192,192,0.3);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(0,192,192,0.3); }
+    50% { box-shadow: 0 0 50px rgba(0,192,192,0.5), 0 0 80px rgba(139,107,163,0.2); }
+  }
+
+  .brand {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--teal-glow);
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 30px rgba(0,192,192,0.4);
+    line-height: 1.2;
+  }
+
+  .brand-sub {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* District welcome banner */
+  .district-banner {
+    background: linear-gradient(135deg, rgba(0,128,128,0.12), rgba(139,107,163,0.08));
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal-glow);
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+    text-align: center;
+    animation: fadeUp 0.8s 0.1s ease both;
+    display: none;
+  }
+
+  .district-banner.visible { display: block; }
+
+  .district-banner p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .district-banner strong {
+    color: var(--teal-glow);
+    font-weight: 600;
+  }
+
+  /* Hero section */
+  .hero {
+    text-align: center;
+    margin-bottom: 56px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 28px;
+  }
+
+  .prop28-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(244,208,63,0.1);
+    border: 1px solid rgba(244,208,63,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* App grid */
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal-glow);
+    text-align: center;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+
+  .app-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .app-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .app-card:hover {
+    border-color: rgba(0,192,192,0.4);
+    background: rgba(0,128,128,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,128,128,0.15);
+  }
+
+  .app-card:hover::before { transform: scaleX(1); }
+
+  .app-icon {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .app-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--teal-glow);
+    margin-bottom: 8px;
+  }
+
+  .app-card p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* CTA Button */
+  .cta-section {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--teal), #005f5f);
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 16px 36px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,128,128,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,128,128,0.5);
+    background: linear-gradient(135deg, var(--teal-glow), var(--teal));
+  }
+
+  /* Testimonial */
+  .testimonial {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    position: relative;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+
+  .testimonial::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    color: var(--teal);
+    opacity: 0.3;
+    line-height: 1;
+  }
+
+  .testimonial p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+
+  .testimonial cite {
+    font-size: 0.8rem;
+    color: var(--teal-glow);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Soft capture banner — slides in after 60s */
+  .soft-capture {
+    position: fixed;
+    bottom: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(520px, calc(100vw - 32px));
+    background: linear-gradient(135deg, #0f1525, #0a0f20);
+    border: 1px solid rgba(0,192,192,0.35);
+    border-radius: 14px;
+    padding: 20px 24px;
+    box-shadow: 0 -4px 40px rgba(0,128,128,0.25), 0 20px 60px rgba(0,0,0,0.6);
+    z-index: 1000;
+    transition: bottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .soft-capture.visible { bottom: 20px; }
+
+  .soft-capture-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .soft-capture-text {
+    flex: 1;
+  }
+
+  .soft-capture-text p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .soft-capture-text strong {
+    color: var(--text-primary);
+  }
+
+  .capture-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .capture-form input {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(0,192,192,0.25);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .capture-form input:focus {
+    border-color: rgba(0,192,192,0.6);
+  }
+
+  .capture-form input::placeholder { color: var(--text-secondary); opacity: 0.6; }
+
+  .btn-capture {
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .btn-capture:hover { background: var(--teal-glow); }
+
+  .capture-dismiss {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    line-height: 1;
+  }
+
+  .capture-dismiss:hover { opacity: 1; }
+
+  /* Success state */
+  .capture-success {
+    text-align: center;
+    padding: 8px 0;
+    display: none;
+  }
+
+  .capture-success p {
+    color: var(--teal-glow);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .footer p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    line-height: 1.8;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 500px) {
+    .soft-capture { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .app-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="chromatic-ring"></div>
+<div class="chromatic-ring-2"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-mark"></div>
+    <div class="brand">Keys, Codes & Modes™</div>
+    <div class="brand-sub">A Visual Approach to Music Theory</div>
+  </div>
+
+  <!-- District welcome (shown when ?district= param present) -->
+  <div class="district-banner" id="districtBanner">
+    <p>Welcome, <strong id="districtName"></strong> — we're glad you're here.</p>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Music Theory That Students Can <span>See</span>, <span>Hear</span> & <span>Touch</span></h1>
+    <p>25+ browser-based interactive apps built on a patented 12-Color Chromatic Spectrum™. No downloads. No logins. Works on any device in any classroom — right now.</p>
+    <div class="prop28-badge">✦ Eligible for Prop 28 / AMIM Block Grant Funding</div>
+  </div>
+
+  <!-- App highlights -->
+  <div class="section-label">Explore the Platform</div>
+  <div class="app-grid">
+    <a class="app-card" href="https://keyscodesandmodes.com" target="_blank">
+      <span class="app-icon">🎡</span>
+      <h3>Chromatic Spoke Clock</h3>
+      <p>All 12 keys, scales, and modes visualized as a living color wheel. Students see relationships instantly.</p>
+    </a>
+    <a class="app-card" href="https://keyscodesandmodes.com" target="_blank">
+      <span class="app-icon">🥁</span>
+      <h3>Rhythm Geometry Lab</h3>
+      <p>Polyrhythms and time signatures rendered as geometric patterns. Math and music merge visually.</p>
+    </a>
+    <a class="app-card" href="https://keyscodesandmodes.com" target="_blank">
+      <span class="app-icon">🎸</span>
+      <h3>CAGED Fretboard Explorer</h3>
+      <p>Every chord shape and scale position on guitar, color-coded across the full neck.</p>
+    </a>
+    <a class="app-card" href="https://keyscodesandmodes.com" target="_blank">
+      <span class="app-icon">👂</span>
+      <h3>Ear Training Suite</h3>
+      <p>Intervals, chords, and melodies — students hear and see the color at the same time.</p>
+    </a>
+    <a class="app-card" href="https://keyscodesandmodes.com" target="_blank">
+      <span class="app-icon">🌊</span>
+      <h3>Sound Observatory</h3>
+      <p>Real-time audio visualization across 8 panels. Science and music in one screen.</p>
+    </a>
+    <a class="app-card" href="https://keyscodesandmodes.com" target="_blank">
+      <span class="app-icon">⭕</span>
+      <h3>Circle of Fifths</h3>
+      <p>Interactive, animated, color-mapped. The most important map in music, finally alive.</p>
+    </a>
+  </div>
+
+  <!-- Main CTA -->
+  <div class="cta-section">
+    <a href="https://keyscodesandmodes.com" class="btn-primary" target="_blank">
+      ✦ Explore All 25+ Apps Free
+    </a>
+  </div>
+
+  <!-- Testimonial -->
+  <div class="testimonial">
+    <p>This is the most intuitive music theory platform I've seen. My students immediately understood key relationships they'd struggled with for months. The color system is genuinely transformative for visual learners.</p>
+    <cite>— Andrew, Music Educator, New York City</cite>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      Keys, Codes & Modes™ &nbsp;|&nbsp; Ben Ryan, Founder<br>
+      1187 Coast Village Rd. #110, Santa Barbara, CA 93108<br>
+      FreeStyle® Musical Device — 4 U.S. Patents Issued<br><br>
+      © 2026 Keys, Codes & Modes™. All rights reserved.
+    </p>
+  </div>
+
+</div>
+
+<!-- Soft Capture Banner -->
+<div class="soft-capture" id="softCapture">
+  <button class="capture-dismiss" id="dismissBtn" title="Dismiss">✕</button>
+  <div class="soft-capture-icon">🎵</div>
+  <div class="soft-capture-text">
+    <p><strong>Interested in KCM for your district?</strong><br>Leave your info and we'll send district pricing + Prop 28 guidance.</p>
+    <div class="capture-form" id="captureForm">
+      <input type="text" id="captureName" placeholder="Your name" autocomplete="name">
+      <input type="email" id="captureEmail" placeholder="Your email" autocomplete="email">
+      <button class="btn-capture" id="captureSubmit">Send Info →</button>
+    </div>
+    <div class="capture-success" id="captureSuccess">
+      <p>✓ Thank you! We'll be in touch soon.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── 1. Read & display district from URL param ───────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const districtRaw = params.get('district') || '';
+
+function formatDistrict(slug) {
+  return slug.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+if (districtRaw) {
+  const banner = document.getElementById('districtBanner');
+  document.getElementById('districtName').textContent = formatDistrict(districtRaw);
+  banner.classList.add('visible');
+}
+
+// ─── 2. Log visit to Cloudflare Worker ──────────────────────────────────────
+(async function logVisit() {
+  try {
+    const payload = {
+      district: districtRaw || 'direct',
+      timestamp: new Date().toISOString(),
+      referrer: document.referrer || 'none',
+      ua: navigator.userAgent.substring(0, 80)
+    };
+    // Replace this URL with your actual Cloudflare Worker endpoint
+    await fetch('https://snowy-rain-84a5.benryan1.workers.dev/log-visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    // Silent fail — never block the user
+  }
+})();
+
+// ─── 3. Track time on page ───────────────────────────────────────────────────
+const visitStart = Date.now();
+window.addEventListener('beforeunload', async () => {
+  const duration = Math.round((Date.now() - visitStart) / 1000);
+  if (districtRaw) {
+    try {
+      await fetch('https://snowy-rain-84a5.benryan1.workers.dev/log-duration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ district: districtRaw, duration_seconds: duration })
+      });
+    } catch (e) {}
+  }
+});
+
+// ─── 4. Soft capture — show after 60 seconds ────────────────────────────────
+const STORAGE_KEY = 'kcm_capture_dismissed';
+const alreadyDismissed = sessionStorage.getItem(STORAGE_KEY);
+
+if (!alreadyDismissed) {
+  setTimeout(() => {
+    document.getElementById('softCapture').classList.add('visible');
+  }, 60000); // 60 seconds
+}
+
+// Dismiss
+document.getElementById('dismissBtn').addEventListener('click', () => {
+  document.getElementById('softCapture').style.bottom = '-200px';
+  sessionStorage.setItem(STORAGE_KEY, '1');
+});
+
+// Submit capture form
+document.getElementById('captureSubmit').addEventListener('click', async () => {
+  const name = document.getElementById('captureName').value.trim();
+  const email = document.getElementById('captureEmail').value.trim();
+
+  if (!email || !email.includes('@')) {
+    document.getElementById('captureEmail').style.borderColor = 'rgba(207,122,90,0.6)';
+    return;
+  }
+
+  // Send to MailerLite via your existing Worker or direct ML API
+  try {
+    await fetch('https://snowy-rain-84a5.benryan1.workers.dev/capture-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        district: districtRaw || 'unknown',
+        source: 'demo_page_soft_capture',
+        timestamp: new Date().toISOString()
+      })
+    });
+  } catch (e) {}
+
+  // Show success regardless
+  document.getElementById('captureForm').style.display = 'none';
+  document.getElementById('captureSuccess').style.display = 'block';
+  sessionStorage.setItem(STORAGE_KEY, '1');
+
+  // Auto-close after 4 seconds
+  setTimeout(() => {
+    document.getElementById('softCapture').style.bottom = '-200px';
+  }, 4000);
+});
+</script>
+</body>
+</html>

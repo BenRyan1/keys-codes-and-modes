@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KCM — District Visit Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a15;
+    --teal: #008080;
+    --teal-glow: #00c0c0;
+    --gold: #F4D03F;
+    --purple: #8B6BA3;
+    --coral: #CF7A5A;
+    --green: #00c070;
+    --text-primary: #e8e8f8;
+    --text-secondary: #b0b0cc;
+    --border: rgba(0,128,128,0.2);
+    --card-bg: rgba(255,255,255,0.03);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 40% at 20% 10%, rgba(0,128,128,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* Header */
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .dash-title h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--teal-glow);
+    text-shadow: 0 0 20px rgba(0,192,192,0.3);
+  }
+
+  .dash-title p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .last-updated {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+  }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .summary-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .summary-card .value {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--teal-glow);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .summary-card .label {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .summary-card.gold .value { color: var(--gold); }
+  .summary-card.green .value { color: var(--green); }
+  .summary-card.purple .value { color: var(--purple); }
+
+  /* Table */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal-glow);
+    margin-bottom: 14px;
+  }
+
+  .table-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    background: rgba(0,128,128,0.1);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(0,128,128,0.08);
+    transition: background 0.2s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,128,128,0.05); }
+
+  tbody td {
+    padding: 12px 16px;
+    font-size: 0.83rem;
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+
+  .district-name { font-weight: 500; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-visited {
+    background: rgba(0,192,192,0.12);
+    color: var(--teal-glow);
+    border: 1px solid rgba(0,192,192,0.25);
+  }
+
+  .badge-captured {
+    background: rgba(0,192,112,0.12);
+    color: var(--green);
+    border: 1px solid rgba(0,192,112,0.25);
+  }
+
+  .badge-none {
+    background: rgba(176,176,204,0.06);
+    color: var(--text-secondary);
+    border: 1px solid rgba(176,176,204,0.12);
+    opacity: 0.6;
+  }
+
+  .duration-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .duration-bar {
+    height: 4px;
+    background: rgba(0,128,128,0.15);
+    border-radius: 2px;
+    width: 80px;
+    overflow: hidden;
+  }
+
+  .duration-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--teal-glow));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .duration-text {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /* Leads section */
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .lead-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(0,192,112,0.2);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .lead-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), transparent);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .lead-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .lead-email {
+    font-size: 0.78rem;
+    color: var(--teal-glow);
+    margin-bottom: 6px;
+  }
+
+  .lead-meta {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    opacity: 0.5;
+  }
+
+  /* Refresh button */
+  .btn-refresh {
+    background: rgba(0,128,128,0.15);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--teal-glow);
+    padding: 8px 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-refresh:hover {
+    background: rgba(0,128,128,0.25);
+    border-color: rgba(0,192,192,0.4);
+  }
+
+  .status-note {
+    background: rgba(244,208,63,0.07);
+    border: 1px solid rgba(244,208,63,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.8rem;
+    color: var(--gold);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .dash-header { flex-direction: column; align-items: flex-start; }
+    table { font-size: 0.75rem; }
+    tbody td, thead th { padding: 10px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="dash-header">
+    <div class="dash-title">
+      <h1>KCM District Visit Dashboard</h1>
+      <p>Superintendent Outreach Campaign · Spring 2026</p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="last-updated" id="lastUpdated">Loading…</span>
+      <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="status-note">
+    ⚡ <strong>Setup note:</strong> This dashboard reads live data from your Cloudflare Worker endpoint. Once the Worker's <code>/log-visit</code>, <code>/log-duration</code>, and <code>/capture-lead</code> routes are active, all visit data will appear here automatically.
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="value" id="statTotal">—</div>
+      <div class="label">Emails Sent</div>
+    </div>
+    <div class="summary-card">
+      <div class="value" id="statVisited">—</div>
+      <div class="label">Districts Visited</div>
+    </div>
+    <div class="summary-card gold">
+      <div class="value" id="statCaptures">—</div>
+      <div class="label">Leads Captured</div>
+    </div>
+    <div class="summary-card green">
+      <div class="value" id="statAvgTime">—</div>
+      <div class="label">Avg. Time on Page</div>
+    </div>
+    <div class="summary-card purple">
+      <div class="value" id="statRate">—</div>
+      <div class="label">Open Rate</div>
+    </div>
+  </div>
+
+  <!-- Visit table -->
+  <div class="section-title">District Visit Log</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>District</th>
+          <th>Status</th>
+          <th>First Visit</th>
+          <th>Time on Page</th>
+          <th>Lead Captured</th>
+        </tr>
+      </thead>
+      <tbody id="visitTableBody">
+        <tr><td colspan="5"><div class="empty-state">Loading visit data…</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Leads -->
+  <div class="section-title">Captured Leads</div>
+  <div class="leads-grid" id="leadsGrid">
+    <div style="color:var(--text-secondary);font-size:0.82rem;padding:20px 0;opacity:0.5">Loading leads…</div>
+  </div>
+
+</div>
+
+<script>
+// ─── Sample data for preview (replace with real Worker fetch) ────────────────
+// This simulates what you'll see once the Worker is live.
+// Replace loadData() with a real fetch to your Worker's /dashboard-data endpoint.
+
+const WORKER_URL = 'https://snowy-rain-84a5.benryan1.workers.dev';
+
+// Sample districts — replace with your real 100-district list
+const SAMPLE_DISTRICTS = [
+  { district: 'Santa Barbara Unified', slug: 'santa_barbara_unified', sent: true },
+  { district: 'Ventura Unified', slug: 'ventura_unified', sent: true },
+  { district: 'Oxnard Union High', slug: 'oxnard_union_high', sent: true },
+  { district: 'Carpinteria Unified', slug: 'carpinteria_unified', sent: true },
+  { district: 'Goleta Union Elementary', slug: 'goleta_union_elementary', sent: true },
+  { district: 'Lompoc Unified', slug: 'lompoc_unified', sent: false },
+  { district: 'Santa Maria-Bonita', slug: 'santa_maria_bonita', sent: false },
+];
+
+// Sample visit log (will come from Worker KV store in production)
+const SAMPLE_VISITS = {
+  'santa_barbara_unified': { visitedAt: '2026-05-04T14:32:00Z', duration: 247, lead: { name: 'Dr. Patricia Chen', email: 'pchen@sbunified.edu' } },
+  'ventura_unified': { visitedAt: '2026-05-04T16:10:00Z', duration: 38, lead: null },
+  'carpinteria_unified': { visitedAt: '2026-05-05T09:15:00Z', duration: 182, lead: { name: 'James Morales', email: 'jmorales@carpinteria.k12.ca.us' } },
+};
+
+function formatDuration(seconds) {
+  if (!seconds) return '—';
+  if (seconds < 60) return `${seconds}s`;
+  return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function loadData() {
+  document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+
+  // Try to fetch from Worker; fall back to sample data
+  fetch(`${WORKER_URL}/dashboard-data`)
+    .then(r => r.json())
+    .then(data => renderDashboard(data))
+    .catch(() => renderDashboard({ districts: SAMPLE_DISTRICTS, visits: SAMPLE_VISITS }));
+}
+
+function renderDashboard({ districts, visits }) {
+  const sentDistricts = districts.filter(d => d.sent);
+  const visitedKeys = Object.keys(visits);
+  const allLeads = visitedKeys.filter(k => visits[k].lead);
+  const durations = visitedKeys.map(k => visits[k].duration).filter(Boolean);
+  const avgDuration = durations.length ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length) : 0;
+
+  document.getElementById('statTotal').textContent = sentDistricts.length;
+  document.getElementById('statVisited').textContent = visitedKeys.length;
+  document.getElementById('statCaptures').textContent = allLeads.length;
+  document.getElementById('statAvgTime').textContent = formatDuration(avgDuration);
+  document.getElementById('statRate').textContent = sentDistricts.length
+    ? Math.round((visitedKeys.length / sentDistricts.length) * 100) + '%'
+    : '—';
+
+  // Table
+  const maxDuration = Math.max(...durations, 1);
+  const tbody = document.getElementById('visitTableBody');
+
+  if (!sentDistricts.length) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">No emails sent yet.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = sentDistricts.map(d => {
+    const v = visits[d.slug];
+    const visited = !!v;
+    const lead = v?.lead;
+    const pct = v?.duration ? Math.round((v.duration / maxDuration) * 100) : 0;
+
+    return `
+      <tr>
+        <td class="district-name">${d.district}</td>
+        <td>
+          ${visited
+            ? `<span class="badge badge-visited">✓ Visited</span>`
+            : `<span class="badge badge-none">Not yet</span>`}
+        </td>
+        <td>${visited ? formatDate(v.visitedAt) : '—'}</td>
+        <td>
+          ${visited
+            ? `<div class="duration-bar-wrap">
+                <div class="duration-bar"><div class="duration-fill" style="width:${pct}%"></div></div>
+                <span class="duration-text">${formatDuration(v.duration)}</span>
+              </div>`
+            : '—'}
+        </td>
+        <td>
+          ${lead
+            ? `<span class="badge badge-captured">✓ ${lead.name}</span>`
+            : `<span class="badge badge-none">—</span>`}
+        </td>
+      </tr>`;
+  }).join('');
+
+  // Leads grid
+  const leadsGrid = document.getElementById('leadsGrid');
+  if (!allLeads.length) {
+    leadsGrid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">No leads captured yet — they'll appear here as superintendents opt in.</div>`;
+    return;
+  }
+
+  leadsGrid.innerHTML = allLeads.map(k => {
+    const { lead, visitedAt } = visits[k];
+    const districtObj = districts.find(d => d.slug === k);
+    return `
+      <div class="lead-card">
+        <div class="lead-name">${lead.name}</div>
+        <div class="lead-email">${lead.email}</div>
+        <div class="lead-meta">${districtObj?.district || k} · ${formatDate(visitedAt)}</div>
+      </div>`;
+  }).join('');
+}
+
+loadData();
+</script>
+</body>
+</html>
