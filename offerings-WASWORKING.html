@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- KCM ACCESS GATE — runs before page renders           -->
+    <!-- Anyone without a valid token → redirected instantly  -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <script>
+    (function(){
+        'use strict';
+        var VALID = [
+            'kcm_premium_2026',
+            'kcm_founder_2026',
+            'kcm_school_2026',
+            'kcm_free_trial'
+        ];
+        var t = localStorage.getItem('kcm_access');
+        var g = localStorage.getItem('kcm_access_granted');
+        var ok = false;
+        if(t && g === 'true'){
+            for(var i=0;i<VALID.length;i++){
+                if(t===VALID[i]){ok=true;break;}
+            }
+        }
+        if(!ok){ window.location.replace('/pricing.html?ref=offerings'); }
+    })();
+    </script>
+    <!-- ══════════════════════════════════════════════════════ -->
+
+    <!-- Cookie Consent CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+    <style>
+    .cc-window {
+        font-family: 'Montserrat', sans-serif !important;
+        background: #0a0a15 !important;
+        border: 2px solid #008080 !important;
+        box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3) !important;
+    }
+    .cc-btn {
+        background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important;
+        border: none !important;
+        padding: 0.75rem 2rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+    .cc-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 5px 15px rgba(0, 128, 128, 0.4) !important;
+    }
+    .cc-link { color: #F4D03F !important; }
+    .cc-link:hover { color: #008080 !important; }
+    </style>
+
+    <!-- Cookie Consent Script -->
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener('load', function() {
+      window._ccInstance = window.cookieconsent.initialise({
+        palette: { popup: { background: "#0a0a15", text: "#E8E8E8" }, button: { background: "#008080", text: "#ffffff" } },
+        theme: "classic", position: "bottom", type: "opt-in", revokable: true, animateRevokable: false,
+        content: { message: "We use cookies to enhance your experience. By clicking Accept, you consent to our use of cookies.", dismiss: "Accept", deny: "Decline", link: "Privacy", href: "/privacy.html" },
+        onStatusChange: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); },
+        onInitialise: function(status) { if (this.hasConsented()) loadGoogleAnalytics(); }
+      });
+    });
+    function loadGoogleAnalytics() {
+      if (window.gaLoaded) return; window.gaLoaded = true;
+      var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF'; document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-6EGC5ZNZPF', {'anonymize_ip': true, 'allow_google_signals': false, 'allow_ad_personalization_signals': false, 'cookie_expires': 63072000, 'cookie_flags': 'SameSite=None;Secure'});
+      gtag('consent', 'default', {'ad_storage': 'denied', 'analytics_storage': 'granted', 'functionality_storage': 'granted', 'personalization_storage': 'denied', 'security_storage': 'granted'});
+    }
+    function trackEvent(n,p){try{if(typeof gtag==="function"&&window._ccInstance&&window._ccInstance.hasConsented())gtag("event",n,p);}catch(e){}}
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ═══ ROBOTS: GATED PAGE — must not be indexed ═══ -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta name="description" content="Access 25+ interactive music theory apps inside Keys, Codes & Modes — Circle of Fifths, CAGED System, guitar fretboard, ear training, rhythm geometry, and more. Visual learning for all levels.">
+    <meta name="keywords" content="music theory apps, circle of fifths, CAGED system, guitar fretboard, ear training, music modes, interactive music theory, Keys Codes Modes">
+    <meta name="author" content="Benjamin Ryan">
+    <meta name="theme-color" content="#008080">
+    <title>25+ Interactive Music Theory Apps | Keys, Codes &amp; Modes</title>
+
+    <!-- ═══ CANONICAL — points to self (noindex keeps it out of search) ═══ -->
+    <link rel="canonical" href="https://keyscodesandmodes.com/offerings.html">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/kcm-official-logo-32.png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ocean-blue: #4A7BA7;
+            --deep-navy: #2a4d6f;
+            --primary-teal: #008080;
+            --primary-gold: #F4D03F;
+            --primary-purple: #8B6BA3;
+            --primary-coral: #CF7A5A;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #0f0f1e;
+            --light-text: #E8E8E8;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --font-accent: 'Cormorant Garamond', serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .skip-link {
+            position: absolute; top: -40px; left: 0;
+            background: var(--primary-gold); color: var(--dark-bg);
+            padding: 8px 16px; text-decoration: none; font-weight: bold; z-index: 10000;
+        }
+        .skip-link:focus { top: 0; }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: var(--light-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.1;
+            background:
+                radial-gradient(circle at 20% 50%, var(--primary-teal) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--primary-gold) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--primary-purple) 0%, transparent 50%);
+            animation: bgShift 20s ease infinite;
+        }
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(50px,30px) scale(1.1); }
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(74,123,167,0.95) 0%, rgba(42,77,111,0.95) 100%);
+            border-bottom: 3px solid var(--ocean-blue);
+            box-shadow: 0 4px 20px rgba(74,123,167,0.4);
+            position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .main-nav {
+            max-width: 1400px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .logo-container { display: flex; align-items: center; gap: 1.5rem; text-decoration: none; }
+        .header-logo {
+            width: 70px; height: 70px;
+            filter: drop-shadow(0 4px 12px rgba(0,217,255,0.4));
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .logo-text h1 {
+            font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; letter-spacing: 2px; margin: 0;
+        }
+        .logo-tagline { font-family: var(--font-accent); font-size: 1.1rem; color: #999; font-style: italic; }
+        .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--light-text); text-decoration: none; font-weight: 500;
+            padding: 0.5rem 1rem; border-radius: 20px; transition: all 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary-gold); background: rgba(0,128,128,0.2); }
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #e6c62f 100%);
+            color: var(--dark-bg) !important; padding: 0.75rem 1.5rem !important;
+            font-weight: 700; box-shadow: 0 4px 15px rgba(244,208,63,0.3);
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,208,63,0.5); }
+
+        /* Logout button */
+        .logout-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.3);
+            color: #ccc; padding: 0.4rem 1rem; border-radius: 20px;
+            cursor: pointer; font-size: 0.85rem; font-family: var(--font-body);
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { border-color: var(--primary-gold); color: var(--primary-gold); }
+
+        .hero {
+            text-align: center; padding: 4rem 2rem;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .hero h2 {
+            font-family: var(--font-display); font-size: 3.5rem; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal), var(--primary-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; line-height: 1.2;
+        }
+        .hero p { font-size: 1.3rem; color: #ccc; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .hero-cta { display: inline-flex; gap: 1rem; margin-top: 1rem; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-teal), #006666);
+            color: white; padding: 1rem 2rem; border-radius: 30px;
+            text-decoration: none; font-weight: 700; font-size: 1.1rem;
+            transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,128,128,0.4);
+            border: 2px solid transparent;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 25px rgba(0,128,128,0.6); border-color: var(--primary-gold); }
+        .btn-secondary {
+            background: transparent; color: var(--light-text); padding: 1rem 2rem;
+            border-radius: 30px; text-decoration: none; font-weight: 700;
+            font-size: 1.1rem; border: 2px solid var(--primary-gold); transition: all 0.3s;
+        }
+        .btn-secondary:hover { background: var(--primary-gold); color: var(--dark-bg); }
+
+        .apps-section { max-width: 1400px; margin: 4rem auto; padding: 0 2rem; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 {
+            font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .category-section { margin-bottom: 4rem; }
+        .category-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 2rem; padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-teal);
+        }
+        .category-icon { font-size: 2.5rem; }
+        .category-header h3 { font-family: var(--font-display); font-size: 2rem; color: var(--primary-gold); }
+        .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+
+        .app-card {
+            background: linear-gradient(135deg, rgba(26,26,46,0.8), rgba(26,61,95,0.6));
+            border: 2px solid rgba(0,128,128,0.3); border-radius: 20px;
+            padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .app-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary-teal), var(--primary-gold), var(--primary-purple));
+        }
+        .app-card:hover { transform: translateY(-5px); border-color: var(--primary-teal); box-shadow: 0 10px 30px rgba(0,128,128,0.3); }
+
+        .app-badge {
+            display: inline-block; padding: 0.4rem 1rem; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .badge-free { background: #4caf50; color: white; }
+        .badge-premium { background: linear-gradient(135deg, var(--primary-gold), #e6c62f); color: var(--dark-bg); }
+        .badge-pro { background: linear-gradient(135deg, var(--primary-purple), #7a5a93); color: white; }
+
+        .app-card h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-gold); }
+        .app-icon { text-align: center; margin-bottom: 2rem; }
+        .app-icon svg { width: 120px; height: 120px; filter: drop-shadow(0 8px 20px rgba(244,208,63,0.4)); transition: transform 0.3s ease; }
+        .app-card:hover .app-icon svg { transform: scale(1.05); }
+        .app-card p { color: #ccc; margin-bottom: 1.5rem; line-height: 1.6; }
+        .app-features { list-style: none; margin-bottom: 1.5rem; }
+        .app-features li { padding: 0.5rem 0; color: #aaa; font-size: 0.95rem; }
+        .app-features li::before { content: '♪'; color: var(--primary-gold); font-weight: bold; margin-right: 0.5rem; }
+        .app-actions { display: flex; gap: 1rem; }
+
+        .btn-launch {
+            flex: 1; padding: 0.75rem 1.5rem; border-radius: 25px; border: none;
+            background: linear-gradient(135deg, var(--primary-teal), #006666);
+            color: white; font-weight: 700; cursor: pointer; transition: all 0.3s;
+            text-decoration: none; text-align: center; display: block;
+        }
+        .btn-launch:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,128,128,0.5); }
+
+        footer {
+            background: linear-gradient(135deg, rgba(15,15,30,0.95), rgba(26,26,46,0.95));
+            border-top: 3px solid var(--primary-teal);
+            padding: 3rem 2rem; margin-top: 4rem;
+        }
+        .footer-content { max-width: 1400px; margin: 0 auto; text-align: center; }
+        .footer-brand h3 {
+            font-family: var(--font-display); font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-teal));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 1.5rem;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin: 1.5rem 0; }
+        .footer-links a { color: var(--light-text); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--primary-gold); }
+        .social-links { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0; }
+        .social-links a {
+            width: 50px; height: 50px; background: rgba(0,128,128,0.2);
+            border: 2px solid var(--primary-teal); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--light-text); text-decoration: none; transition: all 0.3s;
+        }
+        .social-links a:hover { background: var(--primary-teal); transform: translateY(-3px); }
+        .copyright { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(0,128,128,0.3); color: #999; }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .hero h2 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .hero-cta { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+            .apps-section { padding: 2rem 1rem; }
+            .apps-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .nav-links { display: none; }
+            .category-header h3 { font-size: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h2 { font-size: 1.75rem; }
+            .section-header h2 { font-size: 1.75rem; }
+        }
+    </style>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vhyrbjp63x");
+    </script>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Keys, Codes &amp; Modes">
+    <meta property="og:url" content="https://keyscodesandmodes.com/offerings.html">
+    <meta property="og:title" content="Interactive Music Theory Apps | Keys, Codes &amp; Modes">
+    <meta property="og:description" content="Explore 25+ interactive music theory apps — Circle of Fifths, CAGED System, Guitar Fretboard Explorer, Ear Training, and more.">
+    <meta property="og:image" content="https://keyscodesandmodes.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Interactive Music Theory Apps | Keys, Codes &amp; Modes">
+    <meta name="twitter:description" content="25+ visual, interactive music theory apps for guitarists, pianists &amp; composers.">
+    <meta name="twitter:image" content="https://keyscodesandmodes.com/assets/og-image.png">
+</head>
+<body>
+    <a href="#apps" class="skip-link">Skip to main content</a>
+    <div class="bg-animation" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header role="banner">
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+            <a href="/index.html" class="logo-container">
+                <svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="header-logo">
+                    <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#008080" stroke-width="2"/>
+                    <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.9"/>
+                    <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                    <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                    <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                    <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                    <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="#008080" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="7" fill="#F4D03F"/>
+                </svg>
+                <div class="logo-text">
+                    <h1>KEYS, CODES & MODES</h1>
+                    <p class="logo-tagline">A Visual Approach to Understanding Music</p>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/insights.html">Applications</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/signup.html" class="cta-btn">Start Free Trial</a></li>
+                <li><button class="logout-btn" onclick="kcmLogout()">Sign Out</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h2>Master Music Theory Through<br>Interactive Visual Learning</h2>
+        <p>25+ Revolutionary Applications to Transform Your Musical Understanding</p>
+        <div class="hero-cta">
+            <a href="#apps" class="btn-primary">Explore Applications</a>
+            <a href="/pricing.html" class="btn-secondary">View Pricing</a>
+        </div>
+    </section>
+
+    <!-- Apps -->
+    <main id="apps" class="apps-section" role="main">
+        <div class="section-header">
+            <h2>Interactive Music Theory Applications</h2>
+            <p style="font-size:1.2rem;color:#ccc;">Choose from our comprehensive suite of professional-grade tools</p>
+        </div>
+
+        <!-- ⭐ Featured Free App -->
+        <div class="category-section" style="margin-bottom:4rem;">
+            <div class="category-header" style="border-bottom:3px solid var(--primary-gold);">
+                <span class="category-icon">⭐</span>
+                <h3 style="color:var(--primary-gold);font-size:2.5rem;">Featured Free App</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card" style="border:3px solid var(--primary-gold);background:linear-gradient(135deg,rgba(244,208,63,0.1),rgba(0,128,128,0.1));">
+                    <span class="app-badge" style="background:linear-gradient(135deg,var(--primary-gold),#d4b030);color:#0a0a15;font-size:1.1rem;">✨ FREE ACCESS</span>
+                    <div class="app-icon">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="98" fill="#1a1a2e"/>
+                            <circle cx="100" cy="100" r="85" fill="none" stroke="#F4D03F" stroke-width="4"/>
+                            <circle cx="100" cy="15" r="8" fill="#FFFF00" stroke="#008080" stroke-width="2"/>
+                            <circle cx="143" cy="25" r="8" fill="#FFC400" stroke="#008080" stroke-width="2"/>
+                            <circle cx="173" cy="57" r="8" fill="#FF8000" stroke="#008080" stroke-width="2"/>
+                            <circle cx="183" cy="100" r="8" fill="#FF4000" stroke="#008080" stroke-width="2"/>
+                            <circle cx="173" cy="143" r="8" fill="#FF0000" stroke="#008080" stroke-width="2"/>
+                            <circle cx="143" cy="175" r="8" fill="#C4007F" stroke="#008080" stroke-width="2"/>
+                            <circle cx="100" cy="185" r="8" fill="#8000FF" stroke="#008080" stroke-width="2"/>
+                            <circle cx="57" cy="175" r="8" fill="#4000FF" stroke="#008080" stroke-width="2"/>
+                            <circle cx="27" cy="143" r="8" fill="#0000FF" stroke="#008080" stroke-width="2"/>
+                            <circle cx="17" cy="100" r="8" fill="#007FFF" stroke="#008080" stroke-width="2"/>
+                            <circle cx="27" cy="57" r="8" fill="#00FF80" stroke="#008080" stroke-width="2"/>
+                            <circle cx="57" cy="25" r="8" fill="#80FF00" stroke="#008080" stroke-width="2"/>
+                            <circle cx="100" cy="100" r="12" fill="#008080"/>
+                            <circle cx="100" cy="100" r="8" fill="#F4D03F"/>
+                            <path d="M 100 100 L 85 25 A 85 85 0 0 1 115 25 Z" fill="rgba(244,208,63,0.3)" stroke="#F4D03F" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h4 style="font-size:2rem;color:var(--primary-gold);">Chromatic Spoke Clock</h4>
+                    <p style="font-size:1.1rem;">Revolutionary circular visualization for mastering intervals, scales, modes, and chords with interactive ear training and scoring system.</p>
+                    <ul class="app-features" style="font-size:1rem;">
+                        <li><strong>57+ Musical Patterns:</strong> All scales, modes, and chords</li>
+                        <li><strong>Ear Training Games:</strong> Score tracking & streak system</li>
+                        <li><strong>MIDI Support:</strong> Connect your keyboard</li>
+                        <li><strong>12 Keys:</strong> Instant rotation to any root</li>
+                        <li><strong>Tempo Control:</strong> 40–240 BPM adjustable</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/chromatic-spoke-clock.html" class="btn-launch" style="background:linear-gradient(135deg,var(--primary-gold),#d4b030);color:#0a0a15;font-size:1.1rem;font-weight:700;">🚀 Launch App — FREE!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guitar Tools -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🎸</span>
+                <h3>Guitar Mastery Tools</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <span class="app-badge badge-pro">PRO</span>
+                    <h4>Guitar Fretboard Explorer Pro</h4>
+                    <p>Master the entire fretboard with advanced visualization and pattern recognition.</p>
+                    <ul class="app-features">
+                        <li>Full fretboard visualization</li>
+                        <li>Scale pattern overlays</li>
+                        <li>Multi-position modes</li>
+                        <li>Custom tuning support</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/guitar-fretboard-complete.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-pro">PRO</span>
+                    <h4>CAGED-145 Explorer</h4>
+                    <p>Deep dive into the CAGED system with integrated scale degrees and triadic harmony.</p>
+                    <ul class="app-features">
+                        <li>Complete CAGED system mapping</li>
+                        <li>Triad position visualization</li>
+                        <li>Scale degree integration</li>
+                        <li>Chord voicing mastery</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/caged-145-master.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Guitar Improvisation Master</h4>
+                    <p>Essential improvisation tool for building fretboard fluency and musical vocabulary.</p>
+                    <ul class="app-features">
+                        <li>Scale pattern library</li>
+                        <li>Position mapping</li>
+                        <li>Practice mode</li>
+                        <li>Beginner-friendly interface</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/guitar-improvisations.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Circle & Theory -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🎹</span>
+                <h3>Circle & Theory Visualizations</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Circle of Fifths Explorer</h4>
+                    <p>Interactive circle of fifths with key relationships and harmonic analysis.</p>
+                    <ul class="app-features">
+                        <li>360° rotatable interface</li>
+                        <li>Key signature display</li>
+                        <li>Related keys highlighting</li>
+                        <li>Modal exploration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/circle-of-fifths.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Circle of Modes</h4>
+                    <p>Explore modal relationships through circular visualization and audio examples.</p>
+                    <ul class="app-features">
+                        <li>All 7 modes visualized</li>
+                        <li>Modal interchange</li>
+                        <li>Audio playback</li>
+                        <li>Characteristic tones</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/circle-of-modes.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Chromatic Roulette Wheel</h4>
+                    <p>Gamified chromatic exploration with randomization and pattern discovery.</p>
+                    <ul class="app-features">
+                        <li>Interactive wheel interface</li>
+                        <li>Random note generation</li>
+                        <li>Pattern challenges</li>
+                        <li>Visual learning games</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/chromatic-roulette.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Chromatic to Major Scale</h4>
+                    <p>Understand the relationship between chromatic and diatonic systems visually.</p>
+                    <ul class="app-features">
+                        <li>Side-by-side comparison</li>
+                        <li>Visual transformation</li>
+                        <li>Scale degree mapping</li>
+                        <li>Interactive learning</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/harmonized-chromatic-scale.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-pro">PRO</span>
+                    <h4>Music Theory Explorer Pro</h4>
+                    <p>The ultimate comprehensive music theory learning platform with all features unlocked.</p>
+                    <ul class="app-features">
+                        <li>Complete theory curriculum</li>
+                        <li>Advanced exercises</li>
+                        <li>Progress tracking</li>
+                        <li>Professional insights</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/music-theory-pro.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Theory -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🎵</span>
+                <h3>Advanced Theory & Analysis</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Tonic Subdominant Dominant</h4>
+                    <p>Master functional harmony through interactive chord function visualization.</p>
+                    <ul class="app-features">
+                        <li>Functional harmony theory</li>
+                        <li>Chord progression analysis</li>
+                        <li>Voice leading practice</li>
+                        <li>Cadence exploration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/tonic-subdominant-dominant.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-pro">PRO</span>
+                    <h4>Holy Grail Final</h4>
+                    <p>The ultimate integration of all music theory concepts in one powerful tool.</p>
+                    <ul class="app-features">
+                        <li>Unified theory system</li>
+                        <li>Cross-reference tools</li>
+                        <li>Advanced analytics</li>
+                        <li>Professional insights</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/holy-grail-final.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Octave Wave Visualizer</h4>
+                    <p>Visualize harmonic relationships through wave forms and frequency analysis.</p>
+                    <ul class="app-features">
+                        <li>Waveform visualization</li>
+                        <li>Frequency analysis</li>
+                        <li>Harmonic series display</li>
+                        <li>Audio synthesis</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/octave-wave-visualizer.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Simple Chord Builder Extended</h4>
+                    <p>Build beautiful chords with smooth ascending note playback.</p>
+                    <ul class="app-features">
+                        <li>Interactive chord construction</li>
+                        <li>Smooth ascending arpeggios</li>
+                        <li>Visual chord structure display</li>
+                        <li>Multiple chord quality options</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/chord-builder.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rhythm & Timing -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">⏱️</span>
+                <h3>Rhythm & Timing</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Rhythmic Clock</h4>
+                    <p>Visualize rhythmic patterns through circular clock-face representation.</p>
+                    <ul class="app-features">
+                        <li>Visual rhythm display</li>
+                        <li>Time signature exploration</li>
+                        <li>Polyrhythm visualization</li>
+                        <li>Interactive metronome</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/rhythm-clock.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Rhythm Geometry Lab</h4>
+                    <p>Experience rhythm as living geometry — Euclidean polyrhythms visualized as rotating polygons with MIDI export.</p>
+                    <ul class="app-features">
+                        <li>True Björklund Euclidean algorithm</li>
+                        <li>Multi-layer polyrhythm engine</li>
+                        <li>MIDI export & DAW sync</li>
+                        <li>Spiral time & fretboard views</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/rhythm-geometry-lab.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Rhythm & Harmony Made Simple</h4>
+                    <p>Simple, intuitive approach to understanding rhythm and harmony relationships.</p>
+                    <ul class="app-features">
+                        <li>Basic rhythm patterns</li>
+                        <li>Harmonic progressions</li>
+                        <li>Interactive exercises</li>
+                        <li>Beginner-friendly interface</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/rhythm-harmony.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Interactive Modal Stencil Player</h4>
+                    <p>Explore the seven musical modes with chromatic color coding and real-time MIDI playback.</p>
+                    <ul class="app-features">
+                        <li>Seven modal stencils (Ionian–Locrian)</li>
+                        <li>Drag & drop to play zone</li>
+                        <li>Real-time MIDI audio feedback</li>
+                        <li>Recording & playback controls</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/modal-stencil-player.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sacred Geometry & Visualization -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🔮</span>
+                <h3>Sacred Geometry & Visualization</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <span class="app-badge badge-pro">PRO</span>
+                    <h4>3D Sacred Geometry Visualizer</h4>
+                    <p>Complete 3D sacred geometry music visualization with advanced controls.</p>
+                    <ul class="app-features">
+                        <li>Full 3D sacred geometry rendering</li>
+                        <li>Interactive rotation controls</li>
+                        <li>Real-time music visualization</li>
+                        <li>Advanced pattern exploration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/sacred-geometry-enhanced-final.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Sacred Geometry (Mouse Control)</h4>
+                    <p>Interactive sacred geometry exploration with intuitive mouse-based controls.</p>
+                    <ul class="app-features">
+                        <li>Mouse-driven interaction</li>
+                        <li>Flower of Life patterns</li>
+                        <li>Dynamic geometry generation</li>
+                        <li>Smooth animation controls</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/S-Geo-Enhanced.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Sacred Geometry Music (Clean)</h4>
+                    <p>Simplified, elegant sacred geometry visualization for music exploration.</p>
+                    <ul class="app-features">
+                        <li>Clean minimal interface</li>
+                        <li>Essential geometric patterns</li>
+                        <li>Beginner-friendly design</li>
+                        <li>Quick music visualization</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/S-Geo-Music.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Chromatic Wheel of Sound™</h4>
+                    <p>See music in living color. Touch, hear, and understand note relationships through an interactive chromatic wheel.</p>
+                    <ul class="app-features">
+                        <li>Interactive 12-note chromatic circle</li>
+                        <li>Touch-responsive sound playback</li>
+                        <li>Visual frequency relationships</li>
+                        <li>Real-time interval exploration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/chromatic-wheel-of-sound.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-pro">PRO</span>
+                    <h4>Chromatic Mandala</h4>
+                    <p>Sacred mandala visualization of the complete chromatic scale with geometric harmony.</p>
+                    <ul class="app-features">
+                        <li>12-note chromatic mandala</li>
+                        <li>Sacred geometric patterns</li>
+                        <li>Visual chromatic relationships</li>
+                        <li>Meditative music exploration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/chromatic-mandala-final.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Cymatics Music Theory Visualizer</h4>
+                    <p>Explore the physics of sound through stunning cymatics patterns synchronized with music theory concepts.</p>
+                    <ul class="app-features">
+                        <li>Real-time cymatics visualization</li>
+                        <li>Sound wave pattern display</li>
+                        <li>Frequency resonance mapping</li>
+                        <li>Interactive theory integration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/kcm-cymatics-visualizer.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Chladni Plate Cymatics Visualizer</h4>
+                    <p>Watch sound create art with 10,000+ particles forming geometric patterns through physics simulation.</p>
+                    <ul class="app-features">
+                        <li>Real-time cymatics visualization</li>
+                        <li>MIDI keyboard support</li>
+                        <li>Extended chord library</li>
+                        <li>Interactive 3D particle physics</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/chladni-visualizer.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pitch & Audio -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🎤</span>
+                <h3>Pitch & Audio Tools</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Real-Time Pitch Detector</h4>
+                    <p>Professional pitch detection with synchronized 4-view chromatic visualization.</p>
+                    <ul class="app-features">
+                        <li>Live microphone pitch detection</li>
+                        <li>Chromatic circle, piano, guitar, staff views</li>
+                        <li>Recording capability</li>
+                        <li>Manual note exploration</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/pitch-detector.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <span class="app-badge badge-premium">PREMIUM</span>
+                    <h4>Radial Chart Visualizer</h4>
+                    <p>Advanced radial visualization of harmonic and melodic relationships.</p>
+                    <ul class="app-features">
+                        <li>Radial harmonic mapping</li>
+                        <li>Multi-layer visualization</li>
+                        <li>Interactive data display</li>
+                        <li>Export-ready graphics</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/radial-chart-visualizer.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games & Ear Trainers -->
+        <div class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🎮</span>
+                <h3>Games & Ear Trainers</h3>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card" style="border-color:var(--primary-gold);">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Fretboard Speed Challenge</h4>
+                    <p>Race the clock to find chromatic notes on the guitar fretboard. Build streaks and earn combo bonuses across 3 timed difficulty levels.</p>
+                    <ul class="app-features">
+                        <li>Official KCM 12-note chromatic color system</li>
+                        <li>3 difficulty levels — 8 / 5 / 3 seconds per note</li>
+                        <li>Streak multipliers & combo scoring</li>
+                        <li>All 6 strings — standard tuning E A D G B E</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/fretboard-speed-challenge.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+                <div class="app-card" style="border-color:var(--primary-teal);">
+                    <span class="app-badge badge-free">FREE</span>
+                    <h4>Name That Note!</h4>
+                    <p>The ultimate ear training game — a mystery note plays and you identify it on the chromatic wheel or guitar fretboard.</p>
+                    <ul class="app-features">
+                        <li>Real audio playback — hear the mystery note</li>
+                        <li>Answer on chromatic wheel or guitar fretboard</li>
+                        <li>3 difficulty levels — Easy through Hard</li>
+                        <li>Multi-octave training — octaves 2 through 6</li>
+                    </ul>
+                    <div class="app-actions">
+                        <a href="/apps/name-that-note.html" class="btn-launch">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>KEYS, CODES & MODES™</h3>
+            </div>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="/index.html">Home</a>
+                <a href="/insights.html">Applications</a>
+                <a href="/pricing.html">Pricing</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+            <nav class="footer-links" aria-label="Legal links">
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms of Service</a>
+                <a href="/refund-policy.html">Refund Policy</a>
+                <a href="/cookie-policy.html">Cookie Policy</a>
+            </nav>
+            <nav class="social-links" aria-label="Social media links">
+                <a href="https://www.facebook.com/KeysCodesModes" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/keyscodesandmodes" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/ben-ryan-guitar-freestyle/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </nav>
+            <div class="copyright">
+                <p>&copy; 2026 Keys, Codes & Modes™. Created by <strong>Benjamin Ryan</strong>. All rights reserved.</p>
+                <p style="margin-top:0.5rem;font-size:0.9rem;">Based on the book "Keys, Codes, and Modes: A Visual Approach to Understanding Music"</p>
+                <p style="margin-top:0.5rem;font-size:0.9rem;color:#666;">Santa Barbara, California | 805-886-4092 | ben.ryan@keyscodesandmodes.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══ KCM GA4 TRACKING ══ -->
+    <script src="/js/kcm-ga4-tracking.js"></script>
+    <script>
+    /* Logout function */
+    function kcmLogout() {
+        localStorage.removeItem('kcm_access');
+        localStorage.removeItem('kcm_access_granted');
+        localStorage.removeItem('kcm_tier');
+        window.location.href = '/pricing.html';
+    }
+
+    /* Scroll Depth */
+    (function(){
+        var m=[25,50,75,100], f={};
+        function p(){ var e=document.documentElement, t=e.scrollHeight-e.clientHeight; return t>0?Math.round(((e.scrollTop||document.body.scrollTop)/t)*100):0; }
+        window.addEventListener("scroll", function(){ var v=p(); m.forEach(function(x){ if(v>=x&&!f[x]){ f[x]=true; trackEvent("scroll_depth",{depth_percent:x,page:"offerings"}); } }); },{passive:true});
+    })();
+
+    document.addEventListener("DOMContentLoaded", function() {
+        /* App launch clicks */
+        document.querySelectorAll("a.btn-launch").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                var appName = "";
+                var card = btn.closest(".app-card");
+                if(card){ var h4=card.querySelector("h4"); if(h4) appName=h4.textContent.trim(); }
+                trackEvent("app_launch",{app_name:appName,page:"offerings"});
+            });
+        });
+    });
+
+    /* Smooth scroll for anchor links */
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector(anchor.getAttribute('href'));
+            if(target){ target.scrollIntoView({behavior:'smooth'}); }
+        });
+    });
+    </script>
+</body>
+</html>
