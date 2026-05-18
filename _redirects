@@ -1,34 +1,17 @@
-# ══════════════════════════════════════════════════════════
-# KCM _redirects — Cloudflare Pages
-# Updated: 2026-04-06 — EMERGENCY FIX: removed contact loop
-# ══════════════════════════════════════════════════════════
+# Cloudflare Pages _redirects file
+# Place in ROOT of deployment alongside index.html
 
-# ── www → non-www ─────────────────────────────────────────
-https://www.keyscodesandmodes.com/* https://keyscodesandmodes.com/:splat  301!
+# NOTE: www redirect removed - handle via Cloudflare DNS or Worker script instead
 
-# ── Fix "my apps" space URL (GSC error) ───────────────────
-/my%20apps              /my-apps.html                       301
-/my%20apps.html         /my-apps.html                       301
-
-# ── Fix bare /index URL (GSC redirect error) ───────────────
-/index                  /                                   301
-/index.html             /                                   301
-
-# ── Welcome / conversion pages ────────────────────────────
-/welcome                /welcome-free-picker.html           301
-/tuner                  /kcm-tuner.html                     301
-
-# ── Legacy URL cleanup ────────────────────────────────────
-/holy-mole-grail        /apps/holy-mole-grail.html          301
-
-# ── Privacy canonicalization ──────────────────────────────
-/privacy-policy.html    /privacy.html                       301
-/privacy-policy         /privacy.html                       301
-
-# ── Refund policy canonicalization ────────────────────────
-/refund-policy          /refund-policy.html                 301
-
-# ── Unknown app URLs Google crawled — redirect to closest ─
-# NOTE: caged-stencil-fretboard.html and chladni-visualizer.html are REAL files in repo
-# Redirect rules removed — the files serve themselves with correct canonical tags
-/apps/chromatic-spoke-clock.html     /apps/chromatic-circle.html          301
+# Remove trailing slashes (except homepage)
+/about/ /about.html 301
+/contact/ /contact.html 301
+/pricing/ /pricing.html 301
+/offerings/ /offerings.html 301
+/insights/ /insights.html 301
+/signup/ /signup.html 301
+/privacy-policy/ /privacy-policy.html 301
+/terms-of-service/ /terms-of-service.html 301
+/refund-policy/ /refund-policy.html 301
+/cookie-policy/ /cookie-policy.html 301
+/holy-mole-grail/ /holy-mole-grail.html 301
