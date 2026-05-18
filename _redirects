@@ -9,7 +9,6 @@
 # ── Lander → free tuner landing
 /lander         /free-tuner-landing.html    301
 /lander.html    /free-tuner-landing.html    301
-/free-tuner-landing  /free-tuner-landing.html  301
 
 # ── Extensionless canonicalization
 /refund-policy  /refund-policy.html     301
