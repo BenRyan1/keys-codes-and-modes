@@ -1,0 +1,50 @@
+#!/bin/bash
+REPO="$HOME/Desktop/keys-codes-and-modes"
+BASE="https://keyscodesandmodes.com"
+CHANGED=0; SKIPPED=0
+inject() {
+  local FILE="$REPO/$1" CANONICAL="$2" NOINDEX="${3:-false}"
+  [ -f "$FILE" ] || { echo "  ⚠️  NOT FOUND: $1"; return; }
+  if grep -q 'rel="canonical"' "$FILE"; then echo "  ⏭  SKIP: $1"; ((SKIPPED++)); return; fi
+  local TAGS="    <link rel=\"canonical\" href=\"$CANONICAL\" />"
+  [ "$NOINDEX" = "true" ] && TAGS="    <meta name=\"robots\" content=\"noindex, nofollow\" />"$'\n'"$TAGS"
+  if grep -qi '</head>' "$FILE"; then
+    perl -i -0pe "s|</head>|$TAGS\n  </head>|i" "$FILE"
+    echo "  ✅ PATCHED: $1"; ((CHANGED++))
+  else echo "  ⚠️  NO </head>: $1"; ((SKIPPED++)); fi
+}
+echo ""; echo "═══ KCM Canonical Injector ═══"; echo ""
+inject "index.html"              "$BASE/"
+inject "about.html"              "$BASE/about.html"
+inject "contact.html"            "$BASE/contact.html"
+inject "offerings.html"          "$BASE/offerings.html"
+inject "insights.html"           "$BASE/insights.html"
+inject "pricing.html"            "$BASE/pricing.html"
+inject "signup.html"             "$BASE/signup.html"
+inject "free-tuner-landing.html" "$BASE/free-tuner-landing.html"
+inject "refund-policy.html"      "$BASE/refund-policy.html"
+inject "privacy-policy.html"     "$BASE/privacy-policy.html"
+inject "privacy.html"            "$BASE/privacy.html"
+inject "terms-of-service.html"   "$BASE/terms-of-service.html"
+inject "terms.html"              "$BASE/terms.html"
+inject "cookie-policy.html"      "$BASE/cookie-policy.html"
+inject "research.html"           "$BASE/research.html"
+inject "kcm-school-pricing.html" "$BASE/kcm-school-pricing.html"
+inject "welcome-premium.html"    "$BASE/welcome-premium.html"    "true"
+inject "welcome-free.html"       "$BASE/welcome-free.html"       "true"
+inject "welcome-free-picker.html" "$BASE/welcome-free-picker.html" "true"
+inject "welcome-free-tuner.html" "$BASE/welcome-free-tuner.html" "true"
+inject "welcome-free-sphere.html" "$BASE/welcome-free-sphere.html" "true"
+inject "welcome-founder.html"    "$BASE/welcome-founder.html"    "true"
+inject "my-apps.html"            "$BASE/my-apps.html"            "true"
+inject "superintendent.html"     "$BASE/superintendent.html"     "true"
+inject "access-code-entry.html"  "$BASE/access-code-entry.html"  "true"
+inject "kcm-dashboard.html"      "$BASE/kcm-dashboard.html"      "true"
+inject "demo.html"               "$BASE/demo.html"               "true"
+inject "kcm-demo.html"           "$BASE/kcm-demo.html"           "true"
+inject "gate.html"               "$BASE/gate.html"               "true"
+inject "signup-tuner.html"       "$BASE/signup-tuner.html"       "true"
+inject "index-experiment.html"   "$BASE/index-experiment.html"   "true"
+inject "cookie-consent-banner.html" "$BASE/cookie-consent-banner.html" "true"
+inject "kcm-cymatics-visualizer.html" "$BASE/kcm-cymatics-visualizer.html" "true"
+echo ""; echo "═══ Done. Patched: $CHANGED | Skipped: $SKIPPED ═══"; echo ""
