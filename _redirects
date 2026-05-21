@@ -1,29 +1,44 @@
 # Cloudflare Pages _redirects file
-# Place in ROOT of deployment alongside index.html
+# RULE: All destinations are clean URLs (no .html) — Cloudflare serves them natively
 # First match wins
 
 # ── Homepage duplicates
-/index          /       301
-/index.html     /       301
+/index          /   301
+/index.html     /   301
 
 # ── Lander → free tuner landing
-/lander         /free-tuner-landing.html    301
-/lander.html    /free-tuner-landing.html    301
+/lander         /free-tuner-landing     301
+/lander.html    /free-tuner-landing     301
 
-# ── Extensionless canonicalization
-/refund-policy  /refund-policy.html     301
-/privacy        /privacy.html           301
-/terms          /terms-of-service.html  301
+# ── .html → clean URL canonicalization
+/about.html              /about              301
+/contact.html            /contact            301
+/pricing.html            /pricing            301
+/offerings.html          /offerings          301
+/insights.html           /insights           301
+/signup.html             /signup             301
+/privacy-policy.html     /privacy-policy     301
+/terms-of-service.html   /terms-of-service   301
+/refund-policy.html      /refund-policy      301
+/cookie-policy.html      /cookie-policy      301
+/holy-mole-grail.html    /holy-mole-grail    301
+/free-tuner-landing.html /free-tuner-landing 301
+/privacy.html            /privacy-policy     301
+/terms.html              /terms-of-service   301
 
 # ── Trailing slash removal
-/about/             /about.html             301
-/contact/           /contact.html           301
-/pricing/           /pricing.html           301
-/offerings/         /offerings.html         301
-/insights/          /insights.html          301
-/signup/            /signup.html            301
-/privacy-policy/    /privacy-policy.html    301
-/terms-of-service/  /terms-of-service.html  301
-/refund-policy/     /refund-policy.html     301
-/cookie-policy/     /cookie-policy.html     301
-/holy-mole-grail/   /holy-mole-grail.html   301
+/about/              /about              301
+/contact/            /contact            301
+/pricing/            /pricing            301
+/offerings/          /offerings          301
+/insights/           /insights           301
+/signup/             /signup             301
+/privacy-policy/     /privacy-policy     301
+/terms-of-service/   /terms-of-service   301
+/refund-policy/      /refund-policy      301
+/cookie-policy/      /cookie-policy      301
+/holy-mole-grail/    /holy-mole-grail    301
+
+# ── Extensionless aliases
+/refund-policy  /refund-policy      301
+/privacy        /priv
