@@ -8,138 +8,138 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/about.html</loc>
+    <loc>https://keyscodesandmodes.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/contact.html</loc>
+    <loc>https://keyscodesandmodes.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/offerings.html</loc>
+    <loc>https://keyscodesandmodes.com/offerings</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/insights.html</loc>
+    <loc>https://keyscodesandmodes.com/insights</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/signup.html</loc>
+    <loc>https://keyscodesandmodes.com/signup</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/lander.html</loc>
+    <loc>https://keyscodesandmodes.com/lander</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/research.html</loc>
+    <loc>https://keyscodesandmodes.com/research</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- ═══ FREE TUNER LANDING (public, indexable) ═══ -->
   <url>
-    <loc>https://keyscodesandmodes.com/free-tuner-landing.html</loc>
+    <loc>https://keyscodesandmodes.com/free-tuner-landing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- ═══ LEGAL PAGES ═══ -->
   <url>
-    <loc>https://keyscodesandmodes.com/privacy.html</loc>
+    <loc>https://keyscodesandmodes.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/terms.html</loc>
+    <loc>https://keyscodesandmodes.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/refund-policy.html</loc>
+    <loc>https://keyscodesandmodes.com/refund-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/cookie-policy.html</loc>
+    <loc>https://keyscodesandmodes.com/cookie-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <!-- ═══ PUBLIC APPS ═══ -->
   <url>
-    <loc>https://keyscodesandmodes.com/apps/holy-mole-grail.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/holy-mole-grail</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/chromatic-circle.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/chromatic-circle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/kcm-tuner.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/kcm-tuner</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/guitar-improvisations.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/guitar-improvisations</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/circle-of-fifths.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/circle-of-fifths</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/harmonized-chromatic-scale.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/harmonized-chromatic-scale</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/rhythmic-clock.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/rhythmic-clock</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/rhythm-harmony.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/rhythm-harmony</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/modal-stencil-player.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/modal-stencil-player</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/S-Geo-Music.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/S-Geo-Music</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/chromatic-wheel-of-sound.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/chromatic-wheel-of-sound</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/pitch-detector.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/pitch-detector</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/fretboard-speed-challenge.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/fretboard-speed-challenge</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/name-that-note.html</loc>
+    <loc>https://keyscodesandmodes.com/apps/name-that-note</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
