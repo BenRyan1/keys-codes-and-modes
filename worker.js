@@ -1,123 +1,105 @@
-// ================================================================
-// Keys, Codes & Modes — MailerLite Signup Worker
-// Deploy this to: keyscodesandmode-mailer-lite (Cloudflare Workers)
-// ================================================================
-
-const MAILERLITE_API_KEY = 'mlsn.2c8bec80f2b4edcdc63560987070ba6b51c018634ebbfa9454a6f8efce98e241';
-const MAILERLITE_API_URL = 'https://connect.mailerlite.com/api/subscribers';
-
-// Your site URL for CORS
-const ALLOWED_ORIGIN = 'https://www.keyscodesandmodes.com';
-
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
 
-    // ── CORS preflight ──────────────────────────────────────────
+    const cors = {
+      'Access-Control-Allow-Origin': 'https://keyscodesandmodes.com',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    };
+
     if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: corsHeaders()
-      });
+      return new Response(null, { status: 204, headers: cors });
     }
 
-    // ── Only accept POST ────────────────────────────────────────
     if (request.method !== 'POST') {
-      return jsonResponse({ success: false, error: 'Method not allowed' }, 405);
+      return new Response(JSON.stringify({ ok: false, error: 'Method not allowed' }),
+        { status: 405, headers: { ...cors, 'Content-Type': 'application/json' } });
     }
 
-    // ── Parse form data ─────────────────────────────────────────
-    let firstName = '';
-    let email = '';
+    function sanitize(str, maxLen = 200) {
+      if (typeof str !== 'string') return '';
+      return str.trim().slice(0, maxLen)
+        .replace(/[<>"'&]/g, c => ({
+          '<':  '&lt;',
+          '>':  '&gt;',
+          '"':  '&quot;',
+          "'":  '&#39;',
+          '&':  '&amp;',
+        }[c]));
+    }
 
-    try {
-      const contentType = request.headers.get('content-type') || '';
+    const url = new URL(request.url);
 
-      if (contentType.includes('application/json')) {
+    if (url.pathname === '/api/verify-code') {
+      let code = '';
+      try {
         const body = await request.json();
-        firstName = (body.firstName || '').trim();
-        email = (body.email || '').trim();
-      } else {
-        // FormData
-        const formData = await request.formData();
-        firstName = (formData.get('firstName') || '').trim();
-        email = (formData.get('email') || '').trim();
+        code = (body.code || '').trim();
+      } catch (e) {
+        return new Response(JSON.stringify({ ok: false, error: 'Invalid JSON' }),
+          { status: 400, headers: { ...cors, 'Content-Type': 'application/json' } });
       }
-    } catch (err) {
-      return jsonResponse({ success: false, error: 'Invalid form data' }, 400);
+
+      const validCodes = new Set([
+        env.CODE_PREMIUM,
+        env.CODE_FOUNDER,
+        env.CODE_BETA,
+        env.CODE_PRESS,
+        env.CODE_FRIEND,
+        env.CODE_DEMO,
+        env.CODE_SUPT,
+        env.CODE_YMS,
+      ]);
+
+      const valid = code.length > 0 && validCodes.has(code);
+
+      return new Response(JSON.stringify({ ok: valid }),
+        {
+          status: valid ? 200 : 401,
+          headers: { ...cors, 'Content-Type': 'application/json' },
+        });
     }
 
-    // ── Validate ────────────────────────────────────────────────
-    if (!email || !email.includes('@')) {
-      return jsonResponse({ success: false, error: 'Valid email address is required' }, 400);
-    }
-    if (!firstName) {
-      return jsonResponse({ success: false, error: 'First name is required' }, 400);
-    }
-
-    // ── Add subscriber to MailerLite ────────────────────────────
+    let email = '';
     try {
-      const payload = {
-        email: email,
-        fields: {
-          name: firstName
-        },
-        status: 'active'
-      };
-
-      const mlResponse = await fetch(MAILERLITE_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${MAILERLITE_API_KEY}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const mlData = await mlResponse.json();
-
-      // MailerLite returns 200 or 201 on success
-      if (mlResponse.ok) {
-        return jsonResponse({
-          success: true,
-          message: 'Successfully subscribed! Redirecting to your free apps...'
-        }, 200);
-      }
-
-      // MailerLite returned an error
-      console.error('MailerLite error:', mlData);
-      return jsonResponse({
-        success: false,
-        error: mlData.message || 'Subscription failed. Please try again.'
-      }, 400);
-
-    } catch (err) {
-      console.error('Worker fetch error:', err);
-      return jsonResponse({
-        success: false,
-        error: 'Server error. Please try again in a moment.'
-      }, 500);
+      const body = await request.json();
+      email = sanitize((body.email || '').toLowerCase(), 100);
+    } catch (e) {
+      return new Response(JSON.stringify({ ok: false, error: 'Invalid JSON' }),
+        { status: 400, headers: { ...cors, 'Content-Type': 'application/json' } });
     }
+
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRe.test(email)) {
+      return new Response(JSON.stringify({ ok: false, error: 'Invalid email' }),
+        { status: 422, headers: { ...cors, 'Content-Type': 'application/json' } });
+    }
+
+    const mlResponse = await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Accept':        'application/json',
+        'Authorization': `Bearer ${env.MAILERLITE_API_KEY}`,
+      },
+      body: JSON.stringify({
+        email:  email,
+        fields: { signup_source: 'tuner-landing' },
+        groups: ['179228643447276862'],
+        status: 'active',
+      }),
+    });
+
+    const mlBody = await mlResponse.json().catch(() => ({}));
+
+    if (mlResponse.ok || mlResponse.status === 409) {
+      return new Response(JSON.stringify({ ok: true }),
+        { status: 200, headers: { ...cors, 'Content-Type': 'application/json' } });
+    }
+
+    return new Response(
+      JSON.stringify({ ok: false, ml_status: mlResponse.status, ml_error: mlBody }),
+      { status: 200, headers: { ...cors, 'Content-Type': 'application/json' } }
+    );
   }
 };
-
-// ── Helpers ──────────────────────────────────────────────────────
-
-function corsHeaders() {
-  return {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Max-Age': '86400'
-  };
-}
-
-function jsonResponse(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      ...corsHeaders()
-    }
-  });
-}
