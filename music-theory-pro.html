@@ -1232,8 +1232,8 @@ window.addEventListener('unhandledrejection', function(event) {
         function init() {
             try {
                 window.currentPatternIntervals = [];
-                createSpheres();
                 createPiano();
+                setTimeout(createSpheres, 1000);
                 createGuitar();
                 updateDisplay();
                 updateView();
@@ -1390,7 +1390,8 @@ window.addEventListener('unhandledrejection', function(event) {
             const enharmonicLabels = ['C','C♯\nD♭','D','D♯\nE♭','E','F','F♯\nG♭','G','G♯\nA♭','A','A♯\nB♭','B'];
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * (Math.PI / 180);
-                const cw = circle.getBoundingClientRect().width || circle.offsetWidth || 300;
+                const cw = circle.getBoundingClientRect().width || circle.offsetWidth || 0;
+                if (!cw || cw < 10) { setTimeout(createSpheres, 300); return; }
                 const radius = cw > 340 ? 185 : (cw > 300 ? 125 : 110);
                 const cx = cw / 2;
                 const x = cx + radius * Math.cos(angle);
