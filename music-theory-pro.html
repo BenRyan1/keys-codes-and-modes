@@ -1390,8 +1390,9 @@ window.addEventListener('unhandledrejection', function(event) {
             const enharmonicLabels = ['C','C♯\nD♭','D','D♯\nE♭','E','F','F♯\nG♭','G','G♯\nA♭','A','A♯\nB♭','B'];
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * (Math.PI / 180);
-                const radius = circle.offsetWidth > 340 ? 185 : 125;
-                const cx = (circle.offsetWidth || 500) / 2;
+                const cw = circle.getBoundingClientRect().width || circle.offsetWidth || 300;
+                const radius = cw > 340 ? 185 : (cw > 300 ? 125 : 110);
+                const cx = cw / 2;
                 const x = cx + radius * Math.cos(angle);
                 const y = cx + radius * Math.sin(angle);
                 const s = document.createElement('div');
