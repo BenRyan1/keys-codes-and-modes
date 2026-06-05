@@ -1387,6 +1387,9 @@ window.addEventListener('unhandledrejection', function(event) {
         function createSpheres() {
             const circle = document.getElementById('chromaticCircle');
             if (!circle) return;
+            var _w = circle.getBoundingClientRect().width;
+            if (_w < 10) { setTimeout(createSpheres, 80); return; }
+            circle.querySelectorAll('.sphere').forEach(function(s){ s.remove(); });
             const enharmonicLabels = ['C','C♯\nD♭','D','D♯\nE♭','E','F','F♯\nG♭','G','G♯\nA♭','A','A♯\nB♭','B'];
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * (Math.PI / 180);
