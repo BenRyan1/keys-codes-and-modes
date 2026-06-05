@@ -1390,14 +1390,11 @@ window.addEventListener('unhandledrejection', function(event) {
             const enharmonicLabels = ['C','C♯\nD♭','D','D♯\nE♭','E','F','F♯\nG♭','G','G♯\nA♭','A','A♯\nB♭','B'];
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * (Math.PI / 180);
-                const radius = circle.offsetWidth > 340 ? 185 : 125;
-                const cx = (circle.offsetWidth || 500) / 2;
-                const x = cx + radius * Math.cos(angle);
-                const y = cx + radius * Math.sin(angle);
+                const deg = i * 30;
+                const orbit = `rotate(${deg}deg) translateY(-42%) rotate(-${deg}deg) translate(-50%,-50%)`;
                 const s = document.createElement('div');
                 s.className = 'sphere';
-                s.style.left = (x - 35) + 'px';
-                s.style.top  = (y - 35) + 'px';
+                s.style.position='absolute'; s.style.top='50%'; s.style.left='50%'; s.style.transform=orbit; s.dataset.orbit=orbit;
                 s.style.background = colors[i];
                 s.style.color = textColors[i];
                 s.style.fontSize = enharmonicLabels[i].includes('\n') ? '13px' : '16px';
