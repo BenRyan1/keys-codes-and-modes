@@ -1391,13 +1391,25 @@ window.addEventListener('unhandledrejection', function(event) {
             if (_w < 10) { setTimeout(createSpheres, 80); return; }
             circle.querySelectorAll('.sphere').forEach(function(s){ s.remove(); });
             const enharmonicLabels = ['C','C♯\nD♭','D','D♯\nE♭','E','F','F♯\nG♭','G','G♯\nA♭','A','A♯\nB♭','B'];
+            // Use actual container size for correct orbit radius
+            const containerSize = _w;
+            const sphereSize = containerSize <= 260 ? 44 : containerSize <= 340 ? 50 : 70;
+            const orbitRadius = (containerSize / 2) - (sphereSize / 2) - 8; // 8px inset from border
             for (let i = 0; i < 12; i++) {
+                // C=0 at top (12 o'clock), clockwise: angle starts at -90deg
                 const angle = (i * 30 - 90) * (Math.PI / 180);
-                const deg = i * 30;
-                const orbit = `rotate(${deg}deg) translateY(-42%) rotate(-${deg}deg) translate(-50%,-50%)`;
+                const x = Math.cos(angle) * orbitRadius;
+                const y = Math.sin(angle) * orbitRadius;
                 const s = document.createElement('div');
                 s.className = 'sphere';
-                s.style.position='absolute'; s.style.top='50%'; s.style.left='50%'; s.style.transform=orbit; s.dataset.orbit=orbit;
+                // Position from center of container, offset by half sphere size to center the dot
+                s.style.position = 'absolute';
+                s.style.left = (containerSize / 2 + x - sphereSize / 2) + 'px';
+                s.style.top  = (containerSize / 2 + y - sphereSize / 2) + 'px';
+                s.style.width = sphereSize + 'px';
+                s.style.height = sphereSize + 'px';
+                s.style.transform = 'none';
+                s.dataset.orbit = `${x},${y}`;
                 s.style.background = colors[i];
                 s.style.color = textColors[i];
                 s.style.fontSize = enharmonicLabels[i].includes('\n') ? '13px' : '16px';
