@@ -1379,8 +1379,42 @@ input[type="range"] {
           <div id="layerList"></div>
           <button class="btn btn-teal btn-full" onclick="addLayer()" style="margin-top:0.25rem;">+ Add Layer</button>
         </div>
+
+        <!-- VRD: Mic permission banner -->
+        <div id="vrdPermBanner" class="ctrl-card" style="display:none;background:rgba(0,128,128,0.08);border:1px solid rgba(0,128,128,0.3);">
+          <div class="ctrl-card-title" style="color:var(--teal);">🎤 Voice Rhythm Detector</div>
+          <p style="font-size:0.75rem;color:var(--text-dim);margin:0 0 0.5rem;">Speak percussion syllables — BOOM routes to Layer 1, CHA to Layer 2</p>
+          <button class="btn btn-teal btn-full" id="vrdAllowBtn" onclick="vrdRequestMic()" style="margin-bottom:0.4rem;">🎤 Allow Microphone</button>
+          <select id="vrdDeviceSelect" style="width:100%;background:var(--bg-deep);color:var(--text);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:4px;font-size:0.75rem;display:none;" onchange="vrdSwitchDevice(this.value)"></select>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.4rem;">
+            <label style="font-size:0.72rem;color:var(--text-dim);white-space:nowrap;">BOOM/CHA Speed</label>
+            <input type="range" id="vrdSplitSlider" min="5" max="500" step="5" value="100"
+              style="flex:1;accent-color:var(--coral);" oninput="vrdUpdateSplit(this.value)">
+            <span id="vrdSplitVal" style="font-size:0.72rem;color:var(--coral);width:2.5rem;text-align:right;">100ms</span>
+          </div>
+          <div style="font-size:0.68rem;color:var(--text-ghost);margin-top:0.2rem;">↑ higher = slower sounds = BOOM &nbsp;|&nbsp; ↓ lower = faster = CHA</div>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.4rem;">
+            <label style="font-size:0.72rem;color:var(--text-dim);white-space:nowrap;">Sensitivity</label>
+            <input type="range" id="vrdSensSlider" min="0.01" max="0.3" step="0.005" value="0.05"
+              style="flex:1;accent-color:var(--teal);" oninput="vrdUpdateSens(this.value)">
+            <span id="vrdSensVal" style="font-size:0.72rem;color:var(--teal);width:2.5rem;text-align:right;">0.05</span>
+          </div>
+          <div id="vrdMeterWrap" style="margin-top:0.4rem;display:none;">
+            <div style="font-size:0.7rem;color:var(--text-ghost);margin-bottom:2px;">🎤 Live level</div>
+            <div style="background:rgba(255,255,255,0.06);border-radius:3px;height:6px;overflow:hidden;">
+              <div id="vrdMeterBar" style="height:100%;width:0%;background:var(--teal);transition:width 0.05s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VRD: Record All / Clear All -->
+        <div class="ctrl-card" style="display:flex;flex-direction:column;gap:0.4rem;">
+          <button class="btn btn-teal btn-full" id="vrdRecordAllBtn" onclick="vrdToggleRecordAll()" style="font-weight:700;">🎤 RECORD ALL LAYERS</button>
+          <button class="btn btn-full" onclick="vrdClearAll()" style="background:rgba(244,208,63,0.12);color:var(--gold);border:1px solid rgba(244,208,63,0.3);font-weight:700;">🗑 CLEAR ALL</button>
+        </div>
         <div class="ctrl-card">
           <div class="ctrl-card-title">Steps</div>
+        <div id="vrdSummaryPanel" class="ctrl-card" style="display:none;padding:0.6rem;background:rgba(0,128,128,0.06);border:1px solid rgba(0,128,128,0.2);"></div>
           <div class="ctrl-group">
             <label class="ctrl-label" for="globalStepsSlider">Global Steps: <span id="stepsVal">16</span></label>
             <input type="range" id="globalStepsSlider" min="4" max="32" value="16" step="1"
@@ -2299,6 +2333,11 @@ function muteLayer(id) {
   if(l){l.muted=!l.muted; renderLayers();}
 }
 
+function setLayerSound(id, sound) {
+  const l = RS.layers.find(l=>l.id===id);
+  if (l) { l.soundType = sound; showToast('🥁 Layer sound: ' + sound); }
+}
+
 function updateLayerPulses(id, val) {
   const l=RS.layers.find(l=>l.id===id);
   if(l){l.pulses=parseInt(val); l.pattern=bjorklund(l.steps,Math.min(l.pulses,l.steps)); document.getElementById(`lpv-${id}`).textContent=l.pulses; drawRhythmViz();}
@@ -2318,11 +2357,22 @@ function renderLayers() {
           <span class="layer-name" style="color:${layer.color}">Layer ${idx+1}</span>
         </div>
         <div class="layer-btns">
+          <button class="layer-btn" id="vrdMicBtn-${layer.id}" onclick="vrdToggleLayer(${layer.id})" title="Record this layer">🎤</button>
           <button class="layer-btn ${layer.muted?'muted':''}" onclick="muteLayer(${layer.id})">${layer.muted?'🔇':'🔊'}</button>
+          <button class="layer-btn" onclick="vrdClearLayer(${layer.id})" title="Clear layer" style="color:var(--text-dim)">CLR</button>
           <button class="layer-btn" onclick="removeLayer(${layer.id})">✕</button>
         </div>
       </div>
       <div class="layer-sliders">
+        <div class="slider-row" style="margin-bottom:0.3rem;">
+          <label>Sound</label>
+          <select style="flex:1;background:var(--bg-deep);color:var(--text);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:2px 4px;font-size:0.75rem;"
+            onchange="setLayerSound(${layer.id},this.value)">
+            ${['kick','bass','snare','hihat','openhat','cymbal','conga','rim','wood','click'].map(s=>
+              `<option value="${s}" ${layer.soundType===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+            ).join('')}
+          </select>
+        </div>
         <div class="slider-row">
           <label>Pulses</label>
           <input type="range" min="1" max="${layer.steps}" value="${layer.pulses}" step="1"
@@ -3900,6 +3950,440 @@ function etRestart() {
 
 })();
 
+
+// ══════════════════════════════════════════════════════════════════════════════
+// VRD — Voice Rhythm Detector  v2  (Timing-Based)
+// Ben Ryan / KCM  —  June 13, 2026
+//
+// HOW IT WORKS:
+//   1. User taps RECORD — a count-in plays (4 clicks), then recording starts
+//   2. User speaks a rhythm: "BOOM cha cha BOOM cha BOOM BOOM cha"
+//   3. Each syllable onset is timestamped against the clock
+//   4. Energy ratio classifies each onset:
+//        BOOM  (ratio ≥ 1.0) → Layer 1  (kick/bass territory)
+//        CHA   (ratio < 1.0) → Layer 2  (hihat/snare territory)
+//   5. On STOP, onsets are quantized to the nearest 16th note grid
+//   6. Layer patterns are written from the quantized grid
+//   7. Euclidean circle updates — play it back immediately
+//
+// SYLLABLE → LAYER MAPPING (expandable):
+//   BOOM / BOO / BUM / GUM  → Layer 1  (low ratio)
+//   CHA / TSS / KA / TAK    → Layer 2  (high ratio)
+//
+// TIMING: tempo-locked to RS.tempo (BPM slider)
+// ══════════════════════════════════════════════════════════════════════════════
+
+(function() {
+
+  // ── Constants ──────────────────────────────────────────────────────────────
+  const LOW_MAX_BIN   = 8;      // < ~350 Hz  — BOOM territory
+  const HI_MIN_BIN    = 30;     // > ~1300 Hz — CHA territory (wider net)
+  const RATIO_SPLIT   = 0.15;   // ≥ = BOOM (L1),  < = CHA (L2) — tuned for MacBook mic
+  const LOCKOUT_MS    = 120;    // min ms between onsets (global gate)
+  const RISE_MS       = 15;     // ms to confirm onset (avoid noise spikes)
+  const FFT_SIZE      = 256;
+  const NOISE_FRAMES  = 40;
+  const COUNTIN_BEATS = 4;      // count-in clicks before recording
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let vrdStream       = null;
+  let vrdCtx          = null;
+  let vrdSource       = null;
+  let vrdAnalyser     = null;
+  let vrdRunning      = false;   // mic is open
+  let vrdRecording    = false;   // actively capturing onsets
+  let vrdCountingIn   = false;
+  let vrdOnsets       = [];      // [{t: ms from recStart, layer: 0|1, riseMs}]
+  let vrdRecStart     = 0;       // performance.now() when recording began
+  let vrdRecDuration  = 0;       // ms — set when user stops
+  let vrdLastOnset    = 0;
+  let vrdLayerLast    = [0, 0, 0, 0, 0, 0];
+  let vrdSensitivity  = 0.04;
+  let vrdNoiseFloor   = 0.008;
+  let vrdAnimId       = null;
+  let vrdInRise       = false;
+  let vrdRiseStart    = 0;
+  let vrdDeviceId     = null;
+  let vrdCountInTimer = null;
+  let vrdMetronomeId  = null;
+
+  // ── Expose show-banner so existing addLayer hook works ─────────────────────
+  function vrdShowBanner() {
+    const b = document.getElementById('vrdPermBanner');
+    if (b) b.style.display = '';
+  }
+
+  const _origAddLayer = window.addLayer;
+  window.addLayer = function() {
+    _origAddLayer && _origAddLayer();
+    vrdShowBanner();
+  };
+
+  // ── Mic open ───────────────────────────────────────────────────────────────
+  window.vrdRequestMic = async function() {
+    try {
+      const constraints = {
+        audio: vrdDeviceId ? { deviceId: { exact: vrdDeviceId }, echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+                           : { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+        video: false
+      };
+      vrdStream = await navigator.mediaDevices.getUserMedia(constraints);
+      await vrdInitAudio();
+      await vrdPopulateDevices();
+      showToast('🎤 Mic ready — tap RECORD ALL LAYERS to begin');
+      const btn = document.getElementById('vrdAllowBtn');
+      if (btn) { btn.textContent = '✅ Microphone Connected'; btn.disabled = true; btn.style.opacity = '0.6'; }
+    } catch(e) {
+      showToast('⚠️ Mic blocked: ' + e.message);
+    }
+  };
+
+  async function vrdInitAudio() {
+    vrdCtx = (window.RS && RS.audioCtx) ? RS.audioCtx : new (window.AudioContext||window.webkitAudioContext)();
+    if (vrdCtx.state === 'suspended') await vrdCtx.resume();
+    vrdSource   = vrdCtx.createMediaStreamSource(vrdStream);
+    vrdAnalyser = vrdCtx.createAnalyser();
+    vrdAnalyser.fftSize = FFT_SIZE;
+    vrdSource.connect(vrdAnalyser);
+    vrdNoiseFloor = await vrdCalibrateNoise();
+    const mw = document.getElementById('vrdMeterWrap');
+    if (mw) mw.style.display = '';
+    const ds = document.getElementById('vrdDeviceSelect');
+    if (ds) ds.style.display = '';
+    vrdRunning = true;
+    vrdLoop();
+  }
+
+  async function vrdCalibrateNoise() {
+    return new Promise(resolve => {
+      const buf = new Float32Array(vrdAnalyser.fftSize);
+      let frames = 0, sum = 0;
+      function sample() {
+        vrdAnalyser.getFloatTimeDomainData(buf);
+        let rms = 0;
+        for (let i=0; i<buf.length; i++) rms += buf[i]*buf[i];
+        sum += Math.sqrt(rms/buf.length);
+        if (++frames < NOISE_FRAMES) requestAnimationFrame(sample);
+        else resolve(sum/NOISE_FRAMES * 1.8);
+      }
+      requestAnimationFrame(sample);
+    });
+  }
+
+  async function vrdPopulateDevices() {
+    const sel = document.getElementById('vrdDeviceSelect');
+    if (!sel) return;
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    sel.innerHTML = devices.filter(d=>d.kind==='audioinput').map(d=>
+      `<option value="${d.deviceId}">${d.label||'Mic '+d.deviceId.slice(0,8)}</option>`
+    ).join('');
+  }
+
+  window.vrdSwitchDevice = async function(id) {
+    vrdDeviceId = id;
+    if (vrdStream) { vrdStream.getTracks().forEach(t=>t.stop()); await window.vrdRequestMic(); }
+  };
+
+  window.vrdUpdateSens = function(val) {
+    vrdSensitivity = parseFloat(val);
+    const lbl = document.getElementById('vrdSensVal');
+    if (lbl) lbl.textContent = parseFloat(val).toFixed(3);
+  };
+
+  // Live attack-speed tuner — dial in BOOM vs CHA boundary in ms
+  let ATK_SPLIT_LIVE = 100;
+  window.vrdUpdateSplit = function(val) {
+    ATK_SPLIT_LIVE = parseFloat(val);
+    const lbl = document.getElementById('vrdSplitVal');
+    if (lbl) lbl.textContent = Math.round(val) + 'ms';
+  };
+
+  // ── Detection loop (always running when mic open) ──────────────────────────
+  function vrdLoop() {
+    if (!vrdRunning) return;
+    vrdAnimId = requestAnimationFrame(vrdLoop);
+
+    const freqBuf = new Float32Array(vrdAnalyser.frequencyBinCount);
+    const timeBuf = new Float32Array(vrdAnalyser.fftSize);
+    vrdAnalyser.getFloatFrequencyData(freqBuf);
+    vrdAnalyser.getFloatTimeDomainData(timeBuf);
+
+    // RMS
+    let rms = 0;
+    for (let i=0; i<timeBuf.length; i++) rms += timeBuf[i]*timeBuf[i];
+    rms = Math.sqrt(rms/timeBuf.length);
+
+    // Store in rolling RMS buffer for attack speed detection
+    vrdRmsBuf[vrdRmsBufIdx] = rms;
+    vrdRmsBufIdx = (vrdRmsBufIdx + 1) % ATK_BUF_SIZE;
+
+    // Meter
+    const mb = document.getElementById('vrdMeterBar');
+    if (mb) mb.style.width = Math.min(100, rms * 900) + '%';
+
+    if (!vrdRecording) return;
+
+    const now = performance.now();
+    const threshold = vrdNoiseFloor + vrdSensitivity;
+
+    if (rms > threshold) {
+      if (!vrdInRise) { vrdInRise = true; vrdRiseStart = now; }
+      else if (now - vrdRiseStart >= RISE_MS && now - vrdLastOnset > LOCKOUT_MS) {
+        vrdLastOnset = now;
+        vrdInRise    = false;
+        vrdCaptureOnset(freqBuf, now);
+      }
+    } else {
+      vrdInRise = false;
+    }
+  }
+
+  // Attack speed buffer — last 128 RMS samples before onset
+  const ATK_BUF_SIZE = 128;
+  let vrdRmsBuf = new Float32Array(ATK_BUF_SIZE);
+  let vrdRmsBufIdx = 0;
+
+  function vrdCaptureOnset(freqBuf, nowMs) {
+    // ATTACK SPEED DETECTION — works on any mic
+    // BOOM = slow attack (voice builds gradually, >20ms to peak)
+    // CHA  = fast attack (sharp consonant, <10ms to peak)
+    //
+    // We look at the RMS history buffer and measure how quickly
+    // the signal rose from noise floor to peak.
+
+    // Find peak and where signal crossed 20% of peak in recent buffer
+    let peak = 0;
+    for (let i = 0; i < ATK_BUF_SIZE; i++) {
+      if (vrdRmsBuf[i] > peak) peak = vrdRmsBuf[i];
+    }
+    const threshold20 = peak * 0.20;
+    // Find how many frames ago signal crossed 20% threshold
+    // (scanning backwards from current position)
+    let riseFrames = 0;
+    for (let i = 1; i < ATK_BUF_SIZE; i++) {
+      const idx = (vrdRmsBufIdx - i + ATK_BUF_SIZE) % ATK_BUF_SIZE;
+      if (vrdRmsBuf[idx] < threshold20) break;
+      riseFrames++;
+    }
+    // Each frame is ~1/60s = ~16.7ms
+    const riseMs = riseFrames * 16.7;
+
+    // BOOM = rise > 25ms (slow, chest resonance builds)
+    // CHA  = rise < 25ms (fast, sharp consonant)
+    const atkSplit = (typeof ATK_SPLIT_LIVE !== 'undefined') ? ATK_SPLIT_LIVE : 25;
+    const layerIdx   = riseMs >= atkSplit ? 0 : 1;
+
+    // Per-layer lockout — prevents double-counting same layer within 500ms
+    if (nowMs - vrdLayerLast[layerIdx] < 500) return;
+    vrdLayerLast[layerIdx] = nowMs;
+
+    const tFromStart = nowMs - vrdRecStart;
+    console.log(`VRD onset: riseMs=${riseMs.toFixed(1)} split=${atkSplit}ms → L${layerIdx+1} | riseFrames=${riseFrames} peak=${peak.toFixed(4)}`);
+
+    vrdOnsets.push({ t: tFromStart, layer: layerIdx, riseMs });
+
+    // Live visual feedback — flash the layer dot
+    const layer = RS.layers[layerIdx];
+    if (layer) {
+      const dot = document.querySelector(`#vrdMicBtn-${layer.id}`);
+      if (dot) { dot.style.background='var(--teal)'; setTimeout(()=>dot.style.background='',200); }
+    }
+
+    const emoji = layerIdx === 0 ? '💥' : '🔔';
+    const name  = layerIdx === 0 ? 'BOOM' : 'CHA';
+    showToast(`${emoji} ${name}  rise:${riseMs.toFixed(0)}ms → L${layerIdx+1}  t:${Math.round(tFromStart)}ms`);
+  }
+
+  // ── Count-in then record ───────────────────────────────────────────────────
+  window.vrdToggleRecordAll = async function() {
+    if (!vrdRunning) {
+      await window.vrdRequestMic();
+      if (!vrdRunning) return;
+    }
+
+    if (vrdRecording) {
+      // STOP
+      vrdStopRecording();
+    } else {
+      // COUNT IN then record
+      vrdStartCountIn();
+    }
+  };
+
+  function vrdStartCountIn() {
+    if (!RS.audioCtx) initRhythmAudio && initRhythmAudio();
+    const bpm      = RS.tempo || 110;
+    const beatMs   = (60 / bpm) * 1000;
+    vrdOnsets      = [];
+    vrdCountingIn  = true;
+    vrdRecording   = false;
+
+    const btn = document.getElementById('vrdRecordAllBtn');
+    if (btn) { btn.textContent = '⏳ COUNT IN...'; btn.style.background='var(--gold)'; btn.style.color='#0a0a15'; }
+
+    let beat = 0;
+    function tick() {
+      if (beat < COUNTIN_BEATS) {
+        // Play click
+        vrdPlayClick(beat === 0);
+        showToast(`${COUNTIN_BEATS - beat}...`);
+        beat++;
+        vrdCountInTimer = setTimeout(tick, beatMs);
+      } else {
+        // Start recording
+        vrdCountingIn = false;
+        vrdRecording  = true;
+        vrdRecStart   = performance.now();
+        vrdLastOnset  = 0;
+        vrdLayerLast  = [0, 0, 0, 0, 0, 0];
+        if (btn) { btn.textContent = '⏹ STOP RECORDING'; btn.style.background='#c0392b'; btn.style.color='#fff'; }
+        showToast('🔴 RECORDING — speak your rhythm!');
+      }
+    }
+    tick();
+  }
+
+  function vrdPlayClick(isDownbeat) {
+    if (!vrdCtx) return;
+    const now = vrdCtx.currentTime;
+    const buf = vrdCtx.createBuffer(1, vrdCtx.sampleRate * 0.04, vrdCtx.sampleRate);
+    const d   = buf.getChannelData(0);
+    const freq = isDownbeat ? 1200 : 800;
+    for (let i=0; i<d.length; i++) {
+      d[i] = Math.sin(2*Math.PI*freq*i/vrdCtx.sampleRate) * Math.exp(-i/(vrdCtx.sampleRate*0.008));
+    }
+    const src = vrdCtx.createBufferSource();
+    const g   = vrdCtx.createGain();
+    src.buffer = buf; g.gain.value = 0.5;
+    src.connect(g); g.connect(vrdCtx.destination); src.start(now);
+  }
+
+  function vrdStopRecording() {
+    vrdRecording     = false;
+    vrdRecDuration   = performance.now() - vrdRecStart;
+    clearTimeout(vrdCountInTimer);
+
+    const btn = document.getElementById('vrdRecordAllBtn');
+    if (btn) { btn.textContent = '🎤 RECORD ALL LAYERS'; btn.style.background=''; btn.style.color=''; }
+
+    if (vrdOnsets.length === 0) {
+      showToast('⚠️ No syllables detected — try speaking louder or adjusting sensitivity');
+      return;
+    }
+
+    showToast(`✅ ${vrdOnsets.length} syllables captured — quantizing...`);
+    setTimeout(() => vrdQuantizeAndWrite(), 100);
+  }
+
+  // ── Quantize onsets to grid and write to layer patterns ───────────────────
+  function vrdQuantizeAndWrite() {
+    const bpm        = RS.tempo || 110;
+    const beatMs     = (60 / bpm) * 1000;
+    const sixteenth  = beatMs / 4;             // ms per 16th note
+    const totalMs    = vrdRecDuration;
+
+    // How many 16th note steps fit in the recording?
+    const totalSteps = Math.max(8, Math.round(totalMs / sixteenth));
+    // Round to nearest power of 2 or common grid: 8,12,16,24,32
+    const gridSizes  = [8, 12, 16, 24, 32, 48, 64];
+    const steps      = gridSizes.reduce((prev, curr) =>
+      Math.abs(curr - totalSteps) < Math.abs(prev - totalSteps) ? curr : prev
+    );
+
+    // Build empty patterns for each layer
+    const patterns = RS.layers.map(() => new Array(steps).fill(0));
+
+    // Quantize each onset to nearest step
+    vrdOnsets.forEach(onset => {
+      const rawStep    = onset.t / sixteenth;
+      const stepIdx    = Math.round(rawStep) % steps;
+      const layerIdx   = Math.min(onset.layer, RS.layers.length - 1);
+      patterns[layerIdx][stepIdx] = 1;
+    });
+
+    // Write patterns to layers
+    RS.layers.forEach((layer, i) => {
+      layer.steps   = steps;
+      layer.pattern = patterns[i];
+      layer.pulses  = patterns[i].filter(b=>b===1).length;
+    });
+
+    // Update global step count
+    RS.globalSteps = steps;
+    const slider = document.getElementById('globalStepsSlider');
+    if (slider) { slider.max = Math.max(64, steps); slider.value = steps; }
+    const stepsVal = document.getElementById('stepsVal');
+    if (stepsVal) stepsVal.textContent = steps;
+
+    renderLayers();
+    drawRhythmViz && drawRhythmViz();
+
+    const totalBeats = Math.floor(vrdOnsets.length);
+    showToast(`🥁 ${steps}-step grid written — ${vrdOnsets.filter(o=>o.layer===0).length} BOOM + ${vrdOnsets.filter(o=>o.layer===1).length} CHA — hit PLAY!`);
+
+    // Show summary panel
+    vrdShowSummary(steps, patterns);
+  }
+
+  function vrdShowSummary(steps, patterns) {
+    const panel = document.getElementById('vrdSummaryPanel');
+    if (!panel) return;
+    const boomCount = vrdOnsets.filter(o=>o.layer===0).length;
+    const chaCount  = vrdOnsets.filter(o=>o.layer===1).length;
+    panel.style.display = '';
+    panel.innerHTML = `
+      <div style="font-size:0.75rem;color:var(--teal);font-weight:700;margin-bottom:0.3rem;">✅ Rhythm Captured</div>
+      <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.8;">
+        Grid: <strong style="color:var(--text)">${steps} steps</strong> &nbsp;|&nbsp;
+        💥 BOOM: <strong style="color:var(--gold)">${boomCount}</strong> &nbsp;|&nbsp;
+        🔔 CHA: <strong style="color:var(--teal)">${chaCount}</strong>
+      </div>
+      <div style="font-size:0.7rem;color:var(--text-ghost);margin-top:0.3rem;">Hit ▶ PLAY to hear your rhythm</div>
+    `;
+  }
+
+  // ── Per-layer solo mic recording ───────────────────────────────────────────
+  window.vrdToggleLayer = async function(layerId) {
+    if (!vrdRunning) {
+      await window.vrdRequestMic();
+      if (!vrdRunning) return;
+    }
+    if (vrdRecording && vrdActiveLayer === layerId) {
+      vrdStopRecording();
+      vrdActiveLayer = null;
+    } else {
+      vrdOnsets      = [];
+      vrdActiveLayer = layerId;
+      vrdStartCountIn();
+    }
+  };
+  let vrdActiveLayer = null;
+
+  // ── Clear ──────────────────────────────────────────────────────────────────
+  window.vrdClearLayer = function(layerId) {
+    const l = RS.layers.find(l=>l.id===layerId);
+    if (!l) return;
+    l.pattern = new Array(l.steps).fill(0);
+    l.pulses  = 0;
+    renderLayers(); drawRhythmViz && drawRhythmViz();
+    showToast('🗑 Layer cleared');
+  };
+
+  window.vrdClearAll = function() {
+    RS.layers.forEach(l => { l.pattern = new Array(l.steps).fill(0); l.pulses = 0; });
+    const panel = document.getElementById('vrdSummaryPanel');
+    if (panel) panel.style.display = 'none';
+    renderLayers(); drawRhythmViz && drawRhythmViz();
+    showToast('🗑 All layers cleared');
+  };
+
+  // ── Auto-show banner on load ───────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { if (window.RS && RS.layers && RS.layers.length > 0) vrdShowBanner(); }, 800);
+  });
+
+})();
+// ── END VRD ──────────────────────────────────────────────────────────────────
 </script>
 </body>
 </html>
