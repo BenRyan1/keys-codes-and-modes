@@ -1412,17 +1412,7 @@ input[type="range"] {
           <button class="btn btn-teal btn-full" id="vrdRecordAllBtn" onclick="vrdToggleRecordAll()" style="font-weight:700;">🎤 RECORD ALL LAYERS</button>
           <button class="btn btn-full" onclick="vrdClearAll()" style="background:rgba(244,208,63,0.12);color:var(--gold);border:1px solid rgba(244,208,63,0.3);font-weight:700;">🗑 CLEAR ALL</button>
         </div>
-        <div class="ctrl-card">
-          <div class="ctrl-card-title">Steps</div>
         <div id="vrdSummaryPanel" class="ctrl-card" style="display:none;padding:0.6rem;background:rgba(0,128,128,0.06);border:1px solid rgba(0,128,128,0.2);"></div>
-          <div class="ctrl-group">
-            <div style="display:flex;gap:0.4rem;margin-top:0.3rem;">
-              <button id="stepsBtn16" class="poly-btn active" style="width:48px;" onclick="setSteps(16)">16</button>
-              <button id="stepsBtn32" class="poly-btn" style="width:48px;" onclick="setSteps(32)">32</button>
-              <button id="stepsBtn64" class="poly-btn" style="width:48px;" onclick="setSteps(64)">64</button>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- CENTER: Rhythm canvas + transport -->
@@ -1445,8 +1435,16 @@ input[type="range"] {
       <!-- RIGHT: Polygon picker + presets + SYNC -->
       <div>
         <div class="ctrl-card">
-          <div class="ctrl-card-title">Polygon / Pulses</div>
+          <div class="ctrl-card-title">Rhythm Grid</div>
+          <div style="font-size:0.65rem;color:var(--text-ghost);letter-spacing:0.08em;margin-bottom:0.3rem;">PULSES</div>
           <div class="poly-picker" id="polyPicker"></div>
+          <div style="height:1px;background:rgba(255,255,255,0.08);margin:0.6rem 0;"></div>
+          <div style="font-size:0.65rem;color:var(--text-ghost);letter-spacing:0.08em;margin-bottom:0.3rem;">STEPS</div>
+          <div style="display:flex;gap:0.4rem;">
+            <button id="stepsBtn16" class="poly-btn active" style="width:48px;" onclick="setSteps(16)">16</button>
+            <button id="stepsBtn32" class="poly-btn" style="width:48px;" onclick="setSteps(32)">32</button>
+            <button id="stepsBtn64" class="poly-btn" style="width:48px;" onclick="setSteps(64)">64</button>
+          </div>
         </div>
 
         <!-- ★ SYNC ENGINE ★ -->
