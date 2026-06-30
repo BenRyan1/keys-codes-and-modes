@@ -458,6 +458,10 @@
           <input type="text" id="district" placeholder="e.g. Oxnard School District">
         </div>
         <div class="form-group">
+          <label for="adminRole">Your Role *</label>
+          <input type="text" id="adminRole" placeholder="e.g. Superintendent, Director of Curriculum" autocomplete="organization-title">
+        </div>
+        <div class="form-group">
           <label for="accessCode">Access Code *</label>
           <input type="text" id="accessCode" class="code-input" value="SUPT2026KCM" readonly>
         </div>
@@ -573,9 +577,10 @@
     const lastName  = document.getElementById('lastName').value.trim();
     const email     = document.getElementById('email').value.trim();
     const district  = document.getElementById('district').value.trim();
+    const adminRole = document.getElementById('adminRole').value.trim();
     const code      = document.getElementById('accessCode').value.trim().toUpperCase();
 
-    if (!firstName || !lastName || !email || !district) {
+    if (!firstName || !lastName || !email || !district || !adminRole) {
       showError('Please fill in all fields.'); return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -606,10 +611,20 @@
       });
 
       if (res.ok || res.status === 200 || res.status === 201) {
+        // userTier / accessLevel are the keys my-apps.html's hasPremiumAccess()
+        // actually reads — fixed 2026-06-29 (Group J patent verification).
+        // Previously this only wrote kcm_* keys that nothing else in the
+        // codebase reads, so superintendents saw "access activated" but
+        // landed on the free-tier empty state.
+        localStorage.setItem('userTier', 'premium');
+        localStorage.setItem('accessLevel', 'all_apps');
+        localStorage.setItem('userName', firstName);
+        localStorage.setItem('userEmail', email);
         localStorage.setItem('kcm_access_code', VALID_CODE);
         localStorage.setItem('kcm_tier', 'premium');
         localStorage.setItem('kcm_superintendent', 'true');
         localStorage.setItem('kcm_district', district);
+        localStorage.setItem('kcm_admin_role', adminRole);
 
         document.getElementById('formArea').style.display = 'none';
         document.getElementById('successScreen').style.display = 'block';
@@ -618,10 +633,15 @@
       }
     } catch (e) {
       // Fallback: still grant access even if email submission fails
+      localStorage.setItem('userTier', 'premium');
+      localStorage.setItem('accessLevel', 'all_apps');
+      localStorage.setItem('userName', firstName);
+      localStorage.setItem('userEmail', email);
       localStorage.setItem('kcm_access_code', VALID_CODE);
       localStorage.setItem('kcm_tier', 'premium');
       localStorage.setItem('kcm_superintendent', 'true');
       localStorage.setItem('kcm_district', district);
+      localStorage.setItem('kcm_admin_role', adminRole);
 
       document.getElementById('formArea').style.display = 'none';
       document.getElementById('successScreen').style.display = 'block';

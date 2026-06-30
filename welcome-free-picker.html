@@ -310,19 +310,249 @@
     // MASTER APP DATABASE  — IDs MUST match my-apps.html exactly
     // ═══════════════════════════════════════════════════════
     const ALL_APPS = [
-        { id:'holy-grail',             file:'apps/holy-mole-grail.html',                    icon:'✨', category:'Flagship', title:'Holy Grail Chromatic Wheel',     desc:'Sacred geometry meets chromatic theory — scales, chords, modes, and audio in one breathtaking wheel.' },
-        { id:'music-theory-pro',        file:'apps/music-theory-pro.html',             icon:'🎼', category:'Theory',   title:'Music Theory Explorer Pro',      desc:'4-panel sync view: chromatic circle, piano, guitar fretboard, and staff notation live.' },
-        { id:'circle-of-fifths',        file:'apps/circle-of-fifths.html',             icon:'⭕', category:'Theory',   title:'Circle of Fifths Master',        desc:'Rotating circle with triads, progressions, and audio for every key.' },
-        { id:'guitar-fretboard-pro',    file:'apps/guitar-fretboard-explorer.html',       icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Explorer Pro',  desc:'CAGED system, 13 scale types, and color-coded positions across the full neck.' },
-        { id:'guitar-fretboard-complete',file:'apps/guitar-fretboard-explorer.html',            icon:'🎸', category:'Guitar',   title:'Guitar Fretboard Complete',      desc:'Complete fretboard with all scales, chord shapes, and patterns for advanced players.' },
-        { id:'chromatic-roulette',      file:'apps/chromatic-roulette.html',            icon:'🎡', category:'Visual',   title:'Chromatic Roulette Wheel',       desc:'Spin the color-coded chromatic wheel — discover intervals and scales visually.' },
-        { id:'caged-explorer',          file:'apps/caged-145-master.html',                  icon:'🔷', category:'Guitar',   title:'CAGED 1-4-5 Explorer',           desc:'I-IV-V progressions mapped across all 5 CAGED shapes in all 12 keys.' },
-        { id:'chromatic-scale-viz',     file:'apps/chromatic-circle.html',icon:'🌈',category:'Guitar',  title:'Chromatic Scale Visualizer Pro', desc:'Every chromatic note position across the guitar neck — foundation for all scales.' },
-        { id:'rhythm-clock',            file:'apps/rhythm-clock.html',                        icon:'⏱️',category:'Rhythm',   title:'Rhythmic Clock',                 desc:'Time signatures, polyrhythms, and groove patterns on a visual clock face.' },
-        { id:'cymatics',                file:'apps/kcm-cymatics-visualizer.html',             icon:'🎯', category:'Visual',   title:'Cymatics Visualizer',            desc:'See sound as sacred geometry — musical frequencies forming stunning visual patterns.' },
-        { id:'tonic-sub-dom',           file:'apps/tonic-subdominant-dominant.html',          icon:'🎵', category:'Theory',   title:'Tonic · Sub · Dominant',         desc:'Interactive I-IV-V visualizer across all keys — backbone of Western harmony.' },
-        { id:'octave-wave',             file:'apps/octave-wave-visualizer.html',              icon:'〰️',category:'Visual',  title:'Octave Wave Visualizer',         desc:'See frequency doubling as waveforms — the physics of octaves visualized.' },
-        { id:'rhythm-harmony',          file:'apps/rhythm-harmony.html',               icon:'🥁', category:'Rhythm',   title:'Rhythm Harmony Simple',          desc:'Beginner-friendly — rhythm and harmony connections made clear and interactive.' }
+        {
+            id:       'holy-grail',
+            file:     'apps/holy-mole-grail.html',
+            icon:     '✨',
+            category: 'Flagship',
+            title:    'Holy Grail Chromatic Wheel',
+            desc:     'The ultimate all-in-one music theory visualization. Sacred geometry meets chromatic theory — scales, chords, modes, arpeggios, and audio synthesis in one breathtaking interface.',
+            features: ['Sacred geometry patterns', 'All scales & modes', 'Audio synthesis', 'Drag to rotate']
+        },
+        {
+            id:       'music-theory-pro',
+            file:     'apps/music-theory-pro.html',
+            icon:     '🎼',
+            category: 'Theory',
+            title:    'Music Theory Explorer Pro',
+            desc:     'Flagship 4-panel synchronized view — chromatic circle, piano, guitar fretboard, and staff notation all moving together in real-time.',
+            features: ['4-panel sync display', '11 learning modes', 'Audio playback', 'MIDI compatible']
+        },
+        {
+            id:       'circle-of-fifths',
+            file:     'apps/circle-of-fifths.html',
+            icon:     '⭕',
+            category: 'Theory',
+            title:    'Circle of Fifths Master',
+            desc:     'The essential music theory tool. Interactive rotating circle with triads, chord progressions, and full audio playback for every key.',
+            features: ['Major & minor triads', 'Arpeggio sequences', 'Key relationships', 'Audio synthesis']
+        },
+        {
+            id:       'guitar-fretboard-pro',
+            file:     'apps/guitar-fretboard-explorer.html',
+            icon:     '🎸',
+            category: 'Guitar',
+            title:    'Guitar Fretboard Explorer Pro',
+            desc:     'Visualize scales, modes, and the CAGED system across the full guitar neck with authentic fingering positions.',
+            features: ['CAGED system', '13 scale types', 'Variable fret views', 'Color-coded positions']
+        },
+        {
+            id:       'guitar-fretboard-complete',
+            file:     'apps/guitar-fretboard-explorer.html',
+            icon:     '🎸',
+            category: 'Guitar',
+            title:    'Guitar Fretboard Complete',
+            desc:     'Complete fretboard visualization with all scales, chord shapes, and patterns — perfect for intermediate to advanced guitarists.',
+            features: ['All chord shapes', 'Scale patterns', 'Tuning options', 'Interactive notes']
+        },
+        {
+            id:       'chromatic-roulette',
+            file:     'apps/chromatic-roulette.html',
+            icon:     '🎡',
+            category: 'Visual',
+            title:    'Chromatic Roulette Wheel',
+            desc:     'Spin the color-coded chromatic wheel to discover note relationships, intervals, and scales in a gamified, visual format.',
+            features: ['Color-coded 12 notes', 'Interactive spinning', 'Scale visualization', 'Audio synthesis']
+        },
+        {
+            id:       'caged-explorer',
+            file:     'apps/caged-145-master.html',
+            icon:     '🔷',
+            category: 'Guitar',
+            title:    'CAGED 1-4-5 Explorer',
+            desc:     'Master the most powerful chord progressions in music. I-IV-V patterns mapped across all five CAGED positions.',
+            features: ['All 5 CAGED shapes', 'I-IV-V progressions', 'All 12 keys', 'Audio playback']
+        },
+        {
+            id:       'chromatic-scale-viz',
+            file:     'apps/chromatic-circle.html',
+            icon:     '🌈',
+            category: 'Guitar',
+            title:    'Chromatic Scale Visualizer Pro',
+            desc:     'See every chromatic note position mapped across the guitar neck — the foundation for understanding any scale or mode.',
+            features: ['All 12 chromatic notes', 'Full fretboard view', 'Color-coded pitches', 'Audio synthesis']
+        },
+        {
+            id:       'rhythm-clock',
+            file:     'apps/rhythm-clock.html',
+            icon:     '⏱️',
+            category: 'Rhythm',
+            title:    'Rhythmic Clock',
+            desc:     'Visualize rhythmic patterns on a circular clock face. Explore time signatures, polyrhythms, and groove patterns visually.',
+            features: ['Visual rhythm display', 'Time signature explorer', 'Polyrhythm visualization', 'Interactive metronome']
+        },
+        {
+            id:       'cymatics',
+            file:     'apps/kcm-cymatics-visualizer.html',
+            icon:     '🎯',
+            category: 'Visual',
+            title:    'Cymatics Visualizer',
+            desc:     'See sound come alive through cymatics — the sacred geometry of musical frequencies. Watch harmonics form stunning visual patterns.',
+            features: ['Real-time frequency viz', 'Sacred geometry', 'Harmonic resonance', 'Interactive sound']
+        },
+        {
+            id:       'tonic-sub-dom',
+            file:     'apps/tonic-subdominant-dominant.html',
+            icon:     '🎵',
+            category: 'Theory',
+            title:    'Tonic · Sub · Dominant',
+            desc:     'Understand the harmonic backbone of all Western music. Interactive I-IV-V visualizer with audio across all keys.',
+            features: ['I-IV-V relationships', 'All 12 keys', 'Audio synthesis', 'Visual harmony map']
+        },
+        {
+            id:       'octave-wave',
+            file:     'apps/octave-wave-visualizer.html',
+            icon:     '〰️',
+            category: 'Visual',
+            title:    'Octave Wave Visualizer',
+            desc:     'See the physics of octaves as waveforms. Understand frequency doubling and the relationship between pitches and waves.',
+            features: ['Live waveform display', 'Octave relationships', 'Frequency visualization', 'Audio synthesis']
+        },
+        {
+            id:       'rhythm-harmony',
+            file:     'apps/rhythm-harmony.html',
+            icon:     '🥁',
+            category: 'Rhythm',
+            title:    'Rhythm Harmony Simple',
+            desc:     'A clean, beginner-friendly approach to understanding how rhythm and harmony connect — perfect starting point for new learners.',
+            features: ['Basic rhythm patterns', 'Harmonic progressions', 'Interactive exercises', 'Beginner-friendly']
+        },
+        {
+            id:       'chromatic-spoke-clock',
+            file:     'apps/chromatic-spoke-clock.html',
+            icon:     '⭕',
+            category: 'Visual',
+            title:    'Chromatic Spoke Clock',
+            desc:     'Revolutionary circular visualization for intervals, scales, modes & chords. 57+ scales with interactive ear training games.',
+            features: ['57+ scales & modes', 'Ear training games', 'All 12 keys', 'MIDI keyboard support']
+        },
+        {
+            id:       'chord-builder',
+            file:     'apps/chord-builder.html',
+            icon:     '🔨',
+            category: 'Theory',
+            title:    'Chord Builder',
+            desc:     'Build and analyze any chord on piano, guitar, and notation simultaneously with full audio playback.',
+            features: ['Custom chord creation', 'Multi-instrument view', 'Audio playback', 'Chord analysis']
+        },
+        {
+            id:       'pitch-detector',
+            file:     'apps/pitch-detector.html',
+            icon:     '🎤',
+            category: 'Tools',
+            title:    'Pitch Detector',
+            desc:     'Real-time pitch detection using your microphone. Perfect for tuning, ear training, and vocal practice.',
+            features: ['Real-time detection', 'Tuning assistance', 'Visual feedback', 'Microphone input']
+        },
+        {
+            id:       'rhythm-geometry-lab',
+            file:     'apps/rhythm-geometry-lab.html',
+            icon:     '⬡',
+            category: 'Rhythm',
+            title:    'Rhythm Geometry Lab',
+            desc:     'Experience rhythm as living geometry — Euclidean polyrhythms visualized as rotating polygons with MIDI export.',
+            features: ['Euclidean algorithm', 'Multi-layer polyrhythms', 'MIDI export', 'Spiral time view']
+        },
+        {
+            id:       'modal-stencil-player',
+            file:     'apps/modal-stencil-player.html',
+            icon:     '🎼',
+            category: 'Theory',
+            title:    'Modal Stencil Player',
+            desc:     'Explore all seven musical modes with chromatic color coding and real-time MIDI playback.',
+            features: ['Seven modal stencils', 'Drag & drop interface', 'Real-time MIDI audio', 'Recording & playback']
+        },
+        {
+            id:       'harmonized-chromatic-scale',
+            file:     'apps/harmonized-chromatic-scale.html',
+            icon:     '🎹',
+            category: 'Theory',
+            title:    'Harmonized Chromatic Scale',
+            desc:     'Explore every possible harmony within the chromatic scale — complete chord and interval relationships.',
+            features: ['Full harmonization', 'Chord relationships', 'Interval mapping', 'Audio examples']
+        },
+        {
+            id:       'chladni-visualizer',
+            file:     'apps/chladni-visualizer.html',
+            icon:     '〰️',
+            category: 'Visual',
+            title:    'Chladni Cymatics Visualizer',
+            desc:     '10,000+ particle physics simulation creating mesmerizing cymatic patterns from musical frequencies.',
+            features: ['10,000+ particles', 'Extended chord library', 'MIDI keyboard support', 'Circle & square plates']
+        },
+        {
+            id:       'sacred-geometry',
+            file:     'apps/sacred-geometry-enhanced-final.html',
+            icon:     '🔷',
+            category: 'Visual',
+            title:    'Sacred Geometry Visualizer',
+            desc:     'Complete sacred geometry music visualization — Flower of Life, Metatron\'s Cube, and harmonic resonance patterns.',
+            features: ['Sacred geometry rendering', 'Interactive rotation', 'Real-time visualization', 'Harmonic patterns']
+        },
+        {
+            id:       'circle-of-modes',
+            file:     'apps/circle-of-modes.html',
+            icon:     '🎭',
+            category: 'Theory',
+            title:    'Circle of Modes',
+            desc:     'Explore all seven musical modes through beautiful circular visualization with scale comparison and audio.',
+            features: ['Mode visualization', 'Scale comparison', 'Audio playback', 'All 12 keys']
+        },
+        {
+            id:       'chromatic-mandala',
+            file:     'apps/chromatic-mandala.html',
+            icon:     '🌸',
+            category: 'Visual',
+            title:    'Chromatic Mandala',
+            desc:     'Experience music theory through sacred geometry mandalas — harmonic relationships made visually stunning.',
+            features: ['Sacred geometry', 'Visual harmony', 'Color-coded notes', 'Interactive patterns']
+        },
+        {
+            id:       'fretboard-speed-challenge',
+            file:     'apps/fretboard-speed-challenge.html',
+            icon:     '⚡',
+            category: 'Guitar',
+            title:    'Fretboard Speed Challenge',
+            desc:     'Gamified fretboard training — build note recognition speed across the entire guitar neck.',
+            features: ['Speed training', 'Note recognition', 'Score tracking', 'Progressive difficulty']
+        },
+        {
+            id:       'name-that-note',
+            file:     'apps/name-that-note.html',
+            icon:     '🎵',
+            category: 'Training',
+            title:    'Name That Note',
+            desc:     'Ear training game — identify notes, intervals, and chords by ear. Build your musical vocabulary fast.',
+            features: ['Ear training', 'Note identification', 'Interval recognition', 'Score tracking']
+        },
+        {
+            id:       'caged-stencil',
+            file:     'apps/caged-stencil-fretboard.html',
+            icon:     '🎯',
+            category: 'Guitar',
+            title:    'CAGED Stencil System',
+            desc:     'Master the CAGED system with interactive stencil overlays across the full fretboard.',
+            features: ['CAGED patterns', 'Movable chord shapes', 'Position guides', 'All 12 keys']
+        },
+        {
+            id:       'kcm-tuner',
+            file:     'apps/kcm-tuner.html',
+            icon:     '🎸',
+            category: 'Tools',
+            title:    'KCM Instrument Tuner',
+            desc:     'Professional real-time instrument tuner using your microphone — guitar, bass, ukulele and more.',
+            features: ['Real-time pitch detection', 'Multiple instruments', 'Visual tuning display', 'Microphone input']
+        }
     ];
 
     let selected = []; // array of app IDs
