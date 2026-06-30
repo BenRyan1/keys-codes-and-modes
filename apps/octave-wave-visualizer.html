@@ -456,6 +456,12 @@
                     <button class="audio-btn" onclick="playOctaveScale()">🎼 Play Scale</button>
                     <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
                 </div>
+                <div class="pause-control" style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+                    <label for="octavePauseSlider" style="font-size:12px; color:#00d4ff;">Inter-Note Pause</label>
+                    <input type="range" id="octavePauseSlider" min="50" max="600" step="10" value="200"
+                           oninput="setOctavePause(this.value)">
+                    <span id="octavePauseLabel" style="font-size:12px; color:#FFB81C; min-width:48px;">200 ms</span>
+                </div>
             </div>
             
             <div class="control-group">
@@ -559,6 +565,14 @@
         // Audio-visual sync state
         let playingOctaves = [false, false, false, false, false, false, false, false, false];
         let highlightedOctave = -1; // Currently highlighted octave for "Play All"
+
+        // Configurable inter-note pause for sequential octave playback (Claim R-3)
+        let octavePauseSec = 0.2;
+        function setOctavePause(ms) {
+            octavePauseSec = ms / 1000;
+            const label = document.getElementById('octavePauseLabel');
+            if (label) label.textContent = ms + ' ms';
+        }
         
         // Draw waves
         function drawWaves() {
@@ -605,16 +619,17 @@
             for (let octave = 0; octave <= 8; octave++) {
                 const frequency = getFrequency(currentNote, octave);
                 
-                // ★ WAVELENGTH NOW BASED ON ACTUAL FREQUENCY! ★
-                // Lower frequencies = wider waves (more spread out)
-                // Higher frequencies = tighter waves (more compressed)
+                // ★ WAVELENGTH NORMALIZATION (Claim R-1) ★
+                // Exactly one complete period of the fundamental occupies the
+                // full canvas width at octave 0; each successive octave has
+                // exactly half the period length of the one below it, making
+                // the 2:1 frequency ratio directly perceptible as a 2:1
+                // horizontal period ratio. True linear inverse-frequency
+                // scaling, not sqrt.
                 const baseFrequency = getFrequency('C', 0); // 16.35 Hz
                 const frequencyRatio = frequency / baseFrequency;
-                
-                // Visual wavelength inversely proportional to frequency
-                // Low freq = long wavelength, high freq = short wavelength
-                const baseWavelength = (canvas.width - leftMargin) / 2; // Base for C0
-                const wavelength = baseWavelength / Math.sqrt(frequencyRatio);
+                const baseWavelength = canvas.width - leftMargin; // one full period at octave 0
+                const wavelength = baseWavelength / frequencyRatio;
                 
                 ctx.beginPath();
                 ctx.strokeStyle = octaveColors[octave].color;
@@ -893,7 +908,7 @@
                 gain.gain.setValueAtTime(0.1, audioContext.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
                 
-                const startTime = audioContext.currentTime + i * 0.2;
+                const startTime = audioContext.currentTime + i * octavePauseSec;
                 const endTime = startTime + 0.5;
                 
                 osc.start(startTime);
@@ -904,21 +919,21 @@
                 setTimeout(() => {
                     highlightedOctave = i;
                     console.log(`🌊 Octave ${i} (${currentNote}${i}: ${freq.toFixed(1)} Hz) NOW PLAYING & HIGHLIGHTED`);
-                }, i * 200); // Convert to milliseconds
+                }, i * octavePauseSec * 1000);
                 
                 // Turn off highlight after sound ends
                 setTimeout(() => {
                     if (highlightedOctave === i) {
                         highlightedOctave = -1;
                     }
-                }, (i * 200) + 500); // Duration of note
+                }, (i * octavePauseSec * 1000) + 500); // Duration of note
             }
             
             // Clear highlight after all done
             setTimeout(() => {
                 highlightedOctave = -1;
                 console.log('✅ All octaves played - visual sync complete');
-            }, (8 * 200) + 600);
+            }, (8 * octavePauseSec * 1000) + 600);
         }
         
         function playOctaveScale() {

@@ -450,6 +450,9 @@
                         <button class="control-btn tonic-btn" onclick="showKeyInfo()">
                             KEY
                         </button>
+                        <button class="control-btn progression-btn" id="diatonicToggleBtn" onclick="toggleFullDiatonic()">
+                            ii · iii · vi
+                        </button>
                     </div>
                 </div>
             </div>
@@ -548,6 +551,7 @@
         let audioContext;
         let currentTonic = 0; // C is default tonic
         let hoveredNote = -1;
+        let showFullDiatonic = false; // Claim R-5: ii/iii/vi arms toggle
         let isPlaying = false;
         let playMode = 'notes'; // 'notes' or 'chords'
 
@@ -695,7 +699,7 @@
         }
 
         function playMinorVI() {
-            const minorVI = (currentTonic + 9) % 12; // Nine steps clockwise in CoF
+            const minorVI = (currentTonic + 3) % 12; // Three steps clockwise in CoF = +9 semitones (submediant)
             playNote(minorVI, 1.0);
             flashNote(minorVI);
         }
@@ -795,13 +799,37 @@
                 ctx.fillText(notes[i], labelX, labelY);
             }
             
-            // Draw ROTATING arms based on currentTonic
-            drawRotatingArm(currentTonic, colors.tonic, 'I');                    // Center - Tonic
-            drawRotatingArm((currentTonic + 1) % 12, colors.dominant, 'V');      // Clockwise - Dominant
-            drawRotatingArm((currentTonic + 11) % 12, colors.subdominant, 'IV'); // Counter-clockwise - Subdominant
+            // Draw ROTATING arms based on currentTonic — each arm bears the
+            // chromatic pitch-class color of its own note (Claim R-4), not a
+            // fixed theme color.
+            const dominantIdx = (currentTonic + 1) % 12;
+            const subdominantIdx = (currentTonic + 11) % 12;
+            drawRotatingArm(currentTonic, getNoteColor(currentTonic), 'I');           // Center - Tonic
+            drawRotatingArm(dominantIdx, getNoteColor(dominantIdx), 'V');             // Clockwise - Dominant
+            drawRotatingArm(subdominantIdx, getNoteColor(subdominantIdx), 'IV');      // Counter-clockwise - Subdominant
+
+            // Claim R-5: additional arms for supertonic (+2 semitones), mediant
+            // (+4 semitones), and submediant (+9 semitones), completing the
+            // full diatonic chord degree visualization. Drawn at reduced
+            // weight so the primary I-IV-V arms remain visually dominant.
+            if (showFullDiatonic) {
+                const supertonicIdx = (currentTonic + 2) % 12;  // +2 semitones (ii)
+                const mediantIdx    = (currentTonic + 4) % 12;  // +4 semitones (iii)
+                const submediantIdx = (currentTonic + 3) % 12;  // +9 semitones (vi)
+                drawRotatingArm(supertonicIdx, getNoteColor(supertonicIdx), 'ii', 0.45);
+                drawRotatingArm(mediantIdx, getNoteColor(mediantIdx), 'iii', 0.45);
+                drawRotatingArm(submediantIdx, getNoteColor(submediantIdx), 'vi', 0.45);
+            }
         }
 
-        function drawRotatingArm(noteIndex, color, label) {
+        function toggleFullDiatonic() {
+            showFullDiatonic = !showFullDiatonic;
+            const btn = document.getElementById('diatonicToggleBtn');
+            if (btn) btn.classList.toggle('active', showFullDiatonic);
+            draw();
+        }
+
+        function drawRotatingArm(noteIndex, color, label, weight = 1.0) {
             const angleStep = (Math.PI * 2) / 12;
             const baseAngle = -Math.PI / 2 - (15 * Math.PI / 180); // Match circle position
             const armRotation = 15 * Math.PI / 180; // Rotate arms 15 degrees clockwise
@@ -809,25 +837,27 @@
             // Calculate angle to point at this note, with rotation
             const angle = baseAngle + angleStep * noteIndex + armRotation;
             
-            const armLength = innerRadius - 20;
+            const armLength = (innerRadius - 20) * (0.6 + 0.4 * weight);
             const endX = centerX + Math.cos(angle) * armLength;
             const endY = centerY + Math.sin(angle) * armLength;
+            const lineW = 3 + 3 * weight;
             
-            // Draw arm in white with drop shadow for depth
+            // Draw arm in its chromatic pitch-class color, with drop shadow for depth
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
             ctx.lineTo(endX, endY);
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 6;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineW;
             ctx.lineCap = 'round';
-            ctx.shadowBlur = 20;
+            ctx.globalAlpha = 0.55 + 0.45 * weight;
+            ctx.shadowBlur = 12 + 8 * weight;
             ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
             ctx.shadowOffsetX = 3;
             ctx.shadowOffsetY = 3;
             ctx.stroke();
             
-            // Draw arrowhead in white with drop shadow
-            const arrowSize = 15;
+            // Draw arrowhead in the same chromatic pitch-class color, with drop shadow
+            const arrowSize = 8 + 7 * weight;
             const arrowAngle = Math.PI / 6;
             
             ctx.beginPath();
@@ -841,20 +871,21 @@
                 endX - arrowSize * Math.cos(angle + arrowAngle),
                 endY - arrowSize * Math.sin(angle + arrowAngle)
             );
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 6;
-            ctx.shadowBlur = 20;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineW;
+            ctx.shadowBlur = 12 + 8 * weight;
             ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
             ctx.shadowOffsetX = 3;
             ctx.shadowOffsetY = 3;
             ctx.stroke();
             
-            // Reset shadow
+            // Reset shadow/alpha
             ctx.shadowBlur = 0;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
+            ctx.globalAlpha = 1.0;
             
-            // No label - arms are unlabeled
+            // No text label drawn — arm color + length communicate scale degree
         }
 
         function getMousePos(event) {
