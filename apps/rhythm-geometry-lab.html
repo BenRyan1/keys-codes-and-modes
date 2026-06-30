@@ -1145,10 +1145,15 @@ function bjorklund(steps, pulses) {
 function createLayer(steps, pulses, colorIdx, soundType) {
     const id = ++layerIdCounter;
     const color = LAYER_COLORS[colorIdx % LAYER_COLORS.length];
+    // Distinct per-layer angular rotation rate (Claim S-2): different layers
+    // rotate at different rates so relative vertex positions across rings
+    // visibly drift over time, making polyrhythmic phase relationships
+    // explicit. Alternates sign so adjacent rings turn opposite directions.
+    const rotationSpeed = (colorIdx % 2 === 0 ? 1 : -1) * (0.6 + (colorIdx % 5) * 0.35);
     return {
         id, steps: steps || State.globalSteps, pulses: pulses || State.selectedPolygon,
         pattern: bjorklund(steps || State.globalSteps, pulses || State.selectedPolygon),
-        color, rotationSpeed: 1.0, soundType: soundType || LAYER_SOUNDS[colorIdx % LAYER_SOUNDS.length], muted: false
+        color, rotationSpeed, soundType: soundType || LAYER_SOUNDS[colorIdx % LAYER_SOUNDS.length], muted: false
     };
 }
 
@@ -1407,14 +1412,45 @@ function drawGeometry() {
         ctx.stroke();
     }
 
-    // Draw beat dots for each layer (STATIONARY - NO ROTATION!)
+    // Draw rotating polygon + beat dots for each layer (Claims S-1, S-2):
+    // each layer's pulse positions form a polygon inscribed in its ring,
+    // continuously rotating at the layer's own angular rate, so relative
+    // vertex positions across rings visibly drift over time.
     State.layers.forEach((layer, layerIdx) => {
         if (layer.muted) return;
         const radius = R - 35 - layerIdx * 42;
-        
+        const layerRotation = State.rotationOffset * layer.rotationSpeed;
+
+        // First pass: collect pulse-step vertex coordinates in step order to
+        // form the polygon (vertex count = pulse count of the layer).
+        const polygonVertices = [];
         for (let i = 0; i < layer.steps; i++) {
-            // STATIONARY angle - no rotation offset!
-            const angle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2;
+            if (layer.pattern[i] === 1) {
+                const angle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2 + layerRotation;
+                polygonVertices.push({
+                    x: CX + Math.cos(angle) * radius,
+                    y: CY + Math.sin(angle) * radius
+                });
+            }
+        }
+
+        // Draw the polygon edges (closed path) beneath the beat dots.
+        if (polygonVertices.length >= 2) {
+            ctx.beginPath();
+            polygonVertices.forEach((v, idx) => {
+                if (idx === 0) ctx.moveTo(v.x, v.y);
+                else ctx.lineTo(v.x, v.y);
+            });
+            ctx.closePath();
+            ctx.strokeStyle = layer.color;
+            ctx.globalAlpha = 0.55;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+        }
+
+        for (let i = 0; i < layer.steps; i++) {
+            const angle = (i / layer.steps) * Math.PI * 2 - Math.PI / 2 + layerRotation;
             const x = CX + Math.cos(angle) * radius;
             const y = CY + Math.sin(angle) * radius;
             
