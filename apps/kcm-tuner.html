@@ -749,26 +749,28 @@ main {
   border: 1px solid rgba(74,123,167,0.2);
 }
 
-.chroma-dot {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: rgba(0,0,0,0.75);
-  opacity: 0.3;
-  transition: all 0.2s;
-  cursor: default;
+.chromatic-ring {
+  display: block;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 1.5rem;
 }
 
-.chroma-dot.active {
+.chroma-wedge {
+  opacity: 0.3;
+  transition: opacity 0.2s, filter 0.2s;
+}
+
+.chroma-wedge.active {
   opacity: 1;
-  transform: scale(1.3);
-  box-shadow: 0 0 12px var(--dot-color);
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.chroma-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  pointer-events: none;
 }
 
 /* ===== FOOTER ===== */
@@ -987,7 +989,8 @@ button:focus-visible, a:focus-visible, select:focus-visible {
   .brand-text span { display: none; }
   .detected-note { font-size: 2.2rem; }
   .note-badge { width: 38px; height: 38px; font-size: 0.9rem; }
-  .chroma-dot { width: 26px; height: 26px; font-size: 0.55rem; }
+  .chromatic-ring { width: 170px; height: 170px; }
+  .chroma-label { font-size: 11px; }
   .tab-btn { min-width: 75px; padding: 0.5rem 0.35rem; }
 }
 
@@ -1100,6 +1103,7 @@ button:focus-visible, a:focus-visible, select:focus-visible {
       <select id="guitarTuning" class="tuning-select" onchange="updateTuning('guitar')" aria-label="Select guitar tuning">
         <option value="standard">Standard — E A D G B E</option>
         <option value="dropD">Drop D — D A D G B E</option>
+        <option value="dropC">Drop C — C G C F A D</option>
         <option value="openG">Open G — D G D G B D</option>
         <option value="openD">Open D — D A D F# A D</option>
         <option value="openE">Open E — E B E G# B E</option>
@@ -1149,7 +1153,7 @@ button:focus-visible, a:focus-visible, select:focus-visible {
     </div>
 
     <!-- Chromatic Ring -->
-    <div class="chromatic-ring" id="guitarChromaRing" role="presentation" aria-label="Chromatic note indicator"></div>
+    <svg class="chromatic-ring" id="guitarChromaRing" viewBox="0 0 240 240" role="img" aria-label="Chromatic note indicator" xmlns="http://www.w3.org/2000/svg"></svg>
 
     <!-- String Cards -->
     <div class="strings-grid" id="guitarStrings" role="list" aria-label="Guitar strings"></div>
@@ -1205,7 +1209,7 @@ button:focus-visible, a:focus-visible, select:focus-visible {
       <div class="tune-indicator" id="bassTuneIndicator">Awaiting Signal</div>
     </div>
 
-    <div class="chromatic-ring" id="bassChromaRing" role="presentation"></div>
+    <svg class="chromatic-ring" id="bassChromaRing" viewBox="0 0 240 240" role="img" aria-label="Chromatic note indicator" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="strings-grid" id="bassStrings" role="list" aria-label="Bass strings"></div>
 
     <div class="controls-row">
@@ -1256,7 +1260,7 @@ button:focus-visible, a:focus-visible, select:focus-visible {
       <div class="tune-indicator" id="ukuleleTuneIndicator">Awaiting Signal</div>
     </div>
 
-    <div class="chromatic-ring" id="ukuleleChromaRing" role="presentation"></div>
+    <svg class="chromatic-ring" id="ukuleleChromaRing" viewBox="0 0 240 240" role="img" aria-label="Chromatic note indicator" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="strings-grid" id="ukuleleStrings" role="list" aria-label="Ukulele strings"></div>
 
     <div class="controls-row">
@@ -1308,6 +1312,7 @@ const TUNINGS = {
   guitar: {
     standard:    { label:'Standard',      desc:'Rock Standard',       strings:[{n:'E2',m:40},{n:'A2',m:45},{n:'D3',m:50},{n:'G3',m:55},{n:'B3',m:59},{n:'E4',m:64}] },
     dropD:       { label:'Drop D',        desc:'Power Chords ✦',      strings:[{n:'D2',m:38},{n:'A2',m:45},{n:'D3',m:50},{n:'G3',m:55},{n:'B3',m:59},{n:'E4',m:64}] },
+    dropC:       { label:'Drop C',        desc:'Heavy / Metal',       strings:[{n:'C2',m:36},{n:'G2',m:43},{n:'C3',m:48},{n:'F3',m:53},{n:'A3',m:57},{n:'D4',m:62}] },
     openG:       { label:'Open G',        desc:'Stones / Slide',      strings:[{n:'D2',m:38},{n:'G2',m:43},{n:'D3',m:50},{n:'G3',m:55},{n:'B3',m:59},{n:'D4',m:62}] },
     openD:       { label:'Open D',        desc:'Delta Blues',         strings:[{n:'D2',m:38},{n:'A2',m:45},{n:'D3',m:50},{n:'F#3',m:54},{n:'A3',m:57},{n:'D4',m:62}] },
     openE:       { label:'Open E',        desc:'Slide Favorite',      strings:[{n:'E2',m:40},{n:'B2',m:47},{n:'E3',m:52},{n:'G#3',m:56},{n:'B3',m:59},{n:'E4',m:64}] },
@@ -1344,7 +1349,7 @@ const TUNINGS = {
 };
 
 const TUNING_DESCS = {
-  guitar: { standard:'Rock Standard', dropD:'Power Chords ✦', openG:'Stones / Slide', openD:'Delta Blues', openE:'Slide Favorite', openA:'Country/Blues', dadgad:'Celtic / Folk', halfStep:'Eb Standard', fullStep:'D Standard', doubleDropD:'Double Drop D', openC:'CGCGCE', custom:'Custom Tuning' },
+  guitar: { standard:'Rock Standard', dropD:'Power Chords ✦', dropC:'Heavy / Metal', openG:'Stones / Slide', openD:'Delta Blues', openE:'Slide Favorite', openA:'Country/Blues', dadgad:'Celtic / Folk', halfStep:'Eb Standard', fullStep:'D Standard', doubleDropD:'Double Drop D', openC:'CGCGCE', custom:'Custom Tuning' },
   bass:   { standard:'Classic Bass', standard5:'5-String', standard6:'6-String Bass', dropD:'Drop D', dropC:'Heavy Drop', dropB:'Metal Drop', halfStep:'Eb Standard', fullStep:'D Standard', openG:'Open G', custom:'Custom Tuning' },
   ukulele:{ standard:'My Dog Has Fleas 🐶', tenor:'Low G Tenor', baritone:'Like Guitar', openC:'Open C Chord', slack:'Hawaiian Style', openG:'Open G', openD:'Open D', custom:'Custom Tuning' }
 };
@@ -1377,17 +1382,56 @@ window.addEventListener('DOMContentLoaded', () => {
   renderStrings('ukulele');
 });
 
+// SVG namespace + geometry helpers for the chromatic ring.
+function svgElTuner(tag, attrs, parent) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(el);
+  return el;
+}
+function ringPoint(cx, cy, r, deg) {
+  const rad = (deg - 90) * Math.PI / 180; // -90 so 0deg = 12 o'clock
+  return { x: cx + Math.cos(rad) * r, y: cy + Math.sin(rad) * r };
+}
+function ringWedgePath(cx, cy, rOuter, rInner, deg0, deg1) {
+  const o0 = ringPoint(cx, cy, rOuter, deg0), o1 = ringPoint(cx, cy, rOuter, deg1);
+  const i1 = ringPoint(cx, cy, rInner, deg1), i0 = ringPoint(cx, cy, rInner, deg0);
+  const largeArc = (deg1 - deg0) > 180 ? 1 : 0;
+  return `M ${o0.x},${o0.y} A ${rOuter},${rOuter} 0 ${largeArc} 1 ${o1.x},${o1.y} ` +
+         `L ${i1.x},${i1.y} A ${rInner},${rInner} 0 ${largeArc} 0 ${i0.x},${i0.y} Z`;
+}
+
+// Builds the chromatic ring as twelve true SVG arc segments at thirty-degree
+// intervals (Claim N-1), C fixed at 12 o'clock and proceeding clockwise per
+// the permanent KCM 12-Color Chromatic Spectrum standard. Rewritten 2026-06-29
+// (Group N patent verification): previously a flat flex-wrapped row of round
+// dots, which matched neither the claim nor the KCM clock-face visual standard
+// used everywhere else on the platform.
 function buildChromaRings() {
+  const cx = 120, cy = 120, rOuter = 108, rInner = 62, labelR = 85;
   ['guitar','bass','ukulele'].forEach(inst => {
     const ring = document.getElementById(inst + 'ChromaRing');
-    NOTE_NAMES.forEach(note => {
-      const dot = document.createElement('div');
-      dot.className = 'chroma-dot';
-      dot.id = inst + 'Chroma' + note.replace('#','s');
-      dot.style.background = NOTE_COLORS[note];
-      dot.style.setProperty('--dot-color', NOTE_COLORS[note]);
-      dot.textContent = note;
-      ring.appendChild(dot);
+    ring.innerHTML = '';
+    NOTE_NAMES.forEach((note, i) => {
+      const deg0 = i * 30, deg1 = deg0 + 30;
+      const g = svgElTuner('g', {
+        id: inst + 'Chroma' + note.replace('#','s'),
+        class: 'chroma-wedge'
+      }, ring);
+      g.style.color = NOTE_COLORS[note];
+      svgElTuner('path', {
+        d: ringWedgePath(cx, cy, rOuter, rInner, deg0, deg1),
+        fill: NOTE_COLORS[note],
+        stroke: '#0a0a15',
+        'stroke-width': '1.5'
+      }, g);
+      const labelPos = ringPoint(cx, cy, labelR, deg0 + 15);
+      svgElTuner('text', {
+        x: labelPos.x, y: labelPos.y,
+        'text-anchor': 'middle', 'dominant-baseline': 'middle',
+        class: 'chroma-label',
+        fill: NOTE_CONTRAST[note] || '#000'
+      }, g).textContent = note;
     });
   });
 }
@@ -1740,13 +1784,27 @@ function updateTunerDisplay(instrument, freq) {
   highlightMatchingString(instrument, midiRound);
 }
 
+// Identifies the minimum-MIDI-distance string and highlights it. Fixed 2026-06-29
+// (Group N patent verification, Claim N-1): previously used exact equality
+// (s.m === midiRound), which highlighted nothing at all whenever the detected
+// pitch didn't land exactly on a string's target note — the common case while
+// actively tuning an out-of-tune string. Now always highlights the nearest string.
 function highlightMatchingString(instrument, midiRound) {
   const tuningData = TUNINGS[instrument][state[instrument].tuning];
+  let minDistance = Infinity;
+  let nearestIdx = -1;
+  tuningData.strings.forEach((s, idx) => {
+    const distance = Math.abs(midiRound - s.m);
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestIdx = idx;
+    }
+  });
   tuningData.strings.forEach((s, idx) => {
     const card = document.getElementById(`${instrument}-string-${idx}`);
     if (!card) return;
     card.classList.remove('in-tune','sharp','flat');
-    if (s.m === midiRound) card.classList.add('in-tune');
+    if (idx === nearestIdx) card.classList.add('in-tune');
   });
 }
 
