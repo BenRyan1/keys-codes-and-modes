@@ -411,6 +411,15 @@ input[type=range]::-moz-range-thumb{
 }
 
 /* ── ANIMATIONS ─────────────────────────────────────── */
+@keyframes earShapeCelebrate{
+  0%{transform:scale(1);}
+  35%{transform:scale(1.4);filter:brightness(1.7) drop-shadow(0 0 14px #4ade80);}
+  100%{transform:scale(1);filter:none;}
+}
+.ear-celebrate{
+  display:inline-block;
+  animation:earShapeCelebrate 0.55s ease-out;
+}
 @keyframes pulse{
   from{transform:scale(1.2);}
   to{transform:scale(1.35);}
@@ -813,8 +822,8 @@ input[type=range]::-moz-range-thumb{
     </div>
 
     <!-- Play buttons -->
-    <button class="play-btn" id="playBtn" onclick="playProgression()"
-            aria-label="Play I-IV-V-I progression"
+    <button class="play-btn" id="playBtn" onclick="toggleProgression()"
+            aria-label="Play or stop the I-IV-V-I progression loop"
             style="background:linear-gradient(135deg,#FFFF00,#FFFF0099);">
       🎸 Play C → F → G → C
     </button>
@@ -849,6 +858,7 @@ input[type=range]::-moz-range-thumb{
         <button onclick="setEarTrainerMode('note')"     id="modeNote"     class="ear-mode-btn active" aria-pressed="true"  aria-label="Notes mode">Notes</button>
         <button onclick="setEarTrainerMode('interval')" id="modeInterval" class="ear-mode-btn"        aria-pressed="false" aria-label="Intervals mode">Intervals</button>
         <button onclick="setEarTrainerMode('chord')"    id="modeChord"    class="ear-mode-btn"        aria-pressed="false" aria-label="Chords mode">Chords</button>
+        <button onclick="setEarTrainerMode('shape')"    id="modeShape"    class="ear-mode-btn"        aria-pressed="false" aria-label="CAGED Shapes mode">CAGED Shapes</button>
       </div>
       <div class="ear-divider"></div>
 
@@ -1187,6 +1197,7 @@ ${statements}
         let activeChord = 0;  // 0=I, 1=IV, 2=V
         let audioContext = null;
         let tempo = 120;  // BPM (beats per minute)
+        let isProgressionPlaying = false; // Claim T-4: continuous loop until stopped
         
         // ==================== CALCULATIONS ====================
         
@@ -1322,6 +1333,15 @@ ${statements}
             const pos   = chord.position;   // 0=open, 1–12=barre fret
             const color = COLORS[currentForm];
 
+            // Claim T-3: all three chord displays (tonic, subdominant,
+            // dominant) rendered simultaneously, each in its own degree
+            // color so they remain visually distinguishable.
+            const DEGREE_COLORS = ['#FFD700', '#00D4FF', '#FF6B9D']; // I, IV, V
+            const chordsData = [0, 1, 2].map(i => {
+                const c = getChordInfo(i);
+                return { ...c, idx: i, shapeDef: SHAPES[c.shape], degreeColor: DEGREE_COLORS[i] };
+            });
+
             fb.innerHTML = '';
 
             // ── Dimensions ────────────────────────────────────────────────
@@ -1449,60 +1469,68 @@ ${statements}
                 }
             });
 
-            // ── POSITION WINDOW OVERLAY ────────────────────────────────────
-            // The window covers the 4-fret CAGED chord block at current position.
-            // pos=0 → window starts at nut (y=0), spans NUT_H + 4*fretH
-            // pos>0 → window starts at top of that fret space
-            const winTop = pos === 0 ? 0 : NUT_H + (pos - 1) * fretH;
-            const winH   = (pos === 0 ? NUT_H : fretH) + 4 * fretH;
-            const win    = document.createElement('div');
-            win.id = 'chordWindow';
-            win.style.cssText = `
-                position:absolute;left:2px;right:2px;
-                top:${winTop}px;height:${winH}px;
-                background:linear-gradient(180deg,${color}18 0%,${color}0c 50%,${color}18 100%);
-                border:2.5px solid ${color}99;border-radius:9px;
-                cursor:grab;z-index:6;
-                box-shadow:0 0 18px ${color}33,inset 0 0 14px ${color}0a;
-                pointer-events:all;
-            `;
-            // Label top
-            const wLab = document.createElement('div');
-            wLab.style.cssText = `
-                position:absolute;top:4px;left:50%;transform:translateX(-50%);
-                background:${color}ee;color:#000;
-                font-size:0.62em;font-weight:700;padding:2px 8px;
-                border-radius:3px;white-space:nowrap;pointer-events:none;user-select:none;
-            `;
-            wLab.textContent = `${currentForm} Form — ${pos === 0 ? 'Open' : 'Fret '+pos}`;
-            win.appendChild(wLab);
-            // Chord name bottom
-            const cLab = document.createElement('div');
-            cLab.style.cssText = `
-                position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
-                background:rgba(0,0,0,0.72);color:${color};
-                font-size:0.75em;font-weight:700;padding:2px 9px;
-                border-radius:3px;white-space:nowrap;pointer-events:none;user-select:none;
-            `;
-            cLab.textContent = chord.name;
-            win.appendChild(cLab);
-            win.addEventListener('mousedown', startWindowDrag);
-            win.addEventListener('touchstart', startWindowDrag, { passive: false });
-            fb.appendChild(win);
-
-            // ── BARRE LINE ─────────────────────────────────────────────────
-            if (pos > 0) {
-                const by  = NUT_H + (pos - 0.5) * fretH;
-                const bar = document.createElement('div');
-                bar.style.cssText = `
-                    position:absolute;left:8%;right:8%;top:${by - 7}px;
-                    height:14px;
-                    background:linear-gradient(180deg,${color}cc,${color}66);
-                    border-radius:7px;z-index:8;
-                    box-shadow:0 2px 6px rgba(0,0,0,0.5);
+            // ── THREE SIMULTANEOUS CHORD WINDOWS (Claim T-3) ───────────────
+            // All three chord positions are visible simultaneously. The ACTIVE
+            // chord (selected by I/IV/V button) is full brightness; the other
+            // two are dimmed so the selected chord is clearly primary.
+            chordsData.forEach(cd => {
+                const cPos = cd.position;
+                const isActive = cd.idx === activeChord;
+                const winTop = cPos === 0 ? 0 : NUT_H + (cPos - 1) * fretH;
+                const winH   = (cPos === 0 ? NUT_H : fretH) + 4 * fretH;
+                const win    = document.createElement('div');
+                if (isActive) win.id = 'chordWindow';
+                const inset = cd.idx * 3;
+                win.style.cssText = `
+                    position:absolute;left:${2+inset}px;right:${2+inset}px;
+                    top:${winTop}px;height:${winH}px;
+                    background:linear-gradient(180deg,${cd.degreeColor}${isActive ? '18' : '07'} 0%,${cd.degreeColor}${isActive ? '0c' : '03'} 50%,${cd.degreeColor}${isActive ? '18' : '07'} 100%);
+                    border:${isActive ? '2.5' : '1'}px solid ${cd.degreeColor}${isActive ? 'cc' : '33'};
+                    border-radius:9px;
+                    cursor:${isActive ? 'grab' : 'default'};
+                    z-index:${isActive ? 7 : 5};
+                    opacity:${isActive ? '1' : '0.4'};
+                    pointer-events:${isActive ? 'all' : 'none'};
                 `;
-                fb.appendChild(bar);
-            }
+                if (isActive) {
+                    const wLab = document.createElement('div');
+                    wLab.style.cssText = `
+                        position:absolute;top:4px;left:50%;transform:translateX(-50%);
+                        background:${cd.degreeColor}ee;color:#000;
+                        font-size:0.62em;font-weight:700;padding:2px 8px;
+                        border-radius:3px;white-space:nowrap;pointer-events:none;user-select:none;
+                    `;
+                    wLab.textContent = `${cd.degree} — ${cd.name} (${cd.shape} shape)`;
+                    win.appendChild(wLab);
+                    win.addEventListener('mousedown', startWindowDrag);
+                    win.addEventListener('touchstart', startWindowDrag, { passive: false });
+                } else {
+                    const badge = document.createElement('div');
+                    badge.style.cssText = `
+                        position:absolute;top:3px;left:5px;
+                        background:${cd.degreeColor}88;color:#000;
+                        font-size:0.55em;font-weight:700;padding:1px 4px;
+                        border-radius:3px;pointer-events:none;user-select:none;
+                    `;
+                    badge.textContent = cd.degree;
+                    win.appendChild(badge);
+                }
+                fb.appendChild(win);
+
+                if (cPos > 0 && isActive) {
+                    const by  = NUT_H + (cPos - 0.5) * fretH;
+                    const bar = document.createElement('div');
+                    bar.style.cssText = `
+                        position:absolute;left:8%;right:8%;top:${by - 7}px;
+                        height:14px;
+                        background:linear-gradient(180deg,${cd.degreeColor}cc,${cd.degreeColor}66);
+                        border-radius:7px;z-index:8;
+                        box-shadow:0 2px 6px rgba(0,0,0,0.5);
+                        pointer-events:none;
+                    `;
+                    fb.appendChild(bar);
+                }
+            });
 
             // ── NOTE DOTS ─────────────────────────────────────────────────
             // Two layers:
@@ -1512,10 +1540,17 @@ ${statements}
             // We iterate frets 0–NUM_FRETS for each string.
 
             for (let s = 0; s < 6; s++) {
+                // Claim T-3: a string may be "fingered" for any of the three
+                // simultaneously displayed chords; track each independently.
+                const fingerInfo = chordsData.map(cd => {
+                    const baseFret = cd.shapeDef.frets[s];
+                    return baseFret === -1 ? null : { fret: baseFret + cd.position, degreeColor: cd.degreeColor, degree: cd.degree };
+                });
+                // For the muted-string "X" marker and chord-builder logic
+                // below, fall back to the active chord's shape as before.
                 const baseFret   = shape.frets[s];   // -1 = muted
-                const fingerFret = baseFret === -1 ? -1 : baseFret + pos;  // absolute fret
 
-                // Muted string → show ✕ above nut
+                // Muted string → show ✕ above nut (active chord only, matches prior behavior)
                 if (baseFret === -1) {
                     const x = document.createElement('div');
                     x.style.cssText = `
@@ -1535,7 +1570,11 @@ ${statements}
                     const chordRoot  = getChordRoots()[activeChord];
                     const isRoot     = (pitchClass - chordRoot + 12) % 12 === 0;
 
-                    const isFingered     = (f === fingerFret && baseFret !== -1);
+                    // Which of the three simultaneous chords (if any) finger this fret
+                    const matches = fingerInfo
+                        .map((fi, ci) => (fi && fi.fret === f) ? { ...fi, ci } : null)
+                        .filter(Boolean);
+                    const isFingered     = matches.length > 0;
                     const isBuilderTone  = activeNotes.has(pitchClass);  // from chord builder
 
                     // y position
@@ -1546,34 +1585,57 @@ ${statements}
                     const xPx = stringSp * (s + 1);
 
                     if (isFingered) {
-                        // ── BRIGHT fingered dot ──────────────────────────────
-                        const dot = document.createElement('div');
-                        const sz  = isRoot ? 30 : 24;
-                        dot.style.cssText = `
-                            position:absolute;left:${xPx}px;top:${yPx}px;
-                            width:${sz}px;height:${sz}px;
-                            background:${f === 0 ? 'transparent' : noteColor};
-                            border:${isRoot ? 3 : 2}px solid ${noteColor};
-                            border-radius:50%;
-                            transform:translate(-50%,-50%);
-                            display:flex;align-items:center;justify-content:center;
-                            font-size:0.55em;font-weight:700;
-                            color:${f === 0 ? noteColor : '#111'};
-                            ${isRoot ? 'box-shadow:0 0 10px '+noteColor+',0 0 22px '+noteColor+'55;' : ''}
-                            z-index:11;cursor:pointer;
-                        `;
-                        dot.textContent = NOTE_NAMES[pitchClass];
-                        dot.title = `${NOTE_NAMES[pitchClass]} — String ${s+1}, Fret ${f}`;
-                        dot.onclick = () => {
-                            if (activeNotes.has(pitchClass)) activeNotes.delete(pitchClass);
-                            else activeNotes.add(pitchClass);
-                            renderChromaticCircle();
-                            updateActiveNotesDisplay();
-                            initAudio();
-                            playNote(getFrequency(s, f), 0.8);
-                            renderFretboard();
-                        };
-                        fb.appendChild(dot);
+                        // Active chord: bright full dot. Passive chords: dim ring only.
+                        const activeMatch = matches.find(m => m.ci === activeChord);
+                        const passiveMatches = matches.filter(m => m.ci !== activeChord);
+
+                        // Dim outer rings for passive chords first (behind active dot)
+                        passiveMatches.forEach((m, mi) => {
+                            const sz = 30 + mi * 9;
+                            const ring = document.createElement('div');
+                            ring.style.cssText = `
+                                position:absolute;left:${xPx}px;top:${yPx}px;
+                                width:${sz}px;height:${sz}px;
+                                background:transparent;
+                                border:1.5px solid ${m.degreeColor}88;
+                                border-radius:50%;
+                                transform:translate(-50%,-50%);
+                                opacity:0.5;
+                                z-index:8;pointer-events:none;
+                            `;
+                            fb.appendChild(ring);
+                        });
+
+                        // Active chord dot — bright, full size, interactive
+                        if (activeMatch) {
+                            const sz = isRoot ? 30 : 24;
+                            const dot = document.createElement('div');
+                            dot.style.cssText = `
+                                position:absolute;left:${xPx}px;top:${yPx}px;
+                                width:${sz}px;height:${sz}px;
+                                background:${f === 0 ? 'transparent' : noteColor};
+                                border:${isRoot ? 3 : 2}px solid ${noteColor};
+                                border-radius:50%;
+                                transform:translate(-50%,-50%);
+                                display:flex;align-items:center;justify-content:center;
+                                font-size:0.55em;font-weight:700;
+                                color:${f === 0 ? noteColor : '#111'};
+                                ${isRoot ? 'box-shadow:0 0 10px '+noteColor+',0 0 22px '+noteColor+'55;' : ''}
+                                z-index:11;cursor:pointer;
+                            `;
+                            dot.textContent = NOTE_NAMES[pitchClass];
+                            dot.title = `${NOTE_NAMES[pitchClass]} — String ${s+1}, Fret ${f}`;
+                            dot.onclick = () => {
+                                if (activeNotes.has(pitchClass)) activeNotes.delete(pitchClass);
+                                else activeNotes.add(pitchClass);
+                                renderChromaticCircle();
+                                updateActiveNotesDisplay();
+                                initAudio();
+                                playNote(getFrequency(s, f), 0.8);
+                                renderFretboard();
+                            };
+                            fb.appendChild(dot);
+                        }
 
                     } else if (isBuilderTone && !isFingered) {
                         // ── DIM chord-builder tone dot ────────────────────────
@@ -1828,6 +1890,31 @@ ${statements}
             }
         }
         
+        async function toggleProgression() {
+            if (isProgressionPlaying) {
+                isProgressionPlaying = false;
+                return;
+            }
+            isProgressionPlaying = true;
+            const playBtn = document.getElementById('playBtn');
+            const sequence = [0, 1, 2, 0]; // I, IV, V, I
+
+            while (isProgressionPlaying) {
+                const beatDuration = getBeatDuration(); // re-read each pass so live tempo changes apply
+                for (const idx of sequence) {
+                    if (!isProgressionPlaying) break;
+                    activeChord = idx;
+                    updateUI();
+                    syncCircleWithChord();
+                    playCurrentChord(true);
+                    if (playBtn) playBtn.textContent = '⏹ Stop';
+                    await new Promise(r => setTimeout(r, beatDuration * 2)); // 2 beats per chord
+                }
+            }
+            if (playBtn) updateUI(); // restores the normal "Play X → Y → Z" label
+        }
+
+        // Retained for any other call sites expecting a single-pass play
         async function playProgression() {
             const sequence = [0, 1, 2, 0]; // I, IV, V, I
             const beatDuration = getBeatDuration();
@@ -2427,7 +2514,7 @@ ${statements}
         
         function setEarTrainerMode(mode) {
             earTrainerMode = mode;
-            ['modeNote','modeInterval','modeChord'].forEach(id => {
+            ['modeNote','modeInterval','modeChord','modeShape'].forEach(id => {
                 const el = document.getElementById(id);
                 if (!el) return;
                 const m = id.replace('mode','').toLowerCase();
@@ -2478,6 +2565,14 @@ ${statements}
                     <button onclick="checkEarTrainerAnswer(9)"  class="ear-answer-btn" aria-label="A"       style="background:#007FFF44;">A</button>
                     <button onclick="checkEarTrainerAnswer(10)" class="ear-answer-btn" aria-label="A sharp" style="background:#00FF8044;">A#</button>
                     <button onclick="checkEarTrainerAnswer(11)" class="ear-answer-btn" aria-label="B"       style="background:#80FF0044;">B</button>
+                `;
+            } else if (earTrainerMode === 'shape') {
+                container.innerHTML = `
+                    <button onclick="checkEarTrainerAnswer('C')" class="ear-answer-btn" aria-label="C shape">C</button>
+                    <button onclick="checkEarTrainerAnswer('A')" class="ear-answer-btn" aria-label="A shape">A</button>
+                    <button onclick="checkEarTrainerAnswer('G')" class="ear-answer-btn" aria-label="G shape">G</button>
+                    <button onclick="checkEarTrainerAnswer('E')" class="ear-answer-btn" aria-label="E shape">E</button>
+                    <button onclick="checkEarTrainerAnswer('D')" class="ear-answer-btn" aria-label="D shape">D</button>
                 `;
             }
         }
@@ -2545,6 +2640,32 @@ ${statements}
                 playNote(midiToFreq(midi), 1.0);
                 
                 document.getElementById('earTrainerQuestion').textContent = 'What note is this?';
+            } else if (earTrainerMode === 'shape') {
+                // Claim T-5: random CAGED shape + key, played via the audio
+                // engine WITHOUT any visual display (no setActiveNotes, no
+                // fretboard highlight) — the player must identify the shape
+                // by ear alone.
+                const CAGED_KEYS = ['C', 'A', 'G', 'E', 'D'];
+                const rootNote = Math.floor(Math.random() * 12);
+                const shapeKey = CAGED_KEYS[Math.floor(Math.random() * CAGED_KEYS.length)];
+                currentQuestion = { type: 'shape', answer: shapeKey, rootNote };
+
+                const shapeDef = SHAPES[shapeKey];
+                const rootStringIdx = 6 - shapeDef.rootString;
+                const openNote = TUNING[rootStringIdx];
+                const shapeRoot = (openNote + shapeDef.rootFret) % 12;
+                const fretOffset = (rootNote - shapeRoot + 12) % 12;
+
+                shapeDef.frets.forEach((baseFret, s) => {
+                    if (baseFret === -1) return;
+                    const absFret = baseFret + fretOffset;
+                    setTimeout(() => {
+                        playNote(getFrequency(s, absFret), 1.1);
+                    }, s * 70);
+                });
+
+                document.getElementById('earTrainerQuestion').textContent = 'What CAGED shape is this?';
+                return; // skip the fretboard-sync call below — no visual display
             }
             
             // Sync fretboard to show the notes being played
@@ -2623,10 +2744,17 @@ ${statements}
             }
             
             const isCorrect = answer === currentQuestion.answer;
+            const qEl = document.getElementById('earTrainerQuestion');
             
             if (isCorrect) {
                 earCorrect++;
-                document.getElementById('earTrainerQuestion').innerHTML = '<span style="color: #4ade80;">✓ Correct!</span>';
+                qEl.innerHTML = '<span style="color: #4ade80;">✓ Correct!</span>';
+                if (currentQuestion.type === 'shape') {
+                    // Visual celebration animation (Claim T-5)
+                    qEl.classList.remove('ear-celebrate');
+                    void qEl.offsetWidth; // restart animation if triggered twice in a row
+                    qEl.classList.add('ear-celebrate');
+                }
             } else {
                 earWrong++;
                 let correctAnswer = '';
@@ -2634,10 +2762,12 @@ ${statements}
                     correctAnswer = INTERVAL_NAMES[currentQuestion.answer];
                 } else if (currentQuestion.type === 'chord') {
                     correctAnswer = currentQuestion.answer;
+                } else if (currentQuestion.type === 'shape') {
+                    correctAnswer = currentQuestion.answer + ' shape';
                 } else {
                     correctAnswer = NOTE_NAMES[currentQuestion.answer];
                 }
-                document.getElementById('earTrainerQuestion').innerHTML = `<span style="color: #f87171;">✗ It was ${correctAnswer}</span>`;
+                qEl.innerHTML = `<span style="color: #f87171;">✗ It was ${correctAnswer}</span>`;
             }
             
             // Update score
@@ -2683,7 +2813,7 @@ ${statements}
 
         // Update aria-pressed on ear trainer mode buttons
         function updateEarModeStates(mode) {
-            ['note','interval','chord'].forEach(m => {
+            ['note','interval','chord','shape'].forEach(m => {
                 const el = document.getElementById('mode' + m.charAt(0).toUpperCase() + m.slice(1));
                 if (el) el.setAttribute('aria-pressed', m === mode ? 'true' : 'false');
             });

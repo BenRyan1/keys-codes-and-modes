@@ -1074,6 +1074,31 @@
                         <button id="autoRotateBtn" class="cool-btn" aria-label="Auto-rotate" aria-pressed="false">⟳ Auto</button>
                         <button id="resetBtn" class="cool-btn" aria-label="Reset to C">⊙ Reset C</button>
                     </div>
+                    <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <label for="stepSizeSelect" style="font-size:0.72rem; font-weight:600; color:#e8e8f8; letter-spacing:0.4px;">Step Size</label>
+                        </div>
+                        <select id="stepSizeSelect" onchange="setRotationStep(this.value)" style="
+                            background:#2a2a4a; color:#ffffff; border:1.5px solid #4a4a7a;
+                            border-radius:8px; padding:6px 10px; font-size:0.75rem;
+                            font-weight:600; cursor:pointer; width:100%;
+                        ">
+                            <option value="30" selected>30° — 1 key at a time</option>
+                            <option value="60">60° — 2 keys at a time</option>
+                            <option value="90">90° — 3 keys at a time</option>
+                        </select>
+
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+                            <label for="autoIntervalSlider" style="font-size:0.72rem; font-weight:600; color:#e8e8f8; letter-spacing:0.4px;">Auto Speed</label>
+                            <span id="autoIntervalLabel" style="font-size:0.75rem; font-weight:700; color:#F4D03F; background:rgba(244,208,63,0.12); padding:2px 8px; border-radius:4px;">2000 ms</span>
+                        </div>
+                        <input type="range" id="autoIntervalSlider" min="500" max="5000" step="250" value="2000"
+                               oninput="setAutoRotateInterval(this.value)"
+                               style="width:100%; accent-color:#F4D03F;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.62rem; color:#6a6a9a; margin-top:-4px;">
+                            <span>Fast (0.5s)</span><span>Slow (5s)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1380,6 +1405,10 @@
         let autoPlayMode = 'arpeggio'; // declared here — used throughout // C at 12 o'clock (original position)
         let isAutoRotating = false;
         let rotationInterval = null;
+        // Claim T-2: both the auto-rotate time interval and the manual
+        // rotation step increment are independently configurable.
+        let autoRotateIntervalMs = 2000;
+        let rotationStepDegrees = 30;
         let currentPattern = null; // Track which pattern is active
         let playbackSpeed = 150; // Milliseconds per note (adjustable with slider)
         
@@ -1805,8 +1834,15 @@
             }
         }
         
-        function playActive() {
-            if (!synth || activeNodes.size === 0) return;
+        async function playActive() {
+            if (activeNodes.size === 0) {
+                announce('No notes selected. Click a scale or chord pattern first.', 'polite');
+                return;
+            }
+            if (!await _ensureSynth()) {
+                announce('Audio failed — tap the 🔈 Audio button first, then Play.', 'assertive');
+                return;
+            }
             const freqs = [];
             const nodes = [];
             activeNodes.forEach(nodeId => {
@@ -1819,10 +1855,8 @@
             if (!freqs.length) return;
             synth.triggerAttackRelease(freqs, '2n');
             nodes.forEach(n => flashNote(n));
-        }
-        
-        function playArpeggio() {
-            if (!synth || activeNodes.size === 0) return;
+        }        
+        function _getActiveNotesSorted(descending = false) {
             const notes = [];
             activeNodes.forEach(nodeId => {
                 const [w, ci] = nodeId.split('-').map(Number);
@@ -1830,7 +1864,29 @@
                 if (!node) return;
                 notes.push({ midi: parseInt(node.getAttribute('data-midi')), node });
             });
-            notes.sort((a, b) => a.midi - b.midi);
+            notes.sort((a, b) => descending ? b.midi - a.midi : a.midi - b.midi);
+            return notes;
+        }
+
+        async function _ensureSynth() {
+            if (synth) return true;
+            try {
+                await Tone.start();
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: 'sine', partialCount: 0 },
+                    envelope: { attack: 0.005, decay: 0.1, sustain: 0.5, release: 0.8 },
+                    volume: -6
+                }).toDestination();
+                const audioBtn = document.getElementById('audioBtn');
+                if (audioBtn) { audioBtn.textContent = '🟢 AUDIO READY'; audioBtn.classList.add('success'); }
+                return true;
+            } catch(e) { return false; }
+        }
+
+        async function playArpeggio() {
+            if (activeNodes.size === 0) return;
+            if (!await _ensureSynth()) return;
+            const notes = _getActiveNotesSorted(false);
             const now = Tone.now();
             const nd = playbackSpeed / 1000;
             notes.forEach(({ midi, node }, i) => {
@@ -1839,16 +1895,10 @@
             });
         }
         
-        function playArpeggioDown() {
-            if (!synth || activeNodes.size === 0) return;
-            const notes = [];
-            activeNodes.forEach(nodeId => {
-                const [w, ci] = nodeId.split('-').map(Number);
-                const node = getNoteCircle(w, ci);
-                if (!node) return;
-                notes.push({ midi: parseInt(node.getAttribute('data-midi')), node });
-            });
-            notes.sort((a, b) => b.midi - a.midi);
+        async function playArpeggioDown() {
+            if (activeNodes.size === 0) return;
+            if (!await _ensureSynth()) return;
+            const notes = _getActiveNotesSorted(true);
             const now = Tone.now();
             const nd = playbackSpeed / 1000;
             notes.forEach(({ midi, node }, i) => {
@@ -1859,9 +1909,7 @@
         
         // NEW: Auto-play when stencil is applied
         async function playStencilPattern(playType = 'chord') {
-            if (!synth) {
-                await Tone.start();
-            }
+            if (!await _ensureSynth()) return;
             
             // Wait a brief moment for visual update
             setTimeout(() => {
@@ -1903,9 +1951,9 @@
         }
         
         function rotateLeft() {
-            // Left = Brings 1 o'clock spoke TO 12 o'clock position
-            // This is CLOCKWISE rotation = -30°
-            currentRotation = (currentRotation - 30 + 360) % 360;
+            // Left = Brings the step-size spoke TO 12 o'clock position
+            // This is CLOCKWISE rotation = -rotationStepDegrees
+            currentRotation = (currentRotation - rotationStepDegrees + 360) % 360;
             updateRotation();
             updateCurrentKeyDisplay();
             if (currentPattern) {
@@ -1915,9 +1963,9 @@
         }
         
         function rotateRight() {
-            // Right = Brings 11 o'clock spoke TO 12 o'clock position
-            // This is COUNTER-CLOCKWISE rotation = +30°
-            currentRotation = (currentRotation + 30) % 360;
+            // Right = Brings the step-size spoke TO 12 o'clock position
+            // This is COUNTER-CLOCKWISE rotation = +rotationStepDegrees
+            currentRotation = (currentRotation + rotationStepDegrees) % 360;
             updateRotation();
             updateCurrentKeyDisplay();
             if (currentPattern) {
@@ -1981,6 +2029,27 @@
             }
         }
         
+        function setRotationStep(degrees) {
+            // Restricted to multiples of 30 so the rotation always lands on
+            // a wedge boundary, keeping the 12-o'clock pitch-class read
+            // function unambiguous (the 13-ring wedge grid itself is fixed
+            // at 30° spacing regardless of this control).
+            rotationStepDegrees = parseInt(degrees, 10);
+        }
+
+        function setAutoRotateInterval(ms) {
+            autoRotateIntervalMs = parseInt(ms, 10);
+            const label = document.getElementById('autoIntervalLabel');
+            if (label) label.textContent = autoRotateIntervalMs + 'ms';
+            // If auto-rotating is currently active, restart the interval
+            // timer at the new speed immediately rather than waiting for
+            // the next tick.
+            if (isAutoRotating) {
+                clearInterval(rotationInterval);
+                rotationInterval = setInterval(() => { rotateRight(); }, autoRotateIntervalMs);
+            }
+        }
+
         function toggleAutoRotate() {
             isAutoRotating = !isAutoRotating;
             const btn = document.getElementById('autoRotateBtn');
@@ -1990,7 +2059,7 @@
                 btn.setAttribute('aria-pressed', 'true');
                 rotationInterval = setInterval(() => {
                     rotateRight();
-                }, 2000);
+                }, autoRotateIntervalMs);
             } else {
                 btn.classList.remove('active');
                 btn.setAttribute('aria-pressed', 'false');
@@ -2009,6 +2078,14 @@
         document.getElementById('playBtn').addEventListener('click', playActive);
         document.getElementById('arpeggioBtn').addEventListener('click', playArpeggio);
         document.getElementById('arpeggioDownBtn').addEventListener('click', playArpeggioDown);
+
+        // T-2: Configurable step size and auto-rotate interval controls
+        document.getElementById('stepSizeSelect').addEventListener('change', function() {
+            setRotationStep(this.value);
+        });
+        document.getElementById('autoIntervalSlider').addEventListener('input', function() {
+            setAutoRotateInterval(this.value);
+        });
         
         // Auto-play mode controls
         document.getElementById('autoPlayChordBtn').addEventListener('click', function() {
