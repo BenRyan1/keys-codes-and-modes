@@ -795,6 +795,8 @@
     /* ── FRETBOARD DOTS ── */
     .ndot { cursor: pointer; }
     .ndot circle { transition: fill .18s; }
+    .ndot .dot-t { opacity: 0; transition: opacity .15s; }
+    .ndot.revealed .dot-t { opacity: 1; }
     /* Invisible hit area for WCAG 2.5.5 — 44px touch target */
     .ndot .hit { fill: transparent; }
     .ndot.cf { animation: flok  .4s ease-out; }
@@ -1274,7 +1276,7 @@ function S(t) { return document.createElementNS('http://www.w3.org/2000/svg',t);
 function buildWheel() {
   const g = document.getElementById('wsegs');
   g.innerHTML = '';
-  const cx=110,cy=110,R=100,r=35,ap=2*Math.PI/12,a0=-Math.PI/2;
+  const cx=110,cy=110,R=100,r=35,ap=2*Math.PI/12,a0=-Math.PI/2-Math.PI/12;
   NNAMES.forEach((note,i) => {
     const col=NCOL[note], a1=a0+i*ap, a2=a0+(i+1)*ap, am=(a1+a2)/2;
     const seg=S('path');
@@ -1320,62 +1322,97 @@ function resetWheel() {
 // Strings = columns (L→R: low E₂ → high E₄)
 // Rows: NUT/0 combined header row, then frets 1..maxFret
 // Touch targets: 22px radius invisible hit circles (44px diameter = WCAG 2.5.5)
+// ── ADVANCED MODE: RANDOM FRET WINDOW (Claim P-2) ──────────────
+const ADV_WINDOW = 5; // frets visible per round in advanced mode
+let advFretStart = 1; // current window start fret (1-based); 0 disables windowing
+
+function pickFretWindow() {
+  // Random start such that [start, start+ADV_WINDOW-1] stays within frets 1..12
+  advFretStart = 1 + Math.floor(Math.random() * (12 - ADV_WINDOW + 1));
+}
+
 function buildFretboard() {
-  const maxF=G.maxFret, nS=6;
+  const windowed = (G.diff === 'advanced');
+  const fMin = windowed ? advFretStart : 1; // first fretted row's actual fret number
+  const rowCount = windowed ? ADV_WINDOW : G.maxFret; // number of fretted rows drawn
+  const hasNut = !windowed;
+  const nS=6;
   const strW=52, nutH=54, fretH=44, padL=40, padT=14, padR=8, padB=10;
+  const headerH = hasNut ? nutH : 28;
   const dotR=10, hitR=22; // visible dot r=10, invisible hit area r=22
-  const W=padL+nS*strW+padR, H=padT+nutH+maxF*fretH+padB;
+  const W=padL+nS*strW+padR, H=padT+headerH+rowCount*fretH+padB;
   const svg=document.getElementById('fbsvg');
   svg.innerHTML='';
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
   svg.setAttribute('width',W); svg.setAttribute('height',H);
 
   const fbl=padL, fbr=padL+nS*strW;
-  const nutTop=padT, nutBot=padT+nutH;
-  const fbTop=nutBot, fbBot=nutBot+maxF*fretH;
+  const nutTop=padT, nutBot=padT+headerH;
+  const fbTop=nutBot, fbBot=nutBot+rowCount*fretH;
 
   // Wood backgrounds
   const bg1=S('rect');
   bg1.setAttribute('x',fbl); bg1.setAttribute('y',nutTop);
-  bg1.setAttribute('width',nS*strW); bg1.setAttribute('height',nutH);
+  bg1.setAttribute('width',nS*strW); bg1.setAttribute('height',headerH);
   bg1.setAttribute('fill','#221808'); svg.appendChild(bg1);
   const bg2=S('rect');
   bg2.setAttribute('x',fbl); bg2.setAttribute('y',fbTop);
-  bg2.setAttribute('width',nS*strW); bg2.setAttribute('height',maxF*fretH);
+  bg2.setAttribute('width',nS*strW); bg2.setAttribute('height',rowCount*fretH);
   bg2.setAttribute('fill','#1a1008'); svg.appendChild(bg2);
 
-  // NUT bar
-  const nutLine=S('line');
-  nutLine.setAttribute('x1',fbl); nutLine.setAttribute('y1',nutBot);
-  nutLine.setAttribute('x2',fbr); nutLine.setAttribute('y2',nutBot);
-  nutLine.setAttribute('stroke','#c8b060'); nutLine.setAttribute('stroke-width','5');
-  svg.appendChild(nutLine);
+  if (hasNut) {
+    // NUT bar
+    const nutLine=S('line');
+    nutLine.setAttribute('x1',fbl); nutLine.setAttribute('y1',nutTop);
+    nutLine.setAttribute('x2',fbr); nutLine.setAttribute('y2',nutTop);
+    nutLine.setAttribute('stroke','#c8b060'); nutLine.setAttribute('stroke-width','5');
+    svg.appendChild(nutLine);
 
-  // NUT / 0 label (merged in left margin)
-  const nl1=S('text');
-  nl1.setAttribute('x',fbl-7); nl1.setAttribute('y',nutTop+nutH/2-6);
-  nl1.setAttribute('text-anchor','end'); nl1.setAttribute('font-family','Georgia,serif');
-  nl1.setAttribute('font-style','italic'); nl1.setAttribute('font-size','9');
-  nl1.setAttribute('fill','#c8b060'); nl1.textContent='NUT'; svg.appendChild(nl1);
-  const nl2=S('text');
-  nl2.setAttribute('x',fbl-7); nl2.setAttribute('y',nutTop+nutH/2+9);
-  nl2.setAttribute('text-anchor','end'); nl2.setAttribute('font-family','Georgia,serif');
-  nl2.setAttribute('font-size','9'); nl2.setAttribute('fill','#7a7a8a');
-  nl2.textContent='0'; svg.appendChild(nl2);
+    // NUT / 0 label (merged in left margin)
+    const nl1=S('text');
+    nl1.setAttribute('x',fbl-7); nl1.setAttribute('y',nutTop+headerH/2-6);
+    nl1.setAttribute('text-anchor','end'); nl1.setAttribute('font-family','Georgia,serif');
+    nl1.setAttribute('font-style','italic'); nl1.setAttribute('font-size','9');
+    nl1.setAttribute('fill','#c8b060'); nl1.textContent='NUT'; svg.appendChild(nl1);
+    const nl2=S('text');
+    nl2.setAttribute('x',fbl-7); nl2.setAttribute('y',nutTop+headerH/2+9);
+    nl2.setAttribute('text-anchor','end'); nl2.setAttribute('font-family','Georgia,serif');
+    nl2.setAttribute('font-size','9'); nl2.setAttribute('fill','#7a7a8a');
+    nl2.textContent='0'; svg.appendChild(nl2);
+  } else {
+    // Window label + per-string name labels in the header strip (Claim P-2:
+    // advanced mode repositions the fretboard to a randomly selected window)
+    const wl=S('text');
+    wl.setAttribute('x',fbl-7); wl.setAttribute('y',nutTop+headerH/2+3);
+    wl.setAttribute('text-anchor','end'); wl.setAttribute('font-family','Georgia,serif');
+    wl.setAttribute('font-style','italic'); wl.setAttribute('font-size','8');
+    wl.setAttribute('fill','#c8b060');
+    wl.textContent=`FR ${fMin}\u2013${fMin+rowCount-1}`;
+    svg.appendChild(wl);
+    for(let s=0; s<nS; s++) {
+      const x=fbl+s*strW+strW/2, snm=S('text');
+      snm.setAttribute('x',x); snm.setAttribute('y',nutTop+headerH/2+3);
+      snm.setAttribute('text-anchor','middle'); snm.setAttribute('font-family','Georgia,serif');
+      snm.setAttribute('font-style','italic'); snm.setAttribute('font-size','9');
+      snm.setAttribute('fill','#5a4830');
+      snm.textContent=STRNAMES[s]; svg.appendChild(snm);
+    }
+  }
 
-  // Horizontal fret lines (frets 1..maxF bottom edges)
-  for(let f=1; f<=maxF; f++) {
-    const y=fbTop+f*fretH, ln=S('line');
+  // Horizontal fret lines (rowCount bottom edges)
+  for(let i=1; i<=rowCount; i++) {
+    const y=fbTop+i*fretH, ln=S('line');
     ln.setAttribute('x1',fbl); ln.setAttribute('y1',y);
     ln.setAttribute('x2',fbr); ln.setAttribute('y2',y);
     ln.setAttribute('stroke','#3a3020'); ln.setAttribute('stroke-width','1.5');
     svg.appendChild(ln);
   }
 
-  // Position markers in left margin (3,5,7,9,12)
+  // Position markers in left margin (3,5,7,9,12), mapped to the visible window
   [3,5,7,9,12].forEach(mf => {
-    if(mf>maxF) return;
-    const y=fbTop+(mf-0.5)*fretH;
+    const row = mf - fMin + 1; // 1-based row index for this fret number
+    if(row<1 || row>rowCount) return;
+    const y=fbTop+(row-0.5)*fretH;
     const mk=S('circle');
     mk.setAttribute('cx',fbl-20); mk.setAttribute('cy',y);
     mk.setAttribute('r',mf===12?5:4); mk.setAttribute('fill','#c8b06033');
@@ -1398,21 +1435,67 @@ function buildFretboard() {
     svg.appendChild(ln);
   }
 
-  // Fret number labels (left margin, frets 1..maxF)
-  for(let f=1; f<=maxF; f++) {
-    const y=fbTop+(f-0.5)*fretH+4, lbl=S('text');
+  // Fret number labels (left margin, actual fret numbers for the visible window)
+  for(let i=1; i<=rowCount; i++) {
+    const f = hasNut ? i : fMin+i-1;
+    const y=fbTop+(i-0.5)*fretH+4, lbl=S('text');
     lbl.setAttribute('x',fbl-7); lbl.setAttribute('y',y);
     lbl.setAttribute('text-anchor','end'); lbl.setAttribute('font-family','Georgia,serif');
     lbl.setAttribute('font-size','9'); lbl.setAttribute('fill','#7a7a8a');
     lbl.textContent=f; svg.appendChild(lbl);
   }
 
-  // Note dots — fret 0 in nut row, frets 1..maxF in fretted rows
+  // Note dots — fret 0 in nut row (non-windowed only), fretted rows for the visible window
   for(let s=0; s<nS; s++) {
     const x=fbl+s*strW+strW/2;
-    for(let f=0; f<=maxF; f++) {
+
+    if (hasNut) {
+      const note0=noteAt(s,0), col0=NCOL[note0], dim0=NDIM[note0];
+      const disp0=NDISP[NNAMES.indexOf(note0)];
+      const grp0=S('g');
+      grp0.setAttribute('class','ndot');
+      grp0.setAttribute('id',`d-${s}-0`);
+      grp0.setAttribute('data-string',s); grp0.setAttribute('data-fret',0);
+      grp0.setAttribute('data-note',note0);
+      grp0.setAttribute('role','button'); grp0.setAttribute('tabindex','0');
+      grp0.setAttribute('aria-label',`${STRNAMES[s]} string, fret 0, note ${disp0}`);
+
+      const snm=S('text');
+      snm.setAttribute('x',x); snm.setAttribute('y',nutTop+10);
+      snm.setAttribute('text-anchor','middle'); snm.setAttribute('font-family','Georgia,serif');
+      snm.setAttribute('font-style','italic'); snm.setAttribute('font-size','9');
+      snm.setAttribute('fill','#5a4830'); snm.setAttribute('pointer-events','none');
+      snm.textContent=STRNAMES[s]; svg.appendChild(snm);
+
+      const y0=nutTop+headerH/2;
+      const ci0=S('circle');
+      ci0.setAttribute('cx',x); ci0.setAttribute('cy',y0); ci0.setAttribute('r',dotR);
+      ci0.setAttribute('fill',dim0); ci0.setAttribute('stroke',col0);
+      ci0.setAttribute('stroke-width','1.5'); ci0.setAttribute('class','dot-c');
+      const tx0=S('text');
+      tx0.setAttribute('x',x); tx0.setAttribute('y',y0+3.5);
+      tx0.setAttribute('text-anchor','middle'); tx0.setAttribute('font-family','Georgia,serif');
+      tx0.setAttribute('font-style','italic');
+      tx0.setAttribute('font-size',disp0.length>2?'6.5':'8');
+      tx0.setAttribute('font-weight','bold'); tx0.setAttribute('fill',txtCol(note0));
+      tx0.setAttribute('pointer-events','none'); tx0.setAttribute('class','dot-t');
+      tx0.textContent=disp0;
+      const hit0=S('circle');
+      hit0.setAttribute('cx',x); hit0.setAttribute('cy',y0);
+      hit0.setAttribute('r',hitR); hit0.setAttribute('class','hit');
+
+      grp0.appendChild(ci0); grp0.appendChild(tx0); grp0.appendChild(hit0);
+      grp0.addEventListener('click', onDot);
+      grp0.addEventListener('keydown', e=>{
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); onDot.call(grp0,e); }
+      });
+      svg.appendChild(grp0);
+    }
+
+    for(let i=1; i<=rowCount; i++) {
+      const f = hasNut ? i : fMin+i-1; // actual fret number for this row
       const note=noteAt(s,f), col=NCOL[note], dim=NDIM[note];
-      const y=f===0 ? nutTop+nutH/2 : fbTop+(f-0.5)*fretH;
+      const y=fbTop+(i-0.5)*fretH;
       const disp=NDISP[NNAMES.indexOf(note)];
 
       const grp=S('g');
@@ -1422,16 +1505,6 @@ function buildFretboard() {
       grp.setAttribute('data-note',note);
       grp.setAttribute('role','button'); grp.setAttribute('tabindex','0');
       grp.setAttribute('aria-label',`${STRNAMES[s]} string, fret ${f}, note ${disp}`);
-
-      // String name above open (fret 0) dot
-      if(f===0) {
-        const snm=S('text');
-        snm.setAttribute('x',x); snm.setAttribute('y',nutTop+10);
-        snm.setAttribute('text-anchor','middle'); snm.setAttribute('font-family','Georgia,serif');
-        snm.setAttribute('font-style','italic'); snm.setAttribute('font-size','9');
-        snm.setAttribute('fill','#5a4830'); snm.setAttribute('pointer-events','none');
-        snm.textContent=STRNAMES[s]; svg.appendChild(snm);
-      }
 
       // Visible dot circle
       const ci=S('circle');
@@ -1498,12 +1571,21 @@ function next() {
   G.round++;
   if(G.round>G.totalRounds){ endGame(); return; }
   let idx;
-  if(G.diff==='beginner'&&Math.random()<0.6)
+  // Note pool (Claim P-2): beginner is strictly restricted to the seven
+  // natural pitch classes; intermediate/advanced use the full chromatic set.
+  if(G.diff==='beginner')
     idx=[0,2,4,5,7,9,11][Math.floor(Math.random()*7)];
   else idx=Math.floor(Math.random()*12);
   G.note=NNAMES[idx]; G.wrong=0;
+
+  // Advanced mode: reposition the fretboard to a new randomly selected
+  // fret window each round (Claim P-2) before collecting targets.
+  if(G.diff==='advanced'){ pickFretWindow(); buildFretboard(); }
+
   G.targets=[];
-  for(let s=0;s<6;s++) for(let f=0;f<=G.maxFret;f++)
+  const fLo = (G.diff==='advanced') ? advFretStart : 0;
+  const fHi = (G.diff==='advanced') ? (advFretStart+ADV_WINDOW-1) : G.maxFret;
+  for(let s=0;s<6;s++) for(let f=fLo;f<=fHi;f++)
     if(noteAt(s,f)===G.note) G.targets.push({s,f});
   const col=NCOL[G.note], disp=NDISP[idx];
   const dot=document.getElementById('tgtDot');
@@ -1547,7 +1629,11 @@ function stopTimer() {
 }
 function timeUp() {
   stopTimer(); G.streak=0; G.total++;
-  updateUI(); showFB('✗ Time!',false);
+  // Timer-expiry penalty (Claim P-1): deduct a penalty score on timeout
+  // without correct identification, floored at zero.
+  const TIMEOUT_PENALTY=25;
+  G.score=Math.max(0, G.score-TIMEOUT_PENALTY);
+  updateUI(); showFB('✗ Time! −'+TIMEOUT_PENALTY,false);
   revealTargets();
   trackEvent('time_expired','Fretboard_Speed_Challenge',G.note,G.round);
   setTimeout(()=>{ resetDots(); next(); },1300);
@@ -1562,15 +1648,23 @@ function checkAns(clicked, el) {
     G.streak++; G.correct++;
     if(G.streak>G.best) G.best=G.streak;
     const p=parseFloat(document.getElementById('timerBar').style.width)/100;
-    const pts=100+Math.round(p*50)+Math.min(G.streak-1,10)*10;
+    const base=100+Math.round(p*50);
+    // Multiplicative streak bonus (Claim P-1): once the streak exceeds the
+    // minimum threshold, the base score is multiplied by a streak-scaled factor
+    // rather than having a flat amount added.
+    const STREAK_THRESHOLD=3, STREAK_MULT_STEP=0.1, STREAK_MULT_CAP=2.0;
+    const mult = G.streak>STREAK_THRESHOLD
+      ? Math.min(STREAK_MULT_CAP, 1+(G.streak-STREAK_THRESHOLD)*STREAK_MULT_STEP)
+      : 1;
+    const pts=Math.round(base*mult);
     G.score+=pts;
-    el.classList.add('cf');
+    el.classList.add('cf','revealed');
     el.querySelector('.dot-c').setAttribute('fill',NCOL[G.note]);
     setTimeout(()=>el.classList.remove('cf'),500);
     updateUI();
     if(G.streak>=3){
       const tag=document.getElementById('comboTag');
-      tag.textContent=`${G.streak}✕ COMBO! +${Math.min(G.streak-1,10)*10}`;
+      tag.textContent=`${G.streak}✕ COMBO! ×${mult.toFixed(1)}`;
       tag.classList.add('show');
       setTimeout(()=>tag.classList.remove('show'),1200);
     }
@@ -1580,10 +1674,10 @@ function checkAns(clicked, el) {
     setTimeout(()=>{ resetDots(); next(); },600);
   } else {
     G.wrong++; G.streak=0; updateUI();
-    el.classList.add('wf');
+    el.classList.add('wf','revealed');
     el.querySelector('.dot-c').setAttribute('fill','#50000030');
     setTimeout(()=>{
-      el.classList.remove('wf');
+      el.classList.remove('wf','revealed');
       el.querySelector('.dot-c').setAttribute('fill',NDIM[clicked]||'#222');
     },400);
     showFB('✗',false);
@@ -1601,6 +1695,7 @@ function revealTargets() {
     if(d){
       d.querySelector('.dot-c').setAttribute('fill',NCOL[G.note]);
       d.querySelector('.dot-c').setAttribute('stroke-width','3');
+      d.classList.add('revealed');
     }
   });
 }
@@ -1610,6 +1705,7 @@ function resetDots() {
     const n=g.getAttribute('data-note');
     g.querySelector('.dot-c').setAttribute('fill',NDIM[n]||'#222');
     g.querySelector('.dot-c').setAttribute('stroke-width','1.5');
+    g.classList.remove('revealed');
   });
 }
 
