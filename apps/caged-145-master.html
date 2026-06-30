@@ -675,6 +675,23 @@ input[type=range]::-moz-range-thumb{
       <button class="audio-btn" onclick="initAudio()" aria-label="Initialize audio">🔊</button>
       <button class="audio-btn" onclick="playCurrentChord(false)" aria-label="Play chord">▶ Play</button>
       <button class="audio-btn" onclick="playCurrentChord(true)" aria-label="Strum chord">🎸 Strum</button>
+      <button class="audio-btn" onclick="openUnityExportPanel()" aria-label="Export current chord shape as Unity C# code">🎮 Unity Export</button>
+    </div>
+
+    <!-- Unity C# export panel (hidden until opened) -->
+    <div id="unityExportPanel" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(5,5,10,0.88);align-items:center;justify-content:center;padding:20px;" role="dialog" aria-modal="true" aria-label="Unity C# export">
+      <div style="background:#14141f;border:1px solid rgba(255,215,0,0.35);border-radius:10px;max-width:760px;width:100%;max-height:85vh;display:flex;flex-direction:column;padding:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <strong style="color:#ffd700;font-size:0.95rem;">Unity C# — Current Chord Shape</strong>
+          <button onclick="closeUnityExportPanel()" aria-label="Close" style="background:none;border:none;color:#aaa;font-size:1.3rem;cursor:pointer;line-height:1;">×</button>
+        </div>
+        <p id="unityExportSummary" style="color:#9a9ab0;font-size:0.78rem;margin:0 0 8px;"></p>
+        <textarea id="unityExportCode" readonly style="flex:1;min-height:320px;background:#0a0a12;color:#d8e8e8;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:10px;font-family:'SF Mono',Consolas,monospace;font-size:0.72rem;line-height:1.45;resize:vertical;"></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;justify-content:flex-end;">
+          <button class="audio-btn" onclick="copyUnityExportCode(event)" aria-label="Copy code to clipboard">📋 Copy Code</button>
+          <button class="audio-btn" onclick="closeUnityExportPanel()" aria-label="Close panel">Close</button>
+        </div>
+      </div>
     </div>
 
     <!-- Octave -->
@@ -1025,201 +1042,114 @@ input[type=range]::-moz-range-thumb{
             return spheres;
         }
 
-        // Generate Unity C# code for sphere prefabs
-        function generateUnityCode() {
-            let code = `using UnityEngine;
-using System.Collections.Generic;
+        // Generate Unity C# code for the CURRENTLY ACTIVE chord shape on the fretboard.
+        // Fixed 2026-06-29 (Group L patent verification): this function previously emitted a
+        // static, hardcoded 12-sphere chromatic-wheel template unrelated to the fretboard's
+        // actual state, and was never wired to any UI control. It now reads the live active
+        // note positions (string index, fret index) for the currently displayed chord shape
+        // and emits one Instantiate/transform.position/material.color statement per note.
+        function getActiveFretboardNotes() {
+            const chord = getChordInfo(activeChord);
+            const shape = SHAPES[chord.shape];
+            const pos = chord.position;
+            const notes = [];
+            for (let s = 0; s < 6; s++) {
+                if (shape.frets[s] !== -1) {
+                    const fret = shape.frets[s] + pos;
+                    const noteIndex = (TUNING[s] + fret) % 12;
+                    notes.push({ string: s, fret: fret, noteIndex: noteIndex });
+                }
+            }
+            return { chord, notes };
+        }
 
-public class ChromaticSphereManager : MonoBehaviour
+        function generateUnityCode() {
+            const HORIZONTAL_SPACING = 0.5;  // X spacing per string index
+            const STRING_HEIGHT = 0.0;       // fixed Y (flat plane); raise per-string if desired
+            const DEPTH_SPACING = 0.5;       // Z spacing per fret index
+
+            const { chord, notes } = getActiveFretboardNotes();
+
+            const statements = notes.map(n => {
+                const noteName = getNoteName(n.noteIndex);
+                const hex = getNoteColor(n.noteIndex);
+                const x = (n.string * HORIZONTAL_SPACING).toFixed(3);
+                const y = STRING_HEIGHT.toFixed(3);
+                const z = (n.fret * DEPTH_SPACING).toFixed(3);
+                return `        // String ${n.string + 1}, Fret ${n.fret} — ${noteName}
+        {
+            GameObject sphereObj = Instantiate(spherePrefab, transform);
+            sphereObj.name = "Note_${noteName}_S${n.string + 1}F${n.fret}";
+            sphereObj.transform.position = new Vector3(${x}f, ${y}f, ${z}f);
+            SphereCollider col = sphereObj.GetComponent<SphereCollider>();
+            if (col == null) col = sphereObj.AddComponent<SphereCollider>();
+            MeshRenderer rend = sphereObj.GetComponent<MeshRenderer>();
+            if (rend != null) rend.material.color = ${hexToUnityColorLiteral(hex)};
+        }`;
+            }).join('\n\n');
+
+            const code = `using UnityEngine;
+
+// Generated by Keys, Codes & Modes — CAGED 1-4-5 Explorer
+// Chord: ${chord.degree} (${chord.name}) — ${chord.shape}-shape — ${chord.isBarre ? 'Fret ' + chord.position : 'Open position'}
+// ${notes.length} active note(s) on the fretboard at time of export
+
+public class KCMChordPrefabGenerator : MonoBehaviour
 {
-    public GameObject spherePrefab; // Assign a sphere prefab with a collider in Unity
-    
-    // Chromatic scale colors (Keys, Codes & Modes branding)
-    private readonly Color[] noteColors = new Color[]
-    {
-        HexToColor("#FFFF00"), // C  - Yellow
-        HexToColor("#FFC400"), // C# - Yellow-Orange
-        HexToColor("#FF8000"), // D  - Orange
-        HexToColor("#FF4000"), // D# - Red-Orange
-        HexToColor("#FF0000"), // E  - Red
-        HexToColor("#C4007F"), // F  - Red-Purple
-        HexToColor("#8000FF"), // F# - Purple
-        HexToColor("#4000FF"), // G  - Blue-Purple
-        HexToColor("#0000FF"), // G# - Blue
-        HexToColor("#007FFF"), // A  - Blue-Green
-        HexToColor("#00FF80"), // A# - Green
-        HexToColor("#80FF00")  // B  - Yellow-Green
-    };
-    
-    private readonly string[] noteNames = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-    
-    private List<ChromaticSphere> spheres = new List<ChromaticSphere>();
-    private int currentOctave = 4;
-    
+    public GameObject spherePrefab; // Assign a sphere prefab with a SphereCollider and MeshRenderer in Unity
+
     void Start()
     {
-        CreateChromaticSpheres(currentOctave);
+        GenerateChordSpheres();
     }
-    
-    public void CreateChromaticSpheres(int octave)
-    {
-        // Clear existing spheres
-        foreach (var sphere in spheres)
-        {
-            if (sphere != null && sphere.gameObject != null)
-                Destroy(sphere.gameObject);
-        }
-        spheres.Clear();
-        
-        float radius = 2f;
-        float angleStep = 360f / 12f;
-        
-        for (int i = 0; i < 12; i++)
-        {
-            float angle = i * angleStep * Mathf.Deg2Rad;
-            Vector3 position = new Vector3(
-                Mathf.Sin(angle) * radius,
-                0,
-                Mathf.Cos(angle) * radius
-            );
-            
-            GameObject sphereObj = Instantiate(spherePrefab, position, Quaternion.identity, transform);
-            ChromaticSphere sphere = sphereObj.AddComponent<ChromaticSphere>();
-            
-            // Initialize sphere data
-            sphere.Initialize(
-                noteIndex: i,
-                noteName: noteNames[i],
-                octave: octave,
-                midi: 12 + (octave * 12) + i,
-                color: noteColors[i]
-            );
-            
-            spheres.Add(sphere);
-        }
-    }
-    
-    // Group spheres (parent-child relationships)
-    public void GroupSpheres(int[] indices, int parentIndex)
-    {
-        if (parentIndex < 0 || parentIndex >= spheres.Count) return;
-        
-        ChromaticSphere parent = spheres[parentIndex];
-        
-        foreach (int idx in indices)
-        {
-            if (idx >= 0 && idx < spheres.Count && idx != parentIndex)
-            {
-                spheres[idx].SetParent(parent);
-            }
-        }
-    }
-    
-    private static Color HexToColor(string hex)
-    {
-        ColorUtility.TryParseHtmlString(hex, out Color color);
-        return color;
-    }
-}
 
-[System.Serializable]
-public class ChromaticSphere : MonoBehaviour
-{
-    public int NoteIndex { get; private set; }
-    public string NoteName { get; private set; }
-    public int Octave { get; private set; }
-    public int MidiNumber { get; private set; }
-    public Color NoteColor { get; private set; }
-    public string Register { get; private set; }
-    
-    public ChromaticSphere Parent { get; private set; }
-    public List<ChromaticSphere> Children { get; private set; } = new List<ChromaticSphere>();
-    
-    private TextMesh labelText;
-    private SphereCollider sphereCollider;
-    
-    public void Initialize(int noteIndex, string noteName, int octave, int midi, Color color)
+    public void GenerateChordSpheres()
     {
-        NoteIndex = noteIndex;
-        NoteName = noteName;
-        Octave = octave;
-        MidiNumber = midi;
-        NoteColor = color;
-        
-        // Set register based on octave
-        Register = octave < 2 ? "Bass" : octave < 4 ? "Tenor" : octave < 6 ? "Alto" : "Soprano";
-        
-        // Apply color to renderer
-        var renderer = GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material.color = color;
-        }
-        
-        // Ensure collider exists
-        sphereCollider = GetComponent<SphereCollider>();
-        if (sphereCollider == null)
-        {
-            sphereCollider = gameObject.AddComponent<SphereCollider>();
-        }
-        
-        // Create label
-        CreateLabel();
-        
-        gameObject.name = $"Sphere_{noteName}{octave}_MIDI{midi}";
-    }
-    
-    private void CreateLabel()
-    {
-        GameObject labelObj = new GameObject("Label");
-        labelObj.transform.SetParent(transform);
-        labelObj.transform.localPosition = Vector3.up * 0.7f;
-        
-        labelText = labelObj.AddComponent<TextMesh>();
-        labelText.text = $"{NoteName}{Octave}\\nMIDI:{MidiNumber}\\n{Register}";
-        labelText.fontSize = 24;
-        labelText.alignment = TextAlignment.Center;
-        labelText.anchor = TextAnchor.MiddleCenter;
-        labelText.color = Color.white;
-    }
-    
-    public void SetParent(ChromaticSphere parent)
-    {
-        if (Parent != null)
-        {
-            Parent.Children.Remove(this);
-        }
-        
-        Parent = parent;
-        parent.Children.Add(this);
-        transform.SetParent(parent.transform);
-    }
-    
-    public void ClearParent()
-    {
-        if (Parent != null)
-        {
-            Parent.Children.Remove(this);
-            Parent = null;
-            transform.SetParent(null);
-        }
-    }
-    
-    void OnCollisionEnter(Collision collision)
-    {
-        ChromaticSphere other = collision.gameObject.GetComponent<ChromaticSphere>();
-        if (other != null)
-        {
-            Debug.Log($"Collision: {NoteName}{Octave} <-> {other.NoteName}{other.Octave}");
-            // Interval calculation
-            int interval = Mathf.Abs(NoteIndex - other.NoteIndex);
-            Debug.Log($"Interval: {interval} semitones");
-        }
+${statements}
     }
 }`;
             return code;
         }
-        
+
+        function hexToUnityColorLiteral(hex) {
+            const r = parseInt(hex.substr(1, 2), 16) / 255;
+            const g = parseInt(hex.substr(3, 2), 16) / 255;
+            const b = parseInt(hex.substr(5, 2), 16) / 255;
+            return `new Color(${r.toFixed(4)}f, ${g.toFixed(4)}f, ${b.toFixed(4)}f)`;
+        }
+
+        function openUnityExportPanel() {
+            const { chord, notes } = getActiveFretboardNotes();
+            const code = generateUnityCode();
+            document.getElementById('unityExportCode').value = code;
+            document.getElementById('unityExportSummary').textContent =
+                `${chord.degree} chord (${chord.name}) — ${chord.shape}-shape — ${notes.length} note(s) — copy into a MonoBehaviour script in Unity.`;
+            document.getElementById('unityExportPanel').style.display = 'flex';
+            if (typeof gtag === 'function') {
+                gtag('event', 'unity_export_opened', { chord: chord.name, shape: chord.shape, note_count: notes.length });
+            }
+        }
+
+        function closeUnityExportPanel() {
+            document.getElementById('unityExportPanel').style.display = 'none';
+        }
+
+        function copyUnityExportCode(evt) {
+            const textarea = document.getElementById('unityExportCode');
+            textarea.select();
+            textarea.setSelectionRange(0, 999999);
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                const btn = evt && evt.target;
+                if (btn) {
+                    const original = btn.textContent;
+                    btn.textContent = '✓ Copied!';
+                    setTimeout(() => { btn.textContent = original; }, 1500);
+                }
+            }).catch(() => {
+                document.execCommand('copy');
+            });
+        }
+
         // ==================== CONSTANTS ====================
         const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
         const TUNING = [4, 9, 2, 7, 11, 4]; // E A D G B E
