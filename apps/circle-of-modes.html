@@ -397,6 +397,18 @@
       }
     }
     
+    @keyframes segmentPulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(7);
+        opacity: 0;
+      }
+    }
+
+
     @keyframes breatheWedge {
       0%, 100% {
         transform: scale(1);
@@ -545,6 +557,7 @@
     let currentNotes = [];
     let currentKey = 'C'; // Default starting key
     
+    const NOTE_ORDER = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
     const chromaticNotes = [
       {note: "C", color: "#FFFF00"},
       {note: "C#", color: "#FFC400"},
@@ -669,78 +682,103 @@
       spinText.textContent = "CLICK TO SPIN";
       mainGroup.appendChild(spinText);
       
-      for(let w = 0; w < wedgeCount; w++) {
-        const a0 = -Math.PI/2 + w * wedgeAngle;
-        const a1 = a0 + wedgeAngle;
-        const mode = modes[w];
-        
-        const div = document.createElementNS("http://www.w3.org/2000/svg","line");
-        const [dx0, dy0] = polarToXY(innerRadius, a0);
-        const [dx1, dy1] = polarToXY(outerRadius, a0);
-        div.setAttribute("x1", dx0);
-        div.setAttribute("y1", dy0);
-        div.setAttribute("x2", dx1);
-        div.setAttribute("y2", dy1);
-        div.setAttribute("stroke", "rgba(255,255,255,0.1)");
-        div.setAttribute("stroke-width", "3");
-        mainGroup.appendChild(div);
-        
-        for(let r = 0; r < ringCount; r++) {
-          const rInner = innerRadius + r * ringWidth;
-          const rOuter = rInner + ringWidth;
+      // Claim Q-1 architecture: 7 concentric RINGS (innermost = Ionian ...
+      // outermost = Locrian), each ring divided into the SAME 12 fixed
+      // chromatic arc segments at 30deg intervals. A segment is colored with
+      // its chromatic pitch-class color when that pitch class belongs to the
+      // ring's mode interval set (relative to the current key), and a neutral
+      // reduced-opacity color otherwise. C is centered at 12 o'clock,
+      // consistent with the platform-wide chromatic clock-face standard.
+      const segCount   = 12;
+      const segAngle   = tau / segCount;
+      const segOffset  = -Math.PI/2 - segAngle/2; // segment 0 (C) centered at 12 o'clock
+      const noteOrderForGrid = NOTE_ORDER;
+
+      for(let r = 0; r < ringCount; r++) {
+        const mode = modes[r];
+        const modeNoteIdx = new Set(mode.notes.map(n => noteOrderForGrid.indexOf(n)));
+        const rInner = innerRadius + r * ringWidth;
+        const rOuter = rInner + ringWidth;
+
+        for(let seg = 0; seg < segCount; seg++) {
+          const a0 = segOffset + seg * segAngle;
+          const a1 = a0 + segAngle;
+          const inMode = modeNoteIdx.has(seg);
+          const pcColor = chromaticNotes[seg].color;
+
           const cell = document.createElementNS("http://www.w3.org/2000/svg","path");
           cell.setAttribute("d", arcPath(rInner, rOuter, a0, a1));
-          cell.setAttribute("fill", shadeColor(mode.color, -(0.10 + r * 0.06)));
+          cell.setAttribute("fill", inMode ? pcColor : "rgba(255,255,255,0.06)");
+          cell.setAttribute("opacity", inMode ? "1" : "0.35");
           cell.setAttribute("stroke", "rgba(255,255,255,0.08)");
           cell.setAttribute("stroke-width", "2");
           cell.style.cursor = "pointer";
           cell.style.transition = "all 0.15s ease";
-          
-          const noteForCell = mode.notes[r];
-          
+
+          const noteForCell = noteOrderForGrid[seg];
+
           cell.addEventListener("click", () => {
-            selectWedge(w);
-            playNote(noteForCell, r);
+            selectWedge(r);
+            if (inMode) playNote(noteForCell);
           });
-          
-          cell.addEventListener("mouseenter", () => hoverCell(w, r, true));
-          cell.addEventListener("mouseleave", () => hoverCell(w, r, false));
-          
+          cell.addEventListener("mouseenter", () => hoverCell(r, seg, true));
+          cell.addEventListener("mouseleave", () => hoverCell(r, seg, false));
+
           mainGroup.appendChild(cell);
-          cellGroups.push({wedge: w, ring: r, el: cell, note: noteForCell});
+          cellGroups.push({wedge: r, seg: seg, el: cell, note: noteForCell, inMode});
         }
-        
-        const labelAngle = (a0 + a1) / 2;
-        const [lx, ly] = polarToXY(outerRadius - 50, labelAngle);
+
+        // Ring boundary divider
+        const divider = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        divider.setAttribute("cx", cx); divider.setAttribute("cy", cy);
+        divider.setAttribute("r", rOuter);
+        divider.setAttribute("fill", "none");
+        divider.setAttribute("stroke", "rgba(255,255,255,0.1)");
+        divider.setAttribute("stroke-width", "1.5");
+        divider.style.pointerEvents = "none";
+        mainGroup.appendChild(divider);
+
+        // Mode name label at the ring's left edge
+        const [lx, ly] = polarToXY(rInner + ringWidth/2, Math.PI); // 9 o'clock
+        const labelText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        labelText.setAttribute("x", lx - 14);
+        labelText.setAttribute("y", ly);
+        labelText.setAttribute("class", "ring-label");
+        labelText.setAttribute("text-anchor", "end");
+        labelText.setAttribute("dominant-baseline", "central");
+        labelText.style.pointerEvents = "none";
+        labelText.textContent = mode.name;
+        mainGroup.appendChild(labelText);
+      }
+
+      // Fixed 30deg pitch-class spoke lines across all rings
+      for(let seg = 0; seg < segCount; seg++) {
+        const a0 = segOffset + seg * segAngle;
+        const [dx0, dy0] = polarToXY(innerRadius, a0);
+        const [dx1, dy1] = polarToXY(outerRadius, a0);
+        const div = document.createElementNS("http://www.w3.org/2000/svg","line");
+        div.setAttribute("x1", dx0); div.setAttribute("y1", dy0);
+        div.setAttribute("x2", dx1); div.setAttribute("y2", dy1);
+        div.setAttribute("stroke", "rgba(255,255,255,0.1)");
+        div.setAttribute("stroke-width", "1.5");
+        div.style.pointerEvents = "none";
+        mainGroup.appendChild(div);
+
+        // Outer pitch-class label
+        const labelAngle = a0 + segAngle/2;
+        const [lx, ly] = polarToXY(outerRadius + 24, labelAngle);
         const text = document.createElementNS("http://www.w3.org/2000/svg","text");
-        text.setAttribute("x", lx);
-        text.setAttribute("y", ly);
-        text.setAttribute("fill", "#ffffff");
-        text.setAttribute("font-size", "44");
+        text.setAttribute("x", lx); text.setAttribute("y", ly);
+        text.setAttribute("fill", chromaticNotes[seg].color);
+        text.setAttribute("font-size", "22");
         text.setAttribute("font-weight", "800");
         text.setAttribute("text-anchor", "middle");
         text.setAttribute("dominant-baseline", "central");
         text.style.pointerEvents = "none";
-        text.textContent = mode.name;
+        text.textContent = noteOrderForGrid[seg];
         mainGroup.appendChild(text);
       }
-      
-      for(let r = 0; r < ringCount; r++) {
-        // Move labels one ring to the right by adding one ring width
-        const radius = innerRadius + (r + 1) * ringWidth + ringWidth / 2;
-        const angle = 0;
-        const [lx, ly] = polarToXY(radius, angle);
-        
-        const labelText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        labelText.setAttribute("x", lx - 108);
-        labelText.setAttribute("y", ly);
-        labelText.setAttribute("class", "ring-label");
-        labelText.setAttribute("text-anchor", "middle");
-        labelText.setAttribute("dominant-baseline", "central");
-        labelText.textContent = layers[r].symbol;
-        mainGroup.appendChild(labelText);
-      }
-      
+
       svg.appendChild(mainGroup);
     }
     
@@ -768,8 +806,10 @@
       renderDetails(w);
     }
     
-    function hoverCell(wedge, ring, isHover) {
-      const cells = cellGroups.filter(c => c.wedge === wedge && c.ring === ring);
+    function hoverCell(ring, seg, isHover) {
+      const cells = (seg === null || seg === undefined)
+        ? cellGroups.filter(c => c.wedge === ring)
+        : cellGroups.filter(c => c.wedge === ring && c.seg === seg);
       cells.forEach(c => {
         if (isHover) {
           c.el.style.filter = 'brightness(1.4) saturate(1.3)';
@@ -786,7 +826,7 @@
     function playNote(note, ring) {
       if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
       
-      const noteOrder = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      const noteOrder = NOTE_ORDER;
       const mode = modes[selectedWedge];
       const rootNote = mode.root;
       
@@ -794,10 +834,11 @@
       const rootIndex = noteOrder.indexOf(rootNote);
       const currentIndex = noteOrder.indexOf(note);
       
-      // Determine octave: start at 4 for root, go to 5 if we've wrapped around
+      // Determine octave: start at 4 for root, go to 5 once the pitch class
+      // has wrapped chromatically past the root within the ring's interval set
       let octave = 4;
-      if (ring > 0 && currentIndex < rootIndex) {
-        octave = 5; // We've wrapped to next octave
+      if (currentIndex < rootIndex) {
+        octave = 5; // wrapped to next octave relative to root
       }
       
       const noteFreqs = {
@@ -865,47 +906,51 @@
       }, 7 * 400 + 500);
     }
     
-    function createPulseWave(ringIndex) {
+    function createPulseWave(degreeIndex) {
       const animGroup = document.getElementById('animation-layer');
       if (!animGroup) return;
-      
+
       const mode = modes[selectedWedge];
-      const ringWidth = (outerRadius - innerRadius) / ringCount;
-      
-      // Calculate target radius for this specific ring
-      const targetRadius = innerRadius + (ringIndex + 1) * ringWidth;
-      
+      const ringWidth  = (outerRadius - innerRadius) / ringCount;
+      const segCount   = 12;
+      const segStep    = tau / segCount;
+      const segOffset  = -Math.PI/2 - segStep/2;
+      const noteName   = mode.notes[degreeIndex];
+      const segIdx     = NOTE_ORDER.indexOf(noteName);
+
+      // Origin at the selected arc segment's own center position (Claim Q-3):
+      // radially, the selected mode's ring; angularly, this scale degree's
+      // fixed chromatic pitch-class segment.
+      const segAngleCenter = segOffset + segIdx * segStep + segStep/2;
+      const segRadius = innerRadius + (selectedWedge + 0.5) * ringWidth;
+      const [segX, segY] = polarToXY(segRadius, segAngleCenter);
+
       const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      pulse.setAttribute("cx", cx);
-      pulse.setAttribute("cy", cy);
-      pulse.setAttribute("r", innerRadius);
-      
-      // Use mode's chromatic color
+      pulse.setAttribute("cx", segX);
+      pulse.setAttribute("cy", segY);
+      pulse.setAttribute("r", ringWidth * 0.22);
       pulse.setAttribute("stroke", mode.color);
       pulse.setAttribute("fill", "none");
-      pulse.setAttribute("stroke-width", "8");
-      pulse.setAttribute("opacity", "0.8");
-      
-      // Animate to specific ring
-      pulse.style.transition = `r 0.4s ease-out, opacity 0.4s ease-out, stroke-width 0.4s ease-out`;
+      pulse.setAttribute("stroke-width", "4");
+      pulse.style.transformBox = "fill-box";
+      pulse.style.transformOrigin = "center";
+      pulse.style.animation = "segmentPulse 0.42s ease-out forwards";
       animGroup.appendChild(pulse);
-      
-      // Trigger animation
-      setTimeout(() => {
-        pulse.setAttribute("r", targetRadius);
-        pulse.setAttribute("opacity", "0");
-        pulse.setAttribute("stroke-width", "2");
-      }, 10);
+
+      pulse.addEventListener('animationend', () => pulse.remove());
       
       // Remove after animation
       setTimeout(() => pulse.remove(), 450);
     }
     
-    function highlightRing(ringIndex) {
-      // Light up the WEDGE SEGMENT for this ring
-      const cells = cellGroups.filter(c => c.wedge === selectedWedge && c.ring === ringIndex);
+    function highlightRing(degreeIndex) {
+      // Light up the chromatic segment, within the selected mode's ring,
+      // that corresponds to this scale degree.
+      const noteName = modes[selectedWedge].notes[degreeIndex];
+      const segIdx = NOTE_ORDER.indexOf(noteName);
+      const cells = cellGroups.filter(c => c.wedge === selectedWedge && c.seg === segIdx);
       cells.forEach(c => {
-        // Intense golden highlight on the wedge segment
+        // Intense golden highlight on the segment
         c.el.style.filter = 'brightness(1.8) saturate(1.5)';
         c.el.setAttribute('stroke', '#FFD700');
         c.el.setAttribute('stroke-width', '8');
@@ -916,7 +961,7 @@
         clone.setAttribute('opacity', '0.4');
         clone.setAttribute('stroke', 'none');
         clone.style.filter = 'blur(8px)';
-        clone.setAttribute('id', `glow-${selectedWedge}-${ringIndex}`);
+        clone.setAttribute('id', `glow-${selectedWedge}-${segIdx}`);
         c.el.parentNode.appendChild(clone);
         
         setTimeout(() => {
@@ -925,7 +970,7 @@
           c.el.setAttribute('stroke-width', '2');
           
           // Remove glow clone
-          const glowClone = document.getElementById(`glow-${selectedWedge}-${ringIndex}`);
+          const glowClone = document.getElementById(`glow-${selectedWedge}-${segIdx}`);
           if (glowClone) glowClone.remove();
         }, 320);
       });
@@ -1016,8 +1061,8 @@
           selectWedge(i);
           playScale(); // PLAY SCALE when mode chip is clicked
         });
-        chip.addEventListener("mouseenter", () => hoverCell(i, 0, true));
-        chip.addEventListener("mouseleave", () => hoverCell(i, 0, false));
+        chip.addEventListener("mouseenter", () => hoverCell(i, null, true));
+        chip.addEventListener("mouseleave", () => hoverCell(i, null, false));
         
         const swatch = document.createElement("div");
         swatch.className = "swatch";
@@ -1050,9 +1095,16 @@
         var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
         var lastRingHighlighted = -1;
 
+        function degreeToSeg(degreeIdx) {
+            var mode = modes[selectedWedge];
+            if (!mode || degreeIdx < 0 || degreeIdx >= mode.notes.length) return -1;
+            return NOTE_ORDER.indexOf(mode.notes[degreeIdx]);
+        }
+
         function clearRingHighlight(ringIdx) {
             if (ringIdx < 0) return;
-            var cells = cellGroups.filter(function(c) { return c.ring === ringIdx; });
+            var segIdx = degreeToSeg(ringIdx);
+            var cells = cellGroups.filter(function(c) { return c.wedge === selectedWedge && c.seg === segIdx; });
             cells.forEach(function(c) {
                 c.el.style.filter = '';
                 c.el.setAttribute('stroke','rgba(255,255,255,0.08)');
@@ -1065,11 +1117,12 @@
         function applyRingHighlight(step, notePC, beatMs) {
             try {
                 // Find the wedge that matches the current mode, then highlight its ring=step
-                var ringIdx = step % 7; // 7 rings in COF
+                var ringIdx = step % 7; // 7 scale degrees
                 clearRingHighlight(lastRingHighlighted);
                 lastRingHighlighted = ringIdx;
 
-                var cells = cellGroups.filter(function(c) { return c.wedge === selectedWedge && c.ring === ringIdx; });
+                var segIdx = degreeToSeg(ringIdx);
+                var cells = cellGroups.filter(function(c) { return c.wedge === selectedWedge && c.seg === segIdx; });
                 cells.forEach(function(c) {
                     c.el.style.filter = 'brightness(2.0) saturate(1.5)';
                     c.el.setAttribute('stroke','#FFD700');

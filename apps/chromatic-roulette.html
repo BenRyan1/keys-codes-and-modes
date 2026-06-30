@@ -886,7 +886,7 @@ function updateDisplay(redrawFret = true) {
 }
 
 // ── Spin ──
-let isDragging = false, lastDragAngle = 0, dragSpeed = 0;
+let isDragging = false, lastDragAngle = 0, dragSpeed = 0, lastDragTime = 0;
 
 function getWheelAngle(x, y) {
   const r = document.getElementById('rouletteWheel').getBoundingClientRect();
@@ -934,11 +934,13 @@ wheel.addEventListener('mousedown', e => {
   if (isSpinning) return;
   isDragging = true; dragSpeed = 0;
   lastDragAngle = getWheelAngle(e.clientX, e.clientY);
+  lastDragTime = performance.now();
 });
 wheel.addEventListener('touchstart', e => {
   if (isSpinning) return;
   isDragging = true; dragSpeed = 0;
   lastDragAngle = getWheelAngle(e.touches[0].clientX, e.touches[0].clientY);
+  lastDragTime = performance.now();
 }, { passive: false });
 document.addEventListener('mousemove', e => { if (isDragging) doDrag(e.clientX, e.clientY); });
 document.addEventListener('touchmove', e => {
@@ -951,10 +953,16 @@ document.addEventListener('touchend', endDrag);
 
 function doDrag(x, y) {
   const cur = getWheelAngle(x, y);
+  const now = performance.now();
   let d = cur - lastDragAngle;
   if (d > 180) d -= 360; if (d < -180) d += 360;
   currentRot = ((currentRot + d) % 360 + 360) % 360;
-  dragSpeed = d; lastDragAngle = cur;
+  // Angular velocity (Claim Q-8): difference between the last two computed
+  // angles divided by elapsed frame time, normalized to a ~60fps frame unit
+  // so it composes consistently with animateSpin()'s per-frame deceleration.
+  const elapsed = Math.max(1, now - lastDragTime);
+  dragSpeed = (d / elapsed) * (1000 / 60);
+  lastDragAngle = cur; lastDragTime = now;
   const np = Math.round(((currentRot - 60) / 30 % 12 + 12) % 12);
   if (np !== selectedNote) {
     selectedNote = np;

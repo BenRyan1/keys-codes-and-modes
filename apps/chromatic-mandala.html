@@ -248,7 +248,11 @@
                 <div class="symmetry-btns">
                     <button onclick="setSymmetry(1)" id="sym-1">1×</button>
                     <button onclick="setSymmetry(3)" id="sym-3" class="active">3×</button>
+                    <button onclick="setSymmetry(4)" id="sym-4">4×</button>
+                    <button onclick="setSymmetry(5)" id="sym-5">5×</button>
                     <button onclick="setSymmetry(6)" id="sym-6">6×</button>
+                    <button onclick="setSymmetry(8)" id="sym-8">8×</button>
+                    <button onclick="setSymmetry(12)" id="sym-12">12×</button>
                 </div>
             </div>
 
@@ -258,6 +262,8 @@
                 <button onclick="loadPattern('minor')">Minor Chord</button>
                 <button onclick="loadPattern('scale')">Major Scale</button>
                 <button onclick="loadPattern('penta')">Pentatonic</button>
+                <button onclick="loadPattern('blues')">Blues</button>
+                <button onclick="loadPattern('power')">Power Chord</button>
             </div>
 
             <div class="section">
@@ -394,18 +400,24 @@
 
                 const ring = parseInt(octave);
 
+                const baseAngleDeg = noteIndex * 30 - 90; // this note's own chromatic position
+                const ringRadius = (outerRadius / numRings) * (ring + 0.5);
+                const color = chromaticColors[note];
+
                 for (let s = 0; s < symmetry; s++) {
-                    const symIndex = (noteIndex + s * (12 / symmetry)) % 12;
-                    const angle = (symIndex * 30 - 90) * Math.PI / 180;
-                    const ringRadius = (outerRadius / numRings) * (ring + 0.5);
+                    // Claim Q-4: draw the SAME visual element at N evenly spaced
+                    // angular repetitions of its base position (360/N apart),
+                    // independent of whether that lands on a chromatic grid line.
+                    const angleDeg = baseAngleDeg + s * (360 / symmetry);
+                    const angle = angleDeg * Math.PI / 180;
                     const x = centerX + ringRadius * Math.cos(angle);
                     const y = centerY + ringRadius * Math.sin(angle);
 
                     // Draw note marker
                     ctx.beginPath();
                     ctx.arc(x, y, 30, 0, Math.PI * 2);
-                    ctx.fillStyle = chromaticColors[noteOrder[symIndex]];
-                    ctx.shadowColor = chromaticColors[noteOrder[symIndex]];
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
                     ctx.shadowBlur = 20;
                     ctx.fill();
                     ctx.shadowBlur = 0;
@@ -414,11 +426,11 @@
                     ctx.lineWidth = 3;
                     ctx.stroke();
 
-                    ctx.fillStyle = isLightColor(chromaticColors[noteOrder[symIndex]]) ? '#000' : '#fff';
+                    ctx.fillStyle = isLightColor(color) ? '#000' : '#fff';
                     ctx.font = 'bold 14px Arial';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText(noteOrder[symIndex], x, y);
+                    ctx.fillText(note, x, y);
                 }
             });
         }
@@ -506,10 +518,12 @@
             activeNotes.clear();
             
             const patterns = {
-                'major': [0, 4, 7],      // Root, M3, P5
+                'major': [0, 4, 7],      // Major triad: Root, M3, P5
                 'minor': [0, 3, 7],      // Root, m3, P5
                 'scale': [0, 2, 4, 5, 7, 9, 11], // Major scale
-                'penta': [0, 2, 4, 7, 9] // Pentatonic
+                'penta': [0, 2, 4, 7, 9], // Pentatonic
+                'blues': [0, 3, 5, 6, 7, 10], // Blues scale
+                'power': [0, 7] // Power chord: Root, P5
             };
 
             patterns[type].forEach(interval => {
@@ -588,17 +602,20 @@
             const noteIndex = noteOrder.indexOf(note);
             if (noteIndex === -1) return;
 
+            const baseAngleDeg = noteIndex * 30 - 90;
+            const ringRadius = (outerRadius / numRings) * (parseInt(ring) + 0.5);
+            const color = chromaticColors[note];
+
             for (let s = 0; s < symmetry; s++) {
-                const symIndex = (noteIndex + s * (12 / symmetry)) % 12;
-                const angle = (symIndex * 30 - 90) * Math.PI / 180;
-                const ringRadius = (outerRadius / numRings) * (parseInt(ring) + 0.5);
+                const angleDeg = baseAngleDeg + s * (360 / symmetry);
+                const angle = angleDeg * Math.PI / 180;
                 const x = centerX + ringRadius * Math.cos(angle);
                 const y = centerY + ringRadius * Math.sin(angle);
 
                 ctx.beginPath();
                 ctx.arc(x, y, 40, 0, Math.PI * 2);
-                ctx.fillStyle = chromaticColors[noteOrder[symIndex]] + '80';
-                ctx.shadowColor = chromaticColors[noteOrder[symIndex]];
+                ctx.fillStyle = color + '80';
+                ctx.shadowColor = color;
                 ctx.shadowBlur = 30;
                 ctx.fill();
             }
