@@ -2010,20 +2010,34 @@ function playSustainedSound() {
   
   frequencies.forEach(freq => {
     const osc = audioContext.createOscillator();
+    // Claim HOLD-1: GainNode with attack envelope on pointer-down start
+    const noteGain = audioContext.createGain();
+    const now = audioContext.currentTime;
+    noteGain.gain.setValueAtTime(0, now);
+    noteGain.gain.linearRampToValueAtTime(1.0, now + 0.015); // 15ms attack
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-    osc.connect(gainNode);
+    osc.frequency.setValueAtTime(freq, now);
+    osc.connect(noteGain);
+    noteGain.connect(gainNode);
     osc.start();
-    sustainedOscillators.push(osc);
+    sustainedOscillators.push({ osc, noteGain });
   });
   
   createParticles();
 }
 
 function stopSustainedSound() {
-  sustainedOscillators.forEach(osc => {
+  const now = audioContext ? audioContext.currentTime : 0;
+  const RELEASE = 0.08; // 80ms release envelope (Claim HOLD-1)
+  sustainedOscillators.forEach(entry => {
     try {
-      osc.stop();
+      const { osc, noteGain } = entry;
+      if (noteGain) {
+        noteGain.gain.cancelScheduledValues(now);
+        noteGain.gain.setValueAtTime(noteGain.gain.value, now);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, now + RELEASE);
+      }
+      osc.stop(now + RELEASE + 0.01);
     } catch(e) {}
   });
   sustainedOscillators = [];
