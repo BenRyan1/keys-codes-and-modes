@@ -364,6 +364,66 @@ body {
 .pstep.done-ok  { color: var(--green); border-color: var(--green); background: rgba(0,255,136,.08); }
 .pstep.done-no  { color: var(--red);   border-color: var(--red);   background: rgba(255,51,85,.08); }
 
+/* ── SKILL-LEVEL PROGRESSION (Claim P-4: three-phase progressive ear training) ── */
+.skill-bar {
+  text-align: center;
+  padding: 4px var(--pad-h) 2px;
+}
+.skill-steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sklvl {
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 1.3vw, 0.68rem);
+  letter-spacing: .5px;
+  color: var(--muted);
+  background: var(--panel);
+  transition: all .25s;
+  white-space: nowrap;
+}
+.sklvl.current { color: #000; border-color: var(--gold); background: var(--gold); font-weight: 700; box-shadow: 0 0 14px rgba(255,215,0,.5); }
+.sklvl.cleared { color: var(--green); border-color: var(--green); background: rgba(0,255,136,.08); }
+.skill-progress {
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: .5px;
+}
+
+/* Input-modality locking: in Phase 1 the fretboard is locked (wheel-only
+   input); in Phase 2 the wheel is locked (fretboard-only input); in Phase 3
+   both are unlocked. */
+.input-locked {
+  opacity: .3;
+  filter: grayscale(.7);
+  pointer-events: none;
+  position: relative;
+}
+.input-locked::after {
+  content: '🔒 LOCKED';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: #fff;
+  background: rgba(0,0,0,.7);
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+}
+
 /* ── MAIN GRID ──
    Desktop: fretboard | wheel+controls | info
    Tablet:  wheel+controls | info (fretboard below)
@@ -742,6 +802,16 @@ body {
     </div>
   </section>
 
+  <!-- Skill-Level Progression Bar (Claim P-4) -->
+  <div class="skill-bar" role="status" aria-label="Ear training skill level" aria-live="polite">
+    <div class="skill-steps">
+      <div class="sklvl" id="sk1" aria-label="Phase 1: Wheel only">1 · WHEEL ONLY</div>
+      <div class="sklvl" id="sk2" aria-label="Phase 2: Fretboard only">2 · FRETBOARD ONLY</div>
+      <div class="sklvl" id="sk3" aria-label="Phase 3: Wheel and fretboard">3 · BOTH</div>
+    </div>
+    <div class="skill-progress" id="skillProgress">&nbsp;</div>
+  </div>
+
   <!-- Phase Stepper -->
   <div class="phase-bar" role="status" aria-label="Game phase" aria-live="polite">
     <div class="phase-steps">
@@ -758,7 +828,7 @@ body {
     <!-- FRETBOARD -->
     <section class="fret-col" aria-label="Guitar fretboard — tap any dot to play or answer">
       <div class="fret-title" aria-hidden="true">🎸 Guitar Fretboard</div>
-      <div class="fretboard-scroll">
+      <div class="fretboard-scroll" id="fbWrap">
         <div id="fretboard" role="group" aria-label="Interactive guitar fretboard"></div>
       </div>
     </section>
@@ -944,6 +1014,14 @@ let phase      = 'idle'; // idle | listen | guess | reveal | result
 let guessNI    = -1;
 let allTimers  = [];
 
+// ── Skill-Level Progression (Claim P-4) ──
+// Phase 1: wheel-only input. Phase 2: fretboard-only input. Phase 3: both.
+// Advancement thresholds are independently configurable per phase.
+const SKILL_PHASE1_THRESHOLD = 5; // correct answers in Phase 1 to advance to Phase 2
+const SKILL_PHASE2_THRESHOLD = 5; // correct answers in Phase 2 to advance to Phase 3
+let skillPhase   = 1; // 1 | 2 | 3
+let skillCorrect = 0; // correct-answer count toward advancing the current phase
+
 // ── DOM Helpers ──
 const $   = id => document.getElementById(id);
 const set = (id, v) => { $(id).textContent = v; };
@@ -1031,6 +1109,50 @@ function setPhase(p) {
 }
 function markPhaseDone(pid, ok) {
   $(pid).className = 'pstep ' + (ok ? 'done-ok' : 'done-no');
+}
+
+// ── Skill-Level Progression UI (Claim P-4) ──
+function updateSkillUI() {
+  [1,2,3].forEach(n => {
+    const el = $('sk' + n);
+    el.className = 'sklvl' + (n === skillPhase ? ' current' : (n < skillPhase ? ' cleared' : ''));
+  });
+  const threshold = skillPhase === 1 ? SKILL_PHASE1_THRESHOLD
+                   : skillPhase === 2 ? SKILL_PHASE2_THRESHOLD
+                   : null;
+  $('skillProgress').textContent = threshold
+    ? `${skillCorrect} / ${threshold} correct to advance`
+    : 'Both displays active \u2014 max level';
+}
+
+// Locks the fretboard during Phase 1 (wheel-only) and the wheel during
+// Phase 2 (fretboard-only); both unlocked in Phase 3.
+function applyInputLocks() {
+  const fb = $('fbWrap'), wh = $('wWrap');
+  fb.classList.toggle('input-locked', skillPhase === 1);
+  wh.classList.toggle('input-locked', skillPhase === 2);
+}
+
+function resetSkillProgression() {
+  skillPhase = 1;
+  skillCorrect = 0;
+  updateSkillUI();
+  applyInputLocks();
+}
+
+function advanceSkillPhaseIfEligible(wasCorrect) {
+  if (skillPhase >= 3) return null;
+  if (wasCorrect) skillCorrect++;
+  const threshold = skillPhase === 1 ? SKILL_PHASE1_THRESHOLD : SKILL_PHASE2_THRESHOLD;
+  let leveledTo = null;
+  if (skillCorrect >= threshold) {
+    skillPhase++;
+    skillCorrect = 0;
+    applyInputLocks();
+    leveledTo = skillPhase;
+  }
+  updateSkillUI();
+  return leveledTo;
 }
 
 // ── Wheel ──
@@ -1210,6 +1332,9 @@ function drawFretboard(flashNI = -1, flashClass = 'hi') {
 function onWedgeTouch(ni) {
   initAudio();
   if (gameActive && phase === 'guess') {
+    // Input-modality gating (Claim P-4): the wheel only accepts guesses in
+    // Phase 1 (wheel-only) and Phase 3 (both); it is locked in Phase 2.
+    if (skillPhase === 2) return;
     // Same octave as target — fair comparison
     const oct  = Math.floor(targetMidi / 12) - 1;
     const midi = (oct + 1) * 12 + ni;
@@ -1227,6 +1352,9 @@ function onWedgeTouch(ni) {
 function onDotTouch(midi, ni) {
   initAudio();
   if (gameActive && phase === 'guess') {
+    // Input-modality gating (Claim P-4): the fretboard only accepts guesses
+    // in Phase 2 (fretboard-only) and Phase 3 (both); it is locked in Phase 1.
+    if (skillPhase === 1) return;
     // Snap to same octave as target
     const oct      = Math.floor(targetMidi / 12) - 1;
     const fairMidi = (oct + 1) * 12 + ni;
@@ -1272,6 +1400,13 @@ function runRevealSequence(fromGuess = false, gni = -1) {
   const wasCorrect = fromGuess && (gni === targetNI);
   setPhase('result');
 
+  // Skill-level progression (Claim P-4): a configurable number of correct
+  // identifications in the current phase advances to the next phase.
+  const leveledTo = advanceSkillPhaseIfEligible(wasCorrect);
+  const levelTag = leveledTo
+    ? '  \u2605 LEVEL UP \u2192 ' + (leveledTo === 2 ? 'FRETBOARD ONLY' : 'WHEEL + FRETBOARD')
+    : '';
+
   if (wasCorrect) {
     const pts = DIFF[diff].pts + Math.floor(streak * 2);
     score  += pts;
@@ -1281,7 +1416,7 @@ function runRevealSequence(fromGuess = false, gni = -1) {
       localStorage.setItem('ntn_hs', streak);
       set('hiStr', hiStreak);
     }
-    showBanner('✓ CORRECT  +' + pts + ' pts!', 'ok');
+    showBanner('✓ CORRECT  +' + pts + ' pts!' + levelTag, 'ok');
     playCelebration(targetNI);
     drawWheel({ hiNI: targetNI, correctNI_: targetNI, guessNI_: gni, interactive: false });
     drawFretboard(targetNI, 'cok');
@@ -1293,7 +1428,7 @@ function runRevealSequence(fromGuess = false, gni = -1) {
     const msg = guessNI >= 0
       ? '✗ WRONG — ' + NOTES[guessNI] + ' → was ' + NOTES[targetNI]
       : '⏱ TIME\'S UP — was ' + NOTES[targetNI];
-    showBanner(msg, 'ng');
+    showBanner(msg + levelTag, 'ng');
     playBuzz();
     drawWheel({ correctNI_: targetNI, guessNI_: guessNI >= 0 ? guessNI : -1, interactive: false });
     drawFretboard(targetNI, 'cng');
@@ -1310,6 +1445,7 @@ function runRevealSequence(fromGuess = false, gni = -1) {
 function startGame() {
   score = 0; streak = 0; round = 0; guessNI = -1;
   gameActive = true; maxTime = DIFF[diff].time;
+  resetSkillProgression();
 
   const bs = $('bStart');
   bs.textContent = '■ END GAME';
@@ -1344,8 +1480,9 @@ function endGame() {
   $('tFill').style.width = '100%';
   $('wWrap').classList.remove('listening');
   ['ps1','ps2','ps3','ps4'].forEach(id => $(id).className = 'pstep');
-
-  showBanner('GAME OVER! Final: ' + score, 'ok');
+  $('wWrap').classList.remove('input-locked');
+  $('fbWrap').classList.remove('input-locked');
+  showBanner('GAME OVER! Final: ' + score + '  (reached Phase ' + skillPhase + ')', 'ok');
 
   // Fire GA4 event
   if (typeof gtag === 'function') gtag('event', 'game_end', { score, streak, rounds: round, difficulty: diff });
@@ -1367,6 +1504,8 @@ function nextRound() {
 
   ['ps1','ps2','ps3','ps4'].forEach(id => $(id).className = 'pstep');
   setPhase('listen');
+  updateSkillUI();
+  applyInputLocks();
   showBanner('🎵 LISTEN CAREFULLY...', 'info');
   $('wWrap').classList.add('listening');
   drawWheel({ interactive: false });
