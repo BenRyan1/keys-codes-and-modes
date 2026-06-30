@@ -699,6 +699,12 @@
             margin-bottom: 12px;
         }
 
+        .cents-meter-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
         .info-panel {
             background: linear-gradient(135deg, rgba(42, 77, 111, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
             padding: 10px;
@@ -945,8 +951,21 @@
                         </div>
                         <div class="info-panel">
                             <div class="info-panel-label">Tuning</div>
-                            <div class="info-panel-value" id="tuningPanel">—</div>
+                            <div class="info-panel-value" id="tuningPanel">&mdash;</div>
                         </div>
+                    </div>
+                    <div class="cents-meter-wrap">
+                        <svg id="centsMeter" viewBox="0 0 200 110" width="200" height="110">
+                            <path d="M 10 100 A 90 90 0 0 1 190 100" fill="none" stroke="#4A7BA7" stroke-width="3"/>
+                            <line x1="100" y1="100" x2="100" y2="100" stroke="#F4D03F" stroke-width="2"/>
+                            <g id="centsNeedle" style="transform-origin: 100px 100px; transform: rotate(0deg); transition: transform 0.15s ease-out;">
+                                <line x1="100" y1="100" x2="100" y2="22" stroke="#F4D03F" stroke-width="3"/>
+                            </g>
+                            <circle cx="100" cy="100" r="5" fill="#F4D03F"/>
+                            <text x="14" y="96" font-size="9" fill="#b0b0cc">-50</text>
+                            <text x="96" y="14" font-size="9" fill="#b0b0cc">0</text>
+                            <text x="172" y="96" font-size="9" fill="#b0b0cc">+50</text>
+                        </svg>
                     </div>
                 </div>
 
@@ -977,6 +996,7 @@
                     <button id="recordBtn" class="big-button record" disabled>Record</button>
                     <button id="stopRecordBtn" class="big-button stop" disabled>Stop Recording</button>
                     <button id="downloadBtn" class="big-button start" disabled>Download</button>
+                    <button id="playbackBtn" class="big-button start" disabled>Play Recording</button>
                 </div>
             </aside>
         </div>
@@ -1068,11 +1088,26 @@
         let currentNoteIndex = -1;
         let playingNotes = new Set();
 
+        // Pitch lock-and-confirm: a candidate pitch class must hold steady for
+        // lockFrameThreshold consecutive analysis frames before it is reported
+        // to the five-display update function (Claim O-3).
+        let lockFrameThreshold = 3; // configurable
+        let lockCandidateNote = -1;
+        let lockCandidateFrames = 0;
+
+        // Structured session recording: note activation/deactivation events
+        // captured as {pitchClass, frequency, startTime, endTime} for scheduled
+        // Web Audio API playback (Claim O-5).
+        let noteEventLog = [];
+        let recordingStartTimestamp = null;
+        let openNoteEvent = null;
+
         const startBtn = document.getElementById('startBtn');
         const stopBtn = document.getElementById('stopBtn');
         const recordBtn = document.getElementById('recordBtn');
         const stopRecordBtn = document.getElementById('stopRecordBtn');
         const downloadBtn = document.getElementById('downloadBtn');
+        const playbackBtn = document.getElementById('playbackBtn');
         const octaveDownBtn = document.getElementById('octaveDown');
         const octaveUpBtn = document.getElementById('octaveUp');
         const octaveDisplay = document.getElementById('octaveDisplay');
@@ -1200,6 +1235,7 @@
         stopBtn.addEventListener('click', stopPitchDetection);
         recordBtn.addEventListener('click', startRecording);
         stopRecordBtn.addEventListener('click', stopRecording);
+        playbackBtn.addEventListener('click', playRecordedNoteEvents);
         stopSoundBtn.addEventListener('click', () => {
             stopCurrentSound();
             clearHighlights();
@@ -1274,7 +1310,15 @@
 
                 microphone.connect(analyser);
                 analyser.connect(scriptProcessor);
-                scriptProcessor.connect(audioContext.destination);
+                // ScriptProcessorNode requires a path to destination to reliably
+                // fire onaudioprocess in some browsers, but the analysis path itself
+                // must not be audible. Route through a zero-gain node so the
+                // microphone signal is never actually output, preventing feedback
+                // (Claim O-1: "not connected to the AudioContext destination node").
+                const silentSink = audioContext.createGain();
+                silentSink.gain.value = 0;
+                scriptProcessor.connect(silentSink);
+                silentSink.connect(audioContext.destination);
 
                 initializeSynthesizer();
 
@@ -1417,6 +1461,14 @@
                 status.textContent = 'LISTENING';
             };
             mediaRecorder.start();
+
+            // Claim O-5: structured per-note event recording, independent of
+            // the raw-audio MediaRecorder capture above.
+            noteEventLog = [];
+            openNoteEvent = null;
+            recordingStartTimestamp = performance.now();
+            playbackBtn.disabled = true;
+
             isRecording = true;
             recordBtn.disabled = true;
             recordBtn.classList.add('recording');
@@ -1433,7 +1485,45 @@
                 recordBtn.disabled = false;
                 recordBtn.classList.remove('recording');
                 stopRecordBtn.disabled = true;
+
+                // Close out any still-open structured note event
+                if (openNoteEvent) {
+                    openNoteEvent.endTime = performance.now() - recordingStartTimestamp;
+                    noteEventLog.push(openNoteEvent);
+                    openNoteEvent = null;
+                }
+                if (noteEventLog.length > 0) {
+                    playbackBtn.disabled = false;
+                }
             }
+        }
+
+        // Claim O-5: scheduling each recorded note event via the Web Audio API
+        // at its recorded timestamp offset from playback start.
+        function playRecordedNoteEvents() {
+            if (!noteEventLog.length) return;
+            if (!synthContext) initializeSynthesizer();
+            const ctx = synthContext;
+            const playbackStart = ctx.currentTime + 0.05;
+
+            noteEventLog.forEach(evt => {
+                const startSec = playbackStart + (evt.startTime / 1000);
+                const endSec = playbackStart + ((evt.endTime !== null ? evt.endTime : evt.startTime + 300) / 1000);
+                const duration = Math.max(0.05, endSec - startSec);
+
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(evt.frequency, startSec);
+                gain.gain.setValueAtTime(0, startSec);
+                gain.gain.linearRampToValueAtTime(0.4, startSec + 0.02);
+                gain.gain.setValueAtTime(0.4, startSec + duration - 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.001, startSec + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(startSec);
+                osc.stop(startSec + duration + 0.02);
+            });
         }
 
         function autoCorrelate(buffer, sampleRate) {
@@ -1484,6 +1574,14 @@
             return { note: noteName + octave, noteName: noteName, noteIndex: noteIndex % 12, midiNote: noteIndex, cents: cents };
         }
 
+        function updateCentsNeedle(cents) {
+            const needle = document.getElementById('centsNeedle');
+            if (!needle) return;
+            const clamped = Math.max(-50, Math.min(50, cents));
+            const angle = (clamped / 50) * 80; // -80deg to +80deg across the gauge
+            needle.style.transform = `rotate(${angle}deg)`;
+        }
+
         function updateAll(frequency) {
             // DEBOUNCE CHECK - prevent stuttering from rapid updates
             const now = Date.now();
@@ -1496,21 +1594,38 @@
                 resetAll(); 
                 currentFrequency = null; 
                 currentNoteIndex = -1;
+                lockCandidateNote = -1;
+                lockCandidateFrames = 0;
                 // Visual feedback - no detection
                 status.style.background = 'rgba(0, 128, 128, 0.3)';
                 return; 
             }
 
+            const noteInfo = getNote(frequency);
+
+            // Pitch lock-and-confirm (Claim O-3): the candidate pitch class must
+            // hold for lockFrameThreshold consecutive analysis frames before it
+            // is reported to the five-display update below. Resets whenever the
+            // detected pitch class changes mid-stream.
+            if (noteInfo.noteIndex === lockCandidateNote) {
+                lockCandidateFrames++;
+            } else {
+                lockCandidateNote = noteInfo.noteIndex;
+                lockCandidateFrames = 1;
+            }
+            if (lockCandidateFrames < lockFrameThreshold) {
+                return; // not yet stable - suppress this update
+            }
+
             // Visual feedback - detecting!
             status.style.background = 'rgba(0, 255, 128, 0.5)';
             
-            const noteInfo = getNote(frequency);
             const color = colors[noteInfo.noteIndex];
             
             rootNote = noteInfo.noteIndex;
             
             midiPanel.textContent = noteInfo.midiNote;
-            notePanel.textContent = noteInfo.noteName;
+            notePanel.textContent = noteInfo.note; // name + octave
             freqPanel.textContent = frequency.toFixed(1);
             
             let tuningText = noteInfo.cents;
@@ -1518,8 +1633,23 @@
             else if (noteInfo.cents > 0) tuningText = '+' + noteInfo.cents;
             else tuningText = noteInfo.cents.toString();
             tuningPanel.textContent = tuningText;
+            updateCentsNeedle(noteInfo.cents);
             
             if (currentNoteIndex !== noteInfo.noteIndex) {
+                // Close out any open structured note event before starting a new one
+                if (isRecording && openNoteEvent) {
+                    openNoteEvent.endTime = performance.now() - recordingStartTimestamp;
+                    noteEventLog.push(openNoteEvent);
+                    openNoteEvent = null;
+                }
+                if (isRecording) {
+                    openNoteEvent = {
+                        pitchClass: noteInfo.noteIndex,
+                        frequency: frequency,
+                        startTime: performance.now() - recordingStartTimestamp,
+                        endTime: null
+                    };
+                }
                 highlightNote(noteInfo.noteIndex, true, color);
                 updateStaffNotation([noteInfo.noteIndex]);
                 currentNoteIndex = noteInfo.noteIndex;
