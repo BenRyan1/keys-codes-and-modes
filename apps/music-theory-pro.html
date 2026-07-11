@@ -721,18 +721,69 @@ select option { background: #1a1a2e; color: white; }
 .black-key .key-label { bottom: 3px; font-size: 7px; color: #ccc; }
 
 /* ============================================================
-   EAR TRAINING
+   EAR TRAINING — docked panel that appears BELOW whichever view
+   (Circle/Piano/Guitar) is active, in normal document flow. It
+   never overlaps the circle, staff, keyboard, or fretboard — it
+   simply adds itself underneath them and pushes the rest of the
+   page down, the same way the staff notation already sits below
+   the circle and fretboard.
    ============================================================ */
 #earTraining {
     display: none;
-    background: rgba(0,0,0,0.4);
-    padding: 2rem;
-    border-radius: 16px;
-    max-width: 750px;
-    text-align: center;
+    width: 100%;
+    max-width: 500px;
     margin: 0 auto;
-    border: 2px solid rgba(0,128,128,0.2);
+    background: linear-gradient(135deg, rgba(10,10,21,0.98) 0%, rgba(26,26,46,0.98) 100%);
+    padding: 0 1.5rem 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid var(--primary-teal);
     box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+}
+.ear-overlay-hdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0 -1.5rem 1rem;
+    padding: 0.65rem 1rem;
+    background: linear-gradient(135deg, var(--primary-teal) 0%, #006666 100%);
+    border-radius: 14px 14px 0 0;
+}
+.ear-overlay-hdr span {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    color: white;
+    text-transform: uppercase;
+}
+#closeEarBtn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+#closeEarBtn:hover { background: rgba(255,255,255,0.3); }
+.ear-quiz-staff-wrap {
+    background: rgba(255,255,255,0.97);
+    border-radius: 10px;
+    padding: 6px 10px 2px;
+    margin-bottom: 1rem;
+}
+.ear-quiz-staff-wrap svg { width: 100%; height: auto; display: block; min-height: 60px; }
+.view-btn.ear-open {
+    background: linear-gradient(135deg, var(--primary-gold) 0%, #c9a227 100%);
+    border-color: var(--primary-gold);
+    box-shadow: var(--gold-glow);
+    color: #1a1a2e;
 }
 .quiz-options {
     display: flex;
@@ -764,6 +815,8 @@ select option { background: #1a1a2e; color: white; }
 .quiz-btn:hover { background: linear-gradient(135deg, #00a0a0 0%, var(--primary-teal) 100%); transform: translateY(-2px); }
 .quiz-btn.correct { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); box-shadow: 0 6px 20px rgba(39,174,96,0.6); }
 .quiz-btn.incorrect { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); box-shadow: 0 6px 20px rgba(231,76,60,0.6); }
+.quiz-btn:disabled { opacity: 1; cursor: default; transform: none; }
+.quiz-btn:disabled:not(.correct):not(.incorrect) { opacity: 0.45; }
 
 /* ============================================================
    SPHERES (chromatic circle notes)
@@ -1113,7 +1166,7 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
 
         <!-- VIEWS CONTAINER -->
-        <div style="display:flex; flex-direction:column; gap:1.25rem; background:rgba(0,0,0,0.35); padding:1.75rem; border-radius:14px; border:1px solid rgba(0,128,128,0.15);">
+        <div id="viewsContainer" style="display:flex; flex-direction:column; gap:1.25rem; background:rgba(0,0,0,0.35); padding:1.75rem; border-radius:14px; border:1px solid rgba(0,128,128,0.15);">
 
             <!-- CHROMATIC CIRCLE -->
             <div id="chromaticCircle" style="margin:0 auto; display:block;" role="region" aria-label="Chromatic circle — 12 pitch classes arranged in a circle of fifths"></div>
@@ -1151,10 +1204,19 @@ input[type="range"]::-webkit-slider-thumb {
                 </div>
             </div>
 
-            <!-- EAR TRAINING -->
+            <!-- EAR TRAINING — floating overlay; the Circle/Piano/Guitar view
+                 underneath stays visible and lights up while quizzing -->
             <div id="earTraining" role="region" aria-label="Ear training quiz">
-                <h2 id="quizQuestion" style="font-family:var(--font-display); font-size:1.3rem; font-weight:800; color:var(--primary-gold); margin-bottom:1rem;">Click "New Question" to start</h2>
+                <div class="ear-overlay-hdr">
+                    <span>👂 Ear Training</span>
+                    <button id="closeEarBtn" aria-label="Close ear training">✕</button>
+                </div>
+                <div class="ear-quiz-staff-wrap">
+                    <svg id="quizStaffSVG" viewBox="0 0 260 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+                </div>
+                <h2 id="quizQuestion" style="font-family:var(--font-display); font-size:1.15rem; font-weight:800; color:var(--primary-gold); margin-bottom:1rem;">Click "New Question" to start</h2>
                 <div class="quiz-options" id="quizOptions" role="group" aria-label="Answer options"></div>
+                <p id="quizFeedback" aria-live="assertive" style="min-height:1.6rem; margin:0.6rem 0 0; font-family:var(--font-display); font-size:1.05rem; font-weight:800;"></p>
                 <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:0.75rem 0;">
                     <button class="play-btn" id="playQuizBtn">🔊 Replay Sound</button>
                     <button class="play-btn" id="newQuizBtn" style="background:linear-gradient(135deg, var(--primary-purple) 0%, #6a4f8c 100%);">🔄 New Question</button>
@@ -1239,7 +1301,7 @@ window.addEventListener('unhandledrejection', function(event) {
         let currentWaveform = 'sine', currentBPM = 120, currentModeSelection = 'ionian';
         let currentTriadSelection = 'major', currentExtendedSelection = 'major7';
         let currentMinorType = 'naturalMinor', currentHarmDegree = 0, currentHarmChordType = 'triad';
-        let quizCorrect = 0, quizTotal = 0, currentQuiz = null;
+        let quizCorrect = 0, quizTotal = 0, currentQuiz = null, earTrainingOpen = false;
         let isRecording = false, recordedNotes = [], recordingStartTime = 0;
         let guitarFretCount = 5;
 
@@ -1338,6 +1400,7 @@ window.addEventListener('unhandledrejection', function(event) {
                 createGuitar();
                 updateDisplay();
                 updateView();
+                updateEarOverlay();
                 updateOctaveDisplay();
                 setupEventListeners();
                 setupKeyboardShortcuts();
@@ -1354,6 +1417,18 @@ window.addEventListener('unhandledrejection', function(event) {
 
                 document.querySelectorAll('.view-btn').forEach(btn => {
                     btn.onclick = function() {
+                        if (this.dataset.view === 'ear') {
+                            earTrainingOpen = !earTrainingOpen;
+                            updateEarOverlay();
+                            if (earTrainingOpen) {
+                                // Re-opening with a question already loaded? Replay its
+                                // sound instead of doing nothing — otherwise reopening
+                                // the panel looked "disconnected" (no audio at all).
+                                if (!currentQuiz) generateQuiz(); else playQuizSound();
+                            }
+                            try { trackEvent('ear_training_toggle', {open: earTrainingOpen}); } catch(e) {}
+                            return;
+                        }
                         document.querySelector('.view-btn.active').classList.remove('active');
                         this.classList.add('active');
                         currentView = this.dataset.view;
@@ -1361,6 +1436,8 @@ window.addEventListener('unhandledrejection', function(event) {
                         try { trackEvent('view_change', {view: currentView}); } catch(e) {}
                     };
                 });
+                const closeEarBtn = document.getElementById('closeEarBtn');
+                if (closeEarBtn) closeEarBtn.onclick = () => { earTrainingOpen = false; updateEarOverlay(); };
 
                 document.querySelectorAll('.level-btn[data-level]').forEach(btn => {
                     btn.onclick = function() {
@@ -1370,7 +1447,7 @@ window.addEventListener('unhandledrejection', function(event) {
                         const freeplayHint = document.getElementById('freeplayHint');
                         if (freeplayHint) freeplayHint.style.display = currentLevel === 'freeplay' ? 'block' : 'none';
                         const progressionControls = document.getElementById('progressionControls');
-                        if ((currentLevel === 'harmMajor' || currentLevel === 'harmMinor') && currentView !== 'ear') {
+                        if (currentLevel === 'harmMajor' || currentLevel === 'harmMinor') {
                             progressionControls.style.display = 'block';
                             updateProgressionButtons();
                             const keySpan = document.getElementById('progressionKey');
@@ -1845,14 +1922,18 @@ window.addEventListener('unhandledrejection', function(event) {
                     const total = mode === 'scale' ? orderedNotes.length * 2 : orderedNotes.length;
                     setTimeout(() => clearStaffHighlights(), (total * beatDuration) + 200);
                 } else if (mode === 'down') {
+                    // Build the SAME ascending note order as 'up' (root at the
+                    // current octave, then the rest wrapped up an octave), then
+                    // simply reverse it. Descending must be the mirror image of
+                    // ascending — no note should ever jump back upward mid-run.
                     const orderedNotes = [];
                     const rootIndex = notes.indexOf(rootNote);
                     if (rootIndex !== -1) {
-                        for (let i = 0; i < rootIndex; i++) orderedNotes.push({note:notes[i], octave:currentOctave+1});
                         for (let i = rootIndex; i < notes.length; i++) orderedNotes.push({note:notes[i], octave:currentOctave});
+                        for (let i = 0; i < rootIndex; i++) orderedNotes.push({note:notes[i], octave:currentOctave+1});
                     } else { notes.forEach(n => orderedNotes.push({note:n, octave:currentOctave})); }
                     const reversed = [...orderedNotes].reverse();
-                    reversed.forEach(({note, octave}, i) => { setTimeout(() => { playNote(note, octave, 0.6); }, i * beatDuration); });
+                    reversed.forEach(({note, octave}, i) => { setTimeout(() => { playNote(note, octave, 0.6); highlightStaffNote(note, reversed.length - 1 - i); }, i * beatDuration); });
                     setTimeout(() => clearStaffHighlights(), (reversed.length * beatDuration) + 200);
                 }
             } catch(e) { console.error('Play selection error:', e); }
@@ -2002,11 +2083,15 @@ window.addEventListener('unhandledrejection', function(event) {
         function updateStaffNotation(notes) {
             try {
                 const svg = document.getElementById('staffSVG');
-                if (!svg) return;
-                drawStaff(svg, notes, 220);
+                if (svg) drawStaff(svg, notes, 220);
                 // Also update guitar staff if present
                 const fbSVG = document.getElementById('fbStaffSVG');
                 if (fbSVG) drawStaff(fbSVG, notes, 500);
+                // Also update the Ear Training overlay's own mini staff, so notes
+                // are visible on staff even when the Piano Keyboard view (which
+                // has no staff of its own) is the active view underneath
+                const quizSVG = document.getElementById('quizStaffSVG');
+                if (quizSVG) drawStaff(quizSVG, notes, 260);
             } catch(e) { console.error('Staff notation error:', e); }
         }
 
@@ -2015,8 +2100,11 @@ window.addEventListener('unhandledrejection', function(event) {
             try {
                 const int = Math.floor(Math.random() * 12);
                 currentQuiz = {type:'interval', correct:int, notes:[0, int]};
+                updateStaffNotation([]); // clear the previous question's reveal so the new answer isn't given away
                 const qEl = document.getElementById('quizQuestion');
                 if (qEl) qEl.textContent = 'What interval do you hear?';
+                const fbEl = document.getElementById('quizFeedback');
+                if (fbEl) { fbEl.textContent = ''; fbEl.style.color = ''; }
                 const opts = document.getElementById('quizOptions');
                 if (!opts) return;
                 opts.innerHTML = '';
@@ -2026,6 +2114,7 @@ window.addEventListener('unhandledrejection', function(event) {
                 options.forEach(i => {
                     const btn = document.createElement('button');
                     btn.className = 'quiz-btn'; btn.textContent = intervalNames[i];
+                    btn.disabled = false;
                     btn.onclick = () => checkAnswer(i); opts.appendChild(btn);
                 });
                 playQuizSound();
@@ -2034,21 +2123,36 @@ window.addEventListener('unhandledrejection', function(event) {
         }
 
         function playQuizSound() {
-            if (!currentQuiz || !audioReady) return;
+            if (!currentQuiz) return;
+            if (!audioReady) { alert('Click START AUDIO ENGINE first!'); return; }
             currentQuiz.notes.forEach((n, i) => setTimeout(() => playNote(n, 4, 0.8), i * 600));
         }
 
         function checkAnswer(ans) {
             try {
-                if (!currentQuiz) return;
+                if (!currentQuiz || currentQuiz.answered) return; // one answer per question
+                currentQuiz.answered = true;
                 const btns = document.querySelectorAll('.quiz-btn');
+                const isRight = ans === currentQuiz.correct;
                 quizTotal++;
-                if (ans === currentQuiz.correct) { quizCorrect++; btns.forEach(btn => { if (btn.textContent === intervalNames[ans]) btn.classList.add('correct'); }); }
+                if (isRight) { quizCorrect++; btns.forEach(btn => { if (btn.textContent === intervalNames[ans]) btn.classList.add('correct'); }); }
                 else { btns.forEach(btn => { if (btn.textContent === intervalNames[ans]) btn.classList.add('incorrect'); if (btn.textContent === intervalNames[currentQuiz.correct]) btn.classList.add('correct'); }); }
+                btns.forEach(btn => btn.disabled = true); // lock in the answer — no changing it after the fact
                 const scoreEl = document.getElementById('quizScore');
                 if (scoreEl) scoreEl.textContent = `Score: ${quizCorrect}/${quizTotal} (${Math.round(quizCorrect/quizTotal*100)}%)`;
-                try { trackEvent('quiz_answer', {correct: ans === currentQuiz.correct}); } catch(e) {}
-                setTimeout(() => generateQuiz(), 2000);
+                // Clear, unmissable CORRECT / INCORRECT indicator
+                const fbEl = document.getElementById('quizFeedback');
+                if (fbEl) {
+                    if (isRight) { fbEl.textContent = '✅ CORRECT!'; fbEl.style.color = '#2ecc71'; }
+                    else { fbEl.textContent = `❌ NOT QUITE — it was ${intervalNames[currentQuiz.correct]}`; fbEl.style.color = '#e74c3c'; }
+                }
+                try { trackEvent('quiz_answer', {correct: isRight}); } catch(e) {}
+                // Reveal — show both interval notes together on staff + light
+                // both up on the visible Circle/Piano/Guitar panel underneath
+                updateStaffNotation(currentQuiz.notes);
+                currentQuiz.notes.forEach(n => highlightNote(n, true));
+                setTimeout(() => { currentQuiz.notes.forEach(n => highlightNote(n, false)); }, 1400);
+                setTimeout(() => generateQuiz(), 2200);
             } catch(e) { console.error('Check answer error:', e); }
         }
 
@@ -2285,6 +2389,10 @@ window.addEventListener('unhandledrejection', function(event) {
         }
 
         // ── Update view ───────────────────────────────────────────
+        // Note: Ear Training is no longer one of these mutually-exclusive
+        // views — it's a floating overlay (see updateEarOverlay) that can
+        // be open at the same time as any of the three views below, so the
+        // Circle/Piano/Guitar visuals stay visible and lit up while quizzing.
         function updateView() {
             try {
                 const el = (id) => document.getElementById(id);
@@ -2292,13 +2400,22 @@ window.addEventListener('unhandledrejection', function(event) {
                 if (el('staffNotation')) el('staffNotation').style.display = currentView==='circle' ? 'block' : 'none';
                 if (el('pianoKeyboard')) el('pianoKeyboard').style.display = currentView==='keyboard' ? 'block' : 'none';
                 if (el('guitarFretboard')) el('guitarFretboard').style.display = currentView==='guitar' ? 'block' : 'none';
-                if (el('earTraining')) el('earTraining').style.display = currentView==='ear' ? 'block' : 'none';
                 updateStaffNotation(Array.from(selectedNotes));
                 const pc = el('progressionControls');
-                if ((currentLevel==='harmMajor'||currentLevel==='harmMinor') && currentView!=='ear') {
+                if (currentLevel==='harmMajor'||currentLevel==='harmMinor') {
                     if (pc) { pc.style.display='block'; updateProgressionButtons(); }
                 } else { if (pc) pc.style.display='none'; }
             } catch(e) { console.error('Update view error:', e); }
+        }
+
+        // ── Update ear training overlay ────────────────────────────
+        function updateEarOverlay() {
+            try {
+                const overlay = document.getElementById('earTraining');
+                if (overlay) overlay.style.display = earTrainingOpen ? 'block' : 'none';
+                const earBtn = document.querySelector('.view-btn[data-view="ear"]');
+                if (earBtn) earBtn.classList.toggle('ear-open', earTrainingOpen);
+            } catch(e) { console.error('Ear overlay error:', e); }
         }
 
         // ── Octave display ────────────────────────────────────────
