@@ -327,41 +327,48 @@
     </div>
     
     <script>
-        // Valid access codes configuration
-        const ACCESS_CODES = {
-            'KCM2026PREMIUM!': {
+        // Fixed 2026-07-12: this used to be a literal map of every real
+        // access code to its tier — fully readable via view-source, so
+        // anyone could unlock Premium/Founder/etc. for free without ever
+        // submitting a real code. The actual code values now live only
+        // as Worker secrets and are checked server-side via
+        // /api/verify-code. This object is now keyed by a non-secret tier
+        // LABEL (returned by that endpoint) purely for display/redirect
+        // metadata — it contains no codes at all.
+        const TIER_INFO = {
+            premium: {
                 tier: 'Premium',
                 access: 'all_apps',
                 duration: 'subscription',
                 description: 'All 20+ apps with annual/monthly subscription'
             },
-            'KCM2026FOUNDER!': {
+            founder: {
                 tier: 'Founder',
                 access: 'all_apps',
                 duration: 'lifetime',
                 badge: true,
                 description: 'Lifetime access to all apps + Founder badge'
             },
-            'BETATESTER2026!': {
+            beta: {
                 tier: 'Beta Tester',
                 access: 'all_apps',
                 duration: 'until_2026-06-01',
                 description: 'All apps until June 1, 2026'
             },
-            'PRESSACCESS2026!': {
+            press: {
                 tier: 'Press',
                 access: 'all_apps',
                 duration: 'until_2026-06-01',
                 description: 'All apps for review until June 1, 2026'
             },
-            'FRIENDOFBEN2026!': {
+            friend: {
                 tier: 'VIP',
                 access: 'all_apps',
                 duration: 'lifetime',
                 vip: true,
                 description: 'All apps + VIP event access'
             },
-            'DEMOACCESS2026!': {
+            demo: {
                 tier: 'Demo',
                 access: 'all_apps',
                 duration: 'until_2026-06-01',
@@ -397,11 +404,28 @@
             // Disable button
             submitBtn.disabled = true;
             submitBtn.textContent = 'Verifying...';
-            
+
+            // Verify the code server-side — this page never holds the
+            // real code values, only the Worker (via env secrets) does.
+            let verifyResult = { ok: false, tier: null };
+            try {
+                const verifyRes = await fetch('/api/verify-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code })
+                });
+                verifyResult = await verifyRes.json().catch(() => ({ ok: false, tier: null }));
+            } catch (e) {
+                showError('Could not verify code — check your connection and try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify Code';
+                return;
+            }
+
             // Check if code is valid
-            if (ACCESS_CODES[code]) {
-                const codeData = ACCESS_CODES[code];
-                
+            if (verifyResult.ok && TIER_INFO[verifyResult.tier]) {
+                const codeData = TIER_INFO[verifyResult.tier];
+
                 // Store tier information
                 localStorage.setItem('userTier', codeData.tier.toLowerCase());
                 localStorage.setItem('accessLevel', codeData.access);

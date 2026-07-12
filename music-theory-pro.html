@@ -7374,7 +7374,15 @@ Explain in 3 sentences: what they're looking at, what makes it musically interes
 // never exposed to the browser) and forwards to the Anthropic Messages
 // API. Previously these calls went directly to api.anthropic.com from
 // client-side JS with no credential at all, which could never succeed.
-const _KCM_AI_PROXY_URL = 'https://snowy-rain-84a5.ben-03b.workers.dev/ai';
+// Fixed 2026-07-12: wrangler.toml (in kcm-console) sets workers_dev =
+// false, so the *.workers.dev URL is not reachable — only the custom
+// route "console.keyscodesandmodes.com/ai" is live. Synced from the
+// same fix in kcm-console/music-theory-pro.html. NOTE: this root copy
+// appears unreferenced by any live page (apps/music-theory-pro.html is
+// the one actually linked from offerings.html/my-apps.html) — fixed
+// anyway for consistency, but apps/music-theory-pro.html is the file
+// that matters in production.
+const _KCM_AI_PROXY_URL = 'https://console.keyscodesandmodes.com/ai';
 
 async function _kcmAIProxy(messages, system, maxTokens) {
     const res = await fetch(_KCM_AI_PROXY_URL, {

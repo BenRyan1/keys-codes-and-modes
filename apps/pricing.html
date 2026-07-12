@@ -357,16 +357,23 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
     </div>
     
     <script>
-        const VALID_CODES = {
-            'KCM2026PREMIUM!':  { tier: 'Premium',  label: 'Premium',     badge: '' },
-            'KCM2026FOUNDER!':  { tier: 'Founder',  label: 'Founder',     badge: '🏆' },
-            'BETATESTER2026!':  { tier: 'Beta',      label: 'Beta Tester', badge: '' },
-            'PRESSACCESS2026!': { tier: 'Press',     label: 'Press',       badge: '' },
-            'FRIENDOFBEN2026!': { tier: 'VIP',       label: 'VIP',         badge: '⭐' },
-            'DEMOACCESS2026!':  { tier: 'Demo',      label: 'Demo',        badge: '' },
+        // Fixed 2026-07-12: this used to be a literal map of every real
+        // access code to its tier, fully readable via view-source on a
+        // public pricing page — anyone could unlock paid tiers for free.
+        // Real code values now live only as Worker secrets, checked
+        // server-side via /api/verify-code. This map is keyed by the
+        // non-secret tier LABEL that endpoint returns, purely for
+        // display metadata — no codes live here anymore.
+        const TIER_INFO = {
+            premium: { tier: 'Premium',  label: 'Premium',     badge: '' },
+            founder: { tier: 'Founder',  label: 'Founder',     badge: '🏆' },
+            beta:    { tier: 'Beta',      label: 'Beta Tester', badge: '' },
+            press:   { tier: 'Press',     label: 'Press',       badge: '' },
+            friend:  { tier: 'VIP',       label: 'VIP',         badge: '⭐' },
+            demo:    { tier: 'Demo',      label: 'Demo',        badge: '' },
         };
 
-        function redeemAccessCode(event) {
+        async function redeemAccessCode(event) {
             event.preventDefault();
             var codeInput = document.getElementById('accessCodeInput');
             var submitBtn = event.target.querySelector('button[type="submit"]');
@@ -375,36 +382,42 @@ function trackEvent(n,p){if(window.cookieconsent&&window.cookieconsent.hasConsen
             submitBtn.textContent = 'Checking...';
             submitBtn.disabled = true;
 
-            setTimeout(function() {
-                var matchKey = Object.keys(VALID_CODES).find(function(k) {
-                    return k.toLowerCase() === codeExact.toLowerCase();
+            var result = { ok: false, tier: null };
+            try {
+                var res = await fetch('/api/verify-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: codeExact })
                 });
+                result = await res.json().catch(function() { return { ok: false, tier: null }; });
+            } catch (e) {
+                result = { ok: false, tier: null };
+            }
 
-                if (matchKey) {
-                    var info = VALID_CODES[matchKey];
-                    localStorage.setItem('validAccessCode', 'true');
-                    localStorage.setItem('accessCodeUsed', matchKey);
-                    localStorage.setItem('paidMember', 'true');
-                    localStorage.setItem('userTier', info.tier);
-                    localStorage.setItem('accessGranted', 'true');
-                    localStorage.setItem('accessLevel', info.tier);
+            if (result.ok && TIER_INFO[result.tier]) {
+                var info = TIER_INFO[result.tier];
+                localStorage.setItem('validAccessCode', 'true');
+                localStorage.setItem('accessCodeUsed', codeExact);
+                localStorage.setItem('paidMember', 'true');
+                localStorage.setItem('userTier', info.tier);
+                localStorage.setItem('accessGranted', 'true');
+                localStorage.setItem('accessLevel', info.tier);
 
-                    /* Track successful redemption */
-                    try { trackEvent('access_code_redeemed', {tier: info.tier, page: 'pricing'}); } catch(e) {}
+                /* Track successful redemption */
+                try { trackEvent('access_code_redeemed', {tier: info.tier, page: 'pricing'}); } catch(e) {}
 
-                    submitBtn.textContent = '✓ Code Accepted!';
-                    submitBtn.style.background = 'linear-gradient(135deg, #008080, #005f5f)';
-                    setTimeout(function() { window.location.href = 'offerings.html'; }, 800);
-                } else {
-                    codeInput.style.borderColor = '#FF4040';
-                    codeInput.placeholder = 'Invalid code — please try again';
-                    codeInput.value = '';
-                    codeInput.focus();
-                    submitBtn.textContent = 'Redeem Access Code →';
-                    submitBtn.disabled = false;
-                    setTimeout(function() { codeInput.style.borderColor = ''; codeInput.placeholder = 'Enter your access code'; }, 3000);
-                }
-            }, 600);
+                submitBtn.textContent = '✓ Code Accepted!';
+                submitBtn.style.background = 'linear-gradient(135deg, #008080, #005f5f)';
+                setTimeout(function() { window.location.href = 'offerings.html'; }, 800);
+            } else {
+                codeInput.style.borderColor = '#FF4040';
+                codeInput.placeholder = 'Invalid code — please try again';
+                codeInput.value = '';
+                codeInput.focus();
+                submitBtn.textContent = 'Redeem Access Code →';
+                submitBtn.disabled = false;
+                setTimeout(function() { codeInput.style.borderColor = ''; codeInput.placeholder = 'Enter your access code'; }, 3000);
+            }
         }
 
         /* Handle Stripe success returns */
