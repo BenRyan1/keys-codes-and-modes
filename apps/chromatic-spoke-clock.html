@@ -2004,9 +2004,15 @@ let stencilPatterns = {
 let wedgeWidth = 1;
 
 // Check if a note is in the current stencil
+// IMPORTANT: stencilPatterns are stored as semitone offsets from the ROOT (0 = root),
+// not as absolute pitch classes. So a note is "in" the pattern only relative to
+// whichever note is currently selected as the root/key - it must be transposed
+// before comparing, otherwise every scale/mode silently stays anchored to C.
 function isNoteInStencil(noteIndex) {
   const pattern = stencilPatterns[currentStencil];
-  return pattern.includes(noteIndex);
+  const rootNoteIdx = getRootSpokeIndex() % 12;
+  const relativeIndex = (noteIndex - rootNoteIdx + 12) % 12;
+  return pattern.includes(relativeIndex);
 }
 
 // Check if a note position is at 12 o'clock (within the wedge)
