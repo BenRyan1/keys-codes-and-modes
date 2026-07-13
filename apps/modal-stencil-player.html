@@ -1295,28 +1295,92 @@
             catch(e) { /* silent if no parent */ }
         }
 
-        /* ==================== CLOCK CONTROL (bridge delegates) ==================== */
-        // MSP no longer runs its own setInterval.
-        // It sends KCM_CLOCK_START to bridge.js, which broadcasts KCM_TICK to ALL panels.
-        // MSP listens for KCM_TICK to advance step, play audio, and highlight cells.
+        /* ==================== CLOCK CONTROL (bridge delegates, with standalone fallback) ==================== */
+        // When embedded in the KCM Console, MSP doesn't run its own setInterval —
+        // it sends KCM_CLOCK_START to bridge.js, which broadcasts KCM_TICK to ALL panels,
+        // and MSP listens for KCM_TICK to advance step, play audio, and highlight cells.
+        //
+        // When loaded standalone (e.g. keyscodesandmodes.com/apps/modal-stencil-player),
+        // there is no parent bridge to answer KCM_CLOCK_START, so nothing would ever play.
+        // In that case we run an equivalent local clock instead.
+
+        let localClockInterval = null;
+        let localClockStep = 0;
+        let localClockSequence = [];
+
+        function isEmbeddedInBridge() {
+            return window.top !== window.self;
+        }
+
+        function buildPingPongSequence(len) {
+            // Ascend through all degrees then descend back down, looping continuously.
+            const seq = [];
+            for (let i = 0; i < len; i++) seq.push(i);
+            for (let i = len - 2; i >= 0; i--) seq.push(i);
+            return seq;
+        }
+
+        function tickLocalClock() {
+            const column = document.querySelector('.play-zone .mode-column');
+            if (!column) { stopLocalClock(); return; }
+            const cells = column.querySelectorAll('.degree-cell');
+            if (!cells.length) return;
+            cells.forEach(c => c.classList.remove('active'));
+            const stepIdx = localClockSequence[localClockStep % localClockSequence.length];
+            const cell = cells[stepIdx];
+            if (cell) {
+                cell.classList.add('active');
+                const midiNote = parseInt(cell.dataset.midi);
+                playNoteByMidi(midiNote, playSpeed / 1000 * 0.8);
+                if (isRecording) {
+                    const timestamp = Date.now() - recordingStartTime;
+                    recordedNotes.push({ midi: midiNote, time: timestamp, note: cell.dataset.note, degree: parseInt(cell.dataset.degree) });
+                    updateRecCounter();
+                }
+            }
+            localClockStep++;
+        }
+
+        function startLocalClock() {
+            stopLocalClock();
+            localClockSequence = buildPingPongSequence(8);
+            localClockStep = 0;
+            tickLocalClock();
+            localClockInterval = setInterval(tickLocalClock, playSpeed);
+        }
+
+        function stopLocalClock() {
+            if (localClockInterval) {
+                clearInterval(localClockInterval);
+                localClockInterval = null;
+            }
+        }
 
         function startPlaying() {
             stopPlaying(); // clear any stale state
             if (!playingMode) return;
             initAudio();
-            // Tell the bridge to start the master clock
-            window.parent.postMessage({
-                type: 'KCM_CLOCK_START',
-                payload: { modeKey: playingMode, root: currentTonic, beatMs: playSpeed }
-            }, '*');
+            if (isEmbeddedInBridge()) {
+                // Tell the bridge to start the master clock
+                window.parent.postMessage({
+                    type: 'KCM_CLOCK_START',
+                    payload: { modeKey: playingMode, root: currentTonic, beatMs: playSpeed }
+                }, '*');
+            } else {
+                // No bridge present — run our own clock so playback still works standalone
+                startLocalClock();
+            }
         }
 
         function stopPlaying() {
             // Clear any local step highlight
             const cells = document.querySelectorAll('.degree-cell');
             cells.forEach(c => c.classList.remove('active'));
-            // Tell bridge to stop the master clock
-            window.parent.postMessage({ type: 'KCM_CLOCK_STOP' }, '*');
+            stopLocalClock();
+            if (isEmbeddedInBridge()) {
+                // Tell bridge to stop the master clock
+                window.parent.postMessage({ type: 'KCM_CLOCK_STOP' }, '*');
+            }
         }
         
         /* ==================== RECORDING ==================== */
