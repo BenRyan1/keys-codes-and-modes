@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octave Wave Visualizer - 12-Note Chromatic Sphere Console</title>
+    <link rel="canonical" href="https://keyscodesandmodes.com/apps/octave-wave-visualizer-chromatic-spheres.html">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Branded Header */
+        .branded-header {
+            background: linear-gradient(135deg, #1a3d5f 0%, #2a4d6f 100%);
+            border-bottom: 3px solid #008080;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .header-logo-icon {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-icon:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .header-logo-text h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F4D03F, #008080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header-logo-text p {
+            font-size: 0.85rem;
+            color: #999;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            background: rgba(0, 128, 128, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 128, 128, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4);
+        }
+
+        .nav-link.alt {
+            background: rgba(255, 0, 110, 0.2);
+        }
+
+        .nav-link.alt:hover {
+            background: rgba(255, 0, 110, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.4);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #2a4d6f 0%, #1a3d5f 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #008080;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        header.page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 10px 25px rgba(0, 217, 255, 0.5));
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .current-note-badge {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .current-note-badge span:first-child {
+            font-size: 0.9em;
+            color: #0a0a0a;
+            font-weight: bold;
+        }
+
+        #noteSelector {
+            font-size: 1.3em;
+            color: #0a0a0a;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #0a0a0a;
+            border-radius: 10px;
+            padding: 5px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        #noteSelector:hover {
+            background: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+        }
+
+        #noteSelector:focus {
+            border-color: #F4D03F;
+            box-shadow: 0 0 20px rgba(244, 208, 63, 0.6);
+        }
+
+        #noteSelector option {
+            font-size: 0.9em;
+            padding: 10px;
+            background: #fff;
+            color: #0a0a0a;
+        }
+
+        #rootBadgeText {
+            font-size: 0.85em;
+            color: #0a0a0a;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .scene-container {
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+            margin-bottom: 20px;
+            border: 2px solid #1a1a2e;
+            overflow: hidden;
+        }
+
+        #sceneCanvas {
+            width: 100%;
+            height: 620px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .scene-overlay {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(10, 10, 10, 0.55);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 0.8em;
+            color: #00d4ff;
+            pointer-events: none;
+            line-height: 1.5;
+        }
+
+        .scene-toolbar {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .scene-toolbar button {
+            background: rgba(10, 10, 10, 0.65);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            color: #00d4ff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .scene-toolbar button:hover {
+            background: rgba(0, 212, 255, 0.25);
+        }
+
+        .scene-toolbar button.active {
+            background: #00d4ff;
+            color: #0a0a0a;
+        }
+
+        .octave-legend,
+        .controls-panel {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .octave-legend h3,
+        .controls-panel h3 {
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 20px;
+            flex-shrink: 0;
+            border-radius: 4px;
+            border: 2px solid #444;
+        }
+
+        .legend-text {
+            font-size: 0.85em;
+            color: #e0e0e0;
+            white-space: nowrap;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-group h3 {
+            text-align: left;
+        }
+
+        .note-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .note-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            border: 2px solid #444;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .note-btn:hover {
+            background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .note-btn.active {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            border-color: #00d4ff;
+            color: #000;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .audio-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: space-between;
+        }
+
+        .audio-btn {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #ff006e 0%, #cc0058 100%);
+            border: 2px solid #ff006e;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .audio-btn:hover {
+            background: linear-gradient(135deg, #ff3388 0%, #ff006e 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 110, 0.4);
+        }
+
+        .register-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .register-control input[type="range"] {
+            flex: 1;
+        }
+
+        .register-control span {
+            font-size: 0.9em;
+            color: #FFB81C;
+            min-width: 90px;
+            font-weight: bold;
+        }
+
+        .midi-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #00d4ff;
+        }
+
+        .midi-control input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .midi-status {
+            font-size: 0.8em;
+            color: #888;
+            margin-left: auto;
+        }
+
+        @media (max-width: 700px) {
+            #sceneCanvas { height: 420px; }
+            .scene-overlay { font-size: 0.7em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Branded Header with Navigation -->
+    <header class="branded-header">
+        <div class="header-content">
+            <a href="/index.html" class="logo-section">
+                <svg class="header-logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="3"/>
+                    <polygon points="100,20 180,180 20,180" fill="#F4D03F" opacity="0.8"/>
+                    <polygon points="100,20 20,180 20,60" fill="#8B6BA3" opacity="0.7"/>
+                    <polygon points="100,20 180,60 180,180" fill="#008080" opacity="0.7"/>
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="#2a4d6f" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="5" fill="#2a4d6f"/>
+                </svg>
+                <div class="header-logo-text">
+                    <h2>KEYS, CODES & MODES</h2>
+                    <p>Visual Music Theory</p>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="octave-wave-visualizer.html" class="nav-link alt">↔ 2D Wave View</a>
+                <a href="octave-wave-visualizer-3d.html" class="nav-link alt">◎ Solid Spheres</a>
+                <a href="octave-wave-visualizer-wireframe-spheres.html" class="nav-link alt">◌ Wireframe Spheres</a>
+                <a href="octave-wave-visualizer-zplane.html" class="nav-link alt">📐 Z-Plane Waterfall</a>
+                <a href="/index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <header class="page-header">
+            <!-- Embedded Hero Logo -->
+            <svg class="title-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="1"/>
+                <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.85"/>
+                <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#2a4d6f" stroke-width="2.5"/>
+                <circle cx="100" cy="100" r="7" fill="#2a4d6f"/>
+                <line x1="40" y1="40" x2="160" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="160" y1="40" x2="40" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="100" y1="20" x2="100" y2="180" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="20" y1="100" x2="180" y2="100" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+
+            <h1>12-Note Chromatic Sphere Console</h1>
+            <p class="subtitle">12 Concentric Wireframe Shells • One Per Chromatic Note • True KCM Color, Tone &amp; MIDI</p>
+            <div class="current-note-badge">
+                <span>Root Key:</span>
+                <select id="noteSelector" onchange="handleNoteChange()">
+                    <option value="C">C</option>
+                    <option value="C#">C#</option>
+                    <option value="D">D</option>
+                    <option value="D#">D#</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="F#">F#</option>
+                    <option value="G">G</option>
+                    <option value="G#">G#</option>
+                    <option value="A">A</option>
+                    <option value="A#">A#</option>
+                    <option value="B">B</option>
+                </select>
+                <span id="rootBadgeText">C4 · MIDI 60 · 261.6 Hz</span>
+            </div>
+        </header>
+
+        <div class="scene-container">
+            <canvas id="sceneCanvas"></canvas>
+            <div class="scene-overlay">🔍 Scroll/pinch to zoom &nbsp;|&nbsp; 🖱️ Click a sphere to hear it &nbsp;|&nbsp; ⌨️ ←→ change note, ↑↓ change register</div>
+            <div class="scene-toolbar">
+                <button id="autoRotateBtn" class="active" onclick="toggleAutoRotate()">⟳ Auto-Rotate</button>
+                <button id="tunnelFlyBtn" onclick="toggleTunnelFly()">🚀 Fly Through Center</button>
+                <button onclick="resetCamera()">🎯 Reset View</button>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <h3>🎵 Audio Controls</h3>
+                <div class="audio-buttons">
+                    <button class="audio-btn" onclick="playNote(currentRoot, { duration: 1.1, velocity: 0.9 }); updateRootBadge();">🎹 Play Root</button>
+                    <button class="audio-btn" onclick="playChromaticSweep(1)">⬆ Sweep Ascending (from Root)</button>
+                    <button class="audio-btn" onclick="playChromaticSweep(-1)">⬇ Sweep Descending (from Root)</button>
+                    <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
+                </div>
+
+                <div class="register-control">
+                    <label for="registerSlider" style="font-size:12px; color:#00d4ff; min-width:110px;">Register (Octave)</label>
+                    <input type="range" id="registerSlider" min="0" max="8" step="1" value="4" oninput="setRegister(this.value)">
+                    <span id="registerLabel">Octave 4</span>
+                </div>
+
+                <div class="register-control">
+                    <label for="sweepSpeedSlider" style="font-size:12px; color:#00d4ff; min-width:110px;">Sweep Speed</label>
+                    <input type="range" id="sweepSpeedSlider" min="60" max="1500" step="10" value="200" oninput="setSweepSpeed(this.value)">
+                    <span id="sweepSpeedLabel">200 ms</span>
+                </div>
+
+                <div class="midi-control">
+                    <input type="checkbox" id="zoomActivateCheckbox" checked onchange="toggleZoomActivate(this.checked)">
+                    <label for="zoomActivateCheckbox">🔍 Zoom Activates Notes (scroll/pinch = play)</label>
+                </div>
+
+                <div class="midi-control">
+                    <input type="checkbox" id="midiOutCheckbox" onchange="tryEnableMidiOut(this.checked)">
+                    <label for="midiOutCheckbox">🎹 Also send to MIDI Out (Web MIDI)</label>
+                    <span class="midi-status" id="midiStatus">checking…</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>🎹 Select Root / Key (12 Chromatic Notes)</h3>
+                <div class="note-buttons" id="noteButtons"></div>
+            </div>
+
+            <div class="control-group">
+                <h3>🎼 Melody Playback (Your Melody as the Sound Source)</h3>
+                <p style="font-size:0.8em; color:#888; margin-bottom:10px;">
+                    Type a melody using note names (C, C#, Db...), separated by spaces or commas.
+                    Add an octave digit for a specific register (C4), or <code>*beats</code> for length (C*2 = twice as long). Use "-" or "R" for a rest.
+                </p>
+                <textarea id="melodyText" rows="2" placeholder="E D C D E E E, D D D, E G G"
+                    style="width:100%; background:#12121e; color:#e0e0e0; border:2px solid #444; border-radius:8px; padding:10px; font-family:monospace; font-size:0.95em; margin-bottom:10px;"></textarea>
+
+                <div class="register-control">
+                    <label for="melodyTempoSlider" style="font-size:12px; color:#00d4ff; min-width:110px;">Tempo</label>
+                    <input type="range" id="melodyTempoSlider" min="40" max="300" step="5" value="100" oninput="document.getElementById('melodyTempoLabel').textContent = this.value + ' BPM'">
+                    <span id="melodyTempoLabel">100 BPM</span>
+                </div>
+
+                <div class="audio-buttons">
+                    <button class="audio-btn" onclick="playTypedMelody()">▶ Play Typed Melody</button>
+                    <button class="audio-btn" onclick="stopAllAudio()">⏹ Stop Melody</button>
+                </div>
+
+                <p style="font-size:0.8em; color:#888; margin:15px 0 10px;">
+                    Or upload a MIDI file you have the rights to (an original composition, something licensed, or your own transcription) - note timing and pitch are read straight out of the file.
+                </p>
+                <div class="audio-buttons">
+                    <input type="file" id="midiFileInput" accept=".mid,.midi" onchange="handleMidiFileSelect(this)"
+                        style="flex:1; min-width:200px; color:#e0e0e0; font-size:0.85em;">
+                    <button class="audio-btn" id="playMidiBtn" onclick="playLoadedMidi()" disabled>▶ Play Loaded MIDI</button>
+                </div>
+
+                <div class="register-control">
+                    <label for="melodySpeedSlider" style="font-size:12px; color:#00d4ff; min-width:110px;">MIDI Speed</label>
+                    <input type="range" id="melodySpeedSlider" min="0.25" max="2" step="0.05" value="1" oninput="document.getElementById('melodySpeedLabel').textContent = this.value + 'x'">
+                    <span id="melodySpeedLabel">1x</span>
+                </div>
+
+                <div class="midi-control">
+                    <span>Status:</span>
+                    <span class="midi-status" id="melodyStatus" style="margin-left:6px;">Idle</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>🎧 DJ Sync</h3>
+                <p style="font-size:0.8em; color:#888; margin-bottom:10px;">
+                    Full pitch-tracking a live mix isn't realistic, so this locks to what actually reads as "in sync": tempo and beat energy.
+                </p>
+
+                <div class="audio-buttons">
+                    <button class="audio-btn" onclick="tapTempo()">🥁 Tap Tempo</button>
+                    <span id="bpmDisplay" style="align-self:center; font-weight:bold; color:#FFB81C; min-width:80px; text-align:center;">— BPM</span>
+                </div>
+
+                <div class="midi-control">
+                    <input type="checkbox" id="lockTempoCheckbox" onchange="if (this.checked) applyTempoLock()">
+                    <label for="lockTempoCheckbox">🔗 Lock Sweep/Melody Tempo to Tapped BPM</label>
+                </div>
+
+                <div class="midi-control">
+                    <input type="checkbox" id="beatClockCheckbox" checked onchange="toggleBeatClock(this.checked)">
+                    <label for="beatClockCheckbox">💓 Auto-Continue Beat Pulse Between Taps</label>
+                </div>
+
+                <p style="font-size:0.8em; color:#888; margin:18px 0 10px;">
+                    Live audio input (mic or mixer line-in via an audio interface) makes the spheres breathe with the music's energy and pulse on detected bass hits - no manual tapping needed. Requires HTTPS.
+                </p>
+
+                <div class="midi-control">
+                    <input type="checkbox" id="liveAudioCheckbox" onchange="toggleLiveAudio(this.checked)">
+                    <label for="liveAudioCheckbox">🎤 Enable Live Audio Input</label>
+                    <span class="midi-status" id="liveAudioStatus" style="margin-left:auto;">Off</span>
+                </div>
+
+                <div style="background:#0a0a12; border-radius:6px; height:10px; margin:10px 0; overflow:hidden; border:1px solid #333;">
+                    <div id="liveAudioMeter" style="background:linear-gradient(90deg, #00d4ff, #ff006e); height:100%; width:0%; transition:width 0.05s linear;"></div>
+                </div>
+
+                <div class="register-control">
+                    <label for="micSensitivitySlider" style="font-size:12px; color:#00d4ff; min-width:110px;">Onset Sensitivity</label>
+                    <input type="range" id="micSensitivitySlider" min="1.1" max="2.5" step="0.05" value="1.4" oninput="setMicSensitivity(this.value)">
+                    <span id="micSensitivityLabel">1.40x</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12-Note Color Legend -->
+        <div class="octave-legend">
+            <h3>🌈 KCM 12-Color Chromatic Spectrum™ (Innermost = C, Outermost = B)</h3>
+            <div class="legend-grid" id="legendGrid"></div>
+        </div>
+    </div>
+    <!-- Branded Footer -->
+    <footer>
+        <p>&copy; 2025 Keys, Codes & Modes. Created by Ben Ryan. All rights reserved.</p>
+    </footer>
+
+    <!-- Three.js r128 + OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // ============================================================
+        // MUSIC THEORY (identical to the other visualizers)
+        // ============================================================
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        let currentRoot = 'C';
+        let currentRegister = 4;
+
+        function getFrequency(note, octave) {
+            const noteIndex = notes.indexOf(note);
+            const semitonesFromC0 = (octave * 12) + noteIndex;
+            return 16.35 * Math.pow(2, semitonesFromC0 / 12);
+        }
+        // Standard MIDI note numbering (Scientific Pitch Notation: C4 = 60,
+        // matching the same octave numbers used for getFrequency above).
+        function midiNoteNumber(note, octave) {
+            return (octave + 1) * 12 + notes.indexOf(note);
+        }
+        // Inverse of midiNoteNumber - used when reading note events back
+        // out of an uploaded MIDI file.
+        function midiToNoteOctave(midi) {
+            const noteIndex = ((midi % 12) + 12) % 12;
+            const octave = Math.floor(midi / 12) - 1;
+            return { note: notes[noteIndex], octave };
+        }
+
+        // KCM 12-Color Chromatic Spectrum(TM) - one fixed, true hex color
+        // per chromatic KEY. Unlike the other visualizers, color here does
+        // NOT shift with octave - each of the 12 shells always shows its
+        // own note's real spectrum color, verified against
+        // console.keyscodesandmodes.com.
+        const noteColors = {
+            'C':  '#FFFF00', 'C#': '#FFC400', 'D':  '#FF8000', 'D#': '#FF4000',
+            'E':  '#FF0000', 'F':  '#C4007F', 'F#': '#8000FF', 'G':  '#4000FF',
+            'G#': '#0000FF', 'A':  '#007FFF', 'A#': '#00FF80', 'B':  '#80FF00'
+        };
+
+        function hexToRgb(hex) {
+            const n = parseInt(hex.slice(1), 16);
+            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        }
+        function hexToRgba(hex, alpha) {
+            const [r, g, b] = hexToRgb(hex);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        let highlightedNote = null;   // note currently sounding (transient flash)
+        let octavePauseSec = 0.2;     // chromatic sweep spacing
+        function setSweepSpeed(ms) {
+            octavePauseSec = ms / 1000;
+            const label = document.getElementById('sweepSpeedLabel');
+            if (label) label.textContent = ms + ' ms';
+        }
+        function setRegister(val) {
+            currentRegister = Math.max(0, Math.min(8, parseInt(val, 10)));
+            const slider = document.getElementById('registerSlider');
+            if (slider) slider.value = currentRegister; // keep in sync when changed via keyboard, not just the slider itself
+            const label = document.getElementById('registerLabel');
+            if (label) label.textContent = 'Octave ' + currentRegister;
+            updateLegend();
+            updateRootBadge();
+        }
+
+        // ============================================================
+        // DJ SYNC - Tap Tempo + Beat Pulse. This is the "reads as synced"
+        // trick: rather than trying to track exact pitch in a live mix
+        // (unreliable), lock the Chromatic Sweep / Melody tempo to the
+        // detected BPM and pulse every sphere together on the beat.
+        // ============================================================
+        let tapTimes = [];
+        let tappedBPM = null;
+        let beatIntervalSec = null;
+        let nextBeatAt = 0;
+        let beatClockEnabled = false;
+        let beatPulse = 0; // 0-1 envelope, decays every frame, drives a global flash across all spheres
+
+        function triggerBeatPulse() {
+            beatPulse = 1.0;
+        }
+
+        function updateBpmDisplay() {
+            const el = document.getElementById('bpmDisplay');
+            if (el) el.textContent = tappedBPM ? `${tappedBPM} BPM` : '— BPM';
+        }
+
+        function tapTempo() {
+            initAudio(); // tap is a user gesture - safe place to wake up audio
+            const now = performance.now();
+            if (tapTimes.length && now - tapTimes[tapTimes.length - 1] > 2000) {
+                tapTimes = []; // gap too long - starting a fresh tap sequence
+            }
+            tapTimes.push(now);
+            if (tapTimes.length > 8) tapTimes.shift();
+
+            if (tapTimes.length >= 2) {
+                const intervals = [];
+                for (let i = 1; i < tapTimes.length; i++) intervals.push(tapTimes[i] - tapTimes[i - 1]);
+                const avgMs = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+                tappedBPM = Math.max(20, Math.min(300, Math.round(60000 / avgMs)));
+                updateBpmDisplay();
+
+                if (document.getElementById('lockTempoCheckbox')?.checked) applyTempoLock();
+
+                beatIntervalSec = 60 / tappedBPM;
+                nextBeatAt = audioContext.currentTime + beatIntervalSec;
+                beatClockEnabled = true;
+            }
+            triggerBeatPulse(); // pulse immediately on every tap, even the first one
+        }
+
+        function applyTempoLock() {
+            if (!tappedBPM) return;
+            octavePauseSec = 60 / tappedBPM;
+            const sweepSlider = document.getElementById('sweepSpeedSlider');
+            if (sweepSlider) {
+                const ms = Math.round(octavePauseSec * 1000);
+                sweepSlider.value = ms;
+                document.getElementById('sweepSpeedLabel').textContent = ms + ' ms';
+            }
+            const melodySlider = document.getElementById('melodyTempoSlider');
+            if (melodySlider) {
+                melodySlider.value = tappedBPM;
+                document.getElementById('melodyTempoLabel').textContent = tappedBPM + ' BPM';
+            }
+        }
+
+        function toggleBeatClock(checked) {
+            beatClockEnabled = checked;
+            if (checked && tappedBPM && audioContext) {
+                beatIntervalSec = 60 / tappedBPM;
+                nextBeatAt = audioContext.currentTime + beatIntervalSec;
+            }
+        }
+
+        // Keeps pulsing at the tapped tempo between taps, driven off the
+        // AudioContext clock (same pattern as every other schedule in this
+        // file) so it doesn't drift against the actual music tempo.
+        function checkBeatClock() {
+            if (!beatClockEnabled || !beatIntervalSec || !audioContext) return;
+            const now = audioContext.currentTime;
+            if (now >= nextBeatAt) {
+                triggerBeatPulse();
+                nextBeatAt += beatIntervalSec;
+                if (nextBeatAt < now) nextBeatAt = now + beatIntervalSec; // resync if we fell behind (e.g. tab was backgrounded)
+            }
+        }
+
+        // ── Live audio input (mic / mixer line-in) state. Declared here,
+        // ahead of the animate() loop that reads micEnabled/energyLevel
+        // every frame - a `let` referenced before its declaration line has
+        // executed throws in JS, which would otherwise blank the canvas on
+        // the very first frame. Functions for this live further down in
+        // the AUDIO section; the state just needs to exist early.
+        let micStream = null;
+        let micSource = null;
+        let micAnalyser = null;
+        let micEnabled = false;
+        let micSensitivity = 1.4;
+        let bassEnergyHistory = [];
+        let lastOnsetAt = 0;
+        let energyLevel = 0; // smoothed 0-1, drives the continuous glow
+
+        // ── Chromatic Sweep: schedule driven off the AudioContext clock so
+        // color, sphere highlight, root selection, and sound all move
+        // together on the exact same timeline - no setTimeout drift. Every
+        // step updates currentRoot itself (not just a transient flash), so
+        // the dropdown, note buttons, badge, and legend all track the
+        // sweep in real time, then restore to the note you started on.
+        let sweepSchedule = null;
+        let sweepScheduleIndex = 0;
+        let sweepEndTime = 0;
+        let sweepOriginalRoot = null;
+        function checkSweepSchedule() {
+            if (!sweepSchedule || !audioContext) return;
+            const now = audioContext.currentTime;
+            while (sweepScheduleIndex < sweepSchedule.length && now >= sweepSchedule[sweepScheduleIndex].time) {
+                const step = sweepSchedule[sweepScheduleIndex];
+                currentRoot = step.note;
+                highlightedNote = step.note;
+
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = step.note;
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === step.note);
+                });
+
+                midiNoteOn(step.midi, 100);
+                setTimeout(() => midiNoteOff(step.midi), 480);
+                updateRootBadge();
+                updateLegend();
+                sweepScheduleIndex++;
+            }
+            if (now >= sweepEndTime) {
+                highlightedNote = null;
+                sweepSchedule = null;
+                currentRoot = sweepOriginalRoot;
+
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = sweepOriginalRoot;
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === sweepOriginalRoot);
+                });
+
+                updateRootBadge();
+                updateLegend();
+            }
+        }
+
+        // ============================================================
+        // MELODY PLAYBACK - your own melody as the sound source, either
+        // typed as note names or loaded from a MIDI file you have the
+        // rights to. Both paths funnel into the same scheduleMelody() so
+        // sound, sphere highlight, root selection, badge, and legend all
+        // move together off the AudioContext clock (same sync pattern as
+        // the chromatic sweep), then restore to the note you started on.
+        // ============================================================
+        let melodySchedule = null;
+        let melodyScheduleIndex = 0;
+        let melodyEndTime = 0;
+        let melodyOriginalRoot = null;
+        let loadedMidiEvents = null;
+
+        function updateMelodyStatus(text) {
+            const el = document.getElementById('melodyStatus');
+            if (el) el.textContent = text;
+        }
+
+        function checkMelodySchedule() {
+            if (!melodySchedule || !audioContext) return;
+            const now = audioContext.currentTime;
+            while (melodyScheduleIndex < melodySchedule.length && now >= melodySchedule[melodyScheduleIndex].time) {
+                const step = melodySchedule[melodyScheduleIndex];
+                currentRoot = step.note;
+                highlightedNote = step.note;
+
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = step.note;
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === step.note);
+                });
+
+                midiNoteOn(step.midi, 100);
+                setTimeout(() => midiNoteOff(step.midi), 400);
+                updateRootBadge();
+                updateLegend();
+                melodyScheduleIndex++;
+            }
+            if (now >= melodyEndTime) {
+                highlightedNote = null;
+                melodySchedule = null;
+                currentRoot = melodyOriginalRoot;
+
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = melodyOriginalRoot;
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === melodyOriginalRoot);
+                });
+
+                updateRootBadge();
+                updateLegend();
+                updateMelodyStatus('Idle');
+            }
+        }
+
+        // Shared scheduler: takes [{ note, octave, time (sec from now),
+        // durSec }, ...] and drives both the oscillators and the
+        // checkMelodySchedule() sync loop above from it.
+        function scheduleMelody(timedEvents) {
+            if (!timedEvents || !timedEvents.length) return;
+            initAudio();
+            melodyOriginalRoot = currentRoot;
+            const startTime = audioContext.currentTime;
+
+            timedEvents.forEach(ev => {
+                const freq = getFrequency(ev.note, ev.octave);
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                const t0 = startTime + ev.time;
+                const dur = Math.max(0.05, ev.durSec);
+                gain.gain.setValueAtTime(0.0001, t0);
+                gain.gain.exponentialRampToValueAtTime(0.26, t0 + Math.min(0.02, dur * 0.2));
+                gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+                osc.start(t0);
+                osc.stop(t0 + dur + 0.02);
+                osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+            });
+
+            melodySchedule = timedEvents.map(ev => ({
+                note: ev.note,
+                midi: midiNoteNumber(ev.note, ev.octave),
+                time: startTime + ev.time
+            }));
+            melodyScheduleIndex = 0;
+            const last = timedEvents[timedEvents.length - 1];
+            melodyEndTime = startTime + last.time + Math.max(0.05, last.durSec) + 0.05;
+
+            updateMelodyStatus(`Playing ${timedEvents.length} notes…`);
+        }
+
+        // ── Typed melody: "E D C D E E E, D D D, E G G" - note names
+        // (C, C#, Db, ...), optional octave digit (C4), optional
+        // *duration in beats (C*2 = twice as long), "-" or "R" = rest.
+        // Commas are just readability separators.
+        const FLAT_TO_SHARP = { 'DB': 'C#', 'EB': 'D#', 'GB': 'F#', 'AB': 'G#', 'BB': 'A#', 'CB': 'B', 'FB': 'E' };
+
+        function parseMelodyText(text) {
+            const tokens = text.trim().split(/[\s,]+/).filter(Boolean);
+            const events = [];
+            tokens.forEach(tok => {
+                if (/^[-._]+$/.test(tok) || /^r([\d.]*)$/i.test(tok)) {
+                    const durMatch = tok.match(/[\d.]+$/);
+                    events.push({ rest: true, beats: durMatch ? parseFloat(durMatch[0]) : 1 });
+                    return;
+                }
+                const m = tok.match(/^([A-Ga-g])([#bB]?)(\d)?(?:[*:]([\d.]+))?$/);
+                if (!m) return; // unrecognized token - skip rather than error out
+                const [, letterRaw, accidental, octaveStr, durStr] = m;
+                const letter = letterRaw.toUpperCase();
+                let noteName;
+                if (accidental && accidental.toLowerCase() === 'b') {
+                    noteName = FLAT_TO_SHARP[letter + 'B'] || letter;
+                } else if (accidental === '#') {
+                    noteName = letter + '#';
+                } else {
+                    noteName = letter;
+                }
+                if (!notes.includes(noteName)) return;
+                events.push({
+                    rest: false,
+                    note: noteName,
+                    octave: octaveStr !== undefined ? parseInt(octaveStr, 10) : null,
+                    beats: durStr !== undefined ? parseFloat(durStr) : 1
+                });
+            });
+            return events;
+        }
+
+        function melodyEventsToTimedEvents(parsed, bpm, defaultOctave) {
+            const secPerBeat = 60 / Math.max(20, bpm);
+            let t = 0;
+            const timed = [];
+            parsed.forEach(ev => {
+                const durSec = ev.beats * secPerBeat;
+                if (!ev.rest) {
+                    timed.push({
+                        note: ev.note,
+                        octave: ev.octave !== null ? ev.octave : defaultOctave,
+                        time: t,
+                        durSec: durSec * 0.92 // slight gap so consecutive notes don't blur together
+                    });
+                }
+                t += durSec;
+            });
+            return timed;
+        }
+
+        function playTypedMelody() {
+            const textarea = document.getElementById('melodyText');
+            const bpmInput = document.getElementById('melodyTempoSlider');
+            if (!textarea) return;
+            const bpm = bpmInput ? parseInt(bpmInput.value, 10) : 100;
+            const parsed = parseMelodyText(textarea.value);
+            const timed = melodyEventsToTimedEvents(parsed, bpm, currentRegister);
+            if (!timed.length) {
+                updateMelodyStatus('No valid notes found - try something like "E D C D E E E"');
+                return;
+            }
+            scheduleMelody(timed);
+        }
+
+        // ── MIDI file upload: a compact Standard MIDI File (format 0/1)
+        // reader. Handles running status, tempo meta events (so BPM
+        // changes in the file are honored), and skips sysex/other channel
+        // events safely. Only note-on/note-off events are extracted.
+        function parseMidiFile(arrayBuffer) {
+            const data = new DataView(arrayBuffer);
+            let pos = 0;
+            const readUint32 = () => { const v = data.getUint32(pos); pos += 4; return v; };
+            const readUint16 = () => { const v = data.getUint16(pos); pos += 2; return v; };
+            const readUint8 = () => { const v = data.getUint8(pos); pos += 1; return v; };
+            const readVLQ = () => {
+                let value = 0, byte;
+                do {
+                    byte = readUint8();
+                    value = (value << 7) | (byte & 0x7f);
+                } while (byte & 0x80);
+                return value;
+            };
+            const readChunkType = () => {
+                let s = '';
+                for (let i = 0; i < 4; i++) s += String.fromCharCode(readUint8());
+                return s;
+            };
+
+            if (readChunkType() !== 'MThd') throw new Error('Not a standard MIDI file (missing MThd header)');
+            const headerLen = readUint32();
+            /* format */ readUint16();
+            const numTracks = readUint16();
+            const division = readUint16(); // ticks per quarter note (SMPTE division not supported)
+            pos += (headerLen - 6);
+
+            const tempoChanges = []; // { tick, usPerBeat }
+            const noteEvents = [];   // { tick, note, velocity, type }
+
+            for (let t = 0; t < numTracks; t++) {
+                readChunkType();
+                const chunkLen = readUint32();
+                const chunkEnd = pos + chunkLen;
+                let tick = 0;
+                let runningStatus = null;
+                while (pos < chunkEnd) {
+                    tick += readVLQ();
+                    let statusByte = readUint8();
+                    if (statusByte < 0x80) {
+                        pos -= 1; // this byte was actually data1 - reuse the running status
+                        statusByte = runningStatus;
+                    } else {
+                        runningStatus = statusByte;
+                    }
+                    const type = statusByte & 0xf0;
+                    if (statusByte === 0xff) {
+                        const metaType = readUint8();
+                        const len = readVLQ();
+                        if (metaType === 0x51 && len === 3) {
+                            const b1 = readUint8(), b2 = readUint8(), b3 = readUint8();
+                            tempoChanges.push({ tick, usPerBeat: (b1 << 16) | (b2 << 8) | b3 });
+                        } else {
+                            pos += len;
+                        }
+                    } else if (statusByte === 0xf0 || statusByte === 0xf7) {
+                        pos += readVLQ(); // sysex
+                    } else if (type === 0x90 || type === 0x80) {
+                        const note = readUint8();
+                        const velocity = readUint8();
+                        noteEvents.push({ tick, note, type: (type === 0x90 && velocity > 0) ? 'on' : 'off' });
+                    } else if (type === 0xa0 || type === 0xb0 || type === 0xe0) {
+                        pos += 2;
+                    } else if (type === 0xc0 || type === 0xd0) {
+                        pos += 1;
+                    } else {
+                        pos = chunkEnd; // unrecognized status - bail out of this track safely
+                    }
+                }
+                pos = chunkEnd;
+            }
+
+            if (tempoChanges.length === 0) tempoChanges.push({ tick: 0, usPerBeat: 500000 }); // default 120 BPM
+            tempoChanges.sort((a, b) => a.tick - b.tick);
+
+            function tickToSeconds(targetTick) {
+                let seconds = 0, lastTick = 0, usPerBeat = tempoChanges[0].usPerBeat;
+                for (const tc of tempoChanges) {
+                    if (tc.tick >= targetTick) break;
+                    seconds += ((tc.tick - lastTick) / division) * (usPerBeat / 1e6);
+                    lastTick = tc.tick;
+                    usPerBeat = tc.usPerBeat;
+                }
+                seconds += ((targetTick - lastTick) / division) * (usPerBeat / 1e6);
+                return seconds;
+            }
+
+            noteEvents.sort((a, b) => a.tick - b.tick);
+            const active = {};
+            const parsedNotes = [];
+            noteEvents.forEach(ev => {
+                if (ev.type === 'on') {
+                    active[ev.note] = ev.tick;
+                } else if (active[ev.note] !== undefined) {
+                    const startSec = tickToSeconds(active[ev.note]);
+                    const endSec = tickToSeconds(ev.tick);
+                    delete active[ev.note];
+                    parsedNotes.push({ midi: ev.note, startSec, durSec: Math.max(0.05, endSec - startSec) });
+                }
+            });
+            parsedNotes.sort((a, b) => a.startSec - b.startSec);
+            return parsedNotes;
+        }
+
+        function handleMidiFileSelect(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const parsedNotes = parseMidiFile(reader.result);
+                    if (!parsedNotes.length) {
+                        updateMelodyStatus('No notes found in that MIDI file.');
+                        loadedMidiEvents = null;
+                        return;
+                    }
+                    loadedMidiEvents = parsedNotes;
+                    const last = parsedNotes[parsedNotes.length - 1];
+                    const totalSec = last.startSec + last.durSec;
+                    updateMelodyStatus(`Loaded "${file.name}": ${parsedNotes.length} notes, ~${totalSec.toFixed(1)}s`);
+                    const playBtn = document.getElementById('playMidiBtn');
+                    if (playBtn) playBtn.disabled = false;
+                } catch (err) {
+                    console.warn('MIDI parse error:', err);
+                    updateMelodyStatus('Could not read that file - is it a standard .mid/.midi file?');
+                    loadedMidiEvents = null;
+                }
+            };
+            reader.onerror = () => updateMelodyStatus('Could not read that file.');
+            reader.readAsArrayBuffer(file);
+        }
+
+        function playLoadedMidi() {
+            if (!loadedMidiEvents || !loadedMidiEvents.length) {
+                updateMelodyStatus('Load a MIDI file first.');
+                return;
+            }
+            const speedInput = document.getElementById('melodySpeedSlider');
+            const speed = speedInput ? parseFloat(speedInput.value) : 1;
+            const timed = loadedMidiEvents.map(ev => {
+                const { note, octave } = midiToNoteOctave(ev.midi);
+                return { note, octave, time: ev.startSec / speed, durSec: ev.durSec / speed };
+            });
+            scheduleMelody(timed);
+        }
+
+        let phases = new Array(12).fill(0);
+
+        // ============================================================
+        // THREE.JS SCENE - 12 CONCENTRIC CHROMATIC WIREFRAME SPHERES
+        // One wavy wireframe shell per chromatic note (not per octave).
+        // Shell 1 (innermost, smallest) = C, Shell 12 (outermost, biggest)
+        // = B, following the chromatic scale outward. Each shell keeps its
+        // own fixed KCM color always - it never re-shades, because it
+        // always represents the same note regardless of which root/octave
+        // is currently selected.
+        // ============================================================
+        const canvas = document.getElementById('sceneCanvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.0022);
+
+        const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 5000);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        function resizeRenderer() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const width = rect.width;
+            const height = canvas.clientHeight || 620;
+            renderer.setSize(width, height, false);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        }
+
+        // Lighting (subtle - wireframes don't shade, but a little light
+        // helps the starfield and floor read as 3D)
+        scene.add(new THREE.AmbientLight(0x404060, 1.2));
+        const keyLight = new THREE.PointLight(0xffffff, 1.0, 2000);
+        keyLight.position.set(0, 150, 400);
+        scene.add(keyLight);
+
+        const NUM_NOTES = 12;
+        const MAX_RADIUS = 280;
+        const MIN_RADIUS = 30;
+
+        function ringRadius(index) {
+            // Chromatic scale 1-12, C innermost/smallest -> B outermost/biggest.
+            const t = index / (NUM_NOTES - 1);
+            return MIN_RADIUS + t * (MAX_RADIUS - MIN_RADIUS);
+        }
+        function ringCycles(index) {
+            return 3 + index * 1.4;
+        }
+
+        const rings = []; // { wireMesh, note, index, baseRadius, cycles }
+
+        function buildWavySphereGeometry(radius, cycles, phase, amplitude) {
+            const geometry = new THREE.SphereGeometry(radius, 40, 28);
+            const posAttr = geometry.attributes.position;
+            const v = new THREE.Vector3();
+            for (let i = 0; i < posAttr.count; i++) {
+                v.fromBufferAttribute(posAttr, i);
+                const theta = Math.atan2(v.z, v.x);
+                const phi = Math.acos(THREE.MathUtils.clamp(v.y / radius, -1, 1));
+                const wobble = Math.sin(theta * cycles + phase) * Math.sin(phi);
+                const scaleFactor = (radius + wobble * amplitude) / radius;
+                v.multiplyScalar(scaleFactor);
+                posAttr.setXYZ(i, v.x, v.y, v.z);
+            }
+            geometry.computeVertexNormals();
+            return geometry;
+        }
+
+        function initRings() {
+            for (let i = 0; i < NUM_NOTES; i++) {
+                const note = notes[i];
+                const baseRadius = ringRadius(i);
+                const cycles = ringCycles(i);
+                const geometry = buildWavySphereGeometry(baseRadius, cycles, 0, baseRadius * 0.035);
+
+                const wireMat = new THREE.MeshBasicMaterial({
+                    color: parseInt(noteColors[note].slice(1), 16),
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.5,
+                    depthWrite: false
+                });
+                const wireMesh = new THREE.Mesh(geometry, wireMat);
+                scene.add(wireMesh);
+
+                rings.push({ wireMesh, note, index: i, baseRadius, cycles });
+            }
+        }
+        initRings();
+
+        // Starfield backdrop for depth
+        (function addStars() {
+            const starGeo = new THREE.BufferGeometry();
+            const starCount = 600;
+            const starPositions = new Float32Array(starCount * 3);
+            for (let i = 0; i < starCount; i++) {
+                starPositions[i * 3] = (Math.random() - 0.5) * 2000;
+                starPositions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
+                starPositions[i * 3 + 2] = (Math.random() - 0.5) * 2000 - 400;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+            const starMat = new THREE.PointsMaterial({ color: 0x8899aa, size: 1.5, transparent: true, opacity: 0.6 });
+            scene.add(new THREE.Points(starGeo, starMat));
+        })();
+
+        // Camera + controls
+        camera.position.set(0, 90, 620);
+        camera.lookAt(0, 0, 0);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 0, 0);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.minDistance = 5;
+        controls.maxDistance = 1400;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.6;
+        controls.update();
+
+        let tunnelFly = false;
+        let flyZ = 620;
+
+        // ── Zoom-to-activate: the simplest possible interface for this
+        // scene. No precise clicking required - just scroll/pinch to zoom
+        // (or use Fly-Through, which moves the camera the same way). Every
+        // time the camera crosses a shell's radius, that note plays and
+        // becomes the new root - zooming in sweeps outermost (B) to
+        // innermost (C), zooming back out replays it in reverse.
+        let zoomActivateEnabled = true;
+        let lastCameraDistance = camera.position.length();
+        let lastZoomTriggerAt = {}; // note -> performance.now(), debounce per note
+        const ZOOM_TRIGGER_DEBOUNCE_MS = 120;
+        const ZOOM_MAX_CROSSINGS_PER_FRAME = 4; // guard against a huge scroll jump
+
+        function toggleZoomActivate(checked) {
+            zoomActivateEnabled = checked;
+        }
+
+        function triggerZoomNote(note) {
+            currentRoot = note;
+            const dropdown = document.getElementById('noteSelector');
+            if (dropdown) dropdown.value = note;
+            document.querySelectorAll('.note-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === note);
+            });
+            // Shorter, quieter than a deliberate click - this can fire in
+            // quick succession while scrubbing, so it should feel like a
+            // light touch, not a full "confirm" press.
+            playNote(note, { duration: 0.45, velocity: 0.55 });
+            updateRootBadge();
+        }
+
+        function handleZoomCrossings(prevDist, newDist) {
+            if (!zoomActivateEnabled || prevDist === newDist) return;
+            const lo = Math.min(prevDist, newDist);
+            const hi = Math.max(prevDist, newDist);
+            // Every shell whose radius boundary sits between the previous
+            // and current camera distance was just "passed through."
+            const crossed = rings
+                .filter(r => r.baseRadius > lo && r.baseRadius <= hi)
+                .sort((a, b) => Math.abs(a.baseRadius - (newDist)) - Math.abs(b.baseRadius - (newDist)))
+                .slice(0, ZOOM_MAX_CROSSINGS_PER_FRAME);
+
+            const now = performance.now();
+            crossed.forEach(ring => {
+                const last = lastZoomTriggerAt[ring.note] || 0;
+                if (now - last < ZOOM_TRIGGER_DEBOUNCE_MS) return;
+                lastZoomTriggerAt[ring.note] = now;
+                triggerZoomNote(ring.note);
+            });
+        }
+
+        function toggleAutoRotate() {
+            controls.autoRotate = !controls.autoRotate;
+            document.getElementById('autoRotateBtn').classList.toggle('active', controls.autoRotate);
+        }
+
+        function toggleTunnelFly() {
+            tunnelFly = !tunnelFly;
+            document.getElementById('tunnelFlyBtn').classList.toggle('active', tunnelFly);
+            if (tunnelFly) {
+                controls.autoRotate = false;
+                document.getElementById('autoRotateBtn').classList.remove('active');
+            }
+        }
+
+        function resetCamera() {
+            tunnelFly = false;
+            flyZ = 620;
+            document.getElementById('tunnelFlyBtn').classList.remove('active');
+            camera.position.set(0, 90, 620);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        // ── Click-to-play: EVERY shell must be reachable, including the
+        // inner ones that sit physically behind outer shells. A raycaster
+        // against solid mesh faces would always hit whichever shell is
+        // closest to the camera first, making inner notes unclickable from
+        // most angles - so instead we measure how far the click landed
+        // from the shared center in *screen pixels*, convert that to a
+        // world-space radius using the camera's perspective, and pick
+        // whichever shell's radius is the closest match. That's exactly
+        // the radius the eye reads the click at, regardless of occlusion,
+        // so all 12 notes stay addressable from any camera angle. Any
+        // click resolves to the nearest note (clamped at the innermost/
+        // outermost shell), so there's no dead zone either.
+        function screenToWorldRadius(clientX, clientY, rect) {
+            const originScreen = new THREE.Vector3(0, 0, 0).project(camera);
+            const centerX = (originScreen.x * 0.5 + 0.5) * rect.width;
+            const centerY = (1 - (originScreen.y * 0.5 + 0.5)) * rect.height;
+            const pixelDist = Math.hypot((clientX - rect.left) - centerX, (clientY - rect.top) - centerY);
+
+            const camDist = Math.max(camera.position.length(), 0.001); // shells are centered at world origin
+            const fovRad = THREE.MathUtils.degToRad(camera.fov);
+            const pixelsPerUnit = (rect.height / 2) / Math.tan(fovRad / 2) / camDist;
+            return pixelDist / pixelsPerUnit;
+        }
+
+        function nearestRingByRadius(worldRadius) {
+            let best = rings[0];
+            let bestDiff = Infinity;
+            rings.forEach(ring => {
+                const diff = Math.abs(ring.baseRadius - worldRadius);
+                if (diff < bestDiff) { bestDiff = diff; best = ring; }
+            });
+            return best;
+        }
+
+        let hoverNote = null;
+        let pointerDown = null;
+        canvas.addEventListener('pointerdown', (e) => {
+            pointerDown = { x: e.clientX, y: e.clientY, t: performance.now() };
+        });
+        canvas.addEventListener('pointermove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const worldRadius = screenToWorldRadius(e.clientX, e.clientY, rect);
+            hoverNote = nearestRingByRadius(worldRadius).note;
+        });
+        canvas.addEventListener('pointerleave', () => { hoverNote = null; });
+        canvas.addEventListener('pointerup', (e) => {
+            if (!pointerDown) return;
+            const dist = Math.hypot(e.clientX - pointerDown.x, e.clientY - pointerDown.y);
+            const dt = performance.now() - pointerDown.t;
+            pointerDown = null;
+            if (dist > 6 || dt > 500) return; // was a drag/orbit, not a click
+
+            const rect = canvas.getBoundingClientRect();
+            const worldRadius = screenToWorldRadius(e.clientX, e.clientY, rect);
+            const ring = nearestRingByRadius(worldRadius);
+            if (ring) selectRoot(ring.note);
+        });
+
+        // ============================================================
+        // ANIMATION LOOP - wave motion + play-state highlighting
+        // ============================================================
+        function animate() {
+            requestAnimationFrame(animate);
+            resizeRenderer();
+            checkSweepSchedule();
+            checkMelodySchedule();
+            checkBeatClock();
+            analyzeLiveAudio();
+            beatPulse *= 0.88; // decay the beat flash every frame
+            if (beatPulse < 0.001) beatPulse = 0;
+
+            if (tunnelFly) {
+                flyZ -= 3;
+                if (flyZ < -650) flyZ = 650;
+                camera.position.set(0, 0, flyZ);
+                controls.target.set(0, 0, flyZ - 120);
+            }
+
+            const baseFrequency = getFrequency('C', 0);
+            const liveBoost = micEnabled ? energyLevel * 0.4 : 0; // continuous "breathing" from mic energy
+
+            rings.forEach(ring => {
+                const note = ring.note;
+                const idx = ring.index;
+                const frequency = getFrequency(note, currentRegister);
+                const frequencyRatio = frequency / baseFrequency;
+                const phaseSpeed = 0.01 * frequencyRatio / 10;
+                phases[idx] += phaseSpeed;
+
+                const isSounding = (highlightedNote === note);
+                const isRoot = (currentRoot === note);
+                const isHovered = (hoverNote === note) && !isSounding;
+                const dimmed = (highlightedNote && !isSounding && !isRoot);
+
+                const amplitude = ring.baseRadius * (isSounding ? 0.09 : (isRoot ? 0.05 : 0.035)) * (1 + liveBoost);
+                const oldGeo = ring.wireMesh.geometry;
+                const newGeo = buildWavySphereGeometry(ring.baseRadius, ring.cycles, phases[idx], amplitude);
+                ring.wireMesh.geometry = newGeo;
+                oldGeo.dispose();
+
+                // Hover preview shows exactly which note a click will
+                // address right now, before you commit to it. beatPulse
+                // (from Tap Tempo or a detected mic onset) briefly boosts
+                // every sphere together, independent of which note is
+                // selected - that's the "synced to the beat" flash.
+                const baseOpacity = isSounding ? 1.0 : (isRoot ? 0.85 : (isHovered ? 0.75 : (dimmed ? 0.1 : 0.5)));
+                ring.wireMesh.material.opacity = Math.min(1, baseOpacity + beatPulse * 0.2 + liveBoost * 0.15);
+                const baseScale = isSounding ? 1.08 : (isRoot ? 1.02 : 1.0);
+                const scale = baseScale * (1 + beatPulse * 0.06);
+                ring.wireMesh.scale.set(scale, scale, scale);
+            });
+
+            controls.update();
+
+            // Zoom-to-activate runs every frame regardless of whether audio
+            // has started yet - playNote() (called inside triggerZoomNote)
+            // lazily creates the AudioContext on first use, so the very
+            // first scroll/pinch is enough to wake up sound. No "Start
+            // Audio" button required.
+            const camDist = camera.position.length();
+            handleZoomCrossings(lastCameraDistance, camDist);
+            lastCameraDistance = camDist;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', resizeRenderer);
+        resizeRenderer();
+
+        // ============================================================
+        // UI: notes, legend, root badge
+        // ============================================================
+        function handleNoteChange() {
+            const dropdown = document.getElementById('noteSelector');
+            selectRoot(dropdown.value);
+        }
+
+        function selectRoot(note) {
+            currentRoot = note;
+            const dropdown = document.getElementById('noteSelector');
+            if (dropdown) dropdown.value = note;
+
+            document.querySelectorAll('.note-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === note);
+            });
+
+            playNote(note, { duration: 1.1, velocity: 0.9 });
+            updateRootBadge();
+        }
+
+        function initNoteButtons() {
+            const container = document.getElementById('noteButtons');
+            notes.forEach(note => {
+                const btn = document.createElement('button');
+                btn.className = 'note-btn';
+                btn.textContent = note;
+                btn.style.borderColor = noteColors[note];
+                if (note === currentRoot) btn.classList.add('active');
+                btn.onclick = () => selectRoot(note);
+                container.appendChild(btn);
+            });
+        }
+
+        function initLegend() {
+            const container = document.getElementById('legendGrid');
+            notes.forEach(note => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+
+                const colorBox = document.createElement('div');
+                colorBox.className = 'color-box';
+                colorBox.style.background = noteColors[note];
+                colorBox.style.boxShadow = `0 0 10px ${hexToRgba(noteColors[note], 0.4)}`;
+
+                const text = document.createElement('div');
+                text.className = 'legend-text';
+                text.id = `legend-${note}`;
+
+                item.appendChild(colorBox);
+                item.appendChild(text);
+                container.appendChild(item);
+            });
+            updateLegend();
+        }
+
+        function updateLegend() {
+            notes.forEach(note => {
+                const text = document.getElementById(`legend-${note}`);
+                if (text) {
+                    const freq = getFrequency(note, currentRegister);
+                    const midi = midiNoteNumber(note, currentRegister);
+                    text.textContent = `${note}${currentRegister}: ${freq.toFixed(1)} Hz · MIDI ${midi} · ${noteColors[note]}`;
+                }
+            });
+        }
+
+        function updateRootBadge(tempNote) {
+            const note = tempNote || currentRoot;
+            const freq = getFrequency(note, currentRegister);
+            const midi = midiNoteNumber(note, currentRegister);
+            const badge = document.getElementById('rootBadgeText');
+            if (badge) badge.textContent = `${note}${currentRegister} · MIDI ${midi} · ${freq.toFixed(1)} Hz`;
+        }
+
+        // ============================================================
+        // AUDIO - Web Audio best practices: click-free exponential
+        // envelopes, scheduled-value cancellation, and node cleanup on
+        // completion (osc.onended disconnects both nodes to avoid leaks).
+        // ============================================================
+        let audioContext = null;
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function updateLiveAudioStatus(text) {
+            const el = document.getElementById('liveAudioStatus');
+            if (el) el.textContent = text;
+        }
+
+        function setMicSensitivity(val) {
+            micSensitivity = parseFloat(val);
+            const label = document.getElementById('micSensitivityLabel');
+            if (label) label.textContent = micSensitivity.toFixed(2) + 'x';
+        }
+
+        async function toggleLiveAudio(checked) {
+            if (checked) {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    updateLiveAudioStatus('Mic input needs a secure context (https://) - not available here.');
+                    const cb = document.getElementById('liveAudioCheckbox');
+                    if (cb) cb.checked = false;
+                    return;
+                }
+                try {
+                    micStream = await navigator.mediaDevices.getUserMedia({
+                        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+                    });
+                    initAudio();
+                    micSource = audioContext.createMediaStreamSource(micStream);
+                    micAnalyser = audioContext.createAnalyser();
+                    micAnalyser.fftSize = 2048;
+                    micAnalyser.smoothingTimeConstant = 0.6;
+                    micSource.connect(micAnalyser); // analysis only - never connected to destination, so no feedback/echo
+                    micEnabled = true;
+                    bassEnergyHistory = [];
+                    updateLiveAudioStatus('Mic connected - listening…');
+                } catch (err) {
+                    console.warn('Mic access denied or unavailable:', err);
+                    updateLiveAudioStatus('Mic access denied or unavailable.');
+                    micEnabled = false;
+                    const cb = document.getElementById('liveAudioCheckbox');
+                    if (cb) cb.checked = false;
+                }
+            } else {
+                micEnabled = false;
+                if (micStream) micStream.getTracks().forEach(track => track.stop()); // best practice: release the mic
+                micStream = null;
+                micSource = null;
+                micAnalyser = null;
+                energyLevel = 0;
+                updateLiveAudioStatus('Mic disconnected.');
+                const meter = document.getElementById('liveAudioMeter');
+                if (meter) meter.style.width = '0%';
+            }
+        }
+
+        function analyzeLiveAudio() {
+            if (!micEnabled || !micAnalyser || !audioContext) return;
+            const freqData = new Uint8Array(micAnalyser.frequencyBinCount);
+            micAnalyser.getByteFrequencyData(freqData);
+
+            const nyquist = audioContext.sampleRate / 2;
+            const binHz = nyquist / freqData.length;
+            const bassLoBin = Math.max(1, Math.floor(30 / binHz));
+            const bassHiBin = Math.min(freqData.length - 1, Math.ceil(150 / binHz));
+            let bassSum = 0;
+            for (let i = bassLoBin; i <= bassHiBin; i++) bassSum += freqData[i];
+            const bassAvg = bassSum / (bassHiBin - bassLoBin + 1) / 255;
+
+            let overallSum = 0;
+            for (let i = 0; i < freqData.length; i++) overallSum += freqData[i];
+            const overallAvg = overallSum / freqData.length / 255;
+
+            // Smoothed continuous level for the "breathing" glow.
+            energyLevel += (overallAvg - energyLevel) * 0.25;
+
+            // Onset (beat) detection on the bass band: a rolling average
+            // acts as a floor, and a spike above it (with a debounce so a
+            // sustained bassline doesn't machine-gun triggers) fires the
+            // same pulse Tap Tempo uses.
+            bassEnergyHistory.push(bassAvg);
+            if (bassEnergyHistory.length > 30) bassEnergyHistory.shift();
+            const rollingAvg = bassEnergyHistory.reduce((a, b) => a + b, 0) / bassEnergyHistory.length;
+            const now = performance.now();
+            if (bassAvg > rollingAvg * micSensitivity && bassAvg > 0.12 && now - lastOnsetAt > 220) {
+                lastOnsetAt = now;
+                triggerBeatPulse();
+            }
+
+            const meter = document.getElementById('liveAudioMeter');
+            if (meter) meter.style.width = Math.round(energyLevel * 100) + '%';
+        }
+
+        function playNote(note, opts = {}) {
+            initAudio();
+            const duration = opts.duration ?? 0.8;
+            const velocity = opts.velocity ?? 0.85;
+            const freq = getFrequency(note, currentRegister);
+            const midi = midiNoteNumber(note, currentRegister);
+
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            const now = audioContext.currentTime;
+            const attack = 0.008; // fast, click-free attack
+            const peak = 0.3 * velocity;
+            gain.gain.cancelScheduledValues(now);
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.exponentialRampToValueAtTime(peak, now + attack);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+            osc.start(now);
+            osc.stop(now + duration + 0.02);
+            osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+
+            midiNoteOn(midi, Math.round(velocity * 127));
+            setTimeout(() => midiNoteOff(midi), duration * 1000);
+
+            highlightedNote = note;
+            setTimeout(() => { if (highlightedNote === note) highlightedNote = null; }, duration * 1000);
+
+            return { freq, midi };
+        }
+
+        function playChromaticSweep(direction) {
+            direction = direction === -1 ? -1 : 1; // 1 = ascend, -1 = descend
+            initAudio();
+            sweepOriginalRoot = currentRoot;
+            const startTime = audioContext.currentTime;
+            const stepDur = octavePauseSec;
+            const noteDur = Math.max(0.35, stepDur * 1.6);
+
+            // ★ SWEEP STARTS AT THE CHOSEN ROOT, NOT ALWAYS AT C ★
+            // Walk all 12 chromatic notes starting from currentRoot,
+            // either ascending or descending, wrapping the octave by one
+            // each time we pass B -> C (ascending) or C -> B (descending)
+            // so the pitch keeps climbing/falling the whole way through
+            // instead of jumping back at the wrap point.
+            const startIndex = notes.indexOf(currentRoot);
+            const sweepNotes = [];
+            const sweepOctaves = [];
+            for (let i = 0; i < 12; i++) {
+                const semitoneOffset = startIndex + direction * i;
+                const noteIndex = ((semitoneOffset % 12) + 12) % 12;
+                const octave = currentRegister + Math.floor(semitoneOffset / 12);
+                sweepNotes.push(notes[noteIndex]);
+                sweepOctaves.push(octave);
+            }
+
+            sweepNotes.forEach((note, i) => {
+                const octave = sweepOctaves[i];
+                const freq = getFrequency(note, octave);
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                const t0 = startTime + i * stepDur;
+                gain.gain.setValueAtTime(0.0001, t0);
+                gain.gain.exponentialRampToValueAtTime(0.24, t0 + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.0001, t0 + noteDur);
+
+                osc.start(t0);
+                osc.stop(t0 + noteDur + 0.02);
+                osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+            });
+
+            sweepSchedule = sweepNotes.map((note, i) => ({
+                note,
+                midi: midiNoteNumber(note, sweepOctaves[i]),
+                time: startTime + i * stepDur
+            }));
+            sweepScheduleIndex = 0;
+            sweepEndTime = startTime + 12 * stepDur + noteDur;
+        }
+
+        function stopAllAudio() {
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+                highlightedNote = null;
+                sweepSchedule = null;
+                melodySchedule = null;
+                updateMelodyStatus('Idle');
+            }
+            // Best practice: send an explicit note-off for every note at
+            // the current register so a connected MIDI synth never hangs
+            // on a stuck note if Stop is hit mid-sweep or mid-melody.
+            notes.forEach(note => midiNoteOff(midiNoteNumber(note, currentRegister)));
+        }
+
+        // ============================================================
+        // WEB MIDI (best-practice progressive enhancement) - feature
+        // detected; degrades silently to Web-Audio-only if unsupported or
+        // access is denied. Requires a user gesture (the checkbox click).
+        // ============================================================
+        const midiSupported = !!(navigator.requestMIDIAccess);
+        let midiAccess = null;
+        let midiOutput = null;
+        let midiEnabled = false;
+
+        function updateMidiStatus() {
+            const status = document.getElementById('midiStatus');
+            const checkbox = document.getElementById('midiOutCheckbox');
+            if (!status) return;
+            if (!midiSupported) {
+                status.textContent = 'Web MIDI not supported in this browser';
+                if (checkbox) checkbox.disabled = true;
+            } else if (midiEnabled && midiOutput) {
+                status.textContent = `Connected: ${midiOutput.name}`;
+            } else if (midiEnabled && !midiOutput) {
+                status.textContent = 'No MIDI output devices found';
+            } else {
+                status.textContent = 'Off (audio only)';
+            }
+        }
+        updateMidiStatus();
+
+        async function tryEnableMidiOut(checked) {
+            if (!midiSupported) { midiEnabled = false; updateMidiStatus(); return; }
+            if (!checked) { midiEnabled = false; updateMidiStatus(); return; }
+            try {
+                midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+                const outputs = Array.from(midiAccess.outputs.values());
+                midiOutput = outputs.length ? outputs[0] : null;
+                midiEnabled = true;
+            } catch (err) {
+                console.warn('Web MIDI access denied or unavailable:', err);
+                midiEnabled = false;
+                midiOutput = null;
+            }
+            updateMidiStatus();
+        }
+
+        function midiNoteOn(note, velocity) {
+            if (!midiEnabled || !midiOutput) return;
+            midiOutput.send([0x90, note, velocity ?? 100]);
+        }
+        function midiNoteOff(note) {
+            if (!midiEnabled || !midiOutput) return;
+            midiOutput.send([0x80, note, 0]);
+        }
+
+        // ============================================================
+        // KEYBOARD - arrow keys operate the console directly, mirroring
+        // the layout: Left/Right step around the 12 notes (same as
+        // clicking a note button), Up/Down step the register up/down
+        // (same as the octave slider). Ignored while focus is on an
+        // <input>/<select> (the sliders and dropdown already have their
+        // own native arrow-key behavior - we don't want to fight them).
+        // ============================================================
+        function stepRoot(delta) {
+            const idx = notes.indexOf(currentRoot);
+            const nextIdx = (idx + delta + 12) % 12;
+            selectRoot(notes[nextIdx]);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            const tag = document.activeElement && document.activeElement.tagName;
+            if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    stepRoot(-1);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    stepRoot(1);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    setRegister(currentRegister + 1);
+                    playNote(currentRoot, { duration: 0.5, velocity: 0.6 });
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    setRegister(currentRegister - 1);
+                    playNote(currentRoot, { duration: 0.5, velocity: 0.6 });
+                    break;
+            }
+        });
+
+        // Initialize
+        initNoteButtons();
+        initLegend();
+        updateRootBadge();
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"a2b5f3c347c54c2e8684375d309fc224","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

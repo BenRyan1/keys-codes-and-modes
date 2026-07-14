@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6EGC5ZNZPF');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octave Wave Visualizer - 3D Concentric Tunnel</title>
+    <link rel="canonical" href="https://keyscodesandmodes.com/apps/octave-wave-visualizer-3d.html">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Branded Header */
+        .branded-header {
+            background: linear-gradient(135deg, #1a3d5f 0%, #2a4d6f 100%);
+            border-bottom: 3px solid #008080;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .header-logo-icon {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-icon:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .header-logo-text h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F4D03F, #008080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header-logo-text p {
+            font-size: 0.85rem;
+            color: #999;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            background: rgba(0, 128, 128, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 128, 128, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4);
+        }
+
+        .nav-link.alt {
+            background: rgba(255, 0, 110, 0.2);
+        }
+
+        .nav-link.alt:hover {
+            background: rgba(255, 0, 110, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.4);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #2a4d6f 0%, #1a3d5f 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #008080;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        header.page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 10px 25px rgba(0, 217, 255, 0.5));
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .current-note-badge {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .current-note-badge span:first-child {
+            font-size: 0.9em;
+            color: #0a0a0a;
+            font-weight: bold;
+        }
+
+        #noteSelector {
+            font-size: 1.3em;
+            color: #0a0a0a;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #0a0a0a;
+            border-radius: 10px;
+            padding: 5px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        #noteSelector:hover {
+            background: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+        }
+
+        #noteSelector:focus {
+            border-color: #F4D03F;
+            box-shadow: 0 0 20px rgba(244, 208, 63, 0.6);
+        }
+
+        #noteSelector option {
+            font-size: 0.9em;
+            padding: 10px;
+            background: #fff;
+            color: #0a0a0a;
+        }
+
+        .scene-container {
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+            margin-bottom: 20px;
+            border: 2px solid #1a1a2e;
+            overflow: hidden;
+        }
+
+        #sceneCanvas {
+            width: 100%;
+            height: 620px;
+            display: block;
+        }
+
+        .scene-overlay {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(10, 10, 10, 0.55);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 0.8em;
+            color: #00d4ff;
+            pointer-events: none;
+            line-height: 1.5;
+        }
+
+        .scene-toolbar {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .scene-toolbar button {
+            background: rgba(10, 10, 10, 0.65);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            color: #00d4ff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .scene-toolbar button:hover {
+            background: rgba(0, 212, 255, 0.25);
+        }
+
+        .scene-toolbar button.active {
+            background: #00d4ff;
+            color: #0a0a0a;
+        }
+
+        .individual-octaves,
+        .octave-legend,
+        .controls-panel {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .individual-octaves h3,
+        .octave-legend h3,
+        .controls-panel h3 {
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .octave-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .octave-play-btn {
+            padding: 12px 8px;
+            background: linear-gradient(135deg, #7b2ff7 0%, #5a1fc7 100%);
+            border: 2px solid #7b2ff7;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .octave-play-btn:hover {
+            background: linear-gradient(135deg, #9b4fff 0%, #7b2ff7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(123, 47, 247, 0.4);
+        }
+
+        .octave-play-btn:active {
+            transform: translateY(0);
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #444;
+        }
+
+        .legend-text {
+            font-size: 0.9em;
+            color: #e0e0e0;
+            white-space: nowrap;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-group h3 {
+            text-align: left;
+        }
+
+        .note-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .note-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            border: 2px solid #444;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .note-btn:hover {
+            background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .note-btn.active {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            border-color: #00d4ff;
+            color: #000;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .audio-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: space-between;
+        }
+
+        .audio-btn {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #ff006e 0%, #cc0058 100%);
+            border: 2px solid #ff006e;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .audio-btn:hover {
+            background: linear-gradient(135deg, #ff3388 0%, #ff006e 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 110, 0.4);
+        }
+
+        @media (max-width: 700px) {
+            #sceneCanvas { height: 420px; }
+            .scene-overlay { font-size: 0.7em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Branded Header with Navigation -->
+    <header class="branded-header">
+        <div class="header-content">
+            <a href="/index.html" class="logo-section">
+                <svg class="header-logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="3"/>
+                    <polygon points="100,20 180,180 20,180" fill="#F4D03F" opacity="0.8"/>
+                    <polygon points="100,20 20,180 20,60" fill="#8B6BA3" opacity="0.7"/>
+                    <polygon points="100,20 180,60 180,180" fill="#008080" opacity="0.7"/>
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="#2a4d6f" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="5" fill="#2a4d6f"/>
+                </svg>
+                <div class="header-logo-text">
+                    <h2>KEYS, CODES & MODES</h2>
+                    <p>Visual Music Theory</p>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="octave-wave-visualizer.html" class="nav-link alt">↔ 2D Wave View</a>
+                <a href="octave-wave-visualizer-wireframe-spheres.html" class="nav-link alt">◌ Wireframe Spheres</a>
+                <a href="octave-wave-visualizer-zplane.html" class="nav-link alt">📐 Z-Plane Waterfall</a>
+                <a href="octave-wave-visualizer-chromatic-spheres.html" class="nav-link alt">🎨 12-Note Chromatic Console</a>
+                <a href="/index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <header class="page-header">
+            <!-- Embedded Hero Logo -->
+            <svg class="title-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="98" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="1"/>
+                <polygon points="100,15 185,185 15,185" fill="#F4D03F" opacity="0.85"/>
+                <polygon points="100,15 15,185 15,55" fill="#8B6BA3" opacity="0.75"/>
+                <polygon points="100,15 185,55 185,185" fill="#6FA5A5" opacity="0.75"/>
+                <polygon points="15,55 100,100 15,185" fill="#CF7A5A" opacity="0.65"/>
+                <polygon points="185,55 100,100 185,185" fill="#9AAF7A" opacity="0.65"/>
+                <polygon points="100,55 145,100 100,145 55,100" fill="#E8D77F" opacity="0.6"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#2a4d6f" stroke-width="2.5"/>
+                <circle cx="100" cy="100" r="7" fill="#2a4d6f"/>
+                <line x1="40" y1="40" x2="160" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="160" y1="40" x2="40" y2="160" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="100" y1="20" x2="100" y2="180" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+                <line x1="20" y1="100" x2="180" y2="100" stroke="#2a4d6f" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+
+            <h1>Octave Wave Visualizer - 3D Concentric Tunnel</h1>
+            <p class="subtitle">9 Wavy Concentric Spheres • Fly Through the Nested Shells • Drag to Orbit, Scroll to Zoom</p>
+            <div class="current-note-badge">
+                <span>Current Note:</span>
+                <select id="noteSelector" onchange="handleNoteChange()">
+                    <option value="C">C</option>
+                    <option value="C#">C#</option>
+                    <option value="D">D</option>
+                    <option value="D#">D#</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="F#">F#</option>
+                    <option value="G">G</option>
+                    <option value="G#">G#</option>
+                    <option value="A">A</option>
+                    <option value="A#">A#</option>
+                    <option value="B">B</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="scene-container">
+            <canvas id="sceneCanvas"></canvas>
+            <div class="scene-overlay">🖱️ Drag: Orbit &nbsp;|&nbsp; Scroll: Zoom &nbsp;|&nbsp; Right-drag: Pan</div>
+            <div class="scene-toolbar">
+                <button id="autoRotateBtn" class="active" onclick="toggleAutoRotate()">⟳ Auto-Rotate</button>
+                <button id="tunnelFlyBtn" onclick="toggleTunnelFly()">🚀 Fly Tunnel</button>
+                <button onclick="resetCamera()">🎯 Reset View</button>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <h3>🎵 Audio Controls</h3>
+                <div class="audio-buttons">
+                    <button class="audio-btn" onclick="playCurrentNote()">🎹 Play Current</button>
+                    <button class="audio-btn" onclick="playAllOctaves()">🔊 Play All</button>
+                    <button class="audio-btn" onclick="playOctaveScale()">🎼 Play Scale</button>
+                    <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
+                </div>
+                <div class="pause-control" style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+                    <label for="octavePauseSlider" style="font-size:12px; color:#00d4ff;">Inter-Note Pause</label>
+                    <input type="range" id="octavePauseSlider" min="50" max="600" step="10" value="200"
+                           oninput="setOctavePause(this.value)">
+                    <span id="octavePauseLabel" style="font-size:12px; color:#FFB81C; min-width:48px;">200 ms</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>🎹 Select Note (Changes All Frequencies)</h3>
+                <div class="note-buttons" id="noteButtons"></div>
+            </div>
+        </div>
+
+        <!-- Individual Octave Audio Playback -->
+        <div class="individual-octaves">
+            <h3>🎯 Individual Octave Audio</h3>
+            <div class="octave-buttons-grid">
+                <button class="octave-play-btn" onclick="playIndividualOctave(0)">🎵 Play <span class="octave-label">C0</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(1)">🎵 Play <span class="octave-label">C1</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(2)">🎵 Play <span class="octave-label">C2</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(3)">🎵 Play <span class="octave-label">C3</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(4)">🎵 Play <span class="octave-label">C4</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(5)">🎵 Play <span class="octave-label">C5</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(6)">🎵 Play <span class="octave-label">C6</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(7)">🎵 Play <span class="octave-label">C7</span></button>
+                <button class="octave-play-btn" onclick="playIndividualOctave(8)">🎵 Play <span class="octave-label">C8</span></button>
+            </div>
+        </div>
+
+        <!-- Octave Color Legend -->
+        <div class="octave-legend">
+            <h3>🌈 Octave Colors & Frequencies (Outer Shell = Lowest, Innermost Shell = Highest)</h3>
+            <div class="legend-grid" id="legendGrid"></div>
+        </div>
+    </div>
+    <!-- Branded Footer -->
+    <footer>
+        <p>&copy; 2025 Keys, Codes & Modes. Created by Ben Ryan. All rights reserved.</p>
+    </footer>
+
+    <!-- Three.js r128 + OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // ============================================================
+        // MUSIC THEORY (identical to the 2D visualizer)
+        // ============================================================
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        let currentNote = 'C';
+
+        function getFrequency(note, octave) {
+            const noteIndex = notes.indexOf(note);
+            const semitonesFromC0 = (octave * 12) + noteIndex;
+            return 16.35 * Math.pow(2, semitonesFromC0 / 12);
+        }
+
+        // ★ KCM 12-Color Chromatic Spectrum™ - official key colors. Color
+        // now follows the KEY (note name); the 9 rings for a given key are
+        // dark→bright shades of that one key color, so the whole scene
+        // stays visually and sonically in sync with the selected key.
+        const noteColors = {
+            'C':  '#FFFF00', 'C#': '#FFC400', 'D':  '#FF8000', 'D#': '#FF4000',
+            'E':  '#FF0000', 'F':  '#C4007F', 'F#': '#8000FF', 'G':  '#4000FF',
+            'G#': '#0000FF', 'A':  '#007FFF', 'A#': '#00FF80', 'B':  '#80FF00'
+        };
+
+        function hexToRgb(hex) {
+            const n = parseInt(hex.slice(1), 16);
+            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        }
+        function rgbToHexInt(r, g, b) {
+            const c = v => Math.max(0, Math.min(255, Math.round(v)));
+            return (c(r) << 16) | (c(g) << 8) | c(b);
+        }
+        function rgbToHexStr(r, g, b) {
+            const c = v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+            return '#' + c(r) + c(g) + c(b);
+        }
+        // Shade the current key's color per octave: octave 0 is a deep,
+        // dark tint; octave 8 is a light, bright tint.
+        function octaveShadeRGB(octave) {
+            const [r, g, b] = hexToRgb(noteColors[currentNote] || '#FFFFFF');
+            const t = octave / 8;
+            if (t < 0.5) {
+                const k = 1 - (t / 0.5) * 0.72;
+                return [r * k, g * k, b * k];
+            }
+            const k = (t - 0.5) / 0.5 * 0.55;
+            return [r + (255 - r) * k, g + (255 - g) * k, b + (255 - b) * k];
+        }
+        function octaveShadeHexInt(octave) {
+            const [r, g, b] = octaveShadeRGB(octave);
+            return rgbToHexInt(r, g, b);
+        }
+        function octaveShadeHexStr(octave) {
+            const [r, g, b] = octaveShadeRGB(octave);
+            return rgbToHexStr(r, g, b);
+        }
+        function octaveGlow(octave, alpha) {
+            const [r, g, b] = octaveShadeRGB(octave);
+            return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${alpha})`;
+        }
+
+        // Highlight / playback sync state shared with the 3D scene
+        let highlightedOctave = -1;
+        let octavePauseSec = 0.2;
+        function setOctavePause(ms) {
+            octavePauseSec = ms / 1000;
+            const label = document.getElementById('octavePauseLabel');
+            if (label) label.textContent = ms + ' ms';
+        }
+
+        // ── Play Scale: schedule driven off the AudioContext clock so the
+        // color/highlight update fires on the exact same timeline as the
+        // note that's actually sounding - no setTimeout drift.
+        let scaleSchedule = null;
+        let scaleScheduleIndex = 0;
+        let scaleEndTime = 0;
+        let scaleOriginalNote = null;
+        function checkScaleSchedule() {
+            if (!scaleSchedule || !audioContext) return;
+            const now = audioContext.currentTime;
+            while (scaleScheduleIndex < scaleSchedule.length && now >= scaleSchedule[scaleScheduleIndex].time) {
+                const step = scaleSchedule[scaleScheduleIndex];
+                currentNote = step.note;
+                highlightedOctave = step.octave;
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = step.note;
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === step.note);
+                });
+                updateLegend();
+                scaleScheduleIndex++;
+            }
+            if (now >= scaleEndTime) {
+                highlightedOctave = -1;
+                currentNote = scaleOriginalNote;
+                const dropdown = document.getElementById('noteSelector');
+                if (dropdown) dropdown.value = scaleOriginalNote;
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === scaleOriginalNote);
+                });
+                updateLegend();
+                scaleSchedule = null;
+            }
+        }
+
+        let phases = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        // ============================================================
+        // THREE.JS SCENE - CONCENTRIC RING TUNNEL
+        // ============================================================
+        const canvas = document.getElementById('sceneCanvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.0022);
+
+        const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 5000);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        function resizeRenderer() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const width = rect.width;
+            const height = canvas.clientHeight || 620;
+            renderer.setSize(width, height, false);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        }
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0x404060, 1.2));
+        const keyLight = new THREE.PointLight(0xffffff, 1.2, 2000);
+        keyLight.position.set(0, 150, 400);
+        scene.add(keyLight);
+        const rimLight = new THREE.PointLight(0x00d4ff, 0.8, 2000);
+        rimLight.position.set(0, -150, -600);
+        scene.add(rimLight);
+
+        // ── Concentric spherical shells: one translucent, wavy sphere per
+        // octave, all centered on the same origin - like electron shells,
+        // or a Russian doll made of light. Highest octave = smallest
+        // innermost shell at the center, lowest octave = biggest outer
+        // shell. "Fly Tunnel" flies the camera straight through the nested
+        // shells and back out.
+        const NUM_OCTAVES = 9;
+        const MAX_RADIUS = 260;
+        const MIN_RADIUS = 35;
+
+        function ringRadius(octave) {
+            const t = octave / (NUM_OCTAVES - 1);
+            return MAX_RADIUS - t * (MAX_RADIUS - MIN_RADIUS);
+        }
+        function ringCycles(octave) {
+            // Wave crests wrapped around each shell's equator - increases
+            // with octave so higher pitches visibly "wiggle" more.
+            return 3 + octave * 2;
+        }
+
+        const rings = []; // { mesh, wireMesh, octave, baseRadius, cycles }
+
+        function buildWavySphereGeometry(radius, cycles, phase, amplitude) {
+            const geometry = new THREE.SphereGeometry(radius, 48, 32);
+            const posAttr = geometry.attributes.position;
+            const v = new THREE.Vector3();
+            for (let i = 0; i < posAttr.count; i++) {
+                v.fromBufferAttribute(posAttr, i);
+                const theta = Math.atan2(v.z, v.x);
+                const phi = Math.acos(THREE.MathUtils.clamp(v.y / radius, -1, 1));
+                // Wobble peaks at the equator and tapers smoothly to zero at
+                // the poles, so each shell reads as a clean sphere overall
+                // while still visibly "waving" around its middle.
+                const wobble = Math.sin(theta * cycles + phase) * Math.sin(phi);
+                const scaleFactor = (radius + wobble * amplitude) / radius;
+                v.multiplyScalar(scaleFactor);
+                posAttr.setXYZ(i, v.x, v.y, v.z);
+            }
+            geometry.computeVertexNormals();
+            return geometry;
+        }
+
+        function initRings() {
+            for (let octave = 0; octave < NUM_OCTAVES; octave++) {
+                const baseRadius = ringRadius(octave);
+                const cycles = ringCycles(octave);
+                // Subtle wobble only - these should read as clean, perfect
+                // spheres first, with the wave texture as a light accent.
+                const geometry = buildWavySphereGeometry(baseRadius, cycles, 0, baseRadius * 0.035);
+
+                const material = new THREE.MeshPhongMaterial({
+                    color: octaveShadeHexInt(octave),
+                    emissive: octaveShadeHexInt(octave),
+                    emissiveIntensity: 0.35,
+                    shininess: 90,
+                    transparent: true,
+                    opacity: 0.32,
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                });
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+
+                const wireMat = new THREE.MeshBasicMaterial({
+                    color: octaveShadeHexInt(octave),
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.22,
+                    depthWrite: false
+                });
+                const wireMesh = new THREE.Mesh(geometry.clone(), wireMat);
+                scene.add(wireMesh);
+
+                rings.push({ mesh, wireMesh, octave, baseRadius, cycles });
+            }
+        }
+        initRings();
+
+        // Starfield backdrop for depth
+        (function addStars() {
+            const starGeo = new THREE.BufferGeometry();
+            const starCount = 600;
+            const starPositions = new Float32Array(starCount * 3);
+            for (let i = 0; i < starCount; i++) {
+                starPositions[i * 3] = (Math.random() - 0.5) * 2000;
+                starPositions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
+                starPositions[i * 3 + 2] = (Math.random() - 0.5) * 2000 - 400;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+            const starMat = new THREE.PointsMaterial({ color: 0x8899aa, size: 1.5, transparent: true, opacity: 0.6 });
+            scene.add(new THREE.Points(starGeo, starMat));
+        })();
+
+        // Camera + controls
+        camera.position.set(0, 90, 600);
+        camera.lookAt(0, 0, 0);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 0, 0);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.minDistance = 5;
+        controls.maxDistance = 1400;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.6;
+        controls.update();
+
+        let tunnelFly = false;
+        let flyZ = 600;
+
+        function toggleAutoRotate() {
+            controls.autoRotate = !controls.autoRotate;
+            document.getElementById('autoRotateBtn').classList.toggle('active', controls.autoRotate);
+        }
+
+        function toggleTunnelFly() {
+            tunnelFly = !tunnelFly;
+            document.getElementById('tunnelFlyBtn').classList.toggle('active', tunnelFly);
+            if (tunnelFly) {
+                controls.autoRotate = false;
+                document.getElementById('autoRotateBtn').classList.remove('active');
+            }
+        }
+
+        function resetCamera() {
+            tunnelFly = false;
+            flyZ = 600;
+            document.getElementById('tunnelFlyBtn').classList.remove('active');
+            camera.position.set(0, 90, 600);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        // ============================================================
+        // ANIMATION LOOP - wave motion + play-state highlighting
+        // ============================================================
+        function animate() {
+            requestAnimationFrame(animate);
+            resizeRenderer();
+            checkScaleSchedule();
+
+            if (tunnelFly) {
+                // Fly straight through the center of the nested shells and
+                // loop back out, so you pass through every octave in turn.
+                flyZ -= 3;
+                if (flyZ < -650) flyZ = 650;
+                camera.position.set(0, 0, flyZ);
+                controls.target.set(0, 0, flyZ - 120);
+            }
+
+            rings.forEach(ring => {
+                const octave = ring.octave;
+                const frequency = getFrequency(currentNote, octave);
+                const baseFrequency = getFrequency('C', 0);
+                const frequencyRatio = frequency / baseFrequency;
+                const phaseSpeed = 0.01 * frequencyRatio / 10;
+                phases[octave] += phaseSpeed;
+
+                const isHighlighted = (highlightedOctave === octave);
+                const dimmed = (highlightedOctave >= 0 && !isHighlighted);
+
+                // Kept subtle so every shell still reads as a perfect
+                // sphere - the "wave" shows as texture/shimmer, not a
+                // lumpy distortion of the sphere's silhouette.
+                const amplitude = ring.baseRadius * (isHighlighted ? 0.06 : 0.035);
+                const oldGeo = ring.mesh.geometry;
+                const oldWireGeo = ring.wireMesh.geometry;
+                const newGeo = buildWavySphereGeometry(ring.baseRadius, ring.cycles, phases[octave], amplitude);
+                ring.mesh.geometry = newGeo;
+                ring.wireMesh.geometry = newGeo;
+                oldGeo.dispose();
+                if (oldWireGeo !== oldGeo) oldWireGeo.dispose();
+
+                // Color follows the selected KEY every frame, shaded by
+                // register (octave) - visuals and sound stay in sync.
+                const shadeInt = octaveShadeHexInt(octave);
+                ring.mesh.material.color.setHex(shadeInt);
+                ring.mesh.material.emissive.setHex(shadeInt);
+                ring.wireMesh.material.color.setHex(shadeInt);
+
+                ring.mesh.material.emissiveIntensity = isHighlighted ? 1.2 : (dimmed ? 0.08 : 0.35);
+                ring.mesh.material.opacity = isHighlighted ? 0.7 : (dimmed ? 0.06 : 0.32);
+                ring.wireMesh.material.opacity = isHighlighted ? 0.5 : (dimmed ? 0.03 : 0.22);
+
+                const scale = isHighlighted ? 1.05 : 1.0;
+                ring.mesh.scale.set(scale, scale, scale);
+                ring.wireMesh.scale.set(scale, scale, scale);
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', resizeRenderer);
+        resizeRenderer();
+
+        // ============================================================
+        // UI: notes, legend, labels (same behavior as 2D version)
+        // ============================================================
+        function handleNoteChange() {
+            const dropdown = document.getElementById('noteSelector');
+            selectNote(dropdown.value);
+        }
+
+        function selectNote(note) {
+            currentNote = note;
+            const dropdown = document.getElementById('noteSelector');
+            if (dropdown) dropdown.value = note;
+
+            document.querySelectorAll('.note-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === note);
+            });
+
+            updateLegend();
+            updateOctaveLabels();
+            phases = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
+
+        function initNoteButtons() {
+            const container = document.getElementById('noteButtons');
+            notes.forEach(note => {
+                const btn = document.createElement('button');
+                btn.className = 'note-btn';
+                btn.textContent = note;
+                if (note === currentNote) btn.classList.add('active');
+                btn.onclick = () => selectNote(note);
+                container.appendChild(btn);
+            });
+        }
+
+        function initLegend() {
+            const container = document.getElementById('legendGrid');
+            for (let i = 0; i <= 8; i++) {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+
+                const colorBox = document.createElement('div');
+                colorBox.className = 'color-box';
+                colorBox.style.background = octaveShadeHexStr(i);
+                colorBox.style.boxShadow = `0 0 10px ${octaveGlow(i, 0.3)}`;
+                colorBox.id = `legend-swatch-${i}`;
+
+                const text = document.createElement('div');
+                text.className = 'legend-text';
+                const freq = getFrequency(currentNote, i);
+                text.textContent = `${currentNote}${i}: ${freq.toFixed(1)} Hz`;
+                text.id = `legend-${i}`;
+
+                item.appendChild(colorBox);
+                item.appendChild(text);
+                container.appendChild(item);
+            }
+        }
+
+        function updateLegend() {
+            for (let i = 0; i <= 8; i++) {
+                const swatch = document.getElementById(`legend-swatch-${i}`);
+                if (swatch) {
+                    swatch.style.background = octaveShadeHexStr(i);
+                    swatch.style.boxShadow = `0 0 10px ${octaveGlow(i, 0.3)}`;
+                }
+                const text = document.getElementById(`legend-${i}`);
+                if (text) {
+                    const freq = getFrequency(currentNote, i);
+                    text.textContent = `${currentNote}${i}: ${freq.toFixed(1)} Hz`;
+                }
+            }
+        }
+
+        function updateOctaveLabels() {
+            const labels = document.querySelectorAll('.octave-label');
+            labels.forEach((label, i) => {
+                label.textContent = `${currentNote}${i}`;
+            });
+        }
+
+        // ============================================================
+        // AUDIO (identical logic to the 2D visualizer, drives ring highlight)
+        // ============================================================
+        let audioContext = null;
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playIndividualOctave(octave) {
+            initAudio();
+            const freq = getFrequency(currentNote, octave);
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+
+            osc.start();
+            osc.stop(audioContext.currentTime + 1.5);
+
+            highlightedOctave = octave;
+            setTimeout(() => { highlightedOctave = -1; }, 1500);
+        }
+
+        function playCurrentNote() {
+            initAudio();
+            const freq = getFrequency(currentNote, 4);
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+
+            osc.start();
+            osc.stop(audioContext.currentTime + 1);
+
+            highlightedOctave = 4;
+            setTimeout(() => { highlightedOctave = -1; }, 1000);
+        }
+
+        function playAllOctaves() {
+            initAudio();
+            for (let i = 0; i <= 8; i++) {
+                const freq = getFrequency(currentNote, i);
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+
+                const startTime = audioContext.currentTime + i * octavePauseSec;
+                const endTime = startTime + 0.5;
+
+                osc.start(startTime);
+                osc.stop(endTime);
+
+                setTimeout(() => { highlightedOctave = i; }, i * octavePauseSec * 1000);
+                setTimeout(() => {
+                    if (highlightedOctave === i) highlightedOctave = -1;
+                }, (i * octavePauseSec * 1000) + 500);
+            }
+            setTimeout(() => { highlightedOctave = -1; }, (8 * octavePauseSec * 1000) + 600);
+        }
+
+        function playOctaveScale() {
+            initAudio();
+            const originalNote = currentNote;
+            const startIndex = notes.indexOf(currentNote);
+
+            const scaleNotes = [];
+            const octaves = [];
+            for (let i = 0; i <= 12; i++) {
+                const noteIndex = (startIndex + i) % 12;
+                const octave = 4 + Math.floor((startIndex + i) / 12);
+                scaleNotes.push(notes[noteIndex]);
+                octaves.push(octave);
+            }
+
+            // ★ SCHEDULE AUDIO AND COLOR OFF THE SAME AUDIOCONTEXT CLOCK ★
+            // Both the oscillators and the visual highlight/color are keyed
+            // to audioContext.currentTime, so they can never drift apart
+            // the way separate setTimeout calls could.
+            const scaleStartTime = audioContext.currentTime;
+
+            scaleNotes.forEach((note, i) => {
+                const octave = octaves[i];
+                const freq = getFrequency(note, octave);
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, scaleStartTime + i * 0.2 + 0.3);
+
+                osc.start(scaleStartTime + i * 0.2);
+                osc.stop(scaleStartTime + i * 0.2 + 0.3);
+            });
+
+            scaleOriginalNote = originalNote;
+            scaleSchedule = scaleNotes.map((note, i) => ({
+                note,
+                octave: octaves[i],
+                time: scaleStartTime + i * 0.2
+            }));
+            scaleScheduleIndex = 0;
+            scaleEndTime = scaleStartTime + 13 * 0.2 + 0.3;
+        }
+
+        function stopAllAudio() {
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+                highlightedOctave = -1;
+            }
+        }
+
+        // Initialize
+        initNoteButtons();
+        initLegend();
+        updateOctaveLabels();
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"a2b5f3c347c54c2e8684375d309fc224","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
