@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Octave Wave Visualizer - 3D Spherical Walkthrough</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+        color: #e0e0e0;
+        min-height: 100vh;
+    }
+    .branded-header {
+        background: linear-gradient(135deg, #1a3d5f 0%, #2a4d6f 100%);
+        border-bottom: 3px solid #008080;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3);
+        margin-bottom: 2rem;
+    }
+    .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo-section { display: flex; align-items: center; gap: 1rem; text-decoration: none; }
+    .header-logo-icon { width: 50px; height: 50px; transition: transform .3s ease; }
+    .header-logo-icon:hover { transform: rotate(5deg) scale(1.1); }
+    .header-logo-text h2 {
+        font-size: 1.4rem; font-weight: 700;
+        background: linear-gradient(135deg, #F4D03F, #008080);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        margin:0; letter-spacing: 1px;
+    }
+    .header-logo-text p { font-size: .85rem; color:#999; font-style: italic; margin:0; }
+    .nav-link { color:white; text-decoration:none; padding:.75rem 1.5rem; border-radius:25px; background: rgba(0,128,128,.2); transition: all .3s ease; font-weight:600; }
+    .nav-link:hover { background: rgba(0,128,128,.4); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,128,128,.4); }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 20px 20px 20px; }
+    header.page-head { text-align:center; margin-bottom:24px; }
+    h1 {
+        font-size: 2.2em;
+        background: linear-gradient(90deg, #00d4ff, #7b2ff7, #ff006e);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        margin-bottom: 8px;
+    }
+    .subtitle { font-size: 1.1em; color:#888; font-style: italic; margin-bottom: 15px; }
+    .current-note-badge {
+        margin-top: 10px; padding: 10px 25px;
+        background: linear-gradient(135deg, #00d4ff, #0099cc);
+        border-radius: 25px; display:inline-flex; align-items:center; gap:15px;
+        box-shadow: 0 5px 20px rgba(0,212,255,.4);
+    }
+    .current-note-badge span:first-child { font-size:.9em; color:#0a0a0a; font-weight:bold; }
+    #noteSelector {
+        font-size:1.2em; color:#0a0a0a; font-weight:900;
+        background: rgba(255,255,255,.9); border:3px solid #0a0a0a; border-radius:10px;
+        padding:5px 15px; cursor:pointer; outline:none;
+    }
+    .stage-wrap {
+        background:#0a0a0a; border-radius:15px; padding:0; overflow:hidden;
+        box-shadow: 0 10px 40px rgba(0,212,255,.3); margin-bottom:20px;
+        border: 2px solid #1a1a2e; position:relative;
+    }
+    #stage3d { position:relative; width:100%; height:600px; background:#000; cursor: grab; outline:none; }
+    #stage3d.dragging { cursor: grabbing; }
+    #stage3d canvas { display:block; width:100%; height:100%; }
+    .hint-bar {
+        position:absolute; top:12px; left:50%; transform:translateX(-50%);
+        background: rgba(10,10,10,.72); border:1px solid rgba(0,212,255,.35);
+        padding:8px 18px; border-radius:20px; font-size:.78em; color:#9fe8ff;
+        pointer-events:none; text-align:center; max-width:90%;
+    }
+    .center-marker {
+        position:absolute; top:50%; left:50%; width:6px; height:6px; margin:-3px;
+        border-radius:50%; background:#fff; opacity:.5; pointer-events:none;
+    }
+    .octave-3d-label {
+        position:absolute; transform: translate(-50%,-50%);
+        font-size: 12px; font-weight:700; padding:2px 8px; border-radius:10px;
+        background: rgba(10,10,10,.6); pointer-events:none; white-space:nowrap;
+        border: 1px solid currentColor;
+    }
+    .walk-controls {
+        position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+        display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+    }
+    .walk-btn {
+        padding:10px 18px; border-radius:20px; border:2px solid #7b2ff7;
+        background: linear-gradient(135deg, #7b2ff7 0%, #5a1fc7 100%); color:white;
+        font-weight:bold; font-size:.85em; cursor:pointer; transition: all .2s ease;
+    }
+    .walk-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(123,47,247,.4); }
+    .walk-btn.ghost { background: rgba(255,255,255,.08); border-color:#444; }
+    .controls-panel { background:#1a1a2e; border-radius:15px; padding:25px; box-shadow: 0 10px 40px rgba(123,47,247,.2); margin-bottom:20px; }
+    .control-group { margin-bottom:25px; }
+    .control-group h3 { color:#00d4ff; margin-bottom:15px; font-size:1.15em; }
+    .note-buttons { display:grid; grid-template-columns: repeat(auto-fit, minmax(80px,1fr)); gap:10px; margin-bottom:20px; }
+    .note-btn { padding:12px; background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%); border:2px solid #444; color:#e0e0e0; border-radius:8px; cursor:pointer; font-size:.9em; font-weight:bold; transition: all .3s ease; }
+    .note-btn:hover { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); border-color:#00d4ff; transform: translateY(-2px); }
+    .note-btn.active { background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%); border-color:#00d4ff; color:#000; }
+    .audio-buttons { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px; }
+    .audio-btn { padding:12px 16px; background: linear-gradient(135deg, #ff006e 0%, #cc0058 100%); border:2px solid #ff006e; color:white; border-radius:8px; cursor:pointer; font-size:.9em; font-weight:bold; flex:1; min-width:120px; }
+    .audio-btn:hover { background: linear-gradient(135deg, #ff3388 0%, #ff006e 100%); transform: translateY(-2px); }
+    .individual-octaves, .octave-legend { background: rgba(26,26,46,.95); border-radius:15px; padding:22px; margin-bottom:20px; border:2px solid rgba(0,212,255,.3); }
+    .individual-octaves h3, .octave-legend h3 { color:#00d4ff; text-align:center; margin-bottom:18px; font-size:1.15em; }
+    .octave-buttons-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap:12px; }
+    .octave-play-btn { padding:12px 8px; background: linear-gradient(135deg, #7b2ff7 0%, #5a1fc7 100%); border:2px solid #7b2ff7; color:white; border-radius:8px; cursor:pointer; font-size:.85em; font-weight:bold; }
+    .octave-play-btn:hover { background: linear-gradient(135deg, #9b4fff 0%, #7b2ff7 100%); transform: translateY(-2px); }
+    .legend-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:15px; justify-items:center; }
+    .legend-item { display:flex; align-items:center; gap:10px; }
+    .color-box { width:30px; height:20px; border-radius:4px; border:2px solid #444; }
+    .legend-text { font-size:.9em; color:#e0e0e0; white-space:nowrap; }
+    footer { background: linear-gradient(135deg, #2a4d6f 0%, #1a3d5f 100%); color:white; text-align:center; padding:2.5rem 2rem; margin-top:3rem; border-top:3px solid #008080; }
+    .note-banner { max-width:1400px; margin: 0 auto 20px; background: rgba(244,208,63,.08); border:1px solid rgba(244,208,63,.35); border-radius:10px; padding:14px 20px; font-size:.9em; color:#f4e7b8; }
+</style>
+</head>
+<body>
+<header class="branded-header">
+    <div class="header-content">
+        <a href="index.html" class="logo-section">
+            <svg class="header-logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="95" fill="#4A7BA7" stroke="#2a4d6f" stroke-width="3"/>
+                <polygon points="100,20 180,180 20,180" fill="#F4D03F" opacity="0.8"/>
+                <polygon points="100,20 20,180 20,60" fill="#8B6BA3" opacity="0.7"/>
+                <polygon points="100,20 180,60 180,180" fill="#008080" opacity="0.7"/>
+                <circle cx="100" cy="100" r="40" fill="none" stroke="#2a4d6f" stroke-width="3"/>
+                <circle cx="100" cy="100" r="5" fill="#2a4d6f"/>
+            </svg>
+            <div class="header-logo-text">
+                <h2>KEYS, CODES & MODES</h2>
+                <p>Visual Music Theory</p>
+            </div>
+        </a>
+        <a href="index.html" class="nav-link">← Back to Home</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="note-banner">
+        🧪 <strong>Preview build — not live yet.</strong> Same note/frequency/color data as the original Octave Wave Visualizer. You start at the exact center, surrounded by 9 concentric spherical shells — one per octave, closest = highest note, farthest = lowest. Fly in any direction to pass through them.
+    </div>
+
+    <header class="page-head">
+        <h1>Octave Wave Visualizer — Spherical Walkthrough</h1>
+        <p class="subtitle">9 Concentric Shells • You Start In The Middle • Fly Any Direction</p>
+        <div class="current-note-badge">
+            <span>Current Note:</span>
+            <select id="noteSelector" onchange="handleNoteChange()">
+                <option value="C">C</option><option value="C#">C#</option><option value="D">D</option>
+                <option value="D#">D#</option><option value="E">E</option><option value="F">F</option>
+                <option value="F#">F#</option><option value="G">G</option><option value="G#">G#</option>
+                <option value="A">A</option><option value="A#">A#</option><option value="B">B</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="stage-wrap">
+        <div id="stage3d" tabindex="0">
+            <div class="hint-bar">🖱 Drag to look around · WASD to fly · Space / Shift for up &amp; down · Fly through a shell to hear it chime · Click a shell to play it directly</div>
+            <div class="center-marker"></div>
+            <div class="walk-controls">
+                <button class="walk-btn" onclick="startWalkthrough()">▶ Start Walkthrough</button>
+                <button class="walk-btn ghost" onclick="pauseWalkthrough()">⏸ Pause</button>
+                <button class="walk-btn ghost" onclick="resetView()">↩ Reset to Center</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls-panel">
+        <div class="control-group">
+            <h3>🎵 Audio Controls</h3>
+            <div class="audio-buttons">
+                <button class="audio-btn" onclick="playCurrentNote()">🎹 Play Current</button>
+                <button class="audio-btn" onclick="playAllOctaves()">🔊 Play All</button>
+                <button class="audio-btn" onclick="playOctaveScale()">🎼 Play Scale</button>
+                <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <h3>🎹 Select Note (Changes All Frequencies)</h3>
+            <div class="note-buttons" id="noteButtons"></div>
+        </div>
+    </div>
+
+    <div class="individual-octaves">
+        <h3>🎯 Individual Octave Audio (also teleports you just outside that shell)</h3>
+        <div class="octave-buttons-grid" id="octaveButtonsGrid"></div>
+    </div>
+
+    <div class="octave-legend">
+        <h3>🌈 Octave Colors & Frequencies</h3>
+        <div class="legend-grid" id="legendGrid"></div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Keys, Codes & Modes. Created by Ben Ryan. All rights reserved.</p>
+    <p style="opacity:.6;font-size:.85em;">3D Spherical Walkthrough preview build</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===================== MUSIC THEORY (identical to source file) ===================== */
+const notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+let currentNote = 'C';
+function getFrequency(note, octave){
+    const noteIndex = notes.indexOf(note);
+    const semitonesFromC0 = (octave*12)+noteIndex;
+    return 16.35 * Math.pow(2, semitonesFromC0/12);
+}
+const octaveColors = [
+    { name:'C0', color:'#FFFF00', glow:'rgba(255,255,0,0.3)' },
+    { name:'C1', color:'#FF8000', glow:'rgba(255,128,0,0.3)' },
+    { name:'C2', color:'#FF0000', glow:'rgba(255,0,0,0.3)' },
+    { name:'C3', color:'#FF00FF', glow:'rgba(255,0,255,0.3)' },
+    { name:'C4', color:'#8000FF', glow:'rgba(128,0,255,0.3)' },
+    { name:'C5', color:'#0080FF', glow:'rgba(0,128,255,0.3)' },
+    { name:'C6', color:'#00FFFF', glow:'rgba(0,255,255,0.3)' },
+    { name:'C7', color:'#00FF80', glow:'rgba(0,255,128,0.3)' },
+    { name:'C8', color:'#80FF00', glow:'rgba(128,255,0,0.3)' }
+];
+
+/* ===================== AUDIO (identical logic to source file) ===================== */
+let audioContext = null;
+let highlightedOctave = -1;
+function initAudio(){ if(!audioContext) audioContext = new (window.AudioContext||window.webkitAudioContext)(); }
+
+function tone(freq, duration, gainLevel){
+    initAudio();
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    osc.frequency.value = freq;
+    osc.connect(gain); gain.connect(audioContext.destination);
+    gain.gain.setValueAtTime(gainLevel, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime+duration);
+    osc.start(); osc.stop(audioContext.currentTime+duration);
+}
+
+function playIndividualOctave(octave){
+    tone(getFrequency(currentNote, octave), 1.5, 0.3);
+    highlightedOctave = octave;
+    flyToOctave(octave);
+    setTimeout(()=>{ if(highlightedOctave===octave) highlightedOctave=-1; }, 1500);
+}
+function playCurrentNote(){
+    tone(getFrequency(currentNote, 4), 1, 0.3);
+    highlightedOctave = 4;
+    setTimeout(()=>{ highlightedOctave=-1; }, 1000);
+}
+function playAllOctaves(){
+    initAudio();
+    for(let i=0;i<=8;i++){
+        const freq = getFrequency(currentNote,i);
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.frequency.value = freq;
+        osc.connect(gain); gain.connect(audioContext.destination);
+        const startTime = audioContext.currentTime + i*0.2;
+        gain.gain.setValueAtTime(0.1, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, startTime+0.5);
+        osc.start(startTime); osc.stop(startTime+0.5);
+        setTimeout(()=>{ highlightedOctave=i; }, i*200);
+        setTimeout(()=>{ if(highlightedOctave===i) highlightedOctave=-1; }, i*200+500);
+    }
+    setTimeout(()=>{ highlightedOctave=-1; }, 8*200+600);
+}
+function playOctaveScale(){
+    initAudio();
+    const originalNote = currentNote;
+    const startIndex = notes.indexOf(currentNote);
+    const scaleNotes = [], octaves = [];
+    for(let i=0;i<=12;i++){
+        scaleNotes.push(notes[(startIndex+i)%12]);
+        octaves.push(4 + Math.floor((startIndex+i)/12));
+    }
+    scaleNotes.forEach((note,i)=>{
+        const octave = octaves[i];
+        const freq = getFrequency(note, octave);
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.frequency.value = freq;
+        osc.connect(gain); gain.connect(audioContext.destination);
+        const startTime = audioContext.currentTime + i*0.2;
+        gain.gain.setValueAtTime(0.2, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, startTime+0.3);
+        osc.start(startTime);
+        osc.stop(startTime+0.3);
+        setTimeout(()=>{
+            highlightedOctave = octave;
+            document.querySelectorAll('.note-btn').forEach(btn=>btn.classList.toggle('active', btn.textContent===note));
+            updateLegend();
+        }, i*200);
+    });
+    setTimeout(()=>{
+        highlightedOctave=-1;
+        currentNote = originalNote;
+        document.querySelectorAll('.note-btn').forEach(btn=>btn.classList.toggle('active', btn.textContent===originalNote));
+        updateLegend();
+    }, 13*200+300);
+}
+function stopAllAudio(){
+    if(audioContext){ audioContext.close(); audioContext=null; }
+    highlightedOctave = -1;
+}
+
+/* ===================== NOTE SELECTION / UI (identical logic) ===================== */
+function handleNoteChange(){ selectNote(document.getElementById('noteSelector').value); }
+function selectNote(note){
+    currentNote = note;
+    const dropdown = document.getElementById('noteSelector');
+    if(dropdown) dropdown.value = note;
+    document.querySelectorAll('.note-btn').forEach(btn=>btn.classList.toggle('active', btn.textContent===note));
+    updateLegend();
+    phases = phases.map(()=>0);
+}
+function initNoteButtons(){
+    const container = document.getElementById('noteButtons');
+    notes.forEach(note=>{
+        const btn = document.createElement('button');
+        btn.className='note-btn'; btn.textContent=note;
+        if(note===currentNote) btn.classList.add('active');
+        btn.onclick = ()=>selectNote(note);
+        container.appendChild(btn);
+    });
+}
+function initOctaveButtons(){
+    const container = document.getElementById('octaveButtonsGrid');
+    for(let i=0;i<=8;i++){
+        const btn = document.createElement('button');
+        btn.className='octave-play-btn';
+        btn.innerHTML = `🎵 Play <span class="octave-label">${currentNote}${i}</span>`;
+        btn.onclick = ()=>playIndividualOctave(i);
+        container.appendChild(btn);
+    }
+}
+function updateOctaveButtonLabels(){
+    document.querySelectorAll('.octave-label').forEach((label,i)=>{ label.textContent = `${currentNote}${i}`; });
+}
+function initLegend(){
+    const container = document.getElementById('legendGrid');
+    octaveColors.forEach((oct,i)=>{
+        const item = document.createElement('div'); item.className='legend-item';
+        const box = document.createElement('div'); box.className='color-box';
+        box.style.background = oct.color; box.style.boxShadow = `0 0 10px ${oct.glow}`;
+        const text = document.createElement('div'); text.className='legend-text'; text.id=`legend-${i}`;
+        text.textContent = `${currentNote}${i}: ${getFrequency(currentNote,i).toFixed(1)} Hz`;
+        item.appendChild(box); item.appendChild(text); container.appendChild(item);
+    });
+}
+function updateLegend(){
+    octaveColors.forEach((oct,i)=>{
+        const text = document.getElementById(`legend-${i}`);
+        if(text) text.textContent = `${currentNote}${i}: ${getFrequency(currentNote,i).toFixed(1)} Hz`;
+        updateOctaveButtonLabels();
+    });
+}
+
+/* ===================== INIT (2D controls — always run, independent of the 3D engine) ===================== */
+initNoteButtons();
+initOctaveButtons();
+initLegend();
+
+/* ===================== 3D SCENE: CONCENTRIC SPHERICAL SHELLS ===================== */
+const stage = document.getElementById('stage3d');
+
+if (typeof THREE === 'undefined') {
+    // The 3D library loads from an external CDN. If that request failed
+    // (no internet right now, a network/firewall block, an ad-blocker),
+    // show that clearly instead of leaving a silent blank box.
+    stage.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;color:#ff8080;font-size:.95em;line-height:1.6;">⚠️ The 3D engine (Three.js) couldn\'t load from the internet.<br>Check your connection and reload the page — everything else on this page will still work.</div>';
+    throw new Error('THREE.js failed to load from CDN — aborting 3D setup.');
+}
+
+try { // Guards the whole 3D setup — if WebGL itself is unavailable (disabled
+      // hardware acceleration, a locked-down browser, an unsupported
+      // environment), this fails differently than a missing Three.js library,
+      // and without a catch here it dies silently with a blank box and the
+      // 2D controls still looking fine, which is confusing. Show a real
+      // message instead.
+
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+stage.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x000000, 0.0022);
+
+const camera = new THREE.PerspectiveCamera(65, 1, 0.1, 3000);
+camera.position.set(0,0,0); // start EXACTLY in the middle
+
+// Highest octave (C8) closest to center; lowest (C0) farthest out —
+// mirrors the original 2D piece, where low notes = wider/bigger waves.
+const SHELL_BASE = 65;
+const SHELL_STEP = 42;
+function shellRadius(i){ return SHELL_BASE + (8-i)*SHELL_STEP; }
+
+let yaw=0, pitch=0;
+function updateCameraOrientation(){
+    camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+}
+updateCameraOrientation();
+
+const shellMeshes = [];
+const labelEls = [];
+let phases = new Array(9).fill(0);
+
+function buildShells(){
+    for(let i=0;i<=8;i++){
+        const radius = shellRadius(i);
+        const geo = new THREE.SphereGeometry(radius, 36, 24);
+        const posAttr = geo.attributes.position;
+        const count = posAttr.count;
+        const baseDirs = new Float32Array(count*3);
+        for(let v=0; v<count; v++){
+            const x=posAttr.getX(v), y=posAttr.getY(v), z=posAttr.getZ(v);
+            const len = Math.sqrt(x*x+y*y+z*z) || 1;
+            baseDirs[v*3]=x/len; baseDirs[v*3+1]=y/len; baseDirs[v*3+2]=z/len;
+        }
+        const material = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(octaveColors[i].color),
+            wireframe: true, transparent: true, opacity: 0.55
+        });
+        const mesh = new THREE.Mesh(geo, material);
+        mesh.userData.octave = i;
+        mesh.userData.baseDirs = baseDirs;
+        mesh.userData.baseRadius = radius;
+        scene.add(mesh);
+        shellMeshes.push(mesh);
+
+        const label = document.createElement('div');
+        label.className = 'octave-3d-label';
+        label.style.color = octaveColors[i].color;
+        stage.appendChild(label);
+        labelEls.push(label);
+    }
+}
+buildShells();
+
+function updateShells(){
+    for(let i=0;i<=8;i++){
+        const freq = getFrequency(currentNote, i);
+        const baseFrequency = getFrequency('C', 0);
+        const frequencyRatio = freq / baseFrequency;
+        const mesh = shellMeshes[i];
+        const posAttr = mesh.geometry.attributes.position;
+        const dirs = mesh.userData.baseDirs;
+        const baseRadius = mesh.userData.baseRadius;
+        const harmonic = 3 + i; // higher octaves ripple with tighter detail, like the 2D version
+        const waveDepth = 7;
+        const phase = phases[i];
+        for(let v=0; v<posAttr.count; v++){
+            const dx=dirs[v*3], dy=dirs[v*3+1], dz=dirs[v*3+2];
+            const theta = Math.acos(Math.max(-1, Math.min(1, dy)));
+            const r = baseRadius + waveDepth*Math.sin(harmonic*theta*2 + phase);
+            posAttr.setXYZ(v, dx*r, dy*r, dz*r);
+        }
+        posAttr.needsUpdate = true;
+        const highlighted = (highlightedOctave === i);
+        mesh.material.opacity = highlighted ? 0.95 : (highlightedOctave >= 0 ? 0.08 : 0.55);
+        phases[i] += 0.02 * frequencyRatio / 10;
+    }
+}
+
+function updateLabels(){
+    const rect = stage.getBoundingClientRect();
+    const p = new THREE.Vector3();
+    for(let i=0;i<=8;i++){
+        p.set(0, shellRadius(i)+8, 0);
+        p.project(camera);
+        const label = labelEls[i];
+        if(p.z > 1){ label.style.display='none'; continue; }
+        const x = (p.x*0.5+0.5)*rect.width;
+        const y = (-p.y*0.5+0.5)*rect.height;
+        label.style.display = 'block';
+        label.style.left = x+'px';
+        label.style.top = y+'px';
+        label.textContent = `${currentNote}${i} · ${getFrequency(currentNote,i).toFixed(1)}Hz`;
+    }
+}
+
+function sizeRenderer(){
+    const rect = stage.getBoundingClientRect();
+    renderer.setSize(rect.width, rect.height);
+    camera.aspect = rect.width / rect.height;
+    camera.updateProjectionMatrix();
+}
+sizeRenderer();
+window.addEventListener('resize', sizeRenderer);
+
+/* ===================== LOOK CONTROLS (drag, any direction) ===================== */
+let isDragging=false, dragMoved=false, lastX=0, lastY=0;
+renderer.domElement.addEventListener('mousedown', e=>{
+    if(walkthroughActive) pauseWalkthrough(); // grabbing the view always breaks you out too
+    isDragging=true; dragMoved=false; lastX=e.clientX; lastY=e.clientY; stage.classList.add('dragging'); stage.focus();
+});
+window.addEventListener('mouseup', ()=>{ isDragging=false; stage.classList.remove('dragging'); });
+window.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    const dx = e.clientX-lastX, dy = e.clientY-lastY;
+    if(Math.abs(dx)>2 || Math.abs(dy)>2) dragMoved=true;
+    lastX=e.clientX; lastY=e.clientY;
+    yaw -= dx*0.0032;
+    pitch = Math.max(-1.3, Math.min(1.3, pitch - dy*0.0032));
+    updateCameraOrientation();
+});
+
+/* ===================== FLIGHT CONTROLS (free movement, any direction) ===================== */
+const MOVE_KEYS = ['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright',' ','shift'];
+const keysPressed = {};
+window.addEventListener('keydown', e=>{
+    const k = e.key.toLowerCase();
+    if(walkthroughActive && MOVE_KEYS.includes(k)) pauseWalkthrough(); // touching the controls always breaks you out
+    keysPressed[k] = true;
+    if(k===' ') e.preventDefault();
+});
+window.addEventListener('keyup', e=>{ keysPressed[e.key.toLowerCase()] = false; });
+
+const moveVelocity = new THREE.Vector3();
+const FLY_SPEED = 95;
+const DAMPING = 6;
+
+function updateFreeMovement(dt){
+    const forward = new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
+    const right = new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);
+    const worldUp = new THREE.Vector3(0,1,0);
+    const accel = new THREE.Vector3();
+    if(keysPressed['w']||keysPressed['arrowup']) accel.add(forward);
+    if(keysPressed['s']||keysPressed['arrowdown']) accel.add(forward.clone().negate());
+    if(keysPressed['a']||keysPressed['arrowleft']) accel.add(right.clone().negate());
+    if(keysPressed['d']||keysPressed['arrowright']) accel.add(right);
+    if(keysPressed[' ']) accel.add(worldUp);
+    if(keysPressed['shift']) accel.add(worldUp.clone().negate());
+    if(accel.lengthSq() > 0) accel.normalize().multiplyScalar(FLY_SPEED);
+    moveVelocity.lerp(accel, Math.min(1, dt*DAMPING));
+    camera.position.addScaledVector(moveVelocity, dt);
+}
+
+/* ===================== CLICK A SHELL TO PLAY IT ===================== */
+const raycaster = new THREE.Raycaster();
+const mouseNDC = new THREE.Vector2();
+renderer.domElement.addEventListener('click', e=>{
+    if(dragMoved) return;
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouseNDC.x = ((e.clientX-rect.left)/rect.width)*2-1;
+    mouseNDC.y = -((e.clientY-rect.top)/rect.height)*2+1;
+    raycaster.setFromCamera(mouseNDC, camera);
+    const hits = raycaster.intersectObjects(shellMeshes);
+    if(hits.length) playIndividualOctave(hits[0].object.userData.octave);
+});
+
+/* ===================== FLY-THROUGH CHIME (crossing a shell from ANY direction plays it) ===================== */
+let lastDistance = camera.position.length();
+function checkShellCrossings(){
+    const dist = camera.position.length();
+    for(let i=0;i<=8;i++){
+        const r = shellRadius(i);
+        const wasInside = lastDistance < r;
+        const nowInside = dist < r;
+        if(wasInside !== nowInside){
+            tone(getFrequency(currentNote, i), 1.0, 0.22);
+            highlightedOctave = i;
+            setTimeout(()=>{ if(highlightedOctave===i) highlightedOctave=-1; }, 900);
+        }
+    }
+    lastDistance = dist;
+}
+
+/* ===================== TELEPORT / WALKTHROUGH ===================== */
+let walkthroughTimers = [];
+let walkthroughActive = false;
+let autoTargetZ = null;
+
+function flyToOctave(i){
+    if(walkthroughActive) pauseWalkthrough(); // clicking a shell always breaks you out too
+    const r = shellRadius(i);
+    camera.position.set(0,0,r+18);
+    yaw=0; pitch=0; updateCameraOrientation();
+    lastDistance = camera.position.length();
+}
+
+function startWalkthrough(){
+    pauseWalkthrough();
+    walkthroughActive = true;
+    camera.position.set(0,0,0);
+    yaw=0; pitch=0; updateCameraOrientation();
+    lastDistance = 0;
+    const order = [8,7,6,5,4,3,2,1,0]; // innermost (highest note) outward to farthest (lowest note)
+    const dwell = 1700;
+    order.forEach((oct, idx)=>{
+        walkthroughTimers.push(setTimeout(()=>{
+            autoTargetZ = -shellRadius(oct);
+            highlightedOctave = oct;
+            tone(getFrequency(currentNote, oct), 1.2, 0.25);
+        }, idx*dwell));
+    });
+    walkthroughTimers.push(setTimeout(()=>{ walkthroughActive=false; autoTargetZ=null; highlightedOctave=-1; }, order.length*dwell+400));
+}
+function pauseWalkthrough(){
+    walkthroughTimers.forEach(t=>clearTimeout(t));
+    walkthroughTimers = [];
+    walkthroughActive = false;
+    autoTargetZ = null;
+}
+function resetView(){
+    pauseWalkthrough();
+    camera.position.set(0,0,0);
+    yaw=0; pitch=0; updateCameraOrientation();
+    highlightedOctave = -1;
+    lastDistance = 0;
+}
+
+/* ===================== MAIN LOOP ===================== */
+let lastTime = performance.now();
+function animate(){
+    const now = performance.now();
+    const dt = Math.min(0.05, (now-lastTime)/1000);
+    lastTime = now;
+
+    if(walkthroughActive && autoTargetZ !== null){
+        camera.position.z += (autoTargetZ - camera.position.z) * 0.05;
+    } else {
+        updateFreeMovement(dt);
+    }
+    checkShellCrossings();
+    updateShells();
+    updateLabels();
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+}
+
+/* ===================== INIT (3D loop) ===================== */
+animate();
+</script>
+</body>
+</html>
