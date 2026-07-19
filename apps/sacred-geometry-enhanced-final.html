@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Sacred Geometry Music Visualizer | Keys, Codes & Modes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .canvas-container {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        #canvas3d {
+            width: 100%;
+            height: 700px;
+            border-radius: 10px;
+            cursor: grab;
+        }
+
+        #canvas3d:active {
+            cursor: grabbing;
+        }
+
+        .controls-panel {
+            width: 350px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+        }
+
+        .control-section h3 {
+            color: #FFFF00;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .button-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        button:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .control-item {
+            margin-bottom: 15px;
+        }
+
+        .control-item label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+
+        .value-display {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-family: monospace;
+            color: #FFD700;
+        }
+
+        .info-box {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid #FFD700;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .info-box h4 {
+            color: #FFD700;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #c0c0c0;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 15px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .rotate-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #FFD700;
+            font-size: 1.2em;
+        }
+
+        /* Custom scrollbar */
+        .controls-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .controls-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .pattern-select {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #764ba2;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
+                url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 0 0, right 10px center;
+            background-size: 100% 100%, 20px 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .pattern-select:hover {
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .pattern-select.active-select {
+            background-image: linear-gradient(135deg, #f093fb 0%, #f5576c 100%),
+                url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .pattern-select option {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hero-logo">KEYS, CODES & MODES</div>
+        <div class="tagline">3D Sacred Geometry Through All 12 Keys</div>
+    </div>
+
+    <div class="main-container">
+        <div class="canvas-container">
+            <canvas id="canvas3d"></canvas>
+            <div class="info-box" id="patternInfo">
+                <h4>Select a Pattern</h4>
+                <p>Choose any musical pattern to see it stacked through all 12 keys in beautiful 3D sacred geometry. Each layer represents the pattern starting on a different root note, colored by our chromatic system.</p>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-section">
+                <h3>🎵 Intervals</h3>
+                <select class="pattern-select" onchange="selectFromDropdown(this)">
+                    <option value="" disabled selected>Choose an interval...</option>
+                    <option value="interval|1">Minor 2nd (Semitone)</option>
+                    <option value="interval|2">Major 2nd (Whole Tone)</option>
+                    <option value="interval|3">Minor 3rd</option>
+                    <option value="interval|4">Major 3rd</option>
+                    <option value="interval|5">Perfect 4th</option>
+                    <option value="interval|6">Tritone</option>
+                    <option value="interval|7">Perfect 5th</option>
+                    <option value="interval|8">Minor 6th</option>
+                    <option value="interval|9">Major 6th</option>
+                    <option value="interval|10">Minor 7th</option>
+                    <option value="interval|11">Major 7th</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <h3>🎹 Triads</h3>
+                <select class="pattern-select" onchange="selectFromDropdown(this)">
+                    <option value="" disabled selected>Choose a triad...</option>
+                    <option value="major-triad">Major Triad</option>
+                    <option value="minor-triad">Minor Triad</option>
+                    <option value="diminished-triad">Diminished Triad</option>
+                    <option value="augmented-triad">Augmented Triad</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <h3>🎼 Seventh Chords</h3>
+                <select class="pattern-select" onchange="selectFromDropdown(this)">
+                    <option value="" disabled selected>Choose a seventh chord...</option>
+                    <option value="major7">Major 7th</option>
+                    <option value="minor7">Minor 7th</option>
+                    <option value="dominant7">Dominant 7th</option>
+                    <option value="diminished7">Diminished 7th</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <h3>🎵 Scales</h3>
+                <select class="pattern-select" onchange="selectFromDropdown(this)">
+                    <option value="" disabled selected>Choose a scale...</option>
+                    <option value="major-scale">Major Scale</option>
+                    <option value="minor-scale">Natural Minor</option>
+                    <option value="pentatonic-major">Pentatonic Major</option>
+                    <option value="pentatonic-minor">Pentatonic Minor</option>
+                    <option value="blues-scale">Blues Scale</option>
+                    <option value="whole-tone">Whole Tone</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <h3>🎭 Modes</h3>
+                <select class="pattern-select" onchange="selectFromDropdown(this)">
+                    <option value="" disabled selected>Choose a mode...</option>
+                    <option value="ionian">Ionian (Major)</option>
+                    <option value="dorian">Dorian</option>
+                    <option value="phrygian">Phrygian</option>
+                    <option value="lydian">Lydian</option>
+                    <option value="mixolydian">Mixolydian</option>
+                    <option value="aeolian">Aeolian (Minor)</option>
+                    <option value="locrian">Locrian</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <h3>✨ Sacred Geometry</h3>
+                <select class="pattern-select" onchange="selectFromDropdown(this)">
+                    <option value="" disabled selected>Choose a shape...</option>
+                    <option value="triangle">Triangle (3)</option>
+                    <option value="square">Square (4)</option>
+                    <option value="pentagon">Pentagon (5)</option>
+                    <option value="hexagon">Hexagon (6)</option>
+                </select>
+            </div>
+
+            <div class="control-section">
+                <h3>⚙️ View Controls</h3>
+                
+                <div class="control-item">
+                    <label>Z-Axis Spacing <span class="value-display" id="spacingValue">0.3</span></label>
+                    <input type="range" id="spacing" min="0.1" max="0.8" step="0.1" value="0.3" oninput="updateSpacing()">
+                </div>
+
+                <div class="control-item">
+                    <label>Line Thickness <span class="value-display" id="thicknessValue">0.02</span></label>
+                    <input type="range" id="thickness" min="0.01" max="0.05" step="0.005" value="0.02" oninput="updateThickness()">
+                </div>
+
+                <div class="control-item">
+                    <label>Rotation Speed <span class="value-display" id="rotSpeedValue">0.5</span></label>
+                    <input type="range" id="rotSpeed" min="0" max="2" step="0.1" value="0.5" oninput="updateRotSpeed()">
+                </div>
+
+                <div class="control-item">
+                    <label>Camera Distance <span class="value-display" id="zoomValue">12</span></label>
+                    <input type="range" id="zoom" min="8" max="20" step="0.5" value="12" oninput="updateZoom()">
+                </div>
+
+                <div class="control-item">
+                    <label>Root Key</label>
+                    <select id="keySelect" onchange="updateRootKey()" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #e0e0e0; font-size: 0.9em;">
+                        <option value="0">C (Yellow)</option>
+                        <option value="1">C# / Db (Yellow-Orange)</option>
+                        <option value="2">D (Orange)</option>
+                        <option value="3">D# / Eb (Red-Orange)</option>
+                        <option value="4">E (Red)</option>
+                        <option value="5">F (Red-Purple)</option>
+                        <option value="6">F# / Gb (Purple)</option>
+                        <option value="7">G (Blue-Purple)</option>
+                        <option value="8">G# / Ab (Blue)</option>
+                        <option value="9">A (Blue-Green)</option>
+                        <option value="10">A# / Bb (Green)</option>
+                        <option value="11">B (Yellow-Green)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn rotate-btn" onclick="toggleRotation()">⟳ Toggle Auto-Rotate</button>
+                <button class="action-btn play-btn" onclick="playPattern()">▶️ Play Pattern</button>
+                <button class="action-btn" onclick="stopPlayback()" style="background: linear-gradient(135deg, #f5576c 0%, #c62828 100%);">⏹ STOP</button>
+                <button class="action-btn clear-btn" onclick="clearPattern()">⊗ Clear</button>
+            </div>
+
+            <div class="control-section">
+                <h3>🎨 Chromatic Colors</h3>
+                <div class="legend" id="colorLegend"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Keys, Codes & Modes 12-Color Chromatic System
+        const chromaticColors = {
+            'C':  '#FFFF00',  // Yellow (MIDI 60)
+            'C#': '#FFC400',  // Yellow-Orange (MIDI 61)
+            'D':  '#FF8000',  // Orange (MIDI 62)
+            'D#': '#FF4000',  // Red-Orange (MIDI 63)
+            'E':  '#FF0000',  // Red (MIDI 64)
+            'F':  '#C4007F',  // Red-Purple (MIDI 65)
+            'F#': '#8000FF',  // Purple (MIDI 66)
+            'G':  '#4000FF',  // Blue-Purple (MIDI 67)
+            'G#': '#0000FF',  // Blue (MIDI 68)
+            'A':  '#007FFF',  // Blue-Green (MIDI 69)
+            'A#': '#00FF80',  // Green (MIDI 70)
+            'B':  '#80FF00'   // Yellow-Green (MIDI 71)
+        };
+
+        const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+        // Three.js setup
+        let scene, camera, renderer, controls;
+        let currentGeometry = null;
+        let autoRotate = true;
+        let rotationSpeed = 0.005;
+        let audioContext;
+        let currentPattern = null;
+        let rootKeyOffset = 0; // Key transposition
+        let isPlaying = false;
+        let playbackTimeout = null;
+        let activeTimeouts = [];
+        let noteMeshMap = {};
+
+        // Initialize
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0f);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(
+                60,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            camera.position.z = 12;
+
+            // Renderer
+            const canvas = document.getElementById('canvas3d');
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0xffffff, 1);
+            pointLight1.position.set(10, 10, 10);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xffffff, 0.5);
+            pointLight2.position.set(-10, -10, 10);
+            scene.add(pointLight2);
+
+            // Mouse controls
+            setupMouseControls();
+
+            // Color legend
+            createColorLegend();
+
+            // Window resize
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function setupMouseControls() {
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+
+            const canvas = document.getElementById('canvas3d');
+
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (isDragging && currentGeometry) {
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+
+                    currentGeometry.rotation.y += deltaX * 0.01;
+                    currentGeometry.rotation.x += deltaY * 0.01;
+
+                    previousMousePosition = { x: e.clientX, y: e.clientY };
+                }
+            });
+
+            canvas.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                isDragging = false;
+            });
+        }
+
+        // Called by each dropdown's onchange. Reads "type|param" (or just
+        // "type" for patterns with no param) out of the option value and
+        // hands it to selectPattern(), then updates which dropdown shows
+        // as the active one.
+        function selectFromDropdown(selectEl) {
+            const [type, param] = selectEl.value.split('|');
+            selectPattern(type, param !== undefined ? parseInt(param, 10) : undefined);
+
+            document.querySelectorAll('.pattern-select').forEach(sel => {
+                sel.classList.remove('active-select');
+            });
+            selectEl.classList.add('active-select');
+        }
+
+        function selectPattern(type, param) {
+            // Stop any playback / highlighting tied to the previous pattern
+            stopPlayback();
+
+            // Clear previous
+            if (currentGeometry) {
+                scene.remove(currentGeometry);
+            }
+
+            // Get pattern definition
+            const patternDef = getPatternDefinition(type, param);
+            
+            // Store type and param for key transposition
+            patternDef.type = type;
+            patternDef.param = param;
+            
+            currentPattern = patternDef;
+
+            // Update info
+            updatePatternInfo(patternDef);
+
+            // Create 3D geometry
+            currentGeometry = create3DPattern(patternDef);
+            scene.add(currentGeometry);
+        }
+
+        function getPatternDefinition(type, param) {
+            let intervals = [];
+            let name = '';
+            let description = '';
+
+            switch(type) {
+                case 'interval':
+                    intervals = [0, param];
+                    name = getIntervalName(param);
+                    description = `${name} interval stacked through all 12 keys creates ${12} parallel lines in 3D space.`;
+                    break;
+
+                case 'major-triad':
+                    intervals = [0, 4, 7];
+                    name = 'Major Triad';
+                    description = 'Perfect triangular columns rising through all keys. The foundation of Western harmony in 3D.';
+                    break;
+
+                case 'minor-triad':
+                    intervals = [0, 3, 7];
+                    name = 'Minor Triad';
+                    description = 'Slightly asymmetric triangular columns. Notice how the shape differs from major.';
+                    break;
+
+                case 'diminished-triad':
+                    intervals = [0, 3, 6];
+                    name = 'Diminished Triad';
+                    description = 'Creates 4 unique triangular helixes due to symmetrical division (every 3 semitones).';
+                    break;
+
+                case 'augmented-triad':
+                    intervals = [0, 4, 8];
+                    name = 'Augmented Triad';
+                    description = 'Only 3 unique shapes! Perfect symmetry divides the octave into thirds.';
+                    break;
+
+                case 'major7':
+                    intervals = [0, 4, 7, 11];
+                    name = 'Major 7th Chord';
+                    description = 'Four-sided geometric columns with sophisticated harmonic structure.';
+                    break;
+
+                case 'minor7':
+                    intervals = [0, 3, 7, 10];
+                    name = 'Minor 7th Chord';
+                    description = 'Asymmetric four-point structures creating unique visual signatures per key.';
+                    break;
+
+                case 'dominant7':
+                    intervals = [0, 4, 7, 10];
+                    name = 'Dominant 7th Chord';
+                    description = 'The tension chord in 3D - notice the asymmetric pull in the geometry.';
+                    break;
+
+                case 'diminished7':
+                    intervals = [0, 3, 6, 9];
+                    name = 'Diminished 7th Chord';
+                    description = 'Only 3 unique shapes! Perfect square columns due to symmetrical division.';
+                    break;
+
+                case 'major-scale':
+                    intervals = [0, 2, 4, 5, 7, 9, 11];
+                    name = 'Major Scale';
+                    description = 'Seven-pointed star columns. The fundamental structure of Western music in 3D.';
+                    break;
+
+                case 'minor-scale':
+                    intervals = [0, 2, 3, 5, 7, 8, 10];
+                    name = 'Natural Minor Scale';
+                    description = 'Compare with major - see the subtle but profound geometric differences.';
+                    break;
+
+                case 'pentatonic-major':
+                    intervals = [0, 2, 4, 7, 9];
+                    name = 'Major Pentatonic Scale';
+                    description = 'Five-pointed star columns. Universal across cultures, now in 3D.';
+                    break;
+
+                case 'pentatonic-minor':
+                    intervals = [0, 3, 5, 7, 10];
+                    name = 'Minor Pentatonic Scale';
+                    description = 'The blues foundation - pentagonal columns through all keys.';
+                    break;
+
+                case 'blues-scale':
+                    intervals = [0, 3, 5, 6, 7, 10];
+                    name = 'Blues Scale';
+                    description = 'Six-pointed structures with the characteristic "blue note" visible in the geometry.';
+                    break;
+
+                case 'whole-tone':
+                    intervals = [0, 2, 4, 6, 8, 10];
+                    name = 'Whole Tone Scale';
+                    description = 'Only 2 unique hexagonal patterns! Perfect symmetry creates dreamlike geometry.';
+                    break;
+
+                case 'ionian':
+                    intervals = [0, 2, 4, 5, 7, 9, 11];
+                    name = 'Ionian Mode';
+                    description = 'The major scale. Foundation pattern creating 12 unique seven-pointed columns.';
+                    break;
+
+                case 'dorian':
+                    intervals = [0, 2, 3, 5, 7, 9, 10];
+                    name = 'Dorian Mode';
+                    description = 'Minor with raised 6th creates unique asymmetric heptagons.';
+                    break;
+
+                case 'phrygian':
+                    intervals = [0, 1, 3, 5, 7, 8, 10];
+                    name = 'Phrygian Mode';
+                    description = 'Exotic flat-2nd creates distinctive geometric signature.';
+                    break;
+
+                case 'lydian':
+                    intervals = [0, 2, 4, 6, 7, 9, 11];
+                    name = 'Lydian Mode';
+                    description = 'Raised 4th creates ethereal, floating geometric patterns.';
+                    break;
+
+                case 'mixolydian':
+                    intervals = [0, 2, 4, 5, 7, 9, 10];
+                    name = 'Mixolydian Mode';
+                    description = 'Dominant character visible in the asymmetric seven-point structure.';
+                    break;
+
+                case 'aeolian':
+                    intervals = [0, 2, 3, 5, 7, 8, 10];
+                    name = 'Aeolian Mode';
+                    description = 'Natural minor - melancholic geometry reflected in all 12 keys.';
+                    break;
+
+                case 'locrian':
+                    intervals = [0, 1, 3, 5, 6, 8, 10];
+                    name = 'Locrian Mode';
+                    description = 'Most unstable mode creates unique, tension-filled geometric forms.';
+                    break;
+
+                case 'triangle':
+                    intervals = [0, 4, 8];
+                    name = 'Equilateral Triangle';
+                    description = 'Sacred trinity in 3D - only 3 unique augmented triad columns.';
+                    break;
+
+                case 'square':
+                    intervals = [0, 3, 6, 9];
+                    name = 'Square / Cross';
+                    description = 'Four elements, four directions - only 3 unique diminished 7th columns.';
+                    break;
+
+                case 'pentagon':
+                    intervals = [0, 2, 5, 7, 10];
+                    name = 'Pentagon';
+                    description = 'Golden ratio relationships visible in five-pointed helical structure.';
+                    break;
+
+                case 'hexagon':
+                    intervals = [0, 2, 4, 6, 8, 10];
+                    name = 'Hexagon';
+                    description = 'Perfect six-fold symmetry - only 2 unique whole-tone columns.';
+                    break;
+            }
+
+            return { intervals, name, description, type, param };
+        }
+
+        function create3DPattern(patternDef) {
+            const group = new THREE.Group();
+            const spacing = parseFloat(document.getElementById('spacing').value);
+            const thickness = parseFloat(document.getElementById('thickness').value);
+
+            // Reset the note->mesh lookup used for playback highlighting
+            noteMeshMap = {};
+
+            // Create pattern for each of 12 keys (stacked on Z-axis)
+            for (let key = 0; key < 12; key++) {
+                const zPosition = (key - 5.5) * spacing; // Center around 0
+                
+                // Apply root key offset for transposition
+                const transposedKey = (key + rootKeyOffset) % 12;
+                const rootNote = noteNames[transposedKey];
+                const color = new THREE.Color(chromaticColors[rootNote]);
+
+                // Get transposed intervals
+                const transposedIntervals = patternDef.intervals.map(interval => 
+                    (interval + transposedKey) % 12
+                );
+
+                // Create geometry for this key layer
+                createPatternLayer(group, transposedIntervals, zPosition, color, thickness, key);
+            }
+
+            return group;
+        }
+
+        function createPatternLayer(group, intervals, zPos, color, thickness, keyIndex) {
+            const radius = 3;
+            const points = intervals.map(interval => {
+                const angle = (interval * 30 - 90) * Math.PI / 180;
+                return new THREE.Vector3(
+                    radius * Math.cos(angle),
+                    radius * Math.sin(angle),
+                    zPos
+                );
+            });
+
+            // Create lines connecting points
+            for (let i = 0; i < points.length; i++) {
+                const start = points[i];
+                const end = points[(i + 1) % points.length];
+
+                // Create tube geometry for thick lines
+                const path = new THREE.LineCurve3(start, end);
+                const tubeGeometry = new THREE.TubeGeometry(path, 1, thickness, 8, false);
+                const material = new THREE.MeshPhongMaterial({
+                    color: color,
+                    emissive: color,
+                    emissiveIntensity: 0.3,
+                    shininess: 100
+                });
+                const tube = new THREE.Mesh(tubeGeometry, material);
+                group.add(tube);
+            }
+
+            // Create spheres at vertices (one per note-in-sequence, so we can
+            // highlight the exact note that's sounding as the pattern plays)
+            intervals.forEach((interval, i) => {
+                const angle = (interval * 30 - 90) * Math.PI / 180;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+
+                const sphereGeometry = new THREE.SphereGeometry(thickness * 2, 16, 16);
+                const baseEmissive = 0.5;
+                const sphereMaterial = new THREE.MeshPhongMaterial({
+                    color: color,
+                    emissive: color,
+                    emissiveIntensity: baseEmissive,
+                    shininess: 100
+                });
+                const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                sphere.position.set(x, y, zPos);
+                sphere.userData.baseEmissive = baseEmissive;
+                sphere.userData.baseScale = 1;
+                sphere.userData.baseColor = color.clone();
+                sphere.userData.baseEmissiveColor = color.clone();
+                group.add(sphere);
+
+                // Index by keyIndex + position within this layer's interval
+                // sequence, matching the order playPattern() iterates in.
+                noteMeshMap[`${keyIndex}_${i}`] = sphere;
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (currentGeometry && autoRotate) {
+                currentGeometry.rotation.y += rotationSpeed;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function updatePatternInfo(patternDef) {
+            const infoBox = document.getElementById('patternInfo');
+            infoBox.innerHTML = `
+                <h4>${patternDef.name}</h4>
+                <p>${patternDef.description}</p>
+                <p style="margin-top: 10px; color: #FFD700;">
+                    <strong>Structure:</strong> ${patternDef.intervals.length} notes per key × 12 keys = 
+                    ${patternDef.intervals.length * 12} total points in 3D space
+                </p>
+            `;
+        }
+
+        function toggleRotation() {
+            autoRotate = !autoRotate;
+            event.target.textContent = autoRotate ? '⟳ Toggle Auto-Rotate (ON)' : '⟳ Toggle Auto-Rotate (OFF)';
+        }
+
+        function updateSpacing() {
+            const value = document.getElementById('spacing').value;
+            document.getElementById('spacingValue').textContent = value;
+            if (currentPattern) {
+                selectPattern(currentPattern.type, currentPattern.param);
+            }
+        }
+
+        function updateThickness() {
+            const value = document.getElementById('thickness').value;
+            document.getElementById('thicknessValue').textContent = value;
+            if (currentPattern) {
+                selectPattern(currentPattern.type, currentPattern.param);
+            }
+        }
+
+        function updateRotSpeed() {
+            const value = parseFloat(document.getElementById('rotSpeed').value);
+            document.getElementById('rotSpeedValue').textContent = value;
+            rotationSpeed = value * 0.01;
+        }
+
+        function updateZoom() {
+            const value = parseFloat(document.getElementById('zoom').value);
+            document.getElementById('zoomValue').textContent = value;
+            camera.position.z = value;
+        }
+
+        function stopPlayback() {
+            isPlaying = false;
+
+            // Clear every scheduled note/highlight timeout from the last run
+            activeTimeouts.forEach(t => clearTimeout(t));
+            activeTimeouts = [];
+
+            if (playbackTimeout) {
+                clearTimeout(playbackTimeout);
+                playbackTimeout = null;
+            }
+
+            // Reset any mesh left mid-highlight back to its resting look
+            resetAllHighlights();
+        }
+
+        function resetAllHighlights() {
+            Object.values(noteMeshMap).forEach(mesh => {
+                if (!mesh) return;
+                mesh.material.color.copy(mesh.userData.baseColor);
+                mesh.material.emissive.copy(mesh.userData.baseEmissiveColor);
+                mesh.material.emissiveIntensity = mesh.userData.baseEmissive;
+                const s = mesh.userData.baseScale;
+                mesh.scale.set(s, s, s);
+            });
+        }
+
+        function updateRootKey() {
+            rootKeyOffset = parseInt(document.getElementById('keySelect').value);
+            
+            // Redraw current pattern with new key if one is loaded
+            if (currentPattern) {
+                const type = currentPattern.type;
+                const param = currentPattern.param;
+                selectPattern(type, param);
+            }
+        }
+
+        function clearPattern() {
+            stopPlayback();
+            if (currentGeometry) {
+                scene.remove(currentGeometry);
+                currentGeometry = null;
+                currentPattern = null;
+                noteMeshMap = {};
+                document.querySelectorAll('.pattern-select').forEach(sel => {
+                    sel.classList.remove('active-select');
+                    sel.selectedIndex = 0;
+                });
+                document.getElementById('patternInfo').innerHTML = `
+                    <h4>Select a Pattern</h4>
+                    <p>Choose any musical pattern to see it stacked through all 12 keys in beautiful 3D sacred geometry.</p>
+                `;
+            }
+        }
+
+        function playPattern() {
+            if (!currentPattern) {
+                alert('Please select a pattern first!');
+                return;
+            }
+
+            // Stop/clear any previous run first so highlights don't overlap
+            stopPlayback();
+
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            isPlaying = true;
+            const speed = 150; // ms per note
+            let noteIndex = 0;
+
+            // Play through all 12 keys, one note (one interval-step) at a time
+            for (let key = 0; key < 12; key++) {
+                currentPattern.intervals.forEach((interval, i) => {
+                    // Unwrapped semitone count (not mod 12) so pitch keeps
+                    // climbing smoothly across octave boundaries instead of
+                    // snapping back down whenever it would cross one.
+                    const absoluteSemitone = interval + key;
+                    const delay = noteIndex * speed;
+
+                    const t = setTimeout(() => {
+                        if (!isPlaying) return;
+                        playNote(absoluteSemitone);
+                        highlightNote(key, i, speed);
+                    }, delay);
+                    activeTimeouts.push(t);
+
+                    noteIndex++;
+                });
+            }
+
+            // Mark playback finished once the last note has had its turn
+            const endT = setTimeout(() => {
+                isPlaying = false;
+            }, noteIndex * speed);
+            activeTimeouts.push(endT);
+        }
+
+        function playNote(semitoneOffset) {
+            if (!audioContext) return;
+
+            // No modulo here on purpose: an unwrapped semitone offset means
+            // pitch rises continuously and smoothly with no octave-wrap jumps.
+            const frequency = 261.63 * Math.pow(2, semitoneOffset / 12);
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        // Flashes the exact note (sphere) that's sounding right now, then
+        // fades it back to its resting brightness/size just before the next
+        // note in the sequence takes over — so the highlight steps through
+        // the pattern in sync with playback, interval by interval.
+        function highlightNote(keyIndex, i, duration) {
+            const mesh = noteMeshMap[`${keyIndex}_${i}`];
+            if (!mesh) return;
+
+            // Big, unmissable pop: flash to white-hot, blow up the size,
+            // crank the glow way up.
+            mesh.material.color.set(0xffffff);
+            mesh.material.emissive.set(0xffffff);
+            mesh.material.emissiveIntensity = 3.5;
+            mesh.scale.set(4, 4, 4);
+
+            const revertT = setTimeout(() => {
+                mesh.material.color.copy(mesh.userData.baseColor);
+                mesh.material.emissive.copy(mesh.userData.baseEmissiveColor);
+                mesh.material.emissiveIntensity = mesh.userData.baseEmissive;
+                const s = mesh.userData.baseScale;
+                mesh.scale.set(s, s, s);
+            }, duration * 0.85);
+            activeTimeouts.push(revertT);
+        }
+
+        function getIntervalName(semitones) {
+            const names = ['Unison', 'Minor 2nd', 'Major 2nd', 'Minor 3rd', 'Major 3rd',
+                          'Perfect 4th', 'Tritone', 'Perfect 5th', 'Minor 6th', 'Major 6th',
+                          'Minor 7th', 'Major 7th'];
+            return names[semitones] || 'Interval';
+        }
+
+        function createColorLegend() {
+            const legend = document.getElementById('colorLegend');
+            noteNames.forEach(note => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+
+                const colorBox = document.createElement('div');
+                colorBox.className = 'legend-color';
+                colorBox.style.backgroundColor = chromaticColors[note];
+
+                const label = document.createElement('span');
+                label.textContent = note;
+
+                item.appendChild(colorBox);
+                item.appendChild(label);
+                legend.appendChild(item);
+            });
+        }
+
+        function onWindowResize() {
+            const canvas = document.getElementById('canvas3d');
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        }
+
+        // Initialize audio on first click
+        document.addEventListener('click', () => {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }, { once: true });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"a2b5f3c347c54c2e8684375d309fc224","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
