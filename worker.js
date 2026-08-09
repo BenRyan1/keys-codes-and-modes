@@ -35,6 +35,67 @@ export default {
         }[c]));
     }
 
+    // ── Session tokens ───────────────────────────────────────────────
+    // Added to close a real bypass: pages like my-apps.html used to decide
+    // "is this user premium?" purely by reading a localStorage flag
+    // (userTier/accessLevel) that the client itself sets. Anyone could open
+    // devtools and run localStorage.setItem('userTier','premium') to unlock
+    // every app with no code, no payment, and no server involved at all.
+    //
+    // Now, a valid code earns a signed token (tier + expiry + HMAC-SHA256
+    // signature, keyed by the SESSION_SECRET Worker secret — never sent to
+    // the client). The token itself is safe to store in localStorage: it's
+    // opaque to the browser, and forging one requires the secret, which
+    // only this Worker has. /api/verify-session recomputes the signature
+    // and rejects anything that doesn't match or has expired. Callers must
+    // fail CLOSED (treat as free tier) whenever verification doesn't
+    // explicitly succeed — on a bad signature, an expired token, a missing
+    // token, or a failed network call alike.
+    const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 90; // 90 days
+
+    async function hmacKey(secret) {
+      return crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(secret),
+        { name: 'HMAC', hash: 'SHA-256' },
+        false,
+        ['sign', 'verify']
+      );
+    }
+
+    function toBase64Url(buf) {
+      let bin = '';
+      const bytes = new Uint8Array(buf);
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    async function signSession(secret, tier, expiresAt) {
+      const payload = `${tier}.${expiresAt}`;
+      const key = await hmacKey(secret);
+      const sigBuf = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+      return `${payload}.${toBase64Url(sigBuf)}`;
+    }
+
+    // Returns the verified tier string, or null if the token is missing,
+    // malformed, expired, or its signature doesn't match.
+    async function verifySessionToken(secret, token) {
+      if (typeof token !== 'string' || !secret) return null;
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+      const [tier, expiresAtStr, sig] = parts;
+      const expiresAt = Number(expiresAtStr);
+      if (!Number.isFinite(expiresAt) || Date.now() > expiresAt) return null;
+
+      const expectedToken = await signSession(secret, tier, expiresAtStr);
+      const expectedSig = expectedToken.split('.')[2];
+
+      if (expectedSig.length !== sig.length) return null;
+      let diff = 0;
+      for (let i = 0; i < expectedSig.length; i++) diff |= expectedSig.charCodeAt(i) ^ sig.charCodeAt(i);
+      return diff === 0 ? tier : null;
+    }
+
     const url = new URL(request.url);
 
     if (url.pathname === '/api/verify-code') {
@@ -71,9 +132,40 @@ export default {
         }
       }
 
-      return new Response(JSON.stringify({ ok: matchedTier !== null, tier: matchedTier }),
+      // Issue a signed session token so downstream pages (my-apps.html,
+      // etc.) can prove access via /api/verify-session instead of trusting
+      // a plain localStorage flag. If SESSION_SECRET isn't configured yet,
+      // token comes back null — callers must treat that as "not premium"
+      // (fail closed), not fall back to granting access anyway.
+      let token = null;
+      let expiresAt = null;
+      if (matchedTier !== null && env.SESSION_SECRET) {
+        expiresAt = Date.now() + SESSION_TTL_MS;
+        token = await signSession(env.SESSION_SECRET, matchedTier, expiresAt);
+      }
+
+      return new Response(JSON.stringify({ ok: matchedTier !== null, tier: matchedTier, token, expiresAt }),
         {
           status: matchedTier !== null ? 200 : 401,
+          headers: { ...cors, 'Content-Type': 'application/json' },
+        });
+    }
+
+    if (url.pathname === '/api/verify-session') {
+      let token = '';
+      try {
+        const body = await request.json();
+        token = body.token || '';
+      } catch (e) {
+        return new Response(JSON.stringify({ ok: false, error: 'Invalid JSON' }),
+          { status: 400, headers: { ...cors, 'Content-Type': 'application/json' } });
+      }
+
+      const tier = await verifySessionToken(env.SESSION_SECRET, token);
+
+      return new Response(JSON.stringify({ ok: tier !== null, tier }),
+        {
+          status: tier !== null ? 200 : 401,
           headers: { ...cors, 'Content-Type': 'application/json' },
         });
     }

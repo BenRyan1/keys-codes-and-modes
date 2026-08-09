@@ -526,6 +526,9 @@ Santa Barbara, California
                 <p>Your personalized learning suite — click any app to launch it instantly.</p>
             </div>
 
+            <!-- Shown when the app-page gate bounces someone back here (?locked=<id>) -->
+            <div id="lockedNotice" role="alert" style="display:none;margin-bottom:1.5rem;padding:1rem 1.25rem;border:1px solid #d4b030;border-radius:10px;background:rgba(244,208,63,0.1);color:#E8E8E8;"></div>
+
             <!-- Apps Section -->
             <div class="section-label" aria-hidden="true">
                 <h2>Your Selected Apps</h2>
@@ -873,29 +876,51 @@ Santa Barbara, California
     ────────────────────────────────────────── */
     /* ──────────────────────────────────────────
        PREMIUM TIER CHECK
-       Returns true if the user has a valid paid / access-code tier
+       Server-verified: the localStorage userTier/accessLevel flags below
+       are only ever used for display (greeting, badge label). The actual
+       yes/no decision comes from /api/verify-session validating the
+       signed kcm_session_token — a plain flag can't grant access anymore,
+       because anyone could set that from devtools with zero cost. A
+       missing token, an invalid/expired token, or a failed network call
+       all fail CLOSED to free tier; none of them fall back to premium.
     ────────────────────────────────────────── */
-    function hasPremiumAccess() {
-        const tier        = (localStorage.getItem('userTier')    || '').toLowerCase();
-        const accessLevel = (localStorage.getItem('accessLevel') || '').toLowerCase();
-        const PREMIUM_TIERS = ['premium','founder','vip','beta tester','press','demo','beta','founder\'s circle'];
-        return PREMIUM_TIERS.includes(tier) || accessLevel === 'all_apps';
+    async function verifyPremiumAccess() {
+        const token = localStorage.getItem('kcm_session_token');
+        if (!token) return { premium: false, tier: '' };
+
+        try {
+            const res  = await fetch('/api/verify-session', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ token })
+            });
+            const data = await res.json().catch(() => ({ ok: false, tier: null }));
+            if (data.ok && data.tier) {
+                return { premium: true, tier: data.tier };
+            }
+        } catch (e) {
+            console.warn('Session verification failed — defaulting to free tier:', e);
+        }
+        return { premium: false, tier: '' };
     }
 
-    function renderMyApps() {
+    async function renderMyApps() {
         const container  = document.getElementById('appsContainer');
         const welcomeMsg = document.getElementById('welcomeMsg');
 
         /* Personalise greeting */
         const userName = localStorage.getItem('userName') || '';
-        const tier     = localStorage.getItem('userTier') || '';
 
         if (userName) {
             welcomeMsg.textContent = `Welcome back, ${userName}! 👋`;
         }
 
+        container.innerHTML = `<div class="state-panel" role="status">Checking your access…</div>`;
+        const { premium, tier } = await verifyPremiumAccess();
+        container.innerHTML = '';
+
         /* ── PREMIUM / ACCESS-CODE USERS → show ALL apps ── */
-        if (hasPremiumAccess()) {
+        if (premium) {
 
             /* Badge showing their tier */
             const tierBadge = document.createElement('div');
@@ -980,7 +1005,30 @@ Santa Barbara, California
         container.appendChild(grid);
     }
 
-    document.addEventListener('DOMContentLoaded', renderMyApps);
+    /* ──────────────────────────────────────────
+       LOCKED-APP NOTICE
+       apps/*.html's gate script (js/kcm-app-gate.js) redirects here with
+       ?locked=<id> when a visitor without access tries to open an app
+       directly. Explain why they landed here instead of silently
+       dropping them on the launcher.
+    ────────────────────────────────────────── */
+    function showLockedNoticeIfNeeded() {
+        const lockedId = new URLSearchParams(window.location.search).get('locked');
+        if (!lockedId) return;
+
+        const app    = ALL_APPS.find(a => a.id === lockedId);
+        const notice = document.getElementById('lockedNotice');
+        if (!notice) return;
+
+        const appName = app ? app.title : 'That app';
+        notice.textContent = `🔒 ${appName} isn't part of your current plan. Pick it as one of your free apps below, or upgrade for full access.`;
+        notice.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showLockedNoticeIfNeeded();
+        renderMyApps();
+    });
     </script>
 </body>
 </html>

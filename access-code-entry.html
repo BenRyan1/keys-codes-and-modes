@@ -426,13 +426,25 @@
             if (verifyResult.ok && TIER_INFO[verifyResult.tier]) {
                 const codeData = TIER_INFO[verifyResult.tier];
 
-                // Store tier information
+                // Store tier information (display/UX only — the actual
+                // access decision on my-apps.html is made by verifying
+                // the signed session token below via /api/verify-session,
+                // not by trusting these flags directly).
                 localStorage.setItem('userTier', codeData.tier.toLowerCase());
                 localStorage.setItem('accessLevel', codeData.access);
                 localStorage.setItem('accessDuration', codeData.duration);
                 localStorage.setItem('accessCode', code);
                 if (codeData.badge) localStorage.setItem('founderBadge', 'true');
                 if (codeData.vip) localStorage.setItem('vipAccess', 'true');
+
+                // Store the signed session token returned by /api/verify-code.
+                // This is what actually proves premium access server-side —
+                // it can't be forged from devtools the way the flags above can.
+                if (verifyResult.token) {
+                    localStorage.setItem('kcm_session_token', verifyResult.token);
+                } else {
+                    localStorage.removeItem('kcm_session_token');
+                }
                 
                 // Send notification to Formspree
                 const userEmail = localStorage.getItem('userEmail') || 'unknown';
@@ -492,6 +504,7 @@
         function skipToFreeTier() {
             localStorage.setItem('userTier', 'free');
             localStorage.setItem('accessLevel', 'pick_3');
+            localStorage.removeItem('kcm_session_token');
             window.location.href = 'welcome-free-picker.html';
         }
     </script>
