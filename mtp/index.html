@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KCM Music Theory Pro | Keys, Codes &amp; Modes™</title>
+<meta name="description" content="Music Theory Pro is a browser-based visual music theory tool powered by the 12-Color Chromatic Spectrum™. Explore keys, scales, modes and chords in real time. Built by Benjamin Ryan.">
+<meta name="author" content="Benjamin Ryan">
+<meta name="keywords" content="music theory, visual music theory, keys codes modes, chromatic spectrum, music theory pro, music education, KCM, Benjamin Ryan">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#008080">
+
+<link rel="canonical" href="https://mtp.keyscodesandmodes.com/">
+<link rel="icon" href="https://console.keyscodesandmodes.com/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="https://console.keyscodesandmodes.com/assets/favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Keys, Codes &amp; Modes™">
+<meta property="og:title" content="KCM Music Theory Pro">
+<meta property="og:description" content="A browser-based visual music theory tool. Powered by the 12-Color Chromatic Spectrum™.">
+<meta property="og:url" content="https://mtp.keyscodesandmodes.com/">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@keyscodesandmodes">
+<meta name="twitter:creator" content="@benryanmusic">
+<meta name="twitter:title" content="KCM Music Theory Pro">
+<meta name="twitter:description" content="Browser-based visual music theory tool, driven by the 12-Color Chromatic Spectrum™.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap">
+
+<link rel="stylesheet" href="https://console.keyscodesandmodes.com/css/console.css">
+<link rel="stylesheet" href="https://console.keyscodesandmodes.com/css/suno-panel.css">
+<link rel="stylesheet" href="https://console.keyscodesandmodes.com/css/responsive.css">
+</head>
+<body>
+
+<header class="kcm-header" role="banner">
+  <div class="kcm-header__inner">
+    <div class="kcm-header__brand">
+      <span class="kcm-header__mark" aria-hidden="true"></span>
+      <div class="kcm-header__title">
+        <h1>KCM</h1>
+        <p class="kcm-header__tagline">Keys, Codes &amp; Modes — Music Theory Pro</p>
+      </div>
+    </div>
+    <nav class="kcm-header__nav" aria-label="Primary">
+      <input type="text" id="kcm-session-title" class="kcm-session-title" value="MTP Session" maxlength="48" aria-label="Session title" spellcheck="false">
+      <button class="kcm-gcis-btn kcm-gcis-btn--save" id="kcm-save" aria-label="Save session as .gcis file">
+        ⬇ Save .gcis
+      </button>
+      <button class="kcm-gcis-btn kcm-gcis-btn--load" id="kcm-load" aria-label="Load .gcis session file">
+        ⬆ Load .gcis
+      </button>
+      <button class="kcm-stop-btn" id="kcm-stop-all" aria-label="Stop all audio playback">⏹ Stop All</button>
+      <a href="https://keyscodesandmodes.com" rel="noopener">Main Site</a>
+      <a href="https://keyscodesandmodes.com/about.html" rel="noopener">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="kcm-main">
+
+  <section class="kcm-hero" aria-labelledby="hero-heading">
+    <div class="kcm-hero__chromatic" aria-hidden="true">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="kcm-chromatic-clock">
+        <g id="chromatic-wedges"></g>
+        <circle cx="200" cy="200" r="60" fill="var(--bg-deep)" stroke="var(--primary-teal)" stroke-width="2"></circle>
+        <text x="200" y="195" text-anchor="middle" dominant-baseline="central" fill="var(--text-primary)" font-family="Cinzel, serif" font-size="18" font-weight="600">KCM</text>
+        <text x="200" y="215" text-anchor="middle" dominant-baseline="central" fill="var(--text-secondary)" font-family="Montserrat, sans-serif" font-size="10" letter-spacing="2">MUSIC THEORY PRO</text>
+      </svg>
+    </div>
+    <div class="kcm-hero__text">
+      <h2 id="hero-heading" class="kcm-hero__heading">Music Theory Pro</h2>
+      <p class="kcm-hero__lede">
+        A visual music theory environment. Music Theory Pro maps keys, scales,
+        modes and chords onto the 12-Color Chromatic Spectrum™ — change the root
+        or mode and watch every element of the panel follow in real time.
+      </p>
+      <div class="kcm-hero__meta">
+        <span class="kcm-hero__badge">v1.2 · Live</span>
+        <span class="kcm-hero__version" id="build-version">KCM Standalone · 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <div id="panel-mtp" class="kcm-panel">
+    <div class="kcm-panel__header">
+      <span class="kcm-panel__accent"></span>
+      <h3 class="kcm-panel__title">Music Theory Pro</h3>
+      <div class="kcm-panel__controls">
+        <button class="kcm-panel__btn" data-panel-action="minimize" aria-label="Minimize panel">−</button>
+      </div>
+    </div>
+    <div class="kcm-panel__body">
+      <iframe id="iframe-mtp" class="kcm-panel__iframe" src="music-theory-pro.html" title="Music Theory Pro" allow="autoplay; midi; microphone" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <div id="kcm-mic-bar" style="
+      display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+      background:rgba(0,0,0,.50);border:1px solid rgba(0,128,128,.28);
+      border-radius:10px;padding:10px 16px;margin:10px 0 14px;
+      font-family:'Montserrat',sans-serif;font-size:12px;color:#b0b0cc;
+    ">
+    <div id="kcm-mic-wrap" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <button id="kcm-mic-btn" style="
+        display:flex;align-items:center;gap:7px;
+        background:linear-gradient(135deg,#008080,#005555);
+        color:#fff;border:none;border-radius:7px;padding:8px 18px;
+        font-family:'Cinzel',serif;font-size:11px;letter-spacing:.09em;
+        cursor:pointer;white-space:nowrap;transition:background .2s;
+      ">🎙 START LISTENING</button>
+
+      <div id="kcm-mic-led" style="
+        font-family:'Courier New',monospace;font-size:10px;
+        letter-spacing:.12em;color:#334;padding:4px 10px;
+        border-radius:4px;border:1px solid rgba(255,255,255,.06);
+        background:rgba(0,0,0,.3);min-width:68px;text-align:center;
+      ">STANDBY</div>
+
+      <div id="kcm-mic-notepill" style="
+        display:none;align-items:center;gap:7px;
+        background:rgba(0,0,0,.35);border-radius:20px;
+        padding:5px 14px;border:1px solid rgba(255,255,255,.10);
+      ">
+        <div id="kcm-mic-dot" style="width:10px;height:10px;border-radius:50%;background:#333;flex-shrink:0;transition:background .08s,box-shadow .08s;"></div>
+        <span id="kcm-mic-name" style="font-family:'Cinzel',serif;font-size:14px;font-weight:700;letter-spacing:.05em;min-width:24px;color:#e8e8f8;">—</span>
+        <span id="kcm-mic-hz" style="font-size:9px;color:#445;letter-spacing:.04em;"></span>
+      </div>
+
+      <div id="kcm-mic-chord" style="
+        display:none;align-items:center;gap:6px;
+        background:rgba(0,128,128,.10);border-radius:20px;
+        padding:5px 14px;border:1px solid rgba(0,128,128,.22);
+      ">
+        <span style="font-size:9px;color:#008080;letter-spacing:.1em;">CHORD</span>
+        <span id="kcm-mic-chordname" style="font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:#00c0c0;letter-spacing:.04em;"></span>
+      </div>
+
+      <div id="kcm-mic-scale" style="
+        display:none;align-items:center;gap:6px;
+        background:rgba(244,208,63,.06);border-radius:20px;
+        padding:5px 14px;border:1px solid rgba(244,208,63,.18);
+      ">
+        <span style="font-size:9px;color:#F4D03F;letter-spacing:.1em;">SCALE</span>
+        <span id="kcm-mic-scalename" style="font-family:'Cinzel',serif;font-size:12px;font-weight:700;color:#F4D03F;letter-spacing:.04em;"></span>
+      </div>
+
+      <div id="kcm-mic-arp" style="
+        display:none;align-items:center;gap:6px;
+        background:rgba(139,107,163,.08);border-radius:20px;
+        padding:5px 14px;border:1px solid rgba(139,107,163,.22);
+      ">
+        <span style="font-size:9px;color:#8B6BA3;letter-spacing:.1em;">ARP</span>
+        <span id="kcm-mic-arpname" style="font-family:'Cinzel',serif;font-size:12px;font-weight:700;color:#8B6BA3;letter-spacing:.04em;"></span>
+      </div>
+
+      <label style="display:flex;align-items:center;gap:5px;color:#445;font-size:10px;letter-spacing:.06em;margin-left:4px;">SENS
+        <input id="kcm-mic-gain" type="range" min="0.3" max="4" step="0.1" value="1.8" style="width:68px;accent-color:#008080;cursor:pointer;">
+      </label>
+      <label style="display:flex;align-items:center;gap:5px;color:#445;font-size:10px;letter-spacing:.06em;">LOCK
+        <input id="kcm-mic-smooth" type="range" min="0" max="0.95" step="0.05" value="0.65" style="width:60px;accent-color:#008080;cursor:pointer;">
+      </label>
+
+      <button id="kcm-mic-clear" title="Clear scale/arpeggio history" style="
+        background:none;border:1px solid rgba(255,255,255,.10);border-radius:5px;
+        color:#334;font-size:10px;padding:4px 8px;cursor:pointer;letter-spacing:.06em;
+        font-family:'Montserrat',sans-serif;
+      ">✕ RESET</button>
+
+      <div style="margin-left:auto;color:#334;font-size:9px;letter-spacing:.07em;text-align:right;line-height:1.6;">
+        BROADCASTS TO<br><span style="color:#008080;">MUSIC THEORY PRO</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="kcm-suno-panel" id="suno-panel" aria-label="SUNO Prompt Generator">
+    <div class="kcm-suno__header">
+      <div class="kcm-suno__title-row">
+        <span class="kcm-suno__icon" aria-hidden="true">♪</span>
+        <h3 class="kcm-suno__title">AI Music Prompt Generator</h3>
+        <select class="kcm-suno__platform-select" id="suno-platform-select" aria-label="Choose AI music platform">
+          <option value="suno">Suno</option>
+          <option value="udio">Udio</option>
+        </select>
+        <span class="kcm-suno__state-badge" id="suno-state-badge">C · Ionian</span>
+      </div>
+      <div class="kcm-suno__meta-row">
+        <p class="kcm-suno__sub">Synced to Music Theory Pro — updates live as you play</p>
+        <span class="kcm-suno__source-badge" id="suno-source-badge"></span>
+      </div>
+    </div>
+
+    <div class="kcm-suno__body">
+      <div class="kcm-suno__prompt-wrap">
+        <textarea class="kcm-suno__prompt" id="suno-prompt-text" readonly spellcheck="false" rows="8" aria-label="Generated Suno prompt — copy and paste into suno.com"></textarea>
+        <div class="kcm-suno__prompt-type" id="suno-prompt-type">Template</div>
+      </div>
+      <div class="kcm-suno__actions">
+        <button class="kcm-suno__btn kcm-suno__btn--enhance" id="suno-enhance-btn">✨ Enhance with AI</button>
+        <button class="kcm-suno__btn kcm-suno__btn--template" id="suno-template-btn">↺ Reset Template</button>
+        <button class="kcm-suno__btn kcm-suno__btn--copy" id="suno-copy-btn">⎘ Copy to Suno</button>
+        <a class="kcm-suno__btn kcm-suno__btn--open" id="suno-open-link" href="https://suno.com" target="_blank" rel="noopener noreferrer" aria-label="Open Suno in a new tab">↗ Open Suno</a>
+      </div>
+
+      <div class="kcm-suno__how">
+        <strong>How to use:</strong>
+        1 · Choose root + mode in Music Theory Pro above &nbsp;
+        2 · Prompt updates instantly &nbsp;
+        3 · Hit <em>Enhance</em> for a richer AI version &nbsp;
+        4 · <em>Copy</em> → paste into <span id="suno-howto-target">suno.com</span> → Generate
+      </div>
+
+      <div class="kcm-suno__status" id="suno-status" aria-live="polite"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="kcm-footer">
+  <div class="kcm-footer__inner">
+    <p class="kcm-footer__copy">© 2026 Keys, Codes &amp; Modes™ · 12-Color Chromatic Spectrum™ · FreeStyle® Musical Device (IP properties including related Patent and Trademark Awards).</p>
+    <p class="kcm-footer__contact">
+      <a href="https://keyscodesandmodes.com" rel="noopener">Benjamin Ryan</a>
+      <a href="mailto:ben@keyscodesandmodes.com">ben@keyscodesandmodes.com</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://console.keyscodesandmodes.com/js/console.js" defer></script>
+<script src="https://console.keyscodesandmodes.com/js/bridge.js" defer></script>
+<script src="https://console.keyscodesandmodes.com/js/gcis.js" defer></script>
+<script src="https://console.keyscodesandmodes.com/js/kcm-uhim.js" defer></script>
+<script src="https://console.keyscodesandmodes.com/js/suno-panel_1.js" defer></script>
+<script src="https://console.keyscodesandmodes.com/js/kcm-mic-engine.js" defer></script>
+
+</body>
+</html>
