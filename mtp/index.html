@@ -234,29 +234,42 @@
   // suno-panel_1.js hardcodes copy written for the 4-panel console.
   // Patch the injected panel's wording to match this single-panel MTP page.
   (function () {
+    var TARGET_SUB = 'Synced to Music Theory Pro — updates live as you play';
+    function alreadyPatched(root) {
+      var sub = root.querySelector('.kcm-suno__sub');
+      return !!sub && sub.textContent === TARGET_SUB;
+    }
     function patch(root) {
       var sub = root.querySelector('.kcm-suno__sub');
-      if (sub) sub.textContent = 'Synced to Music Theory Pro — updates live as you play';
+      if (sub && sub.textContent !== TARGET_SUB) sub.textContent = TARGET_SUB;
       var how = root.querySelector('.kcm-suno__how');
-      if (how) {
+      if (how && how.innerHTML.indexOf('4 Console panels') !== -1) {
         how.innerHTML = how.innerHTML
           .replace('in any of the 4 panels above', 'in Music Theory Pro above')
           .replace('4 Console panels', 'Music Theory Pro');
       }
     }
     // suno-panel_1.js can inject #suno-panel more than once (e.g. on a later
-    // bus-ready re-render). Dedupe by class every time #main changes, keep
-    // only the first copy, and patch it.
+    // bus-ready re-render). Dedupe by class, keep only the first copy, patch
+    // it once, then stop watching — patching writes text, which is itself a
+    // mutation, so an observer that never disconnects re-triggers itself
+    // forever and hangs the tab. Disconnect as soon as things look settled.
+    var obs;
     function dedupeAndPatch() {
       var panels = document.querySelectorAll('.kcm-suno-panel');
       if (panels.length === 0) return;
       for (var i = 1; i < panels.length; i++) panels[i].remove();
-      patch(panels[0]);
+      var root = panels[0];
+      if (alreadyPatched(root)) {
+        if (obs) obs.disconnect();
+        return;
+      }
+      patch(root);
     }
     dedupeAndPatch();
     var main = document.getElementById('main');
     if (!main) return;
-    var obs = new MutationObserver(dedupeAndPatch);
+    obs = new MutationObserver(dedupeAndPatch);
     obs.observe(main, { childList: true, subtree: true });
   })();
 </script>
