@@ -21,9 +21,6 @@ Santa Barbara, California | All Rights Reserved
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>document.documentElement.style.visibility='hidden';window.KCM_APP_ID="music-theory-pro";</script>
-    <script src="/js/kcm-app-gate.js"></script>
-
 <!-- Cookie Consent CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <style>
@@ -406,6 +403,49 @@ nav a.active { color: var(--primary-teal); }
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
+}
+.now-playing-btn {
+    background: linear-gradient(135deg, rgba(39,174,96,0.18) 0%, rgba(39,174,96,0.06) 100%) !important;
+    border-color: rgba(39,174,96,0.5) !important;
+    color: #6fe0a0 !important;
+    font-weight: 800;
+    min-width: 150px;
+    max-width: 220px;
+    text-align: center;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.now-playing-btn.open {
+    background: linear-gradient(135deg, rgba(39,174,96,0.32) 0%, rgba(39,174,96,0.1) 100%) !important;
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 16px rgba(39,174,96,0.45) !important;
+}
+.now-playing-btn .np-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #555; flex-shrink: 0;
+    transition: background 0.2s;
+}
+.now-playing-btn .np-dot.live {
+    background: #27ae60;
+    box-shadow: 0 0 8px rgba(39,174,96,0.9);
+    animation: npPulse 1.1s ease-in-out infinite;
+}
+@keyframes npPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+.now-playing-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+    font-size: 0.72rem;
+    text-transform: none;
+    letter-spacing: 0;
 }
 .key-selector-btn {
     background: linear-gradient(135deg, rgba(244,208,63,0.15) 0%, rgba(244,208,63,0.05) 100%) !important;
@@ -2096,9 +2136,23 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 <button class="view-btn" data-view="ear">👂 Ear</button>
                 <button class="view-btn" data-view="sing">🎤 Sing</button>
                 <button class="view-btn" data-view="stencil">✦ Stencil</button>
+                <button class="view-btn now-playing-btn" id="nowPlayingBtn" onclick="toggleNowPlaying()" aria-haspopup="true" aria-expanded="false"><span class="np-dot" id="npDot"></span>🎹 <span class="now-playing-label" id="nowPlayingLabel">Now Playing</span></button>
                 <button class="view-btn key-selector-btn" id="keyPickerBtn" onclick="toggleKeyPicker()" aria-haspopup="true" aria-expanded="false">🎵 Key: <span id="keyPickerLabel">C</span></button>
                 <button id="globalPlayBtn" class="view-action-btn" style="background:linear-gradient(135deg,#27ae60,#1e8449); border-color:#27ae60; color:#fff; font-weight:800;">▶ Play</button>
                 <button id="globalStopBtn" class="view-action-btn" style="background:linear-gradient(135deg,#e74c3c,#c0392b); border-color:#e74c3c; color:#fff; font-weight:800;">■ Stop</button>
+            </div>
+
+            <!-- ── NOW PLAYING PANEL ────────────────────────────── -->
+            <div id="nowPlayingPanel" style="display:none; margin:0.5rem auto 0; max-width:520px;
+                 background:rgba(10,10,25,0.97); border:2px solid #27ae60;
+                 border-radius:14px; padding:0.75rem 1rem; box-shadow:0 8px 32px rgba(39,174,96,0.35);">
+                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#27ae60;
+                     text-align:center; margin-bottom:0.6rem; font-family:var(--font-display);">🎹 NOW PLAYING</div>
+                <div id="nowPlayingCurrent" style="text-align:center; font-size:0.92rem; font-weight:700; color:#fff; min-height:1.4rem; margin-bottom:0.5rem;">Nothing playing yet</div>
+                <div id="nowPlayingHistoryWrap" style="border-top:1px solid rgba(39,174,96,0.25); padding-top:0.5rem;">
+                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:rgba(255,255,255,0.4); text-align:center; margin-bottom:0.35rem;">RECENT</div>
+                    <div id="nowPlayingHistory" style="display:flex; flex-direction:column; gap:3px; font-size:0.7rem; color:#b0b0cc; text-align:center;"></div>
+                </div>
             </div>
 
             <!-- ── KEY PICKER PANEL ─────────────────────────────── -->
@@ -2490,7 +2544,23 @@ window.addEventListener('unhandledrejection', function(event) {
         const _noteOffTimers = {};
         const _playTimers = [];  // all active sequence/progression setTimeout IDs
         function _schedPlay(fn, ms) { const id = setTimeout(fn, ms); _playTimers.push(id); return id; }
-        function _cancelAllPlay() { while (_playTimers.length) clearTimeout(_playTimers.pop()); }
+        function _cancelAllPlay() {
+            while (_playTimers.length) clearTimeout(_playTimers.pop());
+            // Cancelling mid-sequence (Stop, or starting a new Play/Asc/Desc/Chord
+            // before the previous one finished) used to leave whichever note was
+            // mid-"on" stuck — glowing/enlarged on the circle, a lit piano key, a
+            // glowing fret dot — because the scheduled cleanup for that note was
+            // one of the timers we just cleared and never got to run. Force a full
+            // reset back to the settled state every time playback is cancelled,
+            // regardless of which direction (up/down/chord) was interrupted.
+            try {
+                if (typeof selectedNotes !== 'undefined') revealedNotes = new Set(selectedNotes);
+                if (typeof clearAllHighlights === 'function')  clearAllHighlights();
+                if (typeof updateSphereDisplay === 'function') updateSphereDisplay();
+                if (typeof updatePianoDisplay === 'function')  updatePianoDisplay();
+                if (typeof updateGuitarDisplay === 'function') updateGuitarDisplay();
+            } catch(e) { console.error('_cancelAllPlay reset error:', e); }
+        }
         let rootNote = 0;
         let selectedNotes = new Set([0]), multiSelectNotes = new Set(), currentOctave = 4;
         // revealedNotes: what's currently LIT on fretboard/piano/circle during scale playback.
@@ -6968,7 +7038,8 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
             <button class="dock-mini-btn" onclick="dockChangeBPM(+10)">+</button>
         </div>
 
-        <!-- ROW 4: Harmonized degree sub-menu (shown only for Harm Major/Minor) -->\n        <div class="dock-row" id="dockDegreeRow" style="display:none; flex-direction:column; gap:6px; border-top:1px solid rgba(0,200,200,0.15); padding-top:7px;">
+        <!-- ROW 4: Harmonized degree sub-menu (shown only for Harm Major/Minor) -->
+        <div class="dock-row" id="dockDegreeRow" style="display:none; flex-direction:column; gap:6px; border-top:1px solid rgba(0,200,200,0.15); padding-top:7px;">
 
             <!-- Major / Minor toggle — always visible in harm mode -->
             <div style="display:flex; gap:6px; justify-content:center; align-items:center;">
@@ -7483,6 +7554,69 @@ function buildKeyPicker() {
     });
 }
 
+// ── NOW PLAYING ───────────────────────────────────────────
+// Dropdown that surfaces "what's being played" up in the view-toggle row.
+// Implemented as a MutationObserver on #status — the app already writes
+// human-readable playback text there from ~40 different call sites
+// (playProgression, stencilPlay, updateDisplay, etc.). Observing it means
+// zero existing functions are touched and every existing status-setting
+// wire keeps working exactly as before.
+(function initNowPlaying() {
+    const statusEl = document.getElementById('status');
+    if (!statusEl) return;
+
+    function renderHistory() {
+        const histEl = document.getElementById('nowPlayingHistory');
+        if (!histEl) return;
+        const h = (window._kcmSessionHistory || []).slice(-5).reverse();
+        histEl.innerHTML = h.length
+            ? h.map(t => `<div style="opacity:0.85;">${t}</div>`).join('')
+            : '<div style="opacity:0.5;">Nothing yet</div>';
+    }
+
+    function isPlayingText(t) { return /playing/i.test(t || ''); }
+
+    function sync() {
+        const text    = statusEl.textContent || '';
+        const curEl   = document.getElementById('nowPlayingCurrent');
+        const labelEl = document.getElementById('nowPlayingLabel');
+        const dotEl   = document.getElementById('npDot');
+        if (curEl)   curEl.textContent = text || 'Nothing playing yet';
+        if (labelEl) labelEl.textContent = isPlayingText(text) ? text.replace(/^🎵\s*/, '') : 'Now Playing';
+        if (dotEl)   dotEl.classList.toggle('live', isPlayingText(text));
+        renderHistory();
+    }
+
+    new MutationObserver(sync).observe(statusEl, { childList: true, characterData: true, subtree: true });
+    sync();
+    window._kcmNowPlayingSync = sync;
+})();
+
+function toggleNowPlaying() {
+    const panel = document.getElementById('nowPlayingPanel');
+    const btn   = document.getElementById('nowPlayingBtn');
+    if (!panel) return;
+
+    const isOpen = panel.style.display !== 'none';
+    if (isOpen) {
+        panel.style.display = 'none';
+        if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+        return;
+    }
+
+    if (typeof window._kcmNowPlayingSync === 'function') window._kcmNowPlayingSync();
+    panel.style.display = 'block';
+    if (btn) { btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+
+    const closeHandler = (e) => {
+        if (panel.contains(e.target) || (btn && btn.contains(e.target))) return;
+        panel.style.display = 'none';
+        if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+        document.removeEventListener('click', closeHandler);
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 200);
+}
+
 function toggleKeyPicker() {
     const panel = document.getElementById('keyPickerPanel');
     const btn   = document.getElementById('keyPickerBtn');
@@ -7784,10 +7918,9 @@ Explain in 3 sentences: what they're looking at, what makes it musically interes
 // never exposed to the browser) and forwards to the Anthropic Messages
 // API. Previously these calls went directly to api.anthropic.com from
 // client-side JS with no credential at all, which could never succeed.
-// Fixed 2026-07-12: wrangler.toml (in kcm-console) sets workers_dev =
-// false, so the *.workers.dev URL is not reachable — only the custom
-// route "console.keyscodesandmodes.com/ai" is live. Synced from the
-// same fix in kcm-console/music-theory-pro.html.
+// Fixed 2026-07-12: wrangler.toml sets workers_dev = false, so the
+// *.workers.dev URL is not reachable — only the custom route
+// "console.keyscodesandmodes.com/ai" is live. Pointing there instead.
 const _KCM_AI_PROXY_URL = 'https://console.keyscodesandmodes.com/ai';
 
 async function _kcmAIProxy(messages, system, maxTokens) {
