@@ -176,46 +176,8 @@
     </div>
   </div>
 
-  <section class="kcm-suno-panel" id="suno-panel" aria-label="SUNO Prompt Generator">
-    <div class="kcm-suno__header">
-      <div class="kcm-suno__title-row">
-        <span class="kcm-suno__icon" aria-hidden="true">♪</span>
-        <h3 class="kcm-suno__title">AI Music Prompt Generator</h3>
-        <select class="kcm-suno__platform-select" id="suno-platform-select" aria-label="Choose AI music platform">
-          <option value="suno">Suno</option>
-          <option value="udio">Udio</option>
-        </select>
-        <span class="kcm-suno__state-badge" id="suno-state-badge">C · Ionian</span>
-      </div>
-      <div class="kcm-suno__meta-row">
-        <p class="kcm-suno__sub">Synced to Music Theory Pro — updates live as you play</p>
-        <span class="kcm-suno__source-badge" id="suno-source-badge"></span>
-      </div>
-    </div>
-
-    <div class="kcm-suno__body">
-      <div class="kcm-suno__prompt-wrap">
-        <textarea class="kcm-suno__prompt" id="suno-prompt-text" readonly spellcheck="false" rows="8" aria-label="Generated Suno prompt — copy and paste into suno.com"></textarea>
-        <div class="kcm-suno__prompt-type" id="suno-prompt-type">Template</div>
-      </div>
-      <div class="kcm-suno__actions">
-        <button class="kcm-suno__btn kcm-suno__btn--enhance" id="suno-enhance-btn">✨ Enhance with AI</button>
-        <button class="kcm-suno__btn kcm-suno__btn--template" id="suno-template-btn">↺ Reset Template</button>
-        <button class="kcm-suno__btn kcm-suno__btn--copy" id="suno-copy-btn">⎘ Copy to Suno</button>
-        <a class="kcm-suno__btn kcm-suno__btn--open" id="suno-open-link" href="https://suno.com" target="_blank" rel="noopener noreferrer" aria-label="Open Suno in a new tab">↗ Open Suno</a>
-      </div>
-
-      <div class="kcm-suno__how">
-        <strong>How to use:</strong>
-        1 · Choose root + mode in Music Theory Pro above &nbsp;
-        2 · Prompt updates instantly &nbsp;
-        3 · Hit <em>Enhance</em> for a richer AI version &nbsp;
-        4 · <em>Copy</em> → paste into <span id="suno-howto-target">suno.com</span> → Generate
-      </div>
-
-      <div class="kcm-suno__status" id="suno-status" aria-live="polite"></div>
-    </div>
-  </section>
+  <!-- suno-panel_1.js injects its own #suno-panel markup into #main at runtime;
+       no static copy here to avoid a duplicate panel. -->
 
 </main>
 
@@ -235,6 +197,32 @@
 <script src="https://console.keyscodesandmodes.com/js/kcm-uhim.js" defer></script>
 <script src="https://console.keyscodesandmodes.com/js/suno-panel_1.js" defer></script>
 <script src="https://console.keyscodesandmodes.com/js/kcm-mic-engine.js" defer></script>
+
+<script>
+  // suno-panel_1.js hardcodes copy written for the 4-panel console.
+  // Patch the injected panel's wording to match this single-panel MTP page.
+  (function () {
+    function patch(root) {
+      var sub = root.querySelector('.kcm-suno__sub');
+      if (sub) sub.textContent = 'Synced to Music Theory Pro — updates live as you play';
+      var how = root.querySelector('.kcm-suno__how');
+      if (how) {
+        how.innerHTML = how.innerHTML
+          .replace('in any of the 4 panels above', 'in Music Theory Pro above')
+          .replace('4 Console panels', 'Music Theory Pro');
+      }
+    }
+    var existing = document.getElementById('suno-panel');
+    if (existing) { patch(existing); return; }
+    var main = document.getElementById('main');
+    if (!main) return;
+    var obs = new MutationObserver(function () {
+      var panel = document.getElementById('suno-panel');
+      if (panel) { patch(panel); obs.disconnect(); }
+    });
+    obs.observe(main, { childList: true, subtree: true });
+  })();
+</script>
 
 </body>
 </html>
