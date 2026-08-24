@@ -14,8 +14,15 @@
 /about.html              /about              301
 /contact.html            /contact            301
 /pricing.html            /pricing            301
-/offerings.html          /offerings          301
 /insights.html           /insights           301
+/my-apps.html            /my-apps            301
+
+# ── offerings.html retired 2026-08-24: consolidated onto /my-apps, the
+# only page wired to the real server-verified gate (kcm-app-gate.js /
+# /api/verify-session). offerings.html itself is also gutted to a static
+# redirect stub as defense-in-depth in case anything ever bypasses this file.
+/offerings.html          /my-apps            301
+/offerings               /my-apps            301
 /signup.html             /signup             301
 /privacy-policy.html     /privacy-policy     301
 /terms-of-service.html   /terms-of-service   301
@@ -30,7 +37,7 @@
 /about/              /about              301
 /contact/            /contact            301
 /pricing/            /pricing            301
-/offerings/          /offerings          301
+/offerings/          /my-apps          301
 /insights/           /insights           301
 /signup/             /signup             301
 /privacy-policy/     /privacy-policy     301
