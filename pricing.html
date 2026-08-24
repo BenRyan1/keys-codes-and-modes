@@ -418,12 +418,15 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
         // ─────────────────────────────────────────────────────────────────────────
 
         // ── STRIPE SUCCESS URL SETUP (do this once in Stripe dashboard) ──────────
-        // For each payment link, set the success URL to:
-        // Student Monthly:      https://keyscodesandmodes.com/pricing.html?success=true&tier=student_monthly
-        // Student Yearly:       https://keyscodesandmodes.com/pricing.html?success=true&tier=student_yearly
-        // Professional Monthly: https://keyscodesandmodes.com/pricing.html?success=true&tier=professional_monthly
-        // Professional Yearly:  https://keyscodesandmodes.com/pricing.html?success=true&tier=professional_yearly
-        // Founder's Circle:     https://keyscodesandmodes.com/pricing.html?success=true&tier=founders_circle
+        // For each payment link, the success URL must include the real
+        // Stripe session_id template variable — this is what actually gets
+        // verified server-side; the URL can no longer be hand-typed to
+        // grant access. Set each link's success URL to:
+        // Student Monthly:      https://keyscodesandmodes.com/pricing.html?success=true&tier=student_monthly&session_id={CHECKOUT_SESSION_ID}
+        // Student Yearly:       https://keyscodesandmodes.com/pricing.html?success=true&tier=student_yearly&session_id={CHECKOUT_SESSION_ID}
+        // Professional Monthly: https://keyscodesandmodes.com/pricing.html?success=true&tier=professional_monthly&session_id={CHECKOUT_SESSION_ID}
+        // Professional Yearly:  https://keyscodesandmodes.com/pricing.html?success=true&tier=professional_yearly&session_id={CHECKOUT_SESSION_ID}
+        // Founder's Circle:     https://keyscodesandmodes.com/pricing.html?success=true&tier=founders_circle&session_id={CHECKOUT_SESSION_ID}
         // ─────────────────────────────────────────────────────────────────────────
 
         // ── Access code redemption ────────────────────────────────────────────────
@@ -449,11 +452,16 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 if (data.ok) {
-                    // Set all token keys — matches offerings.html gate exactly
+                    // Server-verified session token (2026-08-24) — this is
+                    // what my-apps.html / kcm-app-gate.js actually check via
+                    // /api/verify-session. Legacy keys kept only in case an
+                    // older cached page still reads them.
+                    if (data.token) {
+                        localStorage.setItem('kcm_session_token', data.token);
+                    }
                     localStorage.setItem('kcm_access', 'kcm_school_2026');
                     localStorage.setItem('kcm_access_granted', 'true');
                     localStorage.setItem('kcm_tier', data.tier || 'school');
-                    // Legacy keys (keep for backward compatibility)
                     localStorage.setItem('validAccessCode', 'true');
                     localStorage.setItem('paidMember', 'true');
                     localStorage.setItem('accessGranted', 'true');
@@ -463,7 +471,7 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
 
                     submitBtn.textContent = '✓ Code Accepted!';
                     submitBtn.style.background = 'linear-gradient(135deg, #008080, #005f5f)';
-                    setTimeout(function() { window.location.href = '/offerings.html'; }, 800);
+                    setTimeout(function() { window.location.href = '/my-apps'; }, 800);
                 } else {
                     codeInput.style.borderColor = '#FF4040';
                     codeInput.placeholder = 'Invalid code — please try again';
@@ -488,26 +496,60 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
         /* Handle Stripe success returns */
         var urlParams = new URLSearchParams(window.location.search);
 
-        // Stripe success — set tokens then redirect to offerings
+        // Stripe success — verify the real session_id SERVER-SIDE before
+        // granting anything. (2026-08-24: previously this trusted the bare
+        // "?success=true&tier=..." URL, which anyone could type by hand to
+        // unlock every app with zero payment. Now access is only granted
+        // if Stripe itself confirms this exact session was paid.)
         if (urlParams.get('success') === 'true') {
-            var tier = urlParams.get('tier') || 'premium';
-            var tokenMap = {
-                'student_monthly':      'kcm_premium_2026',
-                'student_yearly':       'kcm_premium_2026',
-                'professional_monthly': 'kcm_premium_2026',
-                'professional_yearly':  'kcm_premium_2026',
-                'founders_circle':      'kcm_founder_2026'
-            };
-            var token = tokenMap[tier] || 'kcm_premium_2026';
-            // Set tokens — matches offerings.html gate exactly
-            localStorage.setItem('kcm_access', token);
-            localStorage.setItem('kcm_access_granted', 'true');
-            localStorage.setItem('kcm_tier', tier);
-            // Legacy keys
-            localStorage.setItem('paidMember', 'true');
-            localStorage.setItem('userTier', tier);
-            try { trackEvent('purchase', {'event_category': 'Pricing', 'event_label': tier}); } catch(e) {}
-            setTimeout(function() { window.location.href = '/offerings.html'; }, 1000);
+            var tier = urlParams.get('tier') || 'professional_monthly';
+            var stripeSessionId = urlParams.get('session_id') || '';
+
+            var pendingMsg = document.createElement('div');
+            pendingMsg.id = 'stripeVerifyBanner';
+            pendingMsg.style.cssText = 'background:#008080;color:#fff;text-align:center;padding:1rem 2rem;font-weight:700;font-size:1rem;letter-spacing:.5px;';
+            pendingMsg.textContent = 'Confirming your payment…';
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.insertBefore(pendingMsg, document.body.firstChild);
+            });
+
+            if (!stripeSessionId) {
+                // No session_id at all — either a stale bookmarked/shared
+                // link or someone hand-typing the URL. Fail closed.
+                document.addEventListener('DOMContentLoaded', function() {
+                    pendingMsg.style.background = '#FF4040';
+                    pendingMsg.textContent = "We couldn't confirm that payment automatically. If you just paid, please contact support with your receipt.";
+                });
+            } else {
+                fetch('https://keyscodesandmodes.com/api/verify-stripe-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: stripeSessionId, tier: tier })
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.ok && data.token) {
+                        localStorage.setItem('kcm_session_token', data.token);
+                        // Legacy keys kept only in case an older cached page
+                        // still reads them — the token above is what
+                        // actually gates access now.
+                        localStorage.setItem('kcm_access_granted', 'true');
+                        localStorage.setItem('kcm_tier', data.tier || tier);
+                        localStorage.setItem('paidMember', 'true');
+                        localStorage.setItem('userTier', data.tier || tier);
+                        try { trackEvent('purchase', {'event_category': 'Pricing', 'event_label': data.tier || tier}); } catch(e) {}
+                        pendingMsg.textContent = 'Payment confirmed! Redirecting…';
+                        setTimeout(function() { window.location.href = '/my-apps'; }, 800);
+                    } else {
+                        pendingMsg.style.background = '#FF4040';
+                        pendingMsg.textContent = "We couldn't confirm that payment. If you were just charged, please contact support with your receipt.";
+                    }
+                })
+                .catch(function() {
+                    pendingMsg.style.background = '#FF4040';
+                    pendingMsg.textContent = 'Connection error confirming payment — please refresh this page.';
+                });
+            }
         }
 
         // Bounced from offerings (no access) — show teal banner
