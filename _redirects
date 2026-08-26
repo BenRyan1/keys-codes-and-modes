@@ -58,4 +58,29 @@
 
 # ── Extensionless aliases
 /refund-policy  /refund-policy      301
-/privacy        /priv
+/privacy        /privacy-policy     301
+
+# ── Legacy /auth/ system retired 2026-08-26: this was a full parallel copy of
+# an earlier site redesign (login, signup, gateway, password, welcome-*,
+# offerings, terms) that stayed fully deployed and unblocked long after being
+# superseded. offerings.html inside it used only a client-side localStorage
+# check (`accessGranted === 'true'`) - trivially set from devtools - and its
+# "Launch App" buttons pointed at apps that had no real gate at all
+# (Sacred-Geometry-Musical-face.html, S-Geo-*, chromatic-wheel-of-sound.html).
+# Two live gated apps (kcm-midi-chromatic-circle, rhythm-geometry-lab) linked
+# a "Control Panel" button here; those now point at /my-apps instead.
+/auth/*  /my-apps  301
+
+# ── apps/password.html retired 2026-08-26: had the actual premium/founder
+# passwords ("KCM2026Premium!" / "KCM2026Founder!") hardcoded in plaintext,
+# visible to anyone via view-source. Verified it could not unlock any
+# properly-gated app (my-apps.html only trusts /api/verify-session, never
+# the localStorage flags this page set) but it was still a live, linked
+# "Pricing" CTA from two gated apps (modal-stencil-player,
+# modal-stencil-playerB4) - both now point at /pricing instead. Its
+# unlinked companions (login.html, dashboard-free.html,
+# thank-you-password.html) were removed with it.
+/apps/password.html             /pricing  301
+/apps/login.html                /pricing  301
+/apps/dashboard-free.html       /pricing  301
+/apps/thank-you-password.html   /pricing  301
