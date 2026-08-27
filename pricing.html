@@ -438,7 +438,7 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
             event.preventDefault();
             var codeInput = document.getElementById('accessCodeInput');
             var submitBtn = event.target.querySelector('button[type="submit"]');
-            var code = codeInput.value.trim();
+            var code = codeInput.value.trim().toUpperCase();
             if (!code) return;
 
             submitBtn.textContent = 'Checking...';
