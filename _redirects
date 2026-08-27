@@ -23,6 +23,21 @@
 # redirect stub as defense-in-depth in case anything ever bypasses this file.
 /offerings.html          /my-apps            301
 /offerings               /my-apps            301
+
+# ── music-theory-pro.html retired from root and /mtp/ 2026-08-26: it was an
+# ungated duplicate of the real, gated app at /apps/music-theory-pro.html
+# (this copy was actually the newer build — its feature set was merged INTO
+# apps/music-theory-pro.html before deleting these). Redirect stubs here are
+# defense-in-depth in case anything still links to the old paths.
+/music-theory-pro.html   /my-apps            301
+/music-theory-pro        /my-apps            301
+
+# ── entire /mtp/ folder removed 2026-08-26: mtp/index.html embedded the same
+# app again via iframe (mtp-tool.html, byte-for-byte the same 279 functions
+# as the fixed apps/music-theory-pro.html, zero unique content), fully
+# ungated, at a short and easily-guessed path. Blanket rule covers it and
+# any future stray file dropped in that folder.
+/mtp/*  /my-apps  301
 /signup.html             /signup             301
 /privacy-policy.html     /privacy-policy     301
 /terms-of-service.html   /terms-of-service   301
@@ -48,4 +63,29 @@
 
 # ── Extensionless aliases
 /refund-policy  /refund-policy      301
-/privacy        /priv
+/privacy        /privacy-policy     301
+
+# ── Legacy /auth/ system retired 2026-08-26: this was a full parallel copy of
+# an earlier site redesign (login, signup, gateway, password, welcome-*,
+# offerings, terms) that stayed fully deployed and unblocked long after being
+# superseded. offerings.html inside it used only a client-side localStorage
+# check (`accessGranted === 'true'`) - trivially set from devtools - and its
+# "Launch App" buttons pointed at apps that had no real gate at all
+# (Sacred-Geometry-Musical-face.html, S-Geo-*, chromatic-wheel-of-sound.html).
+# Two live gated apps (kcm-midi-chromatic-circle, rhythm-geometry-lab) linked
+# a "Control Panel" button here; those now point at /my-apps instead.
+/auth/*  /my-apps  301
+
+# ── apps/password.html retired 2026-08-26: had the actual premium/founder
+# passwords ("KCM2026Premium!" / "KCM2026Founder!") hardcoded in plaintext,
+# visible to anyone via view-source. Verified it could not unlock any
+# properly-gated app (my-apps.html only trusts /api/verify-session, never
+# the localStorage flags this page set) but it was still a live, linked
+# "Pricing" CTA from two gated apps (modal-stencil-player,
+# modal-stencil-playerB4) - both now point at /pricing instead. Its
+# unlinked companions (login.html, dashboard-free.html,
+# thank-you-password.html) were removed with it.
+/apps/password.html             /pricing  301
+/apps/login.html                /pricing  301
+/apps/dashboard-free.html       /pricing  301
+/apps/thank-you-password.html   /pricing  301
