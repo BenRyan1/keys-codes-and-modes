@@ -226,41 +226,7 @@
             margin-bottom: 30px;
             border: 2px solid #1a1a2e;
         }
-
-        .status-ticker {
-            margin-top: 14px;
-            padding: 10px 16px;
-            background: rgba(0, 212, 255, 0.08);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 8px;
-            color: #FFB81C;
-            font-size: 0.95em;
-            font-weight: 600;
-            text-align: center;
-            min-height: 1.2em;
-        }
-
-        .mini-keyboard-wrap {
-            margin-top: 14px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .mini-keyboard {
-            width: 100%;
-            max-width: 420px;
-            height: auto;
-        }
-
-        .sum-wave-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #00d4ff;
-        }
-
+        
         #waveCanvas {
             width: 100%;
             height: 250px;
@@ -408,13 +374,10 @@
         
         .audio-buttons {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 10px;
             margin-bottom: 15px;
             justify-content: space-between;
-        }
-        .audio-buttons .audio-btn {
-            min-width: 130px;
         }
         
         .audio-btn {
@@ -457,10 +420,10 @@
                 </div>
             </a>
             <div class="nav-links">
-                <a href="octave-wave-visualizer-chromatic-spheres.html" class="nav-link alt">🎨 12-Note Chromatic Console</a>
-                <a href="octave-wave-visualizer-3d.html" class="nav-link alt">◎ Solid Spheres</a>
-                <a href="octave-wave-visualizer-wireframe-spheres.html" class="nav-link alt">◌ Wireframe Spheres</a>
-                <a href="octave-wave-visualizer-zplane.html" class="nav-link alt">📐 Z-Plane Waterfall</a>
+                <a href="/apps/octave-wave-visualizer-chromatic-spheres.html" class="nav-link alt">🎨 12-Note Chromatic Console</a>
+                <a href="/apps/octave-wave-visualizer-3d.html" class="nav-link alt">◎ Solid Spheres</a>
+                <a href="/apps/octave-wave-visualizer-wireframe-spheres.html" class="nav-link alt">◌ Wireframe Spheres</a>
+                <a href="/apps/octave-wave-visualizer-zplane.html" class="nav-link alt">📐 Z-Plane Waterfall</a>
                 <a href="/index.html" class="nav-link">← Back to Home</a>
             </div>
         </div>
@@ -508,13 +471,32 @@
         
         <div class="wave-canvas-container">
             <canvas id="waveCanvas"></canvas>
-            <div id="statusTicker" class="status-ticker">Select a note or press a play button to begin.</div>
-            <div class="mini-keyboard-wrap">
-                <svg id="miniKeyboard" viewBox="0 0 350 90" class="mini-keyboard"></svg>
+        </div>
+        
+        <div class="controls-panel">
+            <div class="control-group">
+                <h3>🎵 Audio Controls</h3>
+                <div class="audio-buttons">
+                    <button class="audio-btn" onclick="playCurrentNote()">🎹 Play Current</button>
+                    <button class="audio-btn" onclick="playAllOctaves()">🔊 Play All</button>
+                    <button class="audio-btn" onclick="playOctaveScale()">🎼 Play Scale</button>
+                    <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
+                </div>
+                <div class="pause-control" style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+                    <label for="octavePauseSlider" style="font-size:12px; color:#00d4ff;">Play All Chord Length</label>
+                    <input type="range" id="octavePauseSlider" min="50" max="600" step="10" value="200"
+                           oninput="setOctavePause(this.value)">
+                    <span id="octavePauseLabel" style="font-size:12px; color:#FFB81C; min-width:48px;">200 ms</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>🎹 Select Note (Changes All Frequencies)</h3>
+                <div class="note-buttons" id="noteButtons"></div>
             </div>
         </div>
-
-        <!-- Individual Octave Audio Playback - moved right below the display per Ben -->
+        
+        <!-- Individual Octave Audio Playback -->
         <div class="individual-octaves">
             <h3>🎯 Individual Octave Audio</h3>
             <div class="octave-buttons-grid">
@@ -547,36 +529,8 @@
                 </button>
             </div>
         </div>
-
-        <div class="controls-panel">
-            <div class="control-group">
-                <h3>🎵 Audio Controls</h3>
-                <div class="audio-buttons">
-                    <button class="audio-btn" onclick="playCurrentNote()">🎹 Play Current</button>
-                    <button class="audio-btn" onclick="playAllOctaves()">🔊 Play All</button>
-                    <button class="audio-btn" onclick="playBuildupSequence()">➕ Build Sequence</button>
-                    <button class="audio-btn" onclick="playOctaveScale()">🎼 Play Scale</button>
-                    <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
-                </div>
-                <div class="pause-control" style="margin-top:10px; display:flex; align-items:center; gap:8px;">
-                    <label for="octavePauseSlider" style="font-size:12px; color:#00d4ff;">Build Sequence Note Spacing</label>
-                    <input type="range" id="octavePauseSlider" min="50" max="600" step="10" value="200"
-                           oninput="setOctavePause(this.value)">
-                    <span id="octavePauseLabel" style="font-size:12px; color:#FFB81C; min-width:48px;">200 ms</span>
-                </div>
-                <div class="sum-wave-control">
-                    <input type="checkbox" id="sumWaveToggle" onchange="toggleSumWave(this.checked)">
-                    <label for="sumWaveToggle">Σ Show Sum Wave (true additive synthesis - what all the active waves add up to)</label>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <h3>🎹 Select Note (Changes All Frequencies)</h3>
-                <div class="note-buttons" id="noteButtons"></div>
-            </div>
-        </div>
-
-        <!-- Octave Color Legend -->
+        
+        <!-- Octave Color Legend - Moved below Select Note -->
         <div class="octave-legend">
             <h3>🌈 Octave Colors & Frequencies</h3>
             <div class="legend-grid" id="legendGrid"></div>
@@ -598,7 +552,7 @@
             const container = canvas.parentElement;
             const rect = container.getBoundingClientRect();
             canvas.width = rect.width - 40;
-            canvas.height = 314; // Increased to also fit the frequency-ratio line under each marker
+            canvas.height = 300; // Increased height to accommodate labels
             
             console.log(`✅ Canvas setup: ${canvas.width} x ${canvas.height}`);
         }
@@ -617,57 +571,18 @@
             return 16.35 * Math.pow(2, semitonesFromC0 / 12);
         }
         
-        // ★ KCM 12-Color Chromatic Spectrum(TM) - permanent standard hex per
-        // note (see /topics/kcm-visual-standards.md). Octave color now
-        // follows whichever note is selected, shaded dark->light by
-        // register, instead of a fixed nine-color rainbow that ignored
-        // the note selector. Same math as the Z-Plane Waterfall visualizer,
-        // so a given note reads as the same color family across both apps.
-        const noteColors = {
-            'C':  '#FFFF00', 'C#': '#FFC400', 'D':  '#FF8000', 'D#': '#FF4000',
-            'E':  '#FF0000', 'F':  '#C4007F', 'F#': '#8000FF', 'G':  '#4000FF',
-            'G#': '#0000FF', 'A':  '#007FFF', 'A#': '#00FF80', 'B':  '#80FF00'
-        };
-        function hexToRgb(hex) {
-            const n = parseInt(hex.slice(1), 16);
-            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-        }
-        function rgbToHexStr(r, g, b) {
-            const c = v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
-            return '#' + c(r) + c(g) + c(b);
-        }
-        // Continuous dark -> base -> light ramp: octave 0 is a 30%-brightness
-        // deep tint, octave 4 is the true fully-saturated key color, octave
-        // 8 is blended 65% toward white. One continuous curve (no jump).
-        function octaveShadeRGB(octave) {
-            const [r, g, b] = hexToRgb(noteColors[currentNote] || '#FFFFFF');
-            const t = octave / 8;
-            const DARK_FLOOR = 0.30;
-            const LIGHT_CEIL = 0.65;
-            if (t <= 0.5) {
-                const k = t / 0.5;
-                const dim = DARK_FLOOR + (1 - DARK_FLOOR) * k;
-                return [r * dim, g * dim, b * dim];
-            }
-            const k = (t - 0.5) / 0.5;
-            const blend = LIGHT_CEIL * k;
-            return [r + (255 - r) * blend, g + (255 - g) * blend, b + (255 - b) * blend];
-        }
-        function octaveShadeHexStr(octave) {
-            const [r, g, b] = octaveShadeRGB(octave);
-            return rgbToHexStr(r, g, b);
-        }
-        // Same-shape object as the old fixed array, computed live per call
-        // so every reference site (stroke color, glow, legend, labels)
-        // automatically follows the current note without further changes.
-        function octaveColorObj(octave) {
-            const [r, g, b] = octaveShadeRGB(octave);
-            return {
-                name: `${currentNote}${octave}`,
-                color: rgbToHexStr(r, g, b),
-                glow: `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 0.4)`
-            };
-        }
+        // Octave colors
+        const octaveColors = [
+            { name: 'C0', color: '#FFFF00', glow: 'rgba(255, 255, 0, 0.3)' },
+            { name: 'C1', color: '#FF8000', glow: 'rgba(255, 128, 0, 0.3)' },
+            { name: 'C2', color: '#FF0000', glow: 'rgba(255, 0, 0, 0.3)' },
+            { name: 'C3', color: '#FF00FF', glow: 'rgba(255, 0, 255, 0.3)' },
+            { name: 'C4', color: '#8000FF', glow: 'rgba(128, 0, 255, 0.3)' },
+            { name: 'C5', color: '#0080FF', glow: 'rgba(0, 128, 255, 0.3)' },
+            { name: 'C6', color: '#00FFFF', glow: 'rgba(0, 255, 255, 0.3)' },
+            { name: 'C7', color: '#00FF80', glow: 'rgba(0, 255, 128, 0.3)' },
+            { name: 'C8', color: '#80FF00', glow: 'rgba(128, 255, 0, 0.3)' }
+        ];
         
         // Animation state
         let frameCount = 0;
@@ -677,30 +592,6 @@
         let playingOctaves = [false, false, false, false, false, false, false, false, false];
         let highlightedOctave = -1; // Currently highlighted octave (single-note playback)
         let allPlaying = false; // True while "Play All" is sounding every octave together
-        let buildupInProgress = false; // True during "Build Sequence" (add-one-until-complete)
-        let buildupActive = [false, false, false, false, false, false, false, false, false];
-        let showSumWave = false; // "Show Sum Wave" toggle - draws the true additive composite
-        function toggleSumWave(checked) {
-            showSumWave = checked;
-        }
-        // Which octaves currently count toward the sum-wave composite.
-        function getContributingOctaves() {
-            if (buildupInProgress) {
-                const list = [];
-                for (let i = 0; i <= 8; i++) if (buildupActive[i]) list.push(i);
-                return list;
-            }
-            return [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        }
-
-        // ★ ON-SCREEN STATUS READOUT ★
-        // Everything that used to only print to the (usually invisible)
-        // browser console now also lands here, in plain sight under the
-        // canvas, so the explanation is actually visible while learning.
-        function setStatus(text) {
-            const el = document.getElementById('statusTicker');
-            if (el) el.textContent = text;
-        }
 
         // Configurable inter-note pause for sequential octave playback (Claim R-3)
         let octavePauseSec = 0.2;
@@ -721,7 +612,7 @@
             const centerY = canvas.height / 2;
             const amplitude = 80; // Increased from 30 for much taller waves!
             const leftMargin = 75; // Space for Y-axis labels
-            const bottomMargin = 44; // Space for X-axis labels (note/octave, Hz, and ratio-to-C0)
+            const bottomMargin = 30; // Space for X-axis labels
             
             // ★ DRAW LEFT Y-AXIS LABELS (Amplitude/Octave indicators) ★
             ctx.save();
@@ -752,11 +643,9 @@
             ctx.restore();
             
             // Draw all 9 octaves - NOW BASED ON ACTUAL FREQUENCY!
-            const wavelengths = []; // cached per octave, reused by the sum-wave pass below
-            const frequencyRatios = [];
             for (let octave = 0; octave <= 8; octave++) {
                 const frequency = getFrequency(currentNote, octave);
-
+                
                 // ★ WAVELENGTH BASED ON ACTUAL FREQUENCY ★
                 // Lower frequencies = wider waves (more spread out)
                 // Higher frequencies = tighter waves (more compressed)
@@ -772,30 +661,14 @@
                 const frequencyRatio = frequency / baseFrequency;
                 const baseWavelength = (canvas.width - leftMargin) / 2; // Base for C0
                 const wavelength = baseWavelength / Math.sqrt(frequencyRatio);
-                wavelengths[octave] = wavelength;
-                frequencyRatios[octave] = frequencyRatio;
-
+                
                 ctx.beginPath();
-                ctx.strokeStyle = octaveColorObj(octave).color;
+                ctx.strokeStyle = octaveColors[octave].color;
                 
                 // ★ VISUAL HIGHLIGHTING FOR PLAYING OCTAVES ★
                 const isHighlighted = (highlightedOctave === octave);
 
-                if (buildupInProgress) {
-                    // "Build Sequence": octaves join one at a time and each
-                    // one keeps sounding once added, so the picture builds
-                    // up - joined waves stay bright, waves not yet added
-                    // stay dim - until all 9 are lit together (complete).
-                    if (buildupActive[octave]) {
-                        ctx.lineWidth = 4;
-                        ctx.shadowBlur = 20;
-                        ctx.globalAlpha = 1.0;
-                    } else {
-                        ctx.lineWidth = 1;
-                        ctx.shadowBlur = 0;
-                        ctx.globalAlpha = 0.12;
-                    }
-                } else if (allPlaying) {
+                if (allPlaying) {
                     // "Play All" is additive: every octave sounds together,
                     // so every wave lights up together too - sight and
                     // sound both additive, not a one-at-a-time sequence.
@@ -819,80 +692,29 @@
                     ctx.globalAlpha = 0.8;
                 }
                 
-                ctx.shadowColor = octaveColorObj(octave).glow;
-
+                ctx.shadowColor = octaveColors[octave].glow;
+                
                 for (let x = leftMargin; x <= canvas.width; x++) {
                     const adjustedX = x - leftMargin;
                     const y = centerY + amplitude * Math.sin((adjustedX / wavelength) * 2 * Math.PI + phases[octave]);
-
+                    
                     if (x === leftMargin) {
                         ctx.moveTo(x, y);
                     } else {
                         ctx.lineTo(x, y);
                     }
                 }
-
+                
                 ctx.stroke();
                 ctx.shadowBlur = 0;
                 ctx.globalAlpha = 1.0; // Reset alpha
-            }
-
-            // ★ SUM WAVE (TRUE ADDITIVE SYNTHESIS, MADE VISIBLE) ★
-            // Everything above draws the 9 octaves independently, overlapping
-            // but never actually combined. This pass draws what you get when
-            // you literally add their instantaneous values together - the
-            // real definition of additive synthesis, not just the metaphor.
-            // Only counts whichever octaves are currently "in" (see
-            // getContributingOctaves), so during Build Sequence this line
-            // visibly grows more complex as each octave joins.
-            if (showSumWave) {
-                const contributing = getContributingOctaves();
-                if (contributing.length > 0) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.shadowColor = 'rgba(255,255,255,0.6)';
-                    ctx.shadowBlur = 12;
-                    ctx.lineWidth = 2.5;
-                    ctx.globalAlpha = 0.95;
-                    ctx.setLineDash([]);
-                    // Normalized so the composite's peak stays roughly in the
-                    // same visual range as one octave's wave, regardless of
-                    // how many octaves are currently summed together.
-                    const sumScale = amplitude / 9;
-                    for (let x = leftMargin; x <= canvas.width; x++) {
-                        const adjustedX = x - leftMargin;
-                        let sum = 0;
-                        for (const octave of contributing) {
-                            sum += Math.sin((adjustedX / wavelengths[octave]) * 2 * Math.PI + phases[octave]);
-                        }
-                        const y = centerY + sum * sumScale;
-                        if (x === leftMargin) {
-                            ctx.moveTo(x, y);
-                        } else {
-                            ctx.lineTo(x, y);
-                        }
-                    }
-                    ctx.stroke();
-                    ctx.shadowBlur = 0;
-                    ctx.globalAlpha = 1.0;
-
-                    ctx.font = 'bold 11px Arial';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'alphabetic';
-                    ctx.fillText(`Σ sum of ${contributing.length}/9 waves`, leftMargin + 8, 22);
-                }
-            }
-
-            // ★ PHASE INCREMENT NOW BASED ON ACTUAL FREQUENCY! ★
-            // Higher frequency = faster animation. Done once per frame,
-            // after both the individual-wave pass and the sum-wave pass,
-            // so they read the same phase values within a frame.
-            for (let octave = 0; octave <= 8; octave++) {
-                const phaseSpeed = 0.01 * frequencyRatios[octave] / 10; // Scaled for visibility
+                
+                // ★ PHASE INCREMENT NOW BASED ON ACTUAL FREQUENCY! ★
+                // Higher frequency = faster animation
+                const phaseSpeed = 0.01 * frequencyRatio / 10; // Scaled for visibility
                 phases[octave] += phaseSpeed;
             }
-
+            
             // ★ DRAW BOTTOM X-AXIS LABELS (Frequency markers) ★
             ctx.save();
             ctx.font = 'bold 10px Arial';
@@ -919,19 +741,12 @@
                 ctx.stroke();
                 
                 // Draw note + octave label
-                ctx.fillStyle = octaveColorObj(markerOctave).color;
+                ctx.fillStyle = octaveColors[markerOctave].color;
                 ctx.fillText(`${currentNote}${markerOctave}`, x, axisY + 2);
                 // Draw frequency label
                 ctx.fillStyle = '#F4D03F';
                 ctx.font = 'bold 9px Arial';
                 ctx.fillText(`${freq.toFixed(0)}Hz`, x, axisY + 14);
-                // ★ FREQUENCY RATIO LABEL ★ - states the octave-doubling
-                // relationship in numbers, not just implied by eye: every
-                // step up is exactly double the frequency of octave 0.
-                ctx.fillStyle = '#00d4ff';
-                ctx.font = 'bold 9px Arial';
-                const ratioToC0 = Math.round(frequencyRatios[markerOctave]);
-                ctx.fillText(`${ratioToC0}:1 vs ${currentNote}0`, x, axisY + 26);
                 ctx.font = 'bold 10px Arial';
             }
             
@@ -972,14 +787,10 @@
             
             // Update legend with new frequencies
             updateLegend();
-
+            
             // Update individual octave button labels
             updateOctaveLabels();
-
-            // Update the on-screen mini keyboard highlight
-            updateKeyboardHighlight();
-            setStatus(`Note set to ${note} - all 9 octaves now show ${note}'s frequencies and color.`);
-
+            
             // Reset phases for smooth transition
             phases = [0, 0, 0, 0, 0, 0, 0, 0, 0];
             
@@ -1013,46 +824,36 @@
         // Initialize octave legend
         function initLegend() {
             const container = document.getElementById('legendGrid');
-            for (let i = 0; i <= 8; i++) {
-                const octave = octaveColorObj(i);
+            octaveColors.forEach((octave, i) => {
                 const item = document.createElement('div');
                 item.className = 'legend-item';
-
+                
                 const colorBox = document.createElement('div');
                 colorBox.className = 'color-box';
-                colorBox.id = `legend-swatch-${i}`;
                 colorBox.style.background = octave.color;
                 colorBox.style.boxShadow = `0 0 10px ${octave.glow}`;
-
+                
                 const text = document.createElement('div');
                 text.className = 'legend-text';
                 const freq = getFrequency(currentNote, i);
                 text.textContent = `${currentNote}${i}: ${freq.toFixed(1)} Hz`;
                 text.id = `legend-${i}`;
-
+                
                 item.appendChild(colorBox);
                 item.appendChild(text);
                 container.appendChild(item);
-            }
+            });
         }
-
-        // Update legend colors and frequencies when note changes - colors now
-        // follow the selected note's real KCM color, so the swatch needs
-        // refreshing too, not just the text.
+        
+        // Update legend frequencies when note changes
         function updateLegend() {
-            for (let i = 0; i <= 8; i++) {
-                const octave = octaveColorObj(i);
-                const swatch = document.getElementById(`legend-swatch-${i}`);
-                if (swatch) {
-                    swatch.style.background = octave.color;
-                    swatch.style.boxShadow = `0 0 10px ${octave.glow}`;
-                }
+            octaveColors.forEach((octave, i) => {
                 const text = document.getElementById(`legend-${i}`);
                 if (text) {
                     const freq = getFrequency(currentNote, i);
                     text.textContent = `${currentNote}${i}: ${freq.toFixed(1)} Hz`;
                 }
-            }
+            });
         }
         
         // Update individual octave button labels
@@ -1082,11 +883,9 @@
             
             // Visual highlight
             highlightedOctave = octave;
-            const ratio = Math.round(Math.pow(2, octave));
             console.log(`🔊 Playing ${currentNote}${octave} at ${freq.toFixed(2)} Hz`);
-            console.log(`🌊 Watch octave ${octave} (${octaveColorObj(octave).name}) light up!`);
-            setStatus(`Playing ${currentNote}${octave}: ${freq.toFixed(1)} Hz (${ratio}:1 vs ${currentNote}0)`);
-
+            console.log(`🌊 Watch octave ${octave} (${octaveColors[octave].name.replace('C', currentNote)}) light up!`);
+            
             setTimeout(() => {
                 highlightedOctave = -1;
             }, 1500);
@@ -1121,8 +920,7 @@
             highlightedOctave = 4; // Highlight C4 (middle octave)
             console.log(`🔊 Playing ${currentNote}4 at ${freq.toFixed(2)} Hz`);
             console.log(`🌊 Watch octave 4 (purple wave) light up!`);
-            setStatus(`Playing ${currentNote}4 (middle octave): ${freq.toFixed(1)} Hz`);
-
+            
             setTimeout(() => {
                 highlightedOctave = -1;
             }, 1000);
@@ -1145,7 +943,6 @@
             const startTime = audioContext.currentTime;
             const duration = 1.0 + (octavePauseSec * 3); // ~1.15s-2.8s
             const perOscGain = 0.09; // kept low since 9 oscillators sum
-            setStatus(`Play All: all 9 octaves of ${currentNote} sounding together as one chord.`);
 
             for (let i = 0; i <= 8; i++) {
                 const freq = getFrequency(currentNote, i);
@@ -1174,64 +971,7 @@
                 console.log('✅ Additive chord complete - visual sync ended');
             }, duration * 1000);
         }
-
-        function playBuildupSequence() {
-            initAudio();
-
-            console.log('🎵 ═══════════════════════════════════════');
-            console.log('🔊 BUILD SEQUENCE: adding one octave at a time');
-            console.log('🎨 Each wave joins and keeps ringing, until all 9 are complete');
-            console.log('🎵 ═══════════════════════════════════════');
-
-            // ★ ADD-ONE-AT-A-TIME UNTIL COMPLETE ★
-            // Unlike "Play All" (everything at once), each octave here
-            // enters on top of the ones already sounding and sustains -
-            // nothing stops early. By the last entrance all 9 are ringing
-            // together, then the whole chord releases as one.
-            const stepDelay = octavePauseSec;        // seconds between entrances
-            const holdAfterComplete = 1.2;            // seconds the full chord rings once complete
-            const startTime = audioContext.currentTime;
-            const lastEntrance = startTime + 8 * stepDelay;
-            const releaseTime = lastEntrance + holdAfterComplete;
-            const perOscGain = 0.09; // kept low since up to 9 oscillators sum together
-
-            buildupInProgress = true;
-            buildupActive = [false, false, false, false, false, false, false, false, false];
-
-            for (let i = 0; i <= 8; i++) {
-                const freq = getFrequency(currentNote, i);
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-
-                osc.frequency.value = freq;
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-
-                const enterTime = startTime + i * stepDelay;
-                gain.gain.setValueAtTime(0, enterTime);
-                gain.gain.linearRampToValueAtTime(perOscGain, enterTime + 0.05); // quick fade-in, avoids a click
-                gain.gain.setValueAtTime(perOscGain, releaseTime - 0.2);
-                gain.gain.exponentialRampToValueAtTime(0.001, releaseTime);
-
-                osc.start(enterTime);
-                osc.stop(releaseTime + 0.05);
-
-                setTimeout(() => {
-                    buildupActive[i] = true;
-                    console.log(`🌊 Octave ${i} (${currentNote}${i}: ${freq.toFixed(1)} Hz) ADDED - ${i + 1}/9 now sounding together`);
-                    const ratio = Math.round(Math.pow(2, i));
-                    setStatus(`${currentNote}${i} added (${freq.toFixed(1)} Hz, ${ratio}:1 vs ${currentNote}0) - ${i + 1} of 9 octaves now sounding`);
-                }, i * stepDelay * 1000);
-            }
-
-            setTimeout(() => {
-                buildupInProgress = false;
-                buildupActive = [false, false, false, false, false, false, false, false, false];
-                console.log('✅ Build Sequence complete and released');
-                setStatus('Build Sequence complete - all 9 octaves sounded together, then released.');
-            }, (releaseTime - startTime) * 1000 + 100);
-        }
-
+        
         function playOctaveScale() {
             initAudio();
             
@@ -1258,8 +998,7 @@
             console.log('🌊 Watch waves CHANGE and octaves RISE!');
             console.log(`📊 Scale: ${scaleNotes.map((n, i) => `${n}${octaves[i]}`).join(' → ')}`);
             console.log('🎵 ═══════════════════════════════════════');
-            setStatus(`Playing ascending chromatic scale from ${currentNote}...`);
-
+            
             scaleNotes.forEach((note, i) => {
                 const octave = octaves[i];
                 const freq = getFrequency(note, octave);
@@ -1290,36 +1029,32 @@
                         btn.classList.toggle('active', btn.textContent === note);
                     });
                     
-                    // Update legend and keyboard
+                    // Update legend
                     updateLegend();
-                    updateKeyboardHighlight();
-
+                    
                     console.log(`🎵 ${note}${octave}: ${freq.toFixed(1)} Hz - WAVE ${octave} HIGHLIGHTED`);
-                    setStatus(`Scale: ${note}${octave} (${freq.toFixed(1)} Hz) - note ${i + 1} of 13`);
                 }, i * 200);
             });
-
+            
             // Restore original note after scale completes (13 notes now)
             setTimeout(() => {
                 highlightedOctave = -1;
                 currentNote = originalNote;
-
+                
                 // Restore dropdown
                 const dropdown = document.getElementById('noteSelector');
                 if (dropdown) dropdown.value = originalNote;
-
+                
                 // Update button styling
                 document.querySelectorAll('.note-btn').forEach(btn => {
                     btn.classList.toggle('active', btn.textContent === originalNote);
                 });
-
-                // Restore legend and keyboard
+                
+                // Restore legend
                 updateLegend();
-                updateKeyboardHighlight();
-
+                
                 console.log(`✅ Scale complete - restored to ${originalNote}`);
                 console.log('🎵 ═══════════════════════════════════════');
-                setStatus(`Scale complete - restored to ${originalNote}.`);
             }, 13 * 200 + 300);
         }
         
@@ -1328,83 +1063,10 @@
                 audioContext.close();
                 audioContext = null;
                 highlightedOctave = -1; // Clear any highlights
-                allPlaying = false;
-                buildupInProgress = false;
-                buildupActive = [false, false, false, false, false, false, false, false, false];
                 console.log('🔇 Audio stopped - highlights cleared');
-                setStatus('Stopped.');
             }
         }
-
-        // ★ MINI PIANO KEYBOARD ★
-        // One octave of physical keys, highlighting whichever note is
-        // currently selected - ties the abstract note/frequency choice
-        // back to a real instrument, the same way the KCM fretboard and
-        // piano panels map theory onto a physical layout.
-        const whiteKeyOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-        const blackKeyInfo = [
-            { note: 'C#', afterWhiteIndex: 0 },
-            { note: 'D#', afterWhiteIndex: 1 },
-            { note: 'F#', afterWhiteIndex: 3 },
-            { note: 'G#', afterWhiteIndex: 4 },
-            { note: 'A#', afterWhiteIndex: 5 }
-        ];
-        function keyId(note) { return 'key-' + note.replace('#', 's'); }
-
-        function initMiniKeyboard() {
-            const svg = document.getElementById('miniKeyboard');
-            if (!svg) return;
-            const ns = 'http://www.w3.org/2000/svg';
-            const whiteW = 50, whiteH = 90, blackW = 30, blackH = 55;
-
-            whiteKeyOrder.forEach((note, i) => {
-                const rect = document.createElementNS(ns, 'rect');
-                rect.setAttribute('x', i * whiteW);
-                rect.setAttribute('y', 0);
-                rect.setAttribute('width', whiteW - 1);
-                rect.setAttribute('height', whiteH);
-                rect.setAttribute('rx', 3);
-                rect.setAttribute('id', keyId(note));
-                rect.setAttribute('fill', '#f5f5f5');
-                rect.setAttribute('stroke', '#333');
-                rect.setAttribute('stroke-width', '1.5');
-                rect.style.cursor = 'pointer';
-                rect.addEventListener('click', () => selectNote(note));
-                svg.appendChild(rect);
-            });
-
-            blackKeyInfo.forEach(info => {
-                const boundaryX = (info.afterWhiteIndex + 1) * whiteW;
-                const rect = document.createElementNS(ns, 'rect');
-                rect.setAttribute('x', boundaryX - blackW / 2);
-                rect.setAttribute('y', 0);
-                rect.setAttribute('width', blackW);
-                rect.setAttribute('height', blackH);
-                rect.setAttribute('rx', 2);
-                rect.setAttribute('id', keyId(info.note));
-                rect.setAttribute('fill', '#111');
-                rect.setAttribute('stroke', '#000');
-                rect.style.cursor = 'pointer';
-                rect.addEventListener('click', () => selectNote(info.note));
-                svg.appendChild(rect);
-            });
-
-            updateKeyboardHighlight();
-        }
-
-        function updateKeyboardHighlight() {
-            notes.forEach(note => {
-                const el = document.getElementById(keyId(note));
-                if (!el) return;
-                const isBlack = note.includes('#');
-                if (note === currentNote) {
-                    el.setAttribute('fill', octaveColorObj(4).color); // true key color, mid register
-                } else {
-                    el.setAttribute('fill', isBlack ? '#111' : '#f5f5f5');
-                }
-            });
-        }
-
+        
         // Initialize
         console.log('🎵 OCTAVE WAVE VISUALIZER STARTING 🎵');
         console.log('=======================================');
@@ -1414,8 +1076,6 @@
         console.log('✅ Legend initialized');
         updateOctaveLabels();
         console.log('✅ Individual octave buttons initialized');
-        initMiniKeyboard();
-        console.log('✅ Mini keyboard initialized');
         console.log('✅ Canvas ready');
         console.log('🎨 Starting animation...');
         console.log('=======================================');
