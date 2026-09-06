@@ -483,7 +483,7 @@
                     <button class="audio-btn" onclick="stopAllAudio()">🔇 Stop All</button>
                 </div>
                 <div class="pause-control" style="margin-top:10px; display:flex; align-items:center; gap:8px;">
-                    <label for="octavePauseSlider" style="font-size:12px; color:#00d4ff;">Inter-Note Pause</label>
+                    <label for="octavePauseSlider" style="font-size:12px; color:#00d4ff;">Play All Chord Length</label>
                     <input type="range" id="octavePauseSlider" min="50" max="600" step="10" value="200"
                            oninput="setOctavePause(this.value)">
                     <span id="octavePauseLabel" style="font-size:12px; color:#FFB81C; min-width:48px;">200 ms</span>
@@ -590,7 +590,8 @@
         
         // Audio-visual sync state
         let playingOctaves = [false, false, false, false, false, false, false, false, false];
-        let highlightedOctave = -1; // Currently highlighted octave for "Play All"
+        let highlightedOctave = -1; // Currently highlighted octave (single-note playback)
+        let allPlaying = false; // True while "Play All" is sounding every octave together
 
         // Configurable inter-note pause for sequential octave playback (Claim R-3)
         let octavePauseSec = 0.2;
@@ -645,25 +646,36 @@
             for (let octave = 0; octave <= 8; octave++) {
                 const frequency = getFrequency(currentNote, octave);
                 
-                // ★ WAVELENGTH NORMALIZATION (Claim R-1) ★
-                // Exactly one complete period of the fundamental occupies the
-                // full canvas width at octave 0; each successive octave has
-                // exactly half the period length of the one below it, making
-                // the 2:1 frequency ratio directly perceptible as a 2:1
-                // horizontal period ratio. True linear inverse-frequency
-                // scaling, not sqrt.
+                // ★ WAVELENGTH BASED ON ACTUAL FREQUENCY ★
+                // Lower frequencies = wider waves (more spread out)
+                // Higher frequencies = tighter waves (more compressed)
+                // Restored Sep 6, 2026 per Ben: this app uses sqrt scaling
+                // on purpose (a strict linear 2:1-period-per-octave version
+                // was substituted in at some point, tied to patent Claim
+                // R-1's literal wording - see /areas/kcm-patent-disclosure.md.
+                // If Claim R-1 still needs the app to visibly demonstrate
+                // exact linear 2:1 period halving per octave, that claim
+                // language and this restored sqrt curve are now out of sync
+                // and worth reconciling with the patent attorney).
                 const baseFrequency = getFrequency('C', 0); // 16.35 Hz
                 const frequencyRatio = frequency / baseFrequency;
-                const baseWavelength = canvas.width - leftMargin; // one full period at octave 0
-                const wavelength = baseWavelength / frequencyRatio;
+                const baseWavelength = (canvas.width - leftMargin) / 2; // Base for C0
+                const wavelength = baseWavelength / Math.sqrt(frequencyRatio);
                 
                 ctx.beginPath();
                 ctx.strokeStyle = octaveColors[octave].color;
                 
                 // ★ VISUAL HIGHLIGHTING FOR PLAYING OCTAVES ★
                 const isHighlighted = (highlightedOctave === octave);
-                
-                if (isHighlighted) {
+
+                if (allPlaying) {
+                    // "Play All" is additive: every octave sounds together,
+                    // so every wave lights up together too - sight and
+                    // sound both additive, not a one-at-a-time sequence.
+                    ctx.lineWidth = 4;
+                    ctx.shadowBlur = 20;
+                    ctx.globalAlpha = 1.0;
+                } else if (isHighlighted) {
                     // Playing octave: THICK, BRIGHT, STRONG GLOW
                     ctx.lineWidth = 5;
                     ctx.shadowBlur = 25;
@@ -916,50 +928,48 @@
         
         function playAllOctaves() {
             initAudio();
-            
+
             console.log('🎵 ═══════════════════════════════════════');
-            console.log('🔊 PLAYING ALL OCTAVES IN SEQUENCE');
-            console.log('🎨 Watch the waves light up as they play!');
+            console.log('🔊 PLAYING ALL OCTAVES TOGETHER (ADDITIVE)');
+            console.log('🎨 All 9 waves light up together, in sync with the sound');
             console.log('🎵 ═══════════════════════════════════════');
-            
+
+            // ★ ADDITIVE PLAYBACK ★
+            // The visual already overlaps all 9 octave waves in one shared
+            // plot ("All Waves Overlapping"). The sound should match that:
+            // every octave starts at the same instant and sums together,
+            // like true additive synthesis, instead of playing one after
+            // another. The chord-length slider controls how long it rings.
+            const startTime = audioContext.currentTime;
+            const duration = 1.0 + (octavePauseSec * 3); // ~1.15s-2.8s
+            const perOscGain = 0.09; // kept low since 9 oscillators sum
+
             for (let i = 0; i <= 8; i++) {
                 const freq = getFrequency(currentNote, i);
                 const osc = audioContext.createOscillator();
                 const gain = audioContext.createGain();
-                
+
                 osc.frequency.value = freq;
                 osc.connect(gain);
                 gain.connect(audioContext.destination);
-                
-                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-                
-                const startTime = audioContext.currentTime + i * octavePauseSec;
-                const endTime = startTime + 0.5;
-                
+
+                gain.gain.setValueAtTime(perOscGain, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
                 osc.start(startTime);
-                osc.stop(endTime);
-                
-                // ★ SYNC VISUAL WITH AUDIO ★
-                // Highlight this octave when its sound plays
-                setTimeout(() => {
-                    highlightedOctave = i;
-                    console.log(`🌊 Octave ${i} (${currentNote}${i}: ${freq.toFixed(1)} Hz) NOW PLAYING & HIGHLIGHTED`);
-                }, i * octavePauseSec * 1000);
-                
-                // Turn off highlight after sound ends
-                setTimeout(() => {
-                    if (highlightedOctave === i) {
-                        highlightedOctave = -1;
-                    }
-                }, (i * octavePauseSec * 1000) + 500); // Duration of note
+                osc.stop(startTime + duration);
+
+                console.log(`🌊 Octave ${i} (${currentNote}${i}: ${freq.toFixed(1)} Hz) added to the chord`);
             }
-            
-            // Clear highlight after all done
+
+            // ★ SYNC VISUAL WITH AUDIO - ALL AT ONCE ★
+            // Every octave sounds simultaneously, so every wave highlights
+            // simultaneously too (see the allPlaying check in drawWaves()).
+            allPlaying = true;
             setTimeout(() => {
-                highlightedOctave = -1;
-                console.log('✅ All octaves played - visual sync complete');
-            }, (8 * octavePauseSec * 1000) + 600);
+                allPlaying = false;
+                console.log('✅ Additive chord complete - visual sync ended');
+            }, duration * 1000);
         }
         
         function playOctaveScale() {
