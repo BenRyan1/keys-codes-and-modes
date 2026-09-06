@@ -34,9 +34,21 @@
         window.location.replace('/my-apps.html?locked=' + encodeURIComponent(ids[0]));
     }
 
+    // SECURITY FIX (Aug 27, 2026): welcome-free-picker.html's own UI only
+    // ever lets a visitor choose 3 apps, but nothing here used to enforce
+    // that — `freeApps` is a plain localStorage array with no signature,
+    // so anyone could open devtools and set it to ALL 26 catalog app ids
+    // at once, permanently unlocking the entire premium library with zero
+    // payment, zero code, zero signup. The `.length <= 3` check is the
+    // actual fix: a spoofed array longer than the real free-tier limit no
+    // longer grants anything. Still soft (someone could still relabel
+    // their honest 3 picks, or reset and re-pick different apps over and
+    // over) — that residual is the same accepted client-side-trust
+    // trade-off already called out in the file header above, not a new gap.
     function isFreePick() {
         try {
             var freeApps = JSON.parse(localStorage.getItem('freeApps') || '[]');
+            if (!Array.isArray(freeApps) || freeApps.length > 3) return false;
             return ids.some(function (id) { return freeApps.indexOf(id) !== -1; });
         } catch (e) {
             return false;
@@ -57,17 +69,22 @@
     // through to the free-pick check, never straight to "allow."
     var settled = false;
 
+    // SECURITY FIX (Aug 27, 2026): this used to reveal unconditionally on
+    // timeout ("don't strand a legit visitor on a slow connection") — but
+    // that meant anyone could bypass the ENTIRE gate on ANY app, no token
+    // or code needed at all, just by blocking or delaying this one fetch
+    // past 6 seconds (trivial via devtools' "Block request URL", or any
+    // network throttling). A timeout is now treated exactly like a failed
+    // verification: fall through to the free-pick check, else redirect.
+    // Trade-off: a real premium visitor on a slow connection or during a
+    // genuine Worker cold-start can get bounced to the locked page instead
+    // of waiting it out — annoying, but the alternative was a standing
+    // bypass for the whole premium catalog, so this fails closed instead.
     var timeout = setTimeout(function () {
         if (settled) return;
         settled = true;
-        // Verification is taking unusually long (Worker cold start,
-        // flaky network). Don't strand a legitimately-entitled visitor
-        // on a blank page indefinitely — reveal, and log it so repeated
-        // timeouts are visible. This is a UX safety valve, not a
-        // security decision: the Worker/my-apps.html remain the real
-        // gate on anything that actually matters.
-        console.warn('KCM access gate: verification timed out, revealing page');
-        reveal();
+        console.warn('KCM access gate: verification timed out, treating as unauthorized');
+        if (isFreePick()) reveal(); else redirectUnauthorized();
     }, 6000);
 
     fetch('/api/verify-session', {
