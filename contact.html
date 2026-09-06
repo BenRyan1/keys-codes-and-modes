@@ -196,7 +196,6 @@ function trackEvent(n,p){if(typeof gtag==='function')gtag('event',n,p);}
                 <div class="contact-card-icon">🌐</div>
                 <h3>FreeStyle® Device</h3>
                 <p>Learn more about the revolutionary FreeStyle® guitar:</p>
-                <p><a href="http://www.unlockinfinite.com" target="_blank" rel="noopener noreferrer">www.unlockinfinite.com</a></p>
                 <p><a href="http://www.guitarfreestyle.com" target="_blank" rel="noopener noreferrer">www.guitarfreestyle.com</a></p>
             </div>
             
@@ -386,7 +385,7 @@ document.addEventListener("DOMContentLoaded",function(){
       });
     });
     /* FreeStyle external links */
-    if(h.includes("unlockinfinite.com")||h.includes("guitarfreestyle.com"))
+    if(h.includes("guitarfreestyle.com"))
       a.addEventListener("click",function(){
         trackEvent("external_link_click",{destination:h,page:"contact"});
       });
