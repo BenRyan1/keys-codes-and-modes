@@ -218,15 +218,16 @@
         if (h > 0) f.style.height = h + 'px';
       } catch (e) { /* cross-origin fallback: leave default height */ }
     }
-    f.addEventListener('load', function () {
+    // Poll instead of relying solely on the iframe's 'load' event — with
+    // loading="lazy" there's a race where 'load' can fire before this
+    // listener attaches, and the resize never happens. Polling is immune
+    // to that, and cheap enough to run for a few seconds after page load.
+    var tries = 0;
+    var iv = setInterval(function () {
       resize();
-      // content can keep growing after load (fonts, async layout) — recheck briefly
-      var tries = 0;
-      var iv = setInterval(function () {
-        resize();
-        if (++tries > 10) clearInterval(iv);
-      }, 300);
-    });
+      if (++tries > 30) clearInterval(iv); // ~15s at 500ms, covers slow loads
+    }, 500);
+    resize();
   })();
 </script>
 
