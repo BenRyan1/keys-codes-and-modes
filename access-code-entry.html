@@ -479,7 +479,7 @@
                 // Redirect based on tier
                 setTimeout(function() {
                     if (codeData.access === 'all_apps') {
-                        window.location.href = 'offerings.html'; // Premium users see all apps
+                        window.location.href = '/my-apps'; // Premium users see all apps — server-verified via kcm_session_token
                     } else {
                         window.location.href = 'welcome-free-picker.html';
                     }

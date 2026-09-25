@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+<!-- Local file → live site: mic requires https://, redirect immediately -->
+<script>
+if (location.protocol === 'file:') {
+  location.replace('https://keyscodesandmodes.com/apps/kcm-sound-observatory.html');
+}
+</script>
+
 <!-- ── PRIMARY SEO ─────────────────────────────────────────────────── -->
 <title>Sound Observatory v29 — Real-Time Audio Visualizer | Keys, Codes &amp; Modes™</title>
 <meta name="description" content="Real-time polyphonic audio visualizer with 8 synchronized displays: chromatic wheel, oscilloscope, Lissajous figures, Chladni cymatics, spectral waterfall, piano keyboard, staff notation, and guitar fretboard. Powered by the KCM 12-Color Chromatic Spectrum™.">
@@ -2191,11 +2198,6 @@ function idle(){
 buildNeckUI();
 setTimeout(buildKeyboard, 80);
 idle();
-
-// Auto-warn on file:// protocol — mic won't work without action
-if(location.protocol === 'file:'){
-  setTimeout(()=> showMicModal('filescheme'), 800);
-}
 
 // Resize all canvases on window resize, rebuild neck table
 window.addEventListener('resize',()=>{
