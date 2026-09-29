@@ -605,7 +605,7 @@ Santa Barbara, California
         },
         {
             id:       'circle-of-fifths',
-            file:     'apps/circle-of-fifths.html',
+            file:     'https://console.keyscodesandmodes.com/circle-of-fifths.html',
             icon:     '⭕',
             category: 'Theory',
             title:    'Circle of Fifths Master',
@@ -740,7 +740,7 @@ Santa Barbara, California
         },
         {
             id:       'modal-stencil-player',
-            file:     'apps/modal-stencil-player.html',
+            file:     'https://console.keyscodesandmodes.com/modal-stencil-player.html',
             icon:     '🎼',
             category: 'Theory',
             title:    'Modal Stencil Player',
@@ -845,7 +845,7 @@ Santa Barbara, California
     function buildCard(app, delay) {
         const card = document.createElement('a');
         card.className    = 'app-card';
-        card.href         = `/${app.file}`;
+        card.href         = /^https?:\/\//.test(app.file) ? app.file : `/${app.file}`;
         card.target       = '_blank';
         card.rel          = 'noopener noreferrer';
         card.setAttribute('role', 'article');
