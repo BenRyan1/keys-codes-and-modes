@@ -31,7 +31,7 @@ Santa Barbara, California | All Rights Reserved
 .cc-btn { background: linear-gradient(135deg, #008080 0%, #8B6BA3 100%) !important; border: none !important; padding: 0.75rem 2rem !important; font-weight: 600 !important; transition: all 0.3s ease !important; }
 .cc-btn:hover { transform: translateY(-2px) !important; box-shadow: 0 5px 15px rgba(0,128,128,0.4) !important; }
 .cc-link { color: #F4D03F !important; }
-.cc-link:hover { color: #008080 !important; }
+.cc-link:hover { color:#009999 !important; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <script src="js/kcm-midi-recorder.js"></script>
@@ -287,7 +287,7 @@ nav a {
     letter-spacing: 0.5px;
 }
 nav a:hover { color: var(--primary-gold); }
-nav a.active { color: var(--primary-teal); }
+nav a.active { color:#009999; }
 
 /* ============================================================
    APP TITLE BANNER
@@ -490,6 +490,16 @@ nav a.active { color: var(--primary-teal); }
 .scale-type-btn.active, .harm-key-btn.active, .ext-degree-btn.active {
     background: var(--primary-teal);
     border-color: var(--primary-teal);
+}
+/* Chord Extension panel: chase-glow applied by playExtChordAscending() to
+   whichever tier button (7th/9th/11th/13th) matches the note currently
+   sounding, so the row visibly tracks the arpeggio as it climbs the stack.
+   Layers on top of .active (the tier you actually picked) as well as on
+   the plain unselected buttons it passes through on the way there. */
+.ext-degree-btn.ext-chasing {
+    border-color: #F4D03F;
+    box-shadow: 0 0 16px rgba(244,208,63,0.9), 0 0 30px rgba(244,208,63,0.5);
+    transform: scale(1.06);
 }
 .key-pill {
     padding: 6px 10px;
@@ -819,7 +829,7 @@ body { padding-bottom: 160px; }
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--primary-teal);
+    color:#009999;
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba(0,128,128,0.3);
@@ -1548,7 +1558,7 @@ select option { background: #1a1a2e; color: white; }
     margin-top: 1.25rem;
     border: 1px solid rgba(0,128,128,0.2);
 }
-.shortcuts-panel h5 {
+.shortcuts-panel h4 {
     margin: 0 0 0.6rem 0;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -1585,7 +1595,7 @@ select option { background: #1a1a2e; color: white; }
     margin-top: 2rem;
 }
 .site-footer p { color: rgba(232,232,232,0.5); margin: 0.4rem 0; font-size: 0.85rem; }
-.site-footer a { color: var(--primary-teal); text-decoration: none; margin: 0 8px; transition: color 0.3s; }
+.site-footer a { color:#009999; text-decoration: none; margin: 0 8px; transition: color 0.3s; }
 .site-footer a:hover { color: var(--primary-gold); }
 
 /* ============================================================
@@ -2112,7 +2122,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
 #kcmStencilLabel .sl-intervals {
     font-family: var(--font-body);
     font-size: 0.75rem;
-    color: var(--primary-teal);
+    color:#009999;
     font-weight: 600;
 }
 #kcmStencilLabel .sl-semitones {
@@ -2225,6 +2235,14 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
     </div>
 </header>
 
+<!-- id="main-content"/role="main" moved up to wrap the title banner too
+     (was only on .app-container below) — the banner, including the
+     Start Audio button, previously sat between <header> and the main
+     landmark, contained by neither (axe: region / WCAG best practice
+     that all content live inside a landmark). Skip-nav link above still
+     targets #main-content, now landing here instead. -->
+<div id="main-content" role="main">
+
 <!-- ============================================================
      APP TITLE BANNER
      ============================================================ -->
@@ -2238,7 +2256,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
 <!-- ============================================================
      MAIN APP
      ============================================================ -->
-<div class="app-container" id="main-content" role="main">
+<div class="app-container">
 
     <!-- MAIN CONTROLS PANEL -->
     <div class="info-panel" style="max-width:1040px;">
@@ -2273,7 +2291,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
             <div class="kcm-two-col-row" id="kcmTwoColRow" style="display:grid; grid-template-columns:220px 440px 174px; gap:1.75rem; align-items:start; justify-content:center; margin:0 auto;">
                         <div class="kcm-left-col" style="min-width:0; display:flex; flex-direction:column; gap:0.75rem;">
 
-            <div style="text-align:center; font-family:var(--font-display); font-size:0.85rem; font-weight:800; color:var(--primary-teal); letter-spacing:2px; text-transform:uppercase;">INTERFACE</div>
+            <div style="text-align:center; font-family:var(--font-display); font-size:0.85rem; font-weight:800; color:#009999; letter-spacing:2px; text-transform:uppercase;">INTERFACE</div>
 
             <!-- ── CONTROLS (always visible below panels) ── -->
 
@@ -2303,7 +2321,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
             <div id="instrumentPanel" style="display:none; margin:0.5rem 0 0; width:100%; box-sizing:border-box;
                  background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal);
                  border-radius:14px; padding:0.75rem 1rem; box-shadow:0 8px 32px rgba(0,128,128,0.35);">
-                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal);
+                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#009999;
                      text-align:center; margin-bottom:0.6rem; font-family:var(--font-display);">SELECT INSTRUMENT</div>
                 <div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center;">
                     <button class="inst-btn" data-inst="synth">🎛 Synth</button>
@@ -2332,7 +2350,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
             <div id="midiStatusPanel" style="display:none; margin:0.5rem 0 0; width:100%; box-sizing:border-box;
                  background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal);
                  border-radius:14px; padding:0.75rem 1rem; box-shadow:0 8px 32px rgba(0,128,128,0.35);">
-                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal);
+                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#009999;
                      text-align:center; margin-bottom:0.6rem; font-family:var(--font-display);">LIVE MIDI INPUT</div>
                 <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:0.55rem;">
                     <div id="midiStatusDot" style="width:8px;height:8px;border-radius:50%;background:#7f8c8d;flex-shrink:0;"></div>
@@ -2340,7 +2358,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 </div>
                 <div id="midiNowPlaying" style="text-align:center; font-size:1.15rem; font-weight:800; font-family:var(--font-display); color:var(--primary-gold); min-height:1.4em;">—</div>
                 <div style="display:flex; justify-content:center; gap:14px; margin-top:0.5rem; font-size:0.6rem; color:#b0b0cc;">
-                    <span><span style="color:var(--primary-teal);">●</span> in scale/chord</span>
+                    <span><span style="color:#009999;">●</span> in scale/chord</span>
                     <span><span style="color:#ff5555;">●</span> outside</span>
                 </div>
             </div>
@@ -2358,7 +2376,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                  background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal);
                  border-radius:14px; padding:0.75rem 1rem; box-shadow:0 8px 32px rgba(0,128,128,0.35);">
                 <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:0.5rem;">
-                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal);
+                    <span style="font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#009999;
                      font-family:var(--font-display);">MELODY LIBRARY</span>
                     <button class="inst-btn" id="melodyStopBtn" onclick="stopLibraryMelody()"
                         title="Stop melody playback" style="padding:2px 9px; font-size:0.6rem;">■ Stop</button>
@@ -2389,7 +2407,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 <!-- PANEL 1: CHROMATIC CIRCLE -->
                 <div id="chromaticCircle" style="margin:0 auto; display:block; left:0; right:0; position:relative;" role="region" aria-label="Chromatic circle">
                     <div style="position:absolute; top:-46px; left:50%; transform:translateX(-50%); z-index:5; display:flex; align-items:center; gap:8px; width:80%; max-width:260px;">
-                        <span style="font-size:0.85rem; color:var(--primary-teal);">⟳</span>
+                        <span style="font-size:0.85rem; color:#009999;">⟳</span>
                         <input type="range" id="wheelRotateSlider" min="0" max="330" step="30" value="0"
                             aria-label="Rotate wheel — 30 degree increments, all the way around"
                             style="flex:1;" oninput="rotateChromaticWheelTo(this.value)">
@@ -2457,23 +2475,23 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                     <!-- Live readout row -->
                     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:0.75rem;">
                         <div style="background:rgba(0,128,128,0.15);border:2px solid rgba(0,128,128,0.4);border-radius:12px;padding:0.5rem 1rem;text-align:center;min-width:72px;">
-                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#008080;text-transform:uppercase;margin-bottom:2px;">NOTE</div>
+                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#009999;text-transform:uppercase;margin-bottom:2px;">NOTE</div>
                             <div id="singNote" style="font-family:var(--font-display);font-size:1.8rem;font-weight:900;color:var(--primary-gold);">—</div>
                         </div>
                         <div style="background:rgba(0,128,128,0.15);border:2px solid rgba(0,128,128,0.4);border-radius:12px;padding:0.5rem 1rem;text-align:center;min-width:72px;">
-                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#008080;text-transform:uppercase;margin-bottom:2px;">FREQ</div>
+                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#009999;text-transform:uppercase;margin-bottom:2px;">FREQ</div>
                             <div id="singFreq" style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:#e8e8f8;">—</div>
                         </div>
                         <div style="background:rgba(0,128,128,0.15);border:2px solid rgba(0,128,128,0.4);border-radius:12px;padding:0.5rem 1rem;text-align:center;min-width:72px;">
-                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#008080;text-transform:uppercase;margin-bottom:2px;">TUNING</div>
+                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#009999;text-transform:uppercase;margin-bottom:2px;">TUNING</div>
                             <div id="singCents" style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:#e8e8f8;">—</div>
                         </div>
                         <div style="background:rgba(0,128,128,0.15);border:2px solid rgba(0,128,128,0.4);border-radius:12px;padding:0.5rem 1rem;text-align:center;min-width:72px;">
-                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#008080;text-transform:uppercase;margin-bottom:2px;">MIDI#</div>
+                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#009999;text-transform:uppercase;margin-bottom:2px;">MIDI#</div>
                             <div id="singMidi" style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:#e8e8f8;">—</div>
                         </div>
                         <div style="background:rgba(0,128,128,0.15);border:2px solid rgba(0,128,128,0.4);border-radius:12px;padding:0.5rem 1rem;text-align:center;min-width:72px;">
-                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#008080;text-transform:uppercase;margin-bottom:2px;">OCTAVE</div>
+                            <div style="font-size:0.5rem;font-weight:700;letter-spacing:1px;color:#009999;text-transform:uppercase;margin-bottom:2px;">OCTAVE</div>
                             <div id="singOct" style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:#e8e8f8;">—</div>
                         </div>
                     </div>
@@ -2505,7 +2523,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
 
                     <!-- Note history / mini piano roll -->
                     <div id="singHistoryWrap" style="display:none;margin-top:0.5rem;">
-                        <div style="font-size:0.58rem;font-weight:700;letter-spacing:1px;color:var(--primary-teal);text-transform:uppercase;text-align:center;margin-bottom:4px;">📋 Captured Notes (<span id="singNoteCount">0</span>)</div>
+                        <div style="font-size:0.58rem;font-weight:700;letter-spacing:1px;color:#009999;text-transform:uppercase;text-align:center;margin-bottom:4px;">📋 Captured Notes (<span id="singNoteCount">0</span>)</div>
                         <div id="singHistory" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-height:80px;overflow-y:auto;padding:4px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid rgba(0,128,128,0.2);"></div>
                         <!-- Mini piano roll -->
                         <canvas id="singRoll" width="500" height="60" style="width:100%;border-radius:6px;margin-top:6px;background:rgba(0,0,0,0.4);border:1px solid rgba(0,128,128,0.15);"></canvas>
@@ -2577,14 +2595,22 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                     <div id="kcmStencilSpeedRow" style="display:flex; align-items:center; gap:10px; max-width:420px; margin:0.6rem auto 0; padding:0 0.5rem;">
                         <label for="kcmStencilSpeed" style="font-size:0.68rem; color:var(--text-dim,#a0a0c0); letter-spacing:0.05em; white-space:nowrap;">🐢 SPEED</label>
                         <input type="range" id="kcmStencilSpeed" min="0.25" max="2" step="0.05" value="1" style="flex:1; accent-color:var(--primary-teal);">
-                        <span id="kcmStencilSpeedVal" style="font-size:0.72rem; font-weight:700; color:var(--primary-teal); min-width:3.2rem; text-align:right;">1.0×</span>
+                        <span id="kcmStencilSpeedVal" style="font-size:0.72rem; font-weight:700; color:#009999; min-width:3.2rem; text-align:right;">1.0×</span>
                     </div>
 
                 </div><!-- end kcmStencilPanel -->
             </div><!-- end panelSwapZone -->
 
             <!-- ── STAFF NOTATION — always visible below swap zone ── -->
-            <div id="staffNotation" aria-label="Staff notation showing selected notes — switchable between staff, fretboard and keyboard views" role="img">
+            <!-- role="group", not role="img": this container holds real
+                 interactive tab buttons (STAFF/FRETBOARD/KEYBOARD/TIMELINE)
+                 below, and role="img" tells assistive tech to treat the
+                 whole subtree as one flat, non-interactive image — which
+                 hid those buttons from screen readers entirely (axe:
+                 nested-interactive / WCAG 4.1.2). The actual notation
+                 graphics (the SVGs) are separately marked aria-hidden and
+                 decorative, so nothing is lost by moving the label here. -->
+            <div id="staffNotation" aria-label="Staff notation showing selected notes — switchable between staff, fretboard and keyboard views" role="group">
                 <div style="display:flex;gap:2px;margin:-12px -15px 6px -15px;border-radius:8px 8px 0 0;overflow:hidden;">
                     <button type="button" class="staff-tab-btn active" data-stafftab="staff" onclick="switchStaffTab('staff')">🎼 STAFF</button>
                     <button type="button" class="staff-tab-btn" data-stafftab="fretboard" onclick="switchStaffTab('fretboard')">🎸 FRETBOARD</button>
@@ -2671,7 +2697,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 <div id="octavePickerPanel" style="display:none; width:100%; box-sizing:border-box;
                      background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal);
                      border-radius:14px; padding:0.75rem 1rem; margin-top:8px; box-shadow:0 8px 32px rgba(0,128,128,0.35);">
-                    <label style="display:block; text-align:center; font-size:0.65rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal); font-family:var(--font-display); text-transform:uppercase; margin-bottom:0.5rem;">Octave / Register</label>
+                    <label style="display:block; text-align:center; font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#009999; font-family:var(--font-display); text-transform:uppercase; margin-bottom:0.5rem;">Octave / Register</label>
                     <div style="display:flex; gap:8px; align-items:center; justify-content:center;">
                         <button class="octave-btn" id="octaveDown" aria-label="Lower octave" style="flex:1; padding:0.5rem; font-size:0.8rem;">◀ Lower</button>
                         <div id="octaveLabel" style="font-size:0.88rem; color:var(--primary-gold); font-weight:700; text-align:center; min-width:100px;">Octave 4 (Middle C)</div>
@@ -2681,7 +2707,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 <div id="tempoPickerPanel" style="display:none; width:100%; box-sizing:border-box;
                      background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal);
                      border-radius:14px; padding:0.75rem 1rem; margin-top:8px; box-shadow:0 8px 32px rgba(0,128,128,0.35);">
-                    <label style="display:block; text-align:center; font-size:0.65rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal); font-family:var(--font-display); text-transform:uppercase; margin-bottom:0.5rem;">⏱ Playback Speed</label>
+                    <label style="display:block; text-align:center; font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#009999; font-family:var(--font-display); text-transform:uppercase; margin-bottom:0.5rem;">⏱ Playback Speed</label>
                     <div style="display:flex; align-items:center; gap:8px;">
                         <span style="font-size:0.68rem; font-weight:700; min-width:32px;">SLOW</span>
                         <input type="range" id="tempoSlider" min="40" max="240" value="120" step="10" style="flex:1;" aria-label="Tempo in BPM">
@@ -2718,7 +2744,11 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
 
             <!-- ROOT NOTE / status line — moved into Recording Studio's old
                  spot (right above the remaining controls), per swap. -->
-            <h3 id="status" role="status" aria-live="polite" style="margin-top:1rem;">Click START AUDIO ENGINE to begin!</h3>
+            <!-- role="status" is not an allowed ARIA role on a heading
+                 element (axe: aria-allowed-role); aria-live="polite" alone
+                 already gives screen readers the same live-region
+                 announcement, so dropping the role loses nothing. -->
+            <h3 id="status" aria-live="polite" style="margin-top:1rem;">Click START AUDIO ENGINE to begin!</h3>
 
             <!-- CHORD PROGRESSIONS -- moved to the left column, below
                  Select Instrument (see #progressionControls /
@@ -2752,10 +2782,10 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 </div>
             </div>
 
-            <div style="text-align:center; font-family:var(--font-display); font-size:0.85rem; font-weight:800; color:var(--primary-teal); letter-spacing:2px; text-transform:uppercase;">ELEMENTS</div>
+            <div style="text-align:center; font-family:var(--font-display); font-size:0.85rem; font-weight:800; color:#009999; letter-spacing:2px; text-transform:uppercase;">ELEMENTS</div>
 
             <div id="chordVoicingPanel" style="display:none; margin:0 0 0.75rem; max-width:100%; box-sizing:border-box; background:rgba(0,0,0,0.35); border:2px solid rgba(0,128,128,0.3); border-radius:16px; padding:0.75rem 1rem;">
-                <div style="text-align:center; font-family:var(--font-display); font-size:0.85rem; font-weight:800; color:var(--primary-teal); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:1rem;">
+                <div style="text-align:center; font-family:var(--font-display); font-size:0.85rem; font-weight:800; color:#009999; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:1rem;">
                     🎹 <span id="voicingTitle">Scale Chords</span>
                 </div>
                 <div id="voicingGrid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;"></div>
@@ -2778,13 +2808,13 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                  its buttons). Same screen position; wired to the same
                  window._setKeyGlobal() setter everything else uses. ── -->
             <div style="width:100%; margin-bottom:0.5rem; box-sizing:border-box;">
-                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1.5px; color:var(--primary-teal);
+                <div style="font-size:0.65rem; font-weight:700; letter-spacing:1.5px; color:#009999;
                      text-align:center; margin-bottom:0.35rem; font-family:var(--font-display); text-transform:uppercase;">🎵 Key</div>
                 <select id="keyPickerSelect" aria-label="Select key"
                      style="width:100%; background:rgba(244,208,63,0.12); border:2px solid var(--primary-gold);
                      border-radius:10px; padding:0.6rem 0.5rem; color:#f4d03f; font-family:var(--font-display);
                      font-weight:800; font-size:0.9rem; text-align:center; text-align-last:center; outline:none; cursor:pointer;">
-                    <option value="0">C — no ♯/♭</option>
+                    <option value="0">C — 0 ♯/♭</option>
                     <option value="7">G — 1♯</option>
                     <option value="2">D — 2♯</option>
                     <option value="9">A — 3♯</option>
@@ -2805,7 +2835,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 <button class="level-btn"         data-level="3"         title="3 Notes">Triads</button>
                 <button class="level-btn"         data-level="4"         title="Extended Chords: 7 / 9 / 11 / 13">Ext. Chords</button>
                 <div id="extDegreeSubPanel" style="display:none; width:100%; box-sizing:border-box; background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal); border-radius:14px; padding:0.6rem 0.75rem; margin:2px 0;">
-                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal); text-align:center; margin-bottom:0.5rem; font-family:var(--font-display);">CHORD EXTENSION</div>
+                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:#009999; text-align:center; margin-bottom:0.5rem; font-family:var(--font-display);">CHORD EXTENSION</div>
                     <div style="display:flex; flex-direction:column; gap:5px;" id="extDegreeSubBtns">
                         <button class="ext-degree-btn active" data-ext-degree="7" onclick="switchExtDegree('7')" style="flex:1;">7th</button>
                         <button class="ext-degree-btn" data-ext-degree="9" onclick="switchExtDegree('9')" style="flex:1;">9th</button>
@@ -2817,7 +2847,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 <button class="level-btn"         data-level="6"         title="6 Notes">Whole Tone</button>
                 <button class="level-btn"         data-level="scales"    title="7 Notes">Scales</button>
                 <div id="scaleTypeSubPanel" style="display:none; width:100%; box-sizing:border-box; background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal); border-radius:14px; padding:0.6rem 0.75rem; margin:2px 0;">
-                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal); text-align:center; margin-bottom:0.5rem; font-family:var(--font-display);">SCALE TYPE</div>
+                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:#009999; text-align:center; margin-bottom:0.5rem; font-family:var(--font-display);">SCALE TYPE</div>
                     <div style="display:flex; flex-direction:column; gap:5px;" id="scaleTypeSubBtns">
                         <button class="scale-type-btn" data-scale-type="major">Major (Ionian)</button>
                         <button class="scale-type-btn" data-scale-type="naturalMinor">Natural Minor (Aeolian)</button>
@@ -2826,7 +2856,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                     </div>
                     <button type="button" id="scaleLibraryToggleBtn" onclick="toggleScaleLibraryPanel()"
                         style="width:100%; margin-top:6px; padding:0.4rem; background:rgba(0,128,128,0.12); border:1px dashed var(--primary-teal);
-                        border-radius:8px; color:var(--primary-teal); font-size:0.65rem; font-weight:700; letter-spacing:0.5px;
+                        border-radius:8px; color:#009999; font-size:0.65rem; font-weight:700; letter-spacing:0.5px;
                         cursor:pointer; font-family:var(--font-display);">🗂 MORE SCALES (FULL LIBRARY)</button>
                     <div id="scaleLibraryPanel" style="display:none; flex-direction:column; gap:5px; margin-top:6px; padding-top:6px;
                         border-top:1px dashed rgba(0,128,128,0.4);">
@@ -2847,7 +2877,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 </div>
                 <button class="level-btn"         data-level="harm"      title="Harmonized">Harmonized</button>
                 <div id="harmSubPanel" style="display:none; width:100%; box-sizing:border-box; background:rgba(10,10,25,0.97); border:2px solid var(--primary-teal); border-radius:14px; padding:0.6rem 0.75rem; margin:2px 0;">
-                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:var(--primary-teal); text-align:center; margin-bottom:0.5rem; font-family:var(--font-display);">HARMONIZED SCALE</div>
+                    <div style="font-size:0.6rem; font-weight:700; letter-spacing:1px; color:#009999; text-align:center; margin-bottom:0.5rem; font-family:var(--font-display);">HARMONIZED SCALE</div>
                     <div style="display:flex; gap:5px;" id="harmSubBtns">
                         <button class="harm-key-btn active" data-harm-key="harmMajor" onclick="switchHarm('harmMajor')" style="flex:1;">Major</button>
                         <button class="harm-key-btn" data-harm-key="harmMinor" onclick="switchHarm('harmMinor')" style="flex:1;">Minor</button>
@@ -2892,7 +2922,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
                     <div id="aiStatusDot" style="width:8px;height:8px;border-radius:50%;background:#7f8c8d;transition:background 0.3s;"></div>
-                    <span id="aiPanelChevron" style="color:#008080; font-size:1rem; transition:transform 0.3s;">▼</span>
+                    <span id="aiPanelChevron" style="color:#009999; font-size:1rem; transition:transform 0.3s;">▼</span>
                 </div>
             </div>
 
@@ -2940,7 +2970,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                         <div id="aiResponse" style="min-height:60px; background:linear-gradient(135deg,rgba(0,128,128,0.13),rgba(139,107,163,0.10)); border-radius:0 16px 16px 16px; padding:1rem 3rem 1rem 1.1rem; font-size:0.83rem; line-height:1.7; color:#e8e8f8; border:1px solid rgba(0,128,128,0.3); white-space:pre-wrap; box-shadow:0 4px 18px rgba(0,0,0,0.3);"></div>
                         <!-- Speak button — top-right corner of response -->
                         <button id="kcmSpeakBtn" onclick="kcmToggleSpeak()" title="Read aloud"
-                            style="position:absolute; top:18px; right:8px; width:32px; height:32px; border-radius:50%; background:rgba(0,128,128,0.25); border:1px solid rgba(0,128,128,0.5); color:#008080; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; padding:0;">
+                            style="position:absolute; top:18px; right:8px; width:32px; height:32px; border-radius:50%; background:rgba(0,128,128,0.25); border:1px solid rgba(0,128,128,0.5); color:#009999; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; padding:0;">
                             🔊
                         </button>
                     </div>
@@ -2951,7 +2981,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                             🔇 Auto: OFF
                         </button>
                     </div>
-                    <div id="aiLoading" style="display:none; text-align:center; padding:1rem; color:#008080; font-size:0.82rem;">
+                    <div id="aiLoading" style="display:none; text-align:center; padding:1rem; color:#009999; font-size:0.82rem;">
                         <span style="animation:statusGlow 1.5s ease-in-out infinite; display:inline-block;">✦ Claude is thinking…</span>
                     </div>
                 </div>
@@ -2962,7 +2992,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                     <!-- Row 1: Key + Mode -->
                     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:0.75rem;">
                         <div>
-                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎵 Key</label>
+                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎵 Key</label>
                             <select id="sbKey" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid rgba(0,128,128,0.4); border-radius:8px; padding:0.5rem 0.75rem; color:#e8e8f8; font-family:var(--font-body); font-size:0.82rem; outline:none;">
                                 <option value="0">C</option><option value="1">C# / D♭</option>
                                 <option value="2">D</option><option value="3">D# / E♭</option>
@@ -2973,7 +3003,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                             </select>
                         </div>
                         <div>
-                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎭 Mode / Scale</label>
+                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎭 Mode / Scale</label>
                             <select id="sbMode" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid rgba(0,128,128,0.4); border-radius:8px; padding:0.5rem 0.75rem; color:#e8e8f8; font-family:var(--font-body); font-size:0.82rem; outline:none;">
                                 <option value="ionian">Ionian (Major)</option>
                                 <option value="dorian">Dorian</option>
@@ -2993,7 +3023,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                     <!-- Row 2: Melody Scale + Tempo + Feel -->
                     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-bottom:0.75rem;">
                         <div>
-                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎶 Melody Scale</label>
+                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎶 Melody Scale</label>
                             <select id="sbMelodyScale" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid rgba(0,128,128,0.4); border-radius:8px; padding:0.5rem 0.75rem; color:#e8e8f8; font-family:var(--font-body); font-size:0.82rem; outline:none;">
                                 <option value="minorPentatonic">Minor Pentatonic</option>
                                 <option value="majorPentatonic">Major Pentatonic</option>
@@ -3002,7 +3032,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                             </select>
                         </div>
                         <div>
-                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">⚡ Tempo</label>
+                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">⚡ Tempo</label>
                             <select id="sbTempo" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid rgba(0,128,128,0.4); border-radius:8px; padding:0.5rem 0.75rem; color:#e8e8f8; font-family:var(--font-body); font-size:0.82rem; outline:none;">
                                 <option value="60">Slow (60)</option>
                                 <option value="80">Ballad (80)</option>
@@ -3013,7 +3043,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
                             </select>
                         </div>
                         <div>
-                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">✨ Feel</label>
+                            <label style="display:block; font-size:0.65rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">✨ Feel</label>
                             <select id="sbFeel" style="width:100%; background:rgba(0,0,0,0.5); border:1px solid rgba(0,128,128,0.4); border-radius:8px; padding:0.5rem 0.75rem; color:#e8e8f8; font-family:var(--font-body); font-size:0.82rem; outline:none;">
                                 <option value="uplifting">Uplifting</option>
                                 <option value="melancholic">Melancholic</option>
@@ -3029,7 +3059,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
 
                     <!-- Row 3: Structure -->
                     <div style="margin-bottom:0.85rem;">
-                        <label style="display:block; font-size:0.65rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">🏗 Song Structure</label>
+                        <label style="display:block; font-size:0.65rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">🏗 Song Structure</label>
                         <div style="display:flex; flex-wrap:wrap; gap:6px;">
                             <button class="ai-quick-btn sb-struct-btn active-struct" id="struct-verse" onclick="sbToggleStruct('verse',this)">Verse</button>
                             <button class="ai-quick-btn sb-struct-btn active-struct" id="struct-chorus" onclick="sbToggleStruct('chorus',this)">Chorus</button>
@@ -3095,8 +3125,15 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
         </div>
 
         <!-- KEYBOARD SHORTCUTS -->
+        <!-- h4, not h5: this panel is always present, and the nearest
+             visible heading before it (in the default/Circle view) is the
+             h3 "Root Note" status line — jumping straight to h5 skipped a
+             level for screen-reader users navigating by heading (axe:
+             heading-order). In Harmonized mode the "Chord Progressions"
+             h4 sits alongside this one, which is a same-level sibling,
+             not a skip, so h4 is correct in both cases. -->
         <div class="shortcuts-panel">
-            <h5>⌨️ Keyboard Shortcuts</h5>
+            <h4>⌨️ Keyboard Shortcuts</h4>
             <div class="shortcuts-list">
                 <div class="shortcut-item"><span class="shortcut-key">Space</span> Play Chord</div>
                 <div class="shortcut-item"><span class="shortcut-key">Esc</span> Stop Playback</div>
@@ -3110,6 +3147,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
     </div>
 
 </div><!-- end app-container -->
+</div><!-- end main-content -->
 
 <!-- ============================================================
      SITE FOOTER
@@ -3178,7 +3216,48 @@ window.addEventListener('unhandledrejection', function(event) {
         const _noteOffTimers = {};
         const _playTimers = [];  // all active sequence/progression setTimeout IDs
         function _schedPlay(fn, ms) { const id = setTimeout(fn, ms); _playTimers.push(id); return id; }
-        function _cancelAllPlay() { while (_playTimers.length) clearTimeout(_playTimers.pop()); }
+
+        // FIX (Aug 27, 2026): every Stop button in the app used to only clear
+        // *pending* setTimeouts (_playTimers) — it never touched a note that
+        // had ALREADY been scheduled onto the Web Audio clock via
+        // osc.start()/osc.stop(). Since every playback path (scale/chord
+        // sequencer, chord button, chromatic-scale button, Melody Library,
+        // Stencil, Song Builder) schedules its oscillators/sample sources up
+        // front with a precise stop time, clicking Stop cancelled the NEXT
+        // notes but let whatever was already sounding ring out to its full
+        // written duration — reads exactly like "Stop doesn't work" on
+        // anything mid-playback. _kcmActiveVoices is a shared registry every
+        // oscillator/sample-source now pushes itself into the moment it's
+        // created (see _kcmTrackVoice, used from every osc.start() site);
+        // each self-removes on its own natural 'ended' event.
+        // _kcmKillAllVoices force-fades and stops everything still in the
+        // registry immediately, and now runs from every Stop path.
+        window._kcmActiveVoices = window._kcmActiveVoices || [];
+        function _kcmTrackVoice(node, gainNode) {
+            const voice = { node, gain: gainNode };
+            window._kcmActiveVoices.push(voice);
+            try {
+                node.onended = () => {
+                    const i = window._kcmActiveVoices.indexOf(voice);
+                    if (i !== -1) window._kcmActiveVoices.splice(i, 1);
+                };
+            } catch (e) {}
+        }
+        function _kcmKillAllVoices() {
+            const voices = window._kcmActiveVoices.splice(0);
+            voices.forEach(v => {
+                try {
+                    if (v.gain && v.gain.gain && audioContext) {
+                        const now = audioContext.currentTime;
+                        v.gain.gain.cancelScheduledValues(now);
+                        v.gain.gain.setValueAtTime(v.gain.gain.value, now);
+                        v.gain.gain.linearRampToValueAtTime(0.0001, now + 0.03);
+                    }
+                } catch (e) {}
+                try { v.node.stop(audioContext ? audioContext.currentTime + 0.04 : 0); } catch (e) {}
+            });
+        }
+        function _cancelAllPlay() { while (_playTimers.length) clearTimeout(_playTimers.pop()); _kcmKillAllVoices(); }
         let rootNote = 0;
         let selectedNotes = new Set([0]), multiSelectNotes = new Set(), currentOctave = 4;
         // revealedNotes: what's currently LIT on fretboard/piano/circle during scale playback.
@@ -3580,6 +3659,7 @@ window.addEventListener('unhandledrejection', function(event) {
                             gain.gain.linearRampToValueAtTime(0.3, startSec + 0.012);
                             gain.gain.exponentialRampToValueAtTime(0.01, startSec + noteDur);
                             osc.start(startSec); osc.stop(startSec + noteDur);
+                            _kcmTrackVoice(osc, gain);
 
                             _schedPlay(() => { highlightNote(pc, true); updateStaffNotation([{ pc, oct }]); pulseStencilDot(pc); }, i * beatMs);
                             _schedPlay(() => { highlightNote(pc, false); settleStencilDot(pc); }, i * beatMs + offDelay);
@@ -3697,7 +3777,15 @@ window.addEventListener('unhandledrejection', function(event) {
                 if (el('downloadRecBtn')) el('downloadRecBtn').onclick = downloadMIDI;
                 if (el('downloadWAVBtn')) el('downloadWAVBtn').onclick = downloadWAV;
                 const tempoSlider = el('tempoSlider');
-                if (tempoSlider) tempoSlider.oninput = function() { currentBPM = parseInt(this.value); const d = el('bpmDisplay'); if (d) d.textContent = currentBPM; };
+                if (tempoSlider) tempoSlider.oninput = function() {
+                    currentBPM = parseInt(this.value);
+                    const d = el('bpmDisplay'); if (d) d.textContent = currentBPM;
+                    // Tempo-sync build (Sep 2026): Music Theory Pro's slider is the
+                    // shared-tempo master. Publish it onto the bus so Circle of
+                    // Fifths and The Decoder pick it up the same way they already
+                    // adopt root/mode changes from here.
+                    try { window.parent.postMessage({ type: 'KCM_STATE_PATCH', payload: { bpm: currentBPM } }, '*'); } catch(_) {}
+                };
                 if (el('fret4Btn')) el('fret4Btn').onclick = () => { guitarFretCount = 4; el('fret4Btn').classList.add('active'); el('fret5Btn').classList.remove('active'); el('fret12Btn').classList.remove('active'); createGuitar(); setTimeout(() => updateSphereDisplay(), 50); };
                 if (el('fret5Btn')) el('fret5Btn').onclick = () => { guitarFretCount = 5; el('fret5Btn').classList.add('active'); el('fret4Btn').classList.remove('active'); el('fret12Btn').classList.remove('active'); createGuitar(); setTimeout(() => updateSphereDisplay(), 50); };
                 if (el('fret12Btn')) el('fret12Btn').onclick = () => { guitarFretCount = 12; el('fret12Btn').classList.add('active'); el('fret4Btn').classList.remove('active'); el('fret5Btn').classList.remove('active'); createGuitar(); setTimeout(() => updateSphereDisplay(), 50); };
@@ -3832,8 +3920,17 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     audioReady = true;
                     // Set up master bus for WAV recording capture
                     window._kcmMasterBus = audioContext.createGain();
-                    window._kcmMasterBus.gain.value = 1.0;
-                    window._kcmMasterBus.connect(audioContext.destination);
+                    window._kcmMasterBus.gain.value = 3.2; // boosted further (1.0 -> 1.6 -> 3.2) -- Aug 29 2026, Ben said still too quiet
+                    if (!window._kcmLimiter) {
+                        window._kcmLimiter = audioContext.createDynamicsCompressor();
+                        window._kcmLimiter.threshold.value = -16;
+                        window._kcmLimiter.knee.value = 6;
+                        window._kcmLimiter.ratio.value = 20;
+                        window._kcmLimiter.attack.value = 0.001;
+                        window._kcmLimiter.release.value = 0.08;
+                        window._kcmLimiter.connect(audioContext.destination);
+                    }
+                    window._kcmMasterBus.connect(window._kcmLimiter);
                     // Auto-load samples if a non-synth instrument is already selected
                     if (currentInstrument !== 'synth') setTimeout(() => _loadSoundFont(currentInstrument), 200);
                     const btn = document.getElementById('startAudio');
@@ -4329,6 +4426,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
             _mtpMelody.playing = false;
             _mtpMelody.timers.forEach(t => clearTimeout(t));
             _mtpMelody.timers = [];
+            if (typeof _kcmKillAllVoices === 'function') _kcmKillAllVoices();
         }
         window.stopLibraryMelody = stopLibraryMelody;
 
@@ -4528,6 +4626,12 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     k.setAttribute('role','button'); k.setAttribute('tabindex','0');
                     k.setAttribute('aria-label', `${noteNames[pc]} ${oct}`);
                     k.onclick = () => handleNoteClick(pc, oct);
+                    // role="button" on a <div> doesn't get free Enter/Space
+                    // activation the way a real <button> does — without this,
+                    // a keyboard user can Tab to a key but never actually
+                    // play it (WCAG 2.1.1 Keyboard). Matches the same
+                    // handler already wired on Circle spheres.
+                    k.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(pc, oct); } };
                     k.style.setProperty('--key-color', colors[pc]);
                     // NO background set here — CSS keeps it white until .playing
                     const l = document.createElement('span');
@@ -4547,6 +4651,8 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     k.setAttribute('role','button'); k.setAttribute('tabindex','0');
                     k.setAttribute('aria-label', `${noteNames[pc]} ${oct}`);
                     k.onclick = () => handleNoteClick(pc, oct);
+                    // See matching comment on the white-key branch above.
+                    k.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(pc, oct); } };
                     k.style.setProperty('--key-color', colors[pc]);
                     // NO background set here — CSS keeps it black until .playing
                     const l = document.createElement('span');
@@ -4605,7 +4711,14 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 lbl.dataset.note = tuning[s];
                 lbl.dataset.stringIdx = s;
                 lbl.setAttribute('aria-label', `${names[s]} string`);
+                // Guitar cells previously had no role/tabindex/keyboard
+                // handler at all — click-only, invisible to keyboard and
+                // screen-reader users, unlike Circle spheres and Piano keys
+                // which already had this treatment (WCAG 2.1.1 Keyboard,
+                // 4.1.2 Name/Role/Value).
+                lbl.setAttribute('role', 'button'); lbl.setAttribute('tabindex', '0');
                 lbl.onclick = () => handleNoteClick(tuning[s], octs[s]); // wired into the shared note-click flow (same as Circle/Piano) so it updates selection state and every other panel, not just audio
+                lbl.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(tuning[s], octs[s]); } };
                 headerRow.appendChild(lbl);
             }
             table.appendChild(headerRow);
@@ -4647,7 +4760,11 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 dot.textContent = noteNamesShort[tuning[s]];
                 cell.appendChild(dot);
 
+                // See comment on the string-label loop above re: keyboard access.
+                cell.setAttribute('role', 'button'); cell.setAttribute('tabindex', '0');
+                cell.setAttribute('aria-label', `${names[s]} string, open, ${noteNames[tuning[s]]}`);
                 cell.onclick = () => handleNoteClick(tuning[s], octs[s]); // wired into the shared note-click flow, matching Circle/Piano
+                cell.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(tuning[s], octs[s]); } };
                 nutRow.appendChild(cell);
             }
             table.appendChild(nutRow);
@@ -4697,7 +4814,11 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     dot.textContent = noteNamesShort[pc];
                     cell.appendChild(dot);
 
+                    // See comment on the string-label loop above re: keyboard access.
+                    cell.setAttribute('role', 'button'); cell.setAttribute('tabindex', '0');
+                    cell.setAttribute('aria-label', `${names[s]} string, fret ${f}, ${noteNames[pc]}`);
                     cell.onclick = () => handleNoteClick(pc, oct); // wired into the shared note-click flow, matching Circle/Piano
+                    cell.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNoteClick(pc, oct); } };
                     row.appendChild(cell);
                 }
                 table.appendChild(row);
@@ -4995,7 +5116,11 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
 
         const _SF_NAMES = {
             piano:   'acoustic_grand_piano',
-            guitar:  'acoustic_guitar_nylon',
+            // Steel-string acoustic instead of nylon — brighter attack and
+            // more natural volume/output level, closer to what people expect
+            // from a "guitar" sound and louder-sounding at the same vol vs.
+            // the mellower, quieter-sounding nylon-string sample.
+            guitar:  'acoustic_guitar_steel',
             marimba: 'marimba',
             strings: 'string_ensemble_1',
         };
@@ -5129,6 +5254,16 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 gain.gain.linearRampToValueAtTime(vol * 0.9, t + 0.08);
                 gain.gain.setValueAtTime(vol * 0.9, t + dur * 0.75);
                 gain.gain.linearRampToValueAtTime(0, t + dur + 0.3);
+            } else if (currentInstrument === 'marimba') {
+                // Was previously falling through to the generic flat-sustain
+                // envelope below (meant for the synth), which doesn't suit a
+                // mallet instrument and made it sound duller/quieter than
+                // piano/guitar at the same vol. Percussive: sharp attack,
+                // quick exponential decay, no sustain — matches a real mallet
+                // strike instead of a held pad.
+                gain.gain.setValueAtTime(0, t);
+                gain.gain.linearRampToValueAtTime(vol * 1.15, t + 0.003);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + Math.min(dur * 1.1, 2.2));
             } else {
                 gain.gain.setValueAtTime(0, t);
                 gain.gain.linearRampToValueAtTime(vol, t + 0.01);
@@ -5136,6 +5271,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
             }
             src.start(t);
             try { src.stop(t + dur + 1.0); } catch(e) {}
+            _kcmTrackVoice(src, gain);
             return true;
         }
 
@@ -5157,19 +5293,46 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     g.gain.linearRampToValueAtTime(hVol, t + 0.008);
                     g.gain.exponentialRampToValueAtTime(0.001, t + (currentInstrument === 'marimba' ? dur * 0.8 : dur * 1.5));
                     osc.start(t); osc.stop(t + dur * 2 + 0.01);
+                    _kcmTrackVoice(osc, g);
                 });
             } else if (currentInstrument === 'guitar') {
-                const osc1 = audioContext.createOscillator();
-                const osc2 = audioContext.createOscillator();
-                const g    = audioContext.createGain();
-                osc1.type = 'sawtooth'; osc1.frequency.setValueAtTime(freq, t);
-                osc2.type = 'sine';     osc2.frequency.setValueAtTime(freq * 2.003, t);
-                osc1.connect(g); osc2.connect(g); g.connect(outBus);
-                g.gain.setValueAtTime(0, t);
-                g.gain.linearRampToValueAtTime(vol * 1.1, t + 0.003);
-                g.gain.exponentialRampToValueAtTime(0.001, t + dur * 1.2);
-                osc1.start(t); osc2.start(t);
-                osc1.stop(t + dur * 1.5); osc2.stop(t + dur * 1.5);
+                // Plucked-string voice (used before the real acoustic_guitar_steel
+                // samples finish loading, or if the sample CDN is unreachable) —
+                // was a single sawtooth+sine pair, which reads as a thin buzz
+                // rather than a plucked string. A real pluck's upper harmonics
+                // decay much faster than the fundamental, and the attack has a
+                // brief noisy "pick" transient — modeled here with a harmonic
+                // stack (each ringing for a shorter fraction of dur the higher
+                // it is) plus a short filtered-noise burst at onset.
+                const harmonics     = [1, 2, 3, 4, 5, 6];
+                const harmonicGains = [0.60, 0.28, 0.16, 0.09, 0.05, 0.03];
+                const harmonicDecay = [1.3, 0.75, 0.5, 0.35, 0.25, 0.18];
+                harmonics.forEach((h, idx) => {
+                    const osc = audioContext.createOscillator();
+                    const g   = audioContext.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq * h, t);
+                    osc.connect(g); g.connect(outBus);
+                    const hVol = vol * harmonicGains[idx];
+                    g.gain.setValueAtTime(0, t);
+                    g.gain.linearRampToValueAtTime(hVol, t + 0.002);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + Math.max(dur * harmonicDecay[idx], 0.05));
+                    osc.start(t); osc.stop(t + dur * 2 + 0.05);
+                    _kcmTrackVoice(osc, g);
+                });
+                // Short pick/finger attack transient — filtered noise burst.
+                const noiseDur = 0.02;
+                const bufSize  = Math.max(1, Math.floor(audioContext.sampleRate * noiseDur));
+                const noiseBuf = audioContext.createBuffer(1, bufSize, audioContext.sampleRate);
+                const data     = noiseBuf.getChannelData(0);
+                for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufSize);
+                const noise     = audioContext.createBufferSource();
+                noise.buffer    = noiseBuf;
+                const noiseGain = audioContext.createGain();
+                noiseGain.gain.setValueAtTime(vol * 0.18, t);
+                noiseGain.gain.linearRampToValueAtTime(0, t + noiseDur);
+                noise.connect(noiseGain); noiseGain.connect(outBus);
+                noise.start(t);
             } else if (currentInstrument === 'strings') {
                 const osc = audioContext.createOscillator();
                 const vib = audioContext.createOscillator();
@@ -5186,6 +5349,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 g.gain.linearRampToValueAtTime(0, t + dur + 0.15);
                 osc.start(t); vib.start(t);
                 osc.stop(t + dur + 0.25); vib.stop(t + dur + 0.25);
+                _kcmTrackVoice(osc, g); _kcmTrackVoice(vib, null);
             } else {
                 const osc = audioContext.createOscillator();
                 const g   = audioContext.createGain();
@@ -5197,6 +5361,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 g.gain.setValueAtTime(vol, t + 0.04);
                 g.gain.linearRampToValueAtTime(0, t + dur);
                 osc.start(t); osc.stop(t + dur + 0.005);
+                _kcmTrackVoice(osc, g);
             }
         }
 
@@ -5245,8 +5410,17 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 if (!window._kcmMasterBus) {
                     try {
                         window._kcmMasterBus = audioContext.createGain();
-                        window._kcmMasterBus.gain.value = 1.0;
-                        window._kcmMasterBus.connect(audioContext.destination);
+                        window._kcmMasterBus.gain.value = 3.2; // boosted further (1.0 -> 1.6 -> 3.2) -- Aug 29 2026, Ben said still too quiet
+                        if (!window._kcmLimiter) {
+                            window._kcmLimiter = audioContext.createDynamicsCompressor();
+                            window._kcmLimiter.threshold.value = -16;
+                            window._kcmLimiter.knee.value = 6;
+                            window._kcmLimiter.ratio.value = 20;
+                            window._kcmLimiter.attack.value = 0.001;
+                            window._kcmLimiter.release.value = 0.08;
+                            window._kcmLimiter.connect(audioContext.destination);
+                        }
+                        window._kcmMasterBus.connect(window._kcmLimiter);
                     } catch(eBus) { console.error('Master bus rebuild failed:', eBus); }
                 }
                 // Recording capture now happens centrally inside _playAt()
@@ -5554,11 +5728,32 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
         }
 
         // ── Highlight note ────────────────────────────────────────
-        function highlightNote(n, on) {
+        function highlightNote(n, on, opts) {
             try {
+                // ── KCM octave-aware piano touch ──────────────────────
+                // When called with {oct: N}, this is a precise, single-register
+                // piano-key touch driven by real MIDI octave data (from the bus).
+                // It intentionally skips sphere/fretboard (a paired skipPiano
+                // call already handles those) so the piano never lights up
+                // both octave-4 and octave-5 copies of the same pitch class
+                // at once when only one register is actually sounding.
+                if (opts && opts.oct !== undefined) {
+                    const wKey = document.querySelector(`.white-key[data-note="${n}"][data-octave="${opts.oct}"]`);
+                    const bKey = document.querySelector(`.black-key[data-note="${n}"][data-octave="${opts.oct}"]`);
+                    if (on) {
+                        if (wKey) { wKey.classList.add('playing'); wKey.style.boxShadow=`0 0 22px ${colors[n]}, inset 0 4px 8px rgba(0,0,0,0.2)`; }
+                        if (bKey) { bKey.classList.add('playing'); bKey.style.boxShadow=`0 0 24px ${colors[n]}, inset 0 3px 6px rgba(0,0,0,0.7)`; }
+                    } else {
+                        if (wKey) { wKey.classList.remove('playing'); wKey.style.boxShadow=''; wKey.style.borderColor=''; }
+                        if (bKey) { bKey.classList.remove('playing'); bKey.style.boxShadow=''; bKey.style.borderColor=''; bKey.style.borderWidth=''; }
+                    }
+                    return;
+                }
+
                 const sphere   = document.querySelector(`.sphere[data-note="${n}"]`);
-                const whiteKey = document.querySelector(`.white-key[data-note="${n}"]`);
-                const blackKey = document.querySelector(`.black-key[data-note="${n}"]`);
+                const skipPiano = !!(opts && opts.skipPiano);
+                const whiteKey = skipPiano ? null : document.querySelector(`.white-key[data-note="${n}"]`);
+                const blackKey = skipPiano ? null : document.querySelector(`.black-key[data-note="${n}"]`);
                 const fretCells  = document.querySelectorAll(`.fb-cell[data-note="${n}"]`);
                 const strLabels  = document.querySelectorAll(`.fb-str-label-cell[data-note="${n}"]`);
 
@@ -5654,6 +5849,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     gain.gain.linearRampToValueAtTime(0.25, now + 0.015);
                     gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
                     osc.start(now); osc.stop(now + duration);
+                    _kcmTrackVoice(osc, gain);
                 });
                 _schedPlay(() => {
                     notesToPlay.forEach(({ note }) => highlightNote(note, false));
@@ -5848,8 +6044,55 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
 
             let x = Math.max(70, sigX + 12);
             const available = W - x - 20;
-            const noteSpacing = Math.min(28, available / (noteObjs.length || 1));
 
+            // ── KCM Staff Notation Law ──────────────────────────────────
+            // A CHORD (notes sounding together — this "static display" path,
+            // used for every simultaneous note set: Play Chord, the live
+            // Console bus's activeNotes from real MIDI/mic/Decoder input,
+            // etc.) renders as a perfectly vertical stack: every notehead at
+            // the SAME x, one shared stem. A MELODY or ARPEGGIO (the
+            // "sequence" path below, notes carrying an explicit order)
+            // renders left-to-right in that order instead, one column per
+            // note, in correct time order. Previously both paths advanced x
+            // per note identically, so a real chord drew as a staggered
+            // little arpeggio instead of a stack — this is the fix, applied
+            // here once so both this compact staff AND the larger fbStaffSVG
+            // pane (same function, just a wider viewBox) can never diverge.
+            if (!isSequence && noteObjs.length > 1) {
+                let minY = Infinity, maxY = -Infinity;
+                noteObjs.forEach(({pc, oct}) => {
+                    const y = noteY(pc, oct);
+                    minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+                    if (y >= 70) { for (let ly = 70; ly <= y; ly += 10) {
+                        const led = document.createElementNS('http://www.w3.org/2000/svg','line');
+                        led.setAttribute('x1',x-8); led.setAttribute('y1',ly); led.setAttribute('x2',x+8); led.setAttribute('y2',ly);
+                        led.setAttribute('stroke','#000'); led.setAttribute('stroke-width','1.2'); svg.appendChild(led);
+                    } }
+                    if (y <= 10) { for (let ly = 10; ly >= y; ly -= 10) {
+                        const led = document.createElementNS('http://www.w3.org/2000/svg','line');
+                        led.setAttribute('x1',x-8); led.setAttribute('y1',ly); led.setAttribute('x2',x+8); led.setAttribute('y2',ly);
+                        led.setAttribute('stroke','#000'); led.setAttribute('stroke-width','1.2'); svg.appendChild(led);
+                    } }
+                    const nh = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+                    nh.setAttribute('cx',x); nh.setAttribute('cy',y); nh.setAttribute('rx','6'); nh.setAttribute('ry','5');
+                    nh.setAttribute('fill',colors[pc]); nh.setAttribute('stroke','#000'); nh.setAttribute('stroke-width','1'); svg.appendChild(nh);
+                });
+                // One shared stem spanning the whole stack — same up/down
+                // rule a single note uses (below the middle line stems up on
+                // the right; above it stems down on the left).
+                const stem = document.createElementNS('http://www.w3.org/2000/svg','line');
+                if (maxY > 42) { stem.setAttribute('x1',x+5.5); stem.setAttribute('y1',maxY); stem.setAttribute('x2',x+5.5); stem.setAttribute('y2',minY-28); }
+                else           { stem.setAttribute('x1',x-5.5); stem.setAttribute('y1',minY); stem.setAttribute('x2',x-5.5); stem.setAttribute('y2',maxY+28); }
+                stem.setAttribute('stroke','#000'); stem.setAttribute('stroke-width','1.8'); svg.appendChild(stem);
+                const lbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+                lbl.setAttribute('x',x); lbl.setAttribute('y','90'); lbl.setAttribute('font-size','10'); lbl.setAttribute('font-weight','bold');
+                lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('fill','#000');
+                lbl.textContent = noteObjs.map(({pc}) => getNoteName(pc)).join('+');
+                svg.appendChild(lbl);
+                return;
+            }
+
+            const noteSpacing = Math.min(28, available / (noteObjs.length || 1));
             noteObjs.forEach(({pc, oct}) => {
                 const n = pc;
                 const y = noteY(pc, oct);
@@ -6895,6 +7138,31 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 const isActive = revealedNotes.has(n) || (currentLevel === '2' && selectedNotes.has(n));
                 const isLevel2Second = currentLevel === '2' && selectedNotes.has(n) && n !== rootNote;
 
+                // ── Clear any stale live-MIDI "playing" highlight ──────
+                // highlightNote(pc, true) adds the .playing class on a MIDI
+                // note-on, which forces this key's color via a CSS
+                // !important rule (var(--key-color)) that the inline styles
+                // below can't override. It's only removed by a matching
+                // note-off message from highlightNote(pc, false) — but
+                // guitar-to-MIDI pickups (e.g. a Fishman TriplePlay)
+                // routinely drop or delay note-offs, so a key can stay lit
+                // in the wrong color indefinitely, out of sync with every
+                // other view. Guitar/Circle don't have this failure mode:
+                // their MIDI "on" state lives in the SAME classes their
+                // normal redraw already overwrites unconditionally every
+                // time, so a dropped note-off just gets papered over on the
+                // next redraw. Piano's .playing was the one place using a
+                // separate, stickier mechanism nothing else ever cleared.
+                // Fix: make this redraw authoritative here too, same as
+                // guitar/circle — unconditionally drop .playing rather than
+                // trusting midiHeldNotes, since a dropped note-off leaves
+                // THAT stale as well (nothing ever calls .delete() on it).
+                // Trade-off: a note actually being held live on a MIDI
+                // keyboard right as some other UI action fires a redraw
+                // loses its glow a beat early — far better than a wrong
+                // note staying lit forever.
+                key.classList.remove('playing');
+
                 // ── Reset to pure default ──────────────────────────
                 key.style.background  = '';
                 key.style.borderColor = '';
@@ -7289,39 +7557,158 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
         //    to-play note handler (level '4') and switchExtDegree() below,
         //    so choosing 9th/11th/13th from the dropdown plays immediately
         //    without requiring a separate note click first.
+        //
+        //    Rewritten to build the chord up note-by-note IN SYNC WITH THE
+        //    SOUND, matching the same accumulate/chase pattern already used
+        //    everywhere else on the site (playHarmChordAscending, and
+        //    playSelection's schedSeq for scale Up/Down): previously this
+        //    function lit the ENTIRE chord across Circle/Guitar/Piano the
+        //    instant a degree was picked, then just played the notes
+        //    underneath that already-finished picture — so the sound
+        //    arpeggiated but nothing visual ever moved with it. Now each
+        //    note lights (and the matching 7th/9th/11th/13th button on the
+        //    Chord Extension panel chase-glows) at the exact moment it
+        //    sounds, same as the rest of the app.
         function playExtChordAscending() {
-            // Cancel any still-running arpeggio from a previous degree/quality
-            // click first — these were scheduled with plain setTimeout before,
-            // which meant switching 7th -> 9th -> 13th quickly left old,
-            // uncancelable single-note callbacks firing after the new chord's
-            // display was drawn, stomping it back to a stale note.
-            _cancelAllPlay();
-            updatePattern();
-            revealedNotes = new Set(selectedNotes);
-            updateControls(); updateNoteList(); updateSphereDisplay();
-            const intervals = getExtChordIntervals();
-            const beat = 60000 / currentBPM;
-            let prevMidi = -1, oct = currentOctave;
-            intervals.forEach((semis, i) => {
-                const pc   = (rootNote + semis) % 12;
-                let midi   = oct * 12 + pc;
-                while (midi <= prevMidi) { oct++; midi = oct * 12 + pc; }
-                prevMidi   = midi;
-                const _o   = oct;
+            try {
+                if (!audioReady) return;
+                // Cancel any still-running arpeggio from a previous degree/
+                // quality click first — these used to be scheduled with plain
+                // setTimeout, which meant switching 7th -> 9th -> 13th
+                // quickly left old, uncancelable single-note callbacks firing
+                // after the new chord's display was drawn, stomping it back
+                // to a stale note.
+                _cancelAllPlay();
+                if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+
+                updatePattern();
+                updateControls(); updateNoteList();
+
+                const intervals = getExtChordIntervals();
+                const beat      = 60000 / currentBPM;
+                const noteDur   = beat * 0.80 / 1000;
+                const now       = audioContext ? audioContext.currentTime : 0;
+
+                // Which Chord Extension tier button (7th/9th/11th/13th) a
+                // given semitone offset from the root belongs to — true
+                // regardless of chord quality (major7/dominant7/minor7/
+                // diminished7/etc all keep their four base tones inside
+                // 0-11 semitones; 14/17/21 are ONLY ever added by the 9th/
+                // 11th/13th extension tiers — see extensionAdd above).
+                function extTierForSemis(semis) {
+                    if (semis === 14) return '9';
+                    if (semis === 17) return '11';
+                    if (semis === 21) return '13';
+                    return '7';
+                }
+
+                // Build the strictly-ascending note sequence up front (the
+                // same "KCM Arpeggio Law" every other Ascending function
+                // uses: each note must land on a higher pitch than the one
+                // before it).
+                const notes = [];
+                let prevMidi = -1, oct = currentOctave;
+                intervals.forEach(semis => {
+                    const pc = (rootNote + semis) % 12;
+                    let midi = oct * 12 + pc;
+                    while (midi <= prevMidi) { oct++; midi = oct * 12 + pc; }
+                    prevMidi = midi;
+                    notes.push({ pc, oct, tier: extTierForSemis(semis) });
+                });
+
+                // Start from a blank slate — Circle + Guitar accumulate the
+                // chord tone-by-tone as it plays (same as everywhere else
+                // on the site), Piano chases a single lit key at a time.
+                revealedNotes = new Set();
+                updateSphereDisplay(); updateGuitarDisplay();
+
+                notes.forEach(({ pc, oct: _o, tier }, i) => {
+                    const offsetMs = i * beat;
+                    _playAt(pc, _o, now + offsetMs / 1000, noteDur, 0.28);
+
+                    _schedPlay(() => {
+                        revealedNotes.add(pc);
+                        updateStaffNotation([{ pc, oct: _o }]);
+                        updateGuitarDisplay();
+
+                        // Guitar: pop the exact fret dot(s) for this note
+                        document.querySelectorAll(`.fb-cell[data-note="${pc}"]`).forEach(cell => {
+                            const dot = cell.querySelector('.fb-dot');
+                            if (dot) {
+                                dot.style.borderColor = '#fff';
+                                dot.style.borderWidth = '3px';
+                                dot.style.boxShadow   = `0 0 20px ${colors[pc]}, 0 0 40px ${colors[pc]}`;
+                                dot.style.transform   = 'scale(1.3)';
+                            }
+                        });
+
+                        // Circle: bright pulse for the note actually sounding
+                        const sp = document.querySelector(`.sphere[data-note="${pc}"]`);
+                        if (sp) { sp.classList.remove('excluded','included','active'); sp.classList.add('playing'); }
+
+                        // Piano: chase — dim every key, then light only this one
+                        document.querySelectorAll('.white-key,.black-key').forEach(k => {
+                            k.classList.remove('playing');
+                            k.style.background=''; k.style.boxShadow=''; k.style.borderColor=''; k.style.borderWidth='';
+                        });
+                        document.querySelectorAll(
+                            `.white-key[data-note="${pc}"][data-octave="${_o}"],` +
+                            `.black-key[data-note="${pc}"][data-octave="${_o}"]`
+                        ).forEach(k => {
+                            k.classList.add('playing');
+                            k.style.setProperty('--key-color', colors[pc]);
+                            k.style.background   = colors[pc];
+                            k.style.borderColor  = colors[pc];
+                            k.style.boxShadow    = `0 0 24px ${colors[pc]}, 0 0 48px ${colors[pc]}88`;
+                            k.style.opacity      = '1';
+                        });
+
+                        // Stencil overlay dot, if a stencil is currently up
+                        pulseStencilDot(pc);
+
+                        // Chord Extension panel: chase-light whichever tier
+                        // this exact note belongs to, so the button row
+                        // visibly tracks the sound as it climbs the stack —
+                        // not just the tier you clicked.
+                        document.querySelectorAll('.ext-degree-btn').forEach(b => {
+                            b.classList.toggle('ext-chasing', b.dataset.extDegree === tier);
+                        });
+                    }, offsetMs);
+
+                    _schedPlay(() => {
+                        // Piano: settle this key back off before the next one lights
+                        document.querySelectorAll(
+                            `.white-key[data-note="${pc}"][data-octave="${_o}"],` +
+                            `.black-key[data-note="${pc}"][data-octave="${_o}"]`
+                        ).forEach(k => { k.classList.remove('playing'); k.style.background=''; k.style.boxShadow=''; k.style.borderColor=''; k.style.borderWidth=''; });
+                        // Circle: settle to a steady "included" dot (chord tones accumulate)
+                        const sp = document.querySelector(`.sphere[data-note="${pc}"]`);
+                        if (sp) {
+                            sp.classList.remove('playing');
+                            sp.classList.add(revealedNotes.has(pc) ? 'included' : 'excluded');
+                            if (pc === rootNote) sp.classList.add('active');
+                            sp.style.border=''; sp.style.boxShadow=''; sp.style.opacity=''; sp.style.filter=''; sp.style.transform='';
+                        }
+                        // Guitar: reset dot glow (updateGuitarDisplay already keeps it lit via revealedNotes)
+                        document.querySelectorAll(`.fb-cell[data-note="${pc}"]`).forEach(cell => {
+                            const dot = cell.querySelector('.fb-dot');
+                            if (dot) { dot.style.borderColor=''; dot.style.borderWidth=''; dot.style.boxShadow=''; dot.style.transform=''; }
+                        });
+                        settleStencilDot(pc);
+                    }, offsetMs + beat * 0.82);
+                });
+
+                // Once the arpeggio finishes, restore + re-highlight the FULL
+                // chord across every panel instead of leaving it stuck on
+                // whichever single note played last, and drop the chase-glow
+                // so only the actually-selected tier's normal .active style remains.
                 _schedPlay(() => {
-                    playNote(pc, _o, 0.7);
-                    updateStaffNotation([{ pc, oct: _o }]);
-                }, i * beat);
-            });
-            updateStaffNotation(Array.from(selectedNotes));
-            // Once the arpeggio finishes, restore + re-highlight the FULL
-            // chord across every panel instead of leaving it stuck on
-            // whichever single note played last.
-            _schedPlay(() => {
-                revealedNotes = new Set(selectedNotes);
-                updateGuitarDisplay(); updatePianoDisplay(); updateSphereDisplay();
-                clearStaffHighlights();
-            }, intervals.length * beat + 200);
+                    revealedNotes = new Set(selectedNotes);
+                    updateGuitarDisplay(); updatePianoDisplay(); updateSphereDisplay();
+                    clearStaffHighlights();
+                    document.querySelectorAll('.ext-degree-btn').forEach(b => b.classList.remove('ext-chasing'));
+                }, notes.length * beat + 200);
+            } catch(e) { console.error('playExtChordAscending error:', e); }
         }
         window.playExtChordAscending = playExtChordAscending;
 
@@ -7380,7 +7767,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                 if (currentLevel === '6') {
                     const g = document.createElement('div'); g.className = 'control-group';
                     g.innerHTML = `<div style="font-size:0.78rem;color:#b0b0cc;line-height:1.5;padding:0.4rem 0;">
-                        <strong style="color:#008080;">Whole Tone Scale</strong> — 6 equal steps of a whole tone (2 semitones each).
+                        <strong style="color:#009999;">Whole Tone Scale</strong> — 6 equal steps of a whole tone (2 semitones each).
                         Symmetrical and ambiguous — no leading tone, no perfect 5th.
                         Used by Debussy, Ravel, and jazz composers for a floating, dreamlike sound.</div>`;
                     c.appendChild(g);
@@ -7629,11 +8016,21 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
         function initInstrumentPicker() {
             const ws = document.getElementById('waveformSelect');
             if (ws) { ws.value = currentWaveform; ws.onchange = e => currentWaveform = e.target.value; }
-            document.querySelectorAll('.inst-btn').forEach(btn => {
+            // NOTE: scoped to :not(.melody-decade-btn) — the Melody Library's
+            // decade filter buttons (50s/60s/.../20s) also carry the shared
+            // .inst-btn styling class for visual consistency, but they are
+            // NOT instrument selectors. Without this exclusion, this loop's
+            // btn.onclick assignment silently overwrote their inline
+            // onclick="filterMelodyLibrary(...)" handler (DOM .onclick wins
+            // over the HTML attribute), so clicking a decade button ran the
+            // instrument-switching code instead of filtering the list —
+            // the active-state highlight still moved (this function also
+            // does that), which is why it looked half-working.
+            document.querySelectorAll('.inst-btn:not(.melody-decade-btn)').forEach(btn => {
                 if (btn.dataset.inst === currentInstrument) btn.classList.add('active');
                 btn.onclick = function() {
                     currentInstrument = this.dataset.inst;
-                    document.querySelectorAll('.inst-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.inst-btn:not(.melody-decade-btn)').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     const lbl = document.getElementById('instrumentBtnLabel');
                     if (lbl) lbl.textContent = INSTRUMENT_LABELS[currentInstrument] || currentInstrument;
@@ -8268,6 +8665,7 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     osc.frequency.value = freq; osc.type = currentWaveform;
                     gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.25, now+0.015); gain.gain.exponentialRampToValueAtTime(0.01, now+duration);
                     osc.start(now); osc.stop(now+duration);
+                    _kcmTrackVoice(osc, gain);
                 });
                 _schedPlay(() => unique.forEach(n => highlightNote(n, false)), duration*1000);
             } catch(e) { console.error('Play chord with intervals error:', e); }
@@ -8604,8 +9002,17 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                         await audioContext.resume();
                         audioReady = true;
                         window._kcmMasterBus = audioContext.createGain();
-                        window._kcmMasterBus.gain.value = 1.0;
-                        window._kcmMasterBus.connect(audioContext.destination);
+                        window._kcmMasterBus.gain.value = 3.2; // boosted further (1.0 -> 1.6 -> 3.2) -- Aug 29 2026, Ben said still too quiet
+                        if (!window._kcmLimiter) {
+                            window._kcmLimiter = audioContext.createDynamicsCompressor();
+                            window._kcmLimiter.threshold.value = -16;
+                            window._kcmLimiter.knee.value = 6;
+                            window._kcmLimiter.ratio.value = 20;
+                            window._kcmLimiter.attack.value = 0.001;
+                            window._kcmLimiter.release.value = 0.08;
+                            window._kcmLimiter.connect(audioContext.destination);
+                        }
+                        window._kcmMasterBus.connect(window._kcmLimiter);
                     } catch(e) { console.warn('[SING] audio init:', e); }
                 } else if (audioContext.state === 'suspended') {
                     await audioContext.resume();
@@ -8949,8 +9356,17 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                     await audioContext.resume();
                     audioReady = true;
                     window._kcmMasterBus = audioContext.createGain();
-                    window._kcmMasterBus.gain.value = 1.0;
-                    window._kcmMasterBus.connect(audioContext.destination);
+                    window._kcmMasterBus.gain.value = 3.2; // boosted further (1.0 -> 1.6 -> 3.2) -- Aug 29 2026, Ben said still too quiet
+                    if (!window._kcmLimiter) {
+                        window._kcmLimiter = audioContext.createDynamicsCompressor();
+                        window._kcmLimiter.threshold.value = -16;
+                        window._kcmLimiter.knee.value = 6;
+                        window._kcmLimiter.ratio.value = 20;
+                        window._kcmLimiter.attack.value = 0.001;
+                        window._kcmLimiter.release.value = 0.08;
+                        window._kcmLimiter.connect(audioContext.destination);
+                    }
+                    window._kcmMasterBus.connect(window._kcmLimiter);
                 } catch(e) { console.warn('[SING] singPlayback audio init:', e); return; }
             } else if (audioContext.state === 'suspended') {
                 await audioContext.resume();
@@ -9239,6 +9655,102 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
                             if (typeof updateDisplay === 'function') updateDisplay();
                         }
                     }
+                    // Real-time note highlighting from the bus (e.g. The Decoder
+                    // playing a song). activeNotes is always the FULL current set
+                    // of raw MIDI notes sounding, not a delta -- diff it against
+                    // what we last highlighted and toggle only what changed.
+                    // Pitch-class COUNTS, not a plain Set, so two octaves of the
+                    // same note (a bass and melody both on C, say) don't turn
+                    // each other's highlight off early when one ends first.
+                    if (typeof highlightNote === 'function') {
+                        var newPcCounts = {};
+                        (payload.activeNotes || []).forEach(function(m) {
+                            var pc = ((m % 12) + 12) % 12;
+                            newPcCounts[pc] = (newPcCounts[pc] || 0) + 1;
+                        });
+                        var prevPcCounts = window._kcmBusPcCounts || {};
+                        for (var pcI = 0; pcI < 12; pcI++) {
+                            var wasOn = !!prevPcCounts[pcI];
+                            var isOn  = !!newPcCounts[pcI];
+                            // skipPiano: true -- the piano keys are driven separately
+                            // below by the octave-aware loop, which knows exactly which
+                            // register (octave 4 vs 5, etc.) each note is actually
+                            // sounding in. This call still handles sphere + fretboard.
+                            if (isOn && !wasOn) highlightNote(pcI, true, { skipPiano: true });
+                            else if (!isOn && wasOn) highlightNote(pcI, false, { skipPiano: true });
+                        }
+                        window._kcmBusPcCounts = newPcCounts;
+
+                        // ── KCM octave-aware piano sync ───────────────────
+                        // The piano keyboard shows 2+ registers of the same 12 pitch
+                        // classes. The pc-level loop above can't tell them apart, so
+                        // it used to hit whichever DOM element querySelector found
+                        // first -- sometimes lighting the wrong register, or both at
+                        // once. This tracks exact (pitch class, octave) pairs from the
+                        // real MIDI note numbers so only the register actually
+                        // sounding gets highlighted.
+                        var newPcOctCounts = {};
+                        (payload.activeNotes || []).forEach(function(m) {
+                            var pc  = ((m % 12) + 12) % 12;
+                            var oct = Math.floor(m / 12) - 1;
+                            var key = pc + '_' + oct;
+                            newPcOctCounts[key] = (newPcOctCounts[key] || 0) + 1;
+                        });
+                        var prevPcOctCounts = window._kcmBusPcOctCounts || {};
+                        var allKeys = {};
+                        Object.keys(prevPcOctCounts).forEach(function(k){ allKeys[k] = true; });
+                        Object.keys(newPcOctCounts).forEach(function(k){ allKeys[k] = true; });
+                        Object.keys(allKeys).forEach(function(key) {
+                            var wasOn = !!prevPcOctCounts[key];
+                            var isOn  = !!newPcOctCounts[key];
+                            if (isOn === wasOn) return;
+                            var parts = key.split('_');
+                            var pc = parseInt(parts[0], 10);
+                            var oct = parseInt(parts[1], 10);
+                            highlightNote(pc, isOn, { oct: oct });
+                        });
+                        window._kcmBusPcOctCounts = newPcOctCounts;
+
+                        // Mirror the same live pitch classes onto the compact STAFF
+                        // NOTATION panel (its Staff / Fretboard / Keyboard mini-tabs) —
+                        // previously only the big sphere/piano/fretboard above reacted
+                        // to bus playback (The Decoder, real MIDI/mic input); this panel
+                        // just sat still no matter what played. updateStaffNotation()
+                        // is the same single choke point the KCM_TICK handler above
+                        // already uses for the identical purpose, so this follows that
+                        // established pattern rather than inventing a new one. No
+                        // equivalent change is needed for the TIMELINE tab: it already
+                        // watches the sphere's 'playing' class via its own
+                        // MutationObserver (see the KCM Timeline module further down),
+                        // and highlightNote() above already toggles that class, so
+                        // Timeline was already following bus playback.
+                        if (typeof updateStaffNotation === 'function') {
+                            updateStaffNotation(Object.keys(newPcCounts).map(Number));
+                        }
+                    }
+                    // ── Shared tempo ───────────────────────────────────
+                    // Adopt an incoming bpm the same way root/mode are adopted
+                    // above. Doesn't re-publish -- only the slider's own oninput
+                    // (user-driven) does that, so there's no bounce-back loop.
+                    if (payload.bpm !== undefined && payload.bpm !== null && parseInt(payload.bpm, 10) !== currentBPM) {
+                        var incomingBpm = parseInt(payload.bpm, 10);
+                        if (!isNaN(incomingBpm) && incomingBpm > 0) {
+                            currentBPM = incomingBpm;
+                            // Sep 2026 fix: this block referenced `el(...)`, a local
+                            // document.getElementById shorthand defined in OTHER,
+                            // unrelated closures elsewhere in this file -- not in scope
+                            // here, so every incoming bpm threw "el is not defined"
+                            // (caught by the try/catch around this whole listener, so
+                            // silent-ish, but it spammed the console and skipped the
+                            // rest of this handler on every single message). Never
+                            // triggered before because nothing on the bus ever actually
+                            // sent a bpm patch until The Decoder's real-tempo fix did.
+                            // Using document.getElementById directly instead of the
+                            // out-of-scope helper.
+                            var bpmD = document.getElementById('bpmDisplay'); if (bpmD) bpmD.textContent = currentBPM;
+                            var tSlider = document.getElementById('tempoSlider'); if (tSlider) tSlider.value = currentBPM;
+                        }
+                    }
                     console.log('[KCM→MTP] state received root=' + (payload.root||'?'));
                 } catch(e) { console.error('[KCM→MTP] listener error:', e); }
             });
@@ -9342,7 +9854,11 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
 <!-- ============================================================
      FLOATING CONTROL DOCK
      ============================================================ -->
-<div id="floatingDock" class="collapsed">
+<!-- role="region": a persistent, substantive control panel that lives
+     as its own body-level sibling (position:fixed overlay), outside the
+     <main> landmark above — giving it its own landmark satisfies "content
+     should be contained by landmarks" without moving/restyling it. -->
+<div id="floatingDock" class="collapsed" role="region" aria-label="KCM Control Dock">
     <div id="dockHandle" onclick="toggleDock()">
         <span class="dock-title">🎛 KCM Control Dock</span>
         <span id="kcmBridgeDot"
@@ -10361,7 +10877,7 @@ function kcmSpeak(text) {
     utt.onend = utt.onerror = () => {
         _kcmSpeaking = false;
         const btn = document.getElementById('kcmSpeakBtn');
-        if (btn) { btn.textContent = '🔊'; btn.style.background = 'rgba(0,128,128,0.25)'; btn.style.borderColor = 'rgba(0,128,128,0.5)'; btn.style.color = '#008080'; }
+        if (btn) { btn.textContent = '🔊'; btn.style.background = 'rgba(0,128,128,0.25)'; btn.style.borderColor = 'rgba(0,128,128,0.5)'; btn.style.color = '#009999'; }
         // Restore auto-speak icon if enabled
         if (_kcmSpeakAuto) _kcmUpdateAutoBtn();
     };
@@ -10372,7 +10888,7 @@ function kcmStopSpeak() {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     _kcmSpeaking = false;
     const btn = document.getElementById('kcmSpeakBtn');
-    if (btn) { btn.textContent = '🔊'; btn.style.background = 'rgba(0,128,128,0.25)'; btn.style.borderColor = 'rgba(0,128,128,0.5)'; btn.style.color = '#008080'; }
+    if (btn) { btn.textContent = '🔊'; btn.style.background = 'rgba(0,128,128,0.25)'; btn.style.borderColor = 'rgba(0,128,128,0.5)'; btn.style.color = '#009999'; }
 }
 
 // Speak button: tap to speak, tap again to stop
@@ -10615,7 +11131,7 @@ function sbRenderSong() {
     meta.innerHTML = `
         <div style="font-family:var(--font-display); font-size:1.1rem; font-weight:900; color:var(--primary-gold); margin-bottom:4px;">${_sbSong.title || 'Untitled'}</div>
         <div style="font-size:0.72rem; color:#b0b0cc;">${_sbSong.subtitle || ''}</div>
-        <div style="font-size:0.68rem; color:#008080; margin-top:4px;">${_sbSong.bpm} BPM · ${_sbSong.key} ${_sbSong.mode}</div>`;
+        <div style="font-size:0.68rem; color:#009999; margin-top:4px;">${_sbSong.bpm} BPM · ${_sbSong.key} ${_sbSong.mode}</div>`;
 
     // Section tabs
     const tabs = document.getElementById('sbSectionTabs');
@@ -10652,7 +11168,7 @@ function sbRenderSection() {
 
     // Build chord display
     let chordHTML = '<div style="margin-bottom:0.65rem;">';
-    chordHTML += '<div style="font-size:0.6rem; font-weight:700; color:#008080; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px;">Chord Progression</div>';
+    chordHTML += '<div style="font-size:0.6rem; font-weight:700; color:#009999; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px;">Chord Progression</div>';
     chordHTML += '<div style="display:flex; flex-wrap:wrap; gap:6px;">';
     (sec.chords || []).forEach(ch => {
         const noteColors = (ch.notes || []).map(n => _SB_HEX[n % 12] || '#fff');
@@ -10709,6 +11225,7 @@ function _sbPlayNoteAt(pc, oct, startSec, dur, vol, ctx) {
         gain.gain.exponentialRampToValueAtTime(0.001, startSec + dur - 0.01);
         osc.start(startSec);
         osc.stop(startSec + dur);
+        if (typeof _kcmTrackVoice === 'function') _kcmTrackVoice(osc, gain);
     } catch(e) {}
 }
 
@@ -11089,6 +11606,10 @@ async function kcmAIAsk(type) {
         if (!tip) {
             tip = document.createElement('div');
             tip.className = 'kcm-tooltip';
+            // role="tooltip": correct semantics for a transient hover hint,
+            // and (unlike a landmark) tooltips are legitimately exempt from
+            // the "content must live inside a landmark" rule (axe: region).
+            tip.setAttribute('role', 'tooltip');
             document.body.appendChild(tip);
         }
         return tip;
@@ -12149,6 +12670,7 @@ async function kcmAIAsk(type) {
     const _stencilTimers = [];
     function _stencilCancelAll() {
         while (_stencilTimers.length) clearTimeout(_stencilTimers.pop());
+        if (typeof _kcmKillAllVoices === 'function') _kcmKillAllVoices();
         if (typeof clearStencilLabelHighlight === 'function') clearStencilLabelHighlight();
         // Stop can interrupt melody playback before its own tEnd timer
         // (which normally clears the active chip) ever fires — without
@@ -12719,7 +13241,7 @@ async function kcmAIAsk(type) {
   // sizing, same green/red gradients, same hover lift — since that's the
   // literal sibling control this replaces in the same layout slot.
   const TL_ACTIVE   = "font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;padding:8px 4px;border-radius:20px;border:2px solid #008080;background:linear-gradient(135deg,#008080,#006666);color:#fff;cursor:pointer;transition:all 0.2s;box-shadow:0 3px 10px rgba(0,0,0,0.15);";
-  const TL_INACTIVE = "font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;padding:8px 4px;border-radius:20px;border:2px solid rgba(0,128,128,0.3);background:rgba(0,128,128,0.06);color:#008080;cursor:pointer;transition:all 0.2s;";
+  const TL_INACTIVE = "font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;padding:8px 4px;border-radius:20px;border:2px solid rgba(0,128,128,0.3);background:rgba(0,128,128,0.06);color:#009999;cursor:pointer;transition:all 0.2s;";
 
   function injectControls() {
     if (tlInjected) return;
