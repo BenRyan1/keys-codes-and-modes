@@ -892,16 +892,16 @@
                     <label class="control-label" for="tonicSelect">Tonic Key</label>
                     <select id="tonicSelect" class="control-input">
                         <option>C</option>
-                        <option>C#</option>
+                        <option value="C#">C#/Db</option>
                         <option>D</option>
-                        <option>D#</option>
+                        <option value="D#">D#/Eb</option>
                         <option>E</option>
                         <option>F</option>
-                        <option>F#</option>
+                        <option value="F#">F#/Gb</option>
                         <option>G</option>
-                        <option>G#</option>
+                        <option value="G#">G#/Ab</option>
                         <option>A</option>
-                        <option>A#</option>
+                        <option value="A#">A#/Bb</option>
                         <option>B</option>
                     </select>
                 </div>
@@ -1087,6 +1087,29 @@
             return steps;
         }
         
+        // ── Correct note spelling (one letter per scale degree) ──────────
+        // NOTES (sharps) stays the pitch-class / color index; display uses
+        // proper letter spelling (C Aeolian: C D Eb F G Ab Bb). Sharp tonics
+        // that would need double sharps switch to the flat name (A# → Bb).
+        const LETTERS=["C","D","E","F","G","A","B"];
+        const LETTER_PC={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+        const FLAT_NAME={"C#":"Db","D#":"Eb","F#":"Gb","G#":"Ab","A#":"Bb"};
+        const PC_FROM_NAME=(function(){const m={};NOTES.forEach((n,i)=>m[n]=i);Object.entries(FLAT_NAME).forEach(([sh,fl])=>m[fl]=m[sh]);m["Cb"]=11;m["Fb"]=4;m["E#"]=5;m["B#"]=0;return m;})();
+        function spellFrom(tonicName,iv){
+            const li=LETTERS.indexOf(tonicName[0]),tpc=PC_FROM_NAME[tonicName],out=[];
+            for(let d=0;d<7;d++){
+                const L=LETTERS[(li+d)%7],target=(tpc+iv[d])%12;
+                let diff=((target-LETTER_PC[L])%12+12)%12;if(diff>6)diff-=12;
+                if(Math.abs(diff)>1)return null;
+                out.push(L+(diff===1?"#":diff===-1?"b":""));
+            }
+            out.push(out[0]);return out;
+        }
+        function spellMode(tonic,iv){
+            return spellFrom(tonic,iv)||(FLAT_NAME[tonic]&&spellFrom(FLAT_NAME[tonic],iv))||iv.map(x=>NOTES[(NOTES.indexOf(tonic)+x)%12]);
+        }
+        function toSharpName(n){const pc=PC_FROM_NAME[n];return pc===undefined?null:NOTES[pc];}
+
         /* ==================== STATE ==================== */
         
         let currentTonic = "C";
@@ -1169,6 +1192,7 @@
             const tonicIndex = NOTES.indexOf(currentTonic);
             const intervals = modeData.intervals;
             const steps = getIntervalSteps(intervals);
+            const spelled = spellMode(currentTonic, intervals);
             
             for (let deg = 1; deg <= 8; deg++) {
                 const cell = document.createElement("div");
@@ -1181,7 +1205,7 @@
                 const noteName = document.createElement("span");
                 noteName.className = "note-name";
                 const noteIndex = (tonicIndex + intervals[deg - 1]) % 12;
-                const note = NOTES[noteIndex];
+                const note = spelled[deg - 1];
                 noteName.textContent = note;
                 
                 const interval = document.createElement("span");
@@ -1190,11 +1214,11 @@
                     interval.textContent = steps[deg - 1];
                 }
                 
-                const midiNote = MIDI_BASE + intervals[deg - 1];
+                const midiNote = MIDI_BASE + tonicIndex + intervals[deg - 1];
                 cell.dataset.midi = midiNote;
                 cell.dataset.note = note;
                 
-                const colorClass = NOTE_COLORS[note];
+                const colorClass = NOTE_COLORS[NOTES[noteIndex]];
                 cell.className = `degree-cell note-${colorClass}`;
                 
                 // Manual click handler — records individual note clicks
@@ -1555,8 +1579,9 @@
                     var changed = false;
 
                     // Update tonic if different — VISUAL ONLY, never starts audio
-                    if (payload.root && payload.root !== currentTonic) {
-                        currentTonic = payload.root;
+                    var normRoot = payload.root ? toSharpName(payload.root) : null;
+                    if (normRoot && normRoot !== currentTonic) {
+                        currentTonic = normRoot;
                         var sel = document.getElementById('tonicSelect');
                         if (sel) sel.value = currentTonic;
                         changed = true;
