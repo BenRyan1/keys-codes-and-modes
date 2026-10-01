@@ -542,7 +542,7 @@ Santa Barbara, California
 
             <!-- Apps Section -->
             <div class="section-label" aria-hidden="true">
-                <h2>Your Selected Apps</h2>
+                <h2>Library Apps</h2>
             </div>
 
             <!-- Dynamic app cards injected here -->
@@ -554,7 +554,7 @@ Santa Barbara, California
 
             <!-- Upgrade Banner -->
             <aside class="upgrade-banner" role="complementary" aria-label="Unlock more apps">
-                <h2>🎵 Unlock All 20+ Apps</h2>
+                <h2>🎵 Unlock All 24 Library Apps</h2>
                 <p>Upgrade to Premium or Founder and access our complete interactive music theory suite — every tool, every mode, every scale.</p>
                 <div class="btn-row">
                     <a href="/insights.html" class="btn-outline" aria-label="Browse all available apps">
@@ -1026,14 +1026,15 @@ Santa Barbara, California
             selectedIds = JSON.parse(localStorage.getItem('freeApps') || '[]');
         } catch(e) { selectedIds = []; }
 
-        /* No apps chosen yet */
+        /* No saved picks (all new users since 2026-09-30: the 3-pick offer was
+           replaced by the free section above). Invite them to the library. */
         if (!selectedIds.length) {
             container.innerHTML = `
-                <div class="state-panel" role="alert">
-                    <h2>No Apps Selected Yet</h2>
-                    <p>You haven't picked your free apps yet.</p>
+                <div class="state-panel" role="status">
+                    <h2>Unlock the Full Library</h2>
+                    <p>Your free apps are above. Members get all 24 interactive library apps: guitar, theory, rhythm, ear training, and visual tools.</p>
                     <p style="margin-top:1rem;">
-                        <a href="/welcome-free-picker.html">Choose your 3 free apps →</a>
+                        <a href="/pricing">See membership plans →</a>
                     </p>
                     <p style="margin-top:0.75rem;">
                         <a href="/access-code-entry.html">Have an access code? Enter it here →</a>
@@ -1047,11 +1048,14 @@ Santa Barbara, California
 
         if (!userApps.length) {
             container.innerHTML = `
-                <div class="state-panel" role="alert">
-                    <h2>Apps Not Found</h2>
-                    <p>We couldn't locate your saved app selections.</p>
+                <div class="state-panel" role="status">
+                    <h2>Unlock the Full Library</h2>
+                    <p>Your free apps are above. Members get all 24 interactive library apps: guitar, theory, rhythm, ear training, and visual tools.</p>
                     <p style="margin-top:1rem;">
-                        <a href="/welcome-free-picker.html">Re-select your apps →</a>
+                        <a href="/pricing">See membership plans →</a>
+                    </p>
+                    <p style="margin-top:0.75rem;">
+                        <a href="/access-code-entry.html">Have an access code? Enter it here →</a>
                     </p>
                 </div>`;
             return;
@@ -1061,7 +1065,7 @@ Santa Barbara, California
         const freeNote = document.createElement('div');
         freeNote.style.cssText = 'text-align:center;margin-bottom:1.5rem;';
         freeNote.innerHTML = `<span style="background:rgba(0,128,128,0.15);border:1px solid #008080;color:#E8E8E8;padding:0.4rem 1.2rem;border-radius:25px;font-size:0.9rem;">
-            Free Tier — Your 3 chosen apps &nbsp;·&nbsp; <a href="/pricing.html" style="color:#F4D03F;font-weight:700;">Upgrade for all 25+ →</a>
+            Your 3 saved picks (kept from your original signup) &nbsp;·&nbsp; <a href="/pricing.html" style="color:#F4D03F;font-weight:700;">Upgrade for all 24 →</a>
         </span>`;
         container.appendChild(freeNote);
 
@@ -1095,7 +1099,7 @@ Santa Barbara, California
         if (!notice) return;
 
         const appName = app ? app.title : 'That app';
-        notice.textContent = `🔒 ${appName} isn't part of your current plan. Pick it as one of your free apps below, or upgrade for full access.`;
+        notice.textContent = `🔒 ${appName} isn't part of your current plan. It's part of the full library: upgrade for full access. Your free apps are below.`;
         notice.style.display = 'block';
     }
 

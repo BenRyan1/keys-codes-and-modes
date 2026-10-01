@@ -62,14 +62,25 @@
 /apps/kcm-free-sphere-landing          /signup   301
 /welcome-free-sphere.html              /apps/kcm-chromatic-sphere-interactive   301
 /welcome-free-sphere                   /apps/kcm-chromatic-sphere-interactive   301
+
+# ── apps/free-tuner-landing.html is an OLDER duplicate of /free-tuner-landing
+# (one page, one address). File kept on disk. Added 2026-09-30.
+/apps/free-tuner-landing.html          /free-tuner-landing   301
+/apps/free-tuner-landing               /free-tuner-landing   301
+
+# ── apps/pricing.html is an OLD duplicate of /pricing with outdated claims
+# ("37 spots remaining"). One page, one address. File kept. Added 2026-09-30.
+/apps/pricing.html                     /pricing   301
+/apps/pricing                          /pricing   301
 /signup.html             /signup             301
-/privacy-policy.html     /privacy-policy     301
+# fixed 2026-09-30: no privacy-policy page exists; real page is privacy.html
+/privacy-policy.html     /privacy            301
 /terms-of-service.html   /terms-of-service   301
 /refund-policy.html      /refund-policy      301
 /cookie-policy.html      /cookie-policy      301
 /holy-mole-grail.html    /holy-mole-grail    301
 /free-tuner-landing.html /free-tuner-landing 301
-/privacy.html            /privacy-policy     301
+# (removed 2026-09-30: /privacy.html -> /privacy-policy pointed at a page that does not exist; Cloudflare serves privacy.html at /privacy)
 /terms.html              /terms-of-service   301
 
 # ── Trailing slash removal
@@ -79,15 +90,16 @@
 /offerings/          /my-apps          301
 /insights/           /insights           301
 /signup/             /signup             301
-/privacy-policy/     /privacy-policy     301
+/privacy-policy/     /privacy            301
 /terms-of-service/   /terms-of-service   301
 /refund-policy/      /refund-policy      301
 /cookie-policy/      /cookie-policy      301
 /holy-mole-grail/    /holy-mole-grail    301
 
 # ── Extensionless aliases
-/refund-policy  /refund-policy      301
-/privacy        /privacy-policy     301
+# (removed 2026-09-30: /refund-policy -> /refund-policy redirected to itself, an endless loop)
+# fixed 2026-09-30 (was /privacy -> /privacy-policy, a dead page)
+/privacy-policy  /privacy           301
 
 # ── Legacy /auth/ system retired 2026-08-26: this was a full parallel copy of
 # an earlier site redesign (login, signup, gateway, password, welcome-*,
