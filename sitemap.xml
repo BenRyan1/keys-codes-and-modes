@@ -1,147 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Rebuilt 2026-09-30: only public, indexable pages at their final (clean) address.
+     Gated library apps, redirects, noindex pages and drafts are intentionally left out.
+     Previous version: git history. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- ═══ CORE PAGES ═══ -->
   <url>
     <loc>https://keyscodesandmodes.com/</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/about</loc>
+    <loc>https://keyscodesandmodes.com/pricing</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/contact</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/offerings</loc>
+    <loc>https://keyscodesandmodes.com/signup</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://keyscodesandmodes.com/insights</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/signup</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/lander</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/research</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- ═══ FREE TUNER LANDING (public, indexable) ═══ -->
   <url>
     <loc>https://keyscodesandmodes.com/free-tuner-landing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- ═══ LEGAL PAGES ═══ -->
-  <url>
-    <loc>https://keyscodesandmodes.com/privacy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/terms</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/refund-policy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/cookie-policy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <!-- ═══ PUBLIC APPS ═══ -->
-  <url>
-    <loc>https://keyscodesandmodes.com/apps/holy-mole-grail</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/apps/chromatic-circle</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://keyscodesandmodes.com/apps/kcm-tuner</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/apps/guitar-improvisations</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/harmonized-chromatic-scale</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/apps/rhythmic-clock</loc>
+    <loc>https://keyscodesandmodes.com/apps/kcm-chromatic-sphere-interactive</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/rhythm-harmony</loc>
+    <loc>https://keyscodesandmodes.com/about</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/S-Geo-Music</loc>
+    <loc>https://keyscodesandmodes.com/research</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/chromatic-wheel-of-sound</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://keyscodesandmodes.com/contact</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://keyscodesandmodes.com/apps/pitch-detector</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://keyscodesandmodes.com/refund-policy</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/apps/fretboard-speed-challenge</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://keyscodesandmodes.com/apps/name-that-note</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- ═══ EXCLUDED — never list these in sitemap ═══
-       /index.html             → duplicate of /, canonical is /
-       pricing.html            → 301 redirects to /offerings.html
-       superintendent.html     → noindex, nofollow (gated landing)
-       welcome-free-picker.html → post-signup, noindex
-       welcome-free-tuner.html  → post-signup, noindex
-       welcome-premium.html     → post-purchase, noindex
-       apps/chromatic-spoke-clock.html → 301 redirects to chromatic-circle.html
-  ═══════════════════════════════════════════════════════════════════════════ -->
-
 </urlset>
