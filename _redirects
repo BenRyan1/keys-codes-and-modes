@@ -38,6 +38,12 @@
 # ungated, at a short and easily-guessed path. Blanket rule covers it and
 # any future stray file dropped in that folder.
 /mtp/*  /my-apps  301
+
+# ── apps/VeryRecent.html: OLD (160 KB) copy of Music Theory Pro, kept on disk
+# unchanged (copy also in KCM-Workshop/2-reference-versions). Forward visitors to
+# the current free Music Theory Pro. Added 2026-09-30.
+/apps/VeryRecent.html   https://mtp.keyscodesandmodes.com   301
+/apps/VeryRecent        https://mtp.keyscodesandmodes.com   301
 /signup.html             /signup             301
 /privacy-policy.html     /privacy-policy     301
 /terms-of-service.html   /terms-of-service   301
