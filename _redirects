@@ -44,6 +44,24 @@
 # the current free Music Theory Pro. Added 2026-09-30.
 /apps/VeryRecent.html   https://mtp.keyscodesandmodes.com   301
 /apps/VeryRecent        https://mtp.keyscodesandmodes.com   301
+
+# ── Console panels retired from the main site 2026-09-30 (PLAN.md Step 2).
+# The KCM Console is one connected product: old single-panel addresses go to
+# the full Console. Files kept on disk unchanged; copies in KCM-Workshop.
+/apps/circle-of-fifths.html            https://console.keyscodesandmodes.com/   301
+/apps/circle-of-fifths                 https://console.keyscodesandmodes.com/   301
+/apps/modal-stencil-player.html        https://console.keyscodesandmodes.com/   301
+/apps/modal-stencil-player             https://console.keyscodesandmodes.com/   301
+/apps/kcm-midi-chromatic-circle.html   https://console.keyscodesandmodes.com/   301
+/apps/kcm-midi-chromatic-circle        https://console.keyscodesandmodes.com/   301
+
+# ── Separate Sphere signup retired 2026-09-30. The Sphere is now a free card.
+# Landing page -> main free signup. Welcome page (may be linked from old welcome
+# emails) -> straight to the Sphere, so past signups still get what they asked for.
+/apps/kcm-free-sphere-landing.html     /signup   301
+/apps/kcm-free-sphere-landing          /signup   301
+/welcome-free-sphere.html              /apps/kcm-chromatic-sphere-interactive   301
+/welcome-free-sphere                   /apps/kcm-chromatic-sphere-interactive   301
 /signup.html             /signup             301
 /privacy-policy.html     /privacy-policy     301
 /terms-of-service.html   /terms-of-service   301

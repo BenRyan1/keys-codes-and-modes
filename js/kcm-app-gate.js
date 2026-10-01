@@ -26,6 +26,15 @@
     if (!ids) return; // page didn't opt in — nothing to enforce
     if (!Array.isArray(ids)) ids = [ids];
 
+    // Apps advertised as FREE (free-tuner landing page, My Apps "Free for
+    // Everyone" section) must never be gated. Added 2026-09-30: before this,
+    // free-tuner signups were bounced to the locked notice.
+    var ALWAYS_FREE = ['kcm-tuner'];
+    if (ids.some(function (id) { return ALWAYS_FREE.indexOf(id) !== -1; })) {
+        document.documentElement.style.visibility = '';
+        return;
+    }
+
     function reveal() {
         document.documentElement.style.visibility = '';
     }

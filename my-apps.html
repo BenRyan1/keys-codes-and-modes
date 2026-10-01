@@ -253,6 +253,10 @@ Santa Barbara, California
         /* ═══════════════════════════════════════
            APPS GRID
         ═══════════════════════════════════════ */
+        /* Featured free card (KCM Console) spans the full row; added 2026-09-30 */
+        .app-card.featured { grid-column: 1 / -1; border-color: #F4D03F; }
+        .app-card.featured .card-features { columns: 2; column-gap: 2rem; }
+        @media (max-width: 640px) { .app-card.featured .card-features { columns: 1; } }
         .apps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -528,6 +532,13 @@ Santa Barbara, California
 
             <!-- Shown when the app-page gate bounces someone back here (?locked=<id>) -->
             <div id="lockedNotice" role="alert" style="display:none;margin-bottom:1.5rem;padding:1rem 1.25rem;border:1px solid #d4b030;border-radius:10px;background:rgba(244,208,63,0.1);color:#E8E8E8;"></div>
+
+            <!-- Free Section (shown to everyone; added 2026-09-30) -->
+            <div class="section-label" aria-hidden="true">
+                <h2>Free for Everyone</h2>
+            </div>
+            <p style="color:#B8B8C8;margin:-0.5rem 0 1.25rem;font-size:0.95rem;">Included free with your account. These never count toward any app picks.</p>
+            <div id="freeContainer" class="apps-grid" role="list" aria-label="Free apps"></div>
 
             <!-- Apps Section -->
             <div class="section-label" aria-hidden="true">
@@ -840,6 +851,60 @@ Santa Barbara, California
     ];
 
     /* ──────────────────────────────────────────
+       FREE APPS (added 2026-09-30)
+       Shown to EVERY visitor, above the paid grid. Never part of the
+       paid grid or the 3 free picks. The KCM Console is one connected
+       product: always link the full Console, never single panels.
+       Console files live ONLY in kcm-console-repo (single source).
+    ────────────────────────────────────────── */
+    const CONSOLE_URL = 'https://console.keyscodesandmodes.com';
+    const FREE_APPS = [
+        {
+            id:       'kcm-console',
+            featured: true,
+            file:     CONSOLE_URL + '/',
+            icon:     '🎛️',
+            category: 'Free · Featured',
+            title:    'KCM Console: Six Panels, One Connected Instrument',
+            desc:     'Play a note or load a song and every panel answers at once. The Circle, keyboard, fretboard, modes, and song library all move together in real time, driven by one shared harmonic state.',
+            features: ['Music Theory Pro', 'Circle of Fifths (Standard & Extended)', 'Modal Stencil Player', 'Melody Library: See the Song', 'Chromatic Universe', 'The Decoder: drop in MIDI or MusicXML']
+        },
+        {
+            id:       'kcm-tuner',
+            file:     'apps/kcm-tuner.html',
+            icon:     '🎸',
+            category: 'Free · Tool',
+            title:    'KCM Instrument Tuner',
+            desc:     'Professional real-time instrument tuner using your microphone — guitar, bass, ukulele and more.',
+            features: ['Real-time pitch detection', 'Multiple instruments', 'Visual tuning display', 'Microphone input']
+        },
+        {
+            id:       'kcm-chromatic-sphere',
+            file:     'apps/kcm-chromatic-sphere-interactive.html',
+            icon:     '🌐',
+            category: 'Free · Visual',
+            title:    'KCM Chromatic Sphere',
+            desc:     'Tap any of the 12 color-coded notes to hear it play. Real-time audio in the official Keys, Codes & Modes color system.',
+            features: ['12 color-coded notes', 'Real-time audio', 'Touch or click', 'No download needed']
+        }
+    ];
+    /* Apps that moved to the free section: hidden from the paid grid and from
+       free picks (their old ids stay in ALL_APPS so saved picks never break). */
+    const FREE_IDS = new Set(['kcm-console', 'kcm-tuner', 'kcm-chromatic-sphere',
+                              'circle-of-fifths', 'modal-stencil-player', 'kcm-midi-chromatic-circle']);
+
+    function renderFreeApps() {
+        const box = document.getElementById('freeContainer');
+        if (!box) return;
+        FREE_APPS.forEach((app, i) => {
+            const card = buildCard(app, i);
+            if (app.featured) card.classList.add('featured');
+            card.setAttribute('role', 'listitem');
+            box.appendChild(card);
+        });
+    }
+
+    /* ──────────────────────────────────────────
        BUILD CARD HTML
     ────────────────────────────────────────── */
     function buildCard(app, delay) {
@@ -945,7 +1010,7 @@ Santa Barbara, California
             grid.setAttribute('role', 'list');
             grid.setAttribute('aria-label', 'All music theory apps — full access');
 
-            ALL_APPS.forEach((app, i) => {
+            ALL_APPS.filter(a => !FREE_IDS.has(a.id)).forEach((app, i) => {
                 const card = buildCard(app, i);
                 card.setAttribute('role', 'listitem');
                 grid.appendChild(card);
@@ -978,7 +1043,7 @@ Santa Barbara, California
         }
 
         /* Match IDs to app database */
-        const userApps = ALL_APPS.filter(a => selectedIds.includes(a.id));
+        const userApps = ALL_APPS.filter(a => selectedIds.includes(a.id) && !FREE_IDS.has(a.id));
 
         if (!userApps.length) {
             container.innerHTML = `
@@ -1036,6 +1101,7 @@ Santa Barbara, California
 
     document.addEventListener('DOMContentLoaded', () => {
         showLockedNoticeIfNeeded();
+        renderFreeApps();
         renderMyApps();
     });
     </script>
