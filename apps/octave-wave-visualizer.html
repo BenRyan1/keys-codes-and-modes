@@ -603,6 +603,7 @@
         // Draw waves
         function drawWaves() {
             frameCount++;
+            syncHighlightToAudio();
             
             // Clear canvas
             ctx.fillStyle = '#000000';
@@ -760,6 +761,7 @@
         }
         
         function selectNote(note) {
+            if (audioContext) { silenceAll(); scaleOriginalNote = null; }
             currentNote = note;
             
             // Update dropdown selector
@@ -852,209 +854,156 @@
             });
         }
         
-        // Play individual octave
-        function playIndividualOctave(octave) {
-            initAudio();
-            const freq = getFrequency(currentNote, octave);
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
-            
-            osc.start();
-            osc.stop(audioContext.currentTime + 1.5);
-            
-            // Visual highlight
-            highlightedOctave = octave;
-            console.log(`🔊 Playing ${currentNote}${octave} at ${freq.toFixed(2)} Hz`);
-            console.log(`🌊 Watch octave ${octave} (${octaveColors[octave].name.replace('C', currentNote)}) light up!`);
-            
-            setTimeout(() => {
-                highlightedOctave = -1;
-            }, 1500);
-        }
-        
-        // Audio functions (basic implementations)
+        // ═══════════════════════════════════════════════════════════
+        // SOUND ↔ WAVE SYNC (Oct 2026)
+        // Rule: a wave is lit for exactly as long as its sound is heard,
+        // one sound at a time. Sound and picture both come from
+        // getFrequency(currentNote, octave), so pitch and wave always match.
+        // ═══════════════════════════════════════════════════════════
         let audioContext = null;
-        
-        function initAudio() {
+        let activeVoices = [];
+        let syncTimers = [];
+        let scaleOriginalNote = null;
+
+        async function initAudio() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
+            if (audioContext.state === 'suspended') {
+                try { await audioContext.resume(); } catch (e) {}
+            }
         }
-        
-        function playCurrentNote() {
-            initAudio();
-            const freq = getFrequency(currentNote, 4);
+
+        // Speaker delay, so the light comes on when the sound is actually heard
+        function outputLatencyMs() {
+            if (!audioContext) return 0;
+            return ((audioContext.outputLatency || 0) + (audioContext.baseLatency || 0)) * 1000;
+        }
+
+        function later(fn, ms) { syncTimers.push(setTimeout(fn, ms)); }
+
+        // Stop every sound and every pending highlight
+        function silenceAll() {
+            syncTimers.forEach(clearTimeout);
+            syncTimers = [];
+            const now = audioContext ? audioContext.currentTime : 0;
+            activeVoices.forEach(v => {
+                try {
+                    v.gain.gain.cancelScheduledValues(now);
+                    v.gain.gain.setValueAtTime(0.0001, now);
+                    v.osc.stop(now + 0.02);
+                } catch (e) {}
+            });
+            activeVoices = [];
+            highlightedOctave = -1;
+        }
+
+        // One tone, startSec from now, lasting durSec.
+        // Its wave lights up for exactly the same window.
+        function playSynced(freq, octave, startSec, durSec, volume, onStart) {
+            const t0 = audioContext.currentTime + startSec;
             const osc = audioContext.createOscillator();
             const gain = audioContext.createGain();
-            
             osc.frequency.value = freq;
             osc.connect(gain);
             gain.connect(audioContext.destination);
-            
-            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-            
-            osc.start();
-            osc.stop(audioContext.currentTime + 1);
-            
-            // ★ VISUAL HIGHLIGHT ★
-            highlightedOctave = 4; // Highlight C4 (middle octave)
-            console.log(`🔊 Playing ${currentNote}4 at ${freq.toFixed(2)} Hz`);
-            console.log(`🌊 Watch octave 4 (purple wave) light up!`);
-            
-            setTimeout(() => {
-                highlightedOctave = -1;
-            }, 1000);
+            gain.gain.setValueAtTime(0.0001, t0);
+            gain.gain.linearRampToValueAtTime(volume, t0 + 0.01);
+            gain.gain.setValueAtTime(volume, t0 + durSec * 0.6);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t0 + durSec);
+            osc.start(t0);
+            osc.stop(t0 + durSec + 0.02);
+            const voice = { osc, gain, octave, freq, t0, t1: t0 + durSec };
+            activeVoices.push(voice);
+            osc.onended = () => { activeVoices = activeVoices.filter(v => v !== voice); };
+
+            voice.onStart = onStart;
         }
-        
-        function playAllOctaves() {
-            initAudio();
-            
-            console.log('🎵 ═══════════════════════════════════════');
-            console.log('🔊 PLAYING ALL OCTAVES IN SEQUENCE');
-            console.log('🎨 Watch the waves light up as they play!');
-            console.log('🎵 ═══════════════════════════════════════');
-            
-            for (let i = 0; i <= 8; i++) {
-                const freq = getFrequency(currentNote, i);
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                
-                osc.frequency.value = freq;
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                
-                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-                
-                const startTime = audioContext.currentTime + i * octavePauseSec;
-                const endTime = startTime + 0.5;
-                
-                osc.start(startTime);
-                osc.stop(endTime);
-                
-                // ★ SYNC VISUAL WITH AUDIO ★
-                // Highlight this octave when its sound plays
-                setTimeout(() => {
-                    highlightedOctave = i;
-                    console.log(`🌊 Octave ${i} (${currentNote}${i}: ${freq.toFixed(1)} Hz) NOW PLAYING & HIGHLIGHTED`);
-                }, i * octavePauseSec * 1000);
-                
-                // Turn off highlight after sound ends
-                setTimeout(() => {
-                    if (highlightedOctave === i) {
-                        highlightedOctave = -1;
-                    }
-                }, (i * octavePauseSec * 1000) + 500); // Duration of note
-            }
-            
-            // Clear highlight after all done
-            setTimeout(() => {
+
+        // Called every animation frame: light the wave whose sound is
+        // being heard right now, read straight from the audio clock.
+        function syncHighlightToAudio() {
+            if (!audioContext) return;
+            if (activeVoices.length === 0) { highlightedOctave = -1; return; }
+            const heardNow = audioContext.currentTime - outputLatencyMs() / 1000;
+            const v = activeVoices.find(v => heardNow >= v.t0 && heardNow < v.t1);
+            if (v) {
+                if (!v.started) { v.started = true; if (v.onStart) v.onStart(); }
+                highlightedOctave = v.octave;
+            } else {
                 highlightedOctave = -1;
-                console.log('✅ All octaves played - visual sync complete');
-            }, (8 * octavePauseSec * 1000) + 600);
-        }
-        
-        function playOctaveScale() {
-            initAudio();
-            
-            // Save the original note to restore later
-            const originalNote = currentNote;
-            
-            // ★ CREATE ASCENDING CHROMATIC SCALE WITH OCTAVE JUMP ★
-            const startIndex = notes.indexOf(currentNote);
-            
-            // Build scale that ascends through octaves
-            // Play 13 notes: starting note through one complete octave
-            const scaleNotes = [];
-            const octaves = [];
-            
-            for (let i = 0; i <= 12; i++) {
-                const noteIndex = (startIndex + i) % 12;
-                const octave = 4 + Math.floor((startIndex + i) / 12);
-                scaleNotes.push(notes[noteIndex]);
-                octaves.push(octave);
             }
-            
-            console.log('🎵 ═══════════════════════════════════════');
-            console.log(`🎵 PLAYING ASCENDING CHROMATIC SCALE FROM ${currentNote}`);
-            console.log('🌊 Watch waves CHANGE and octaves RISE!');
-            console.log(`📊 Scale: ${scaleNotes.map((n, i) => `${n}${octaves[i]}`).join(' → ')}`);
-            console.log('🎵 ═══════════════════════════════════════');
-            
-            scaleNotes.forEach((note, i) => {
-                const octave = octaves[i];
-                const freq = getFrequency(note, octave);
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                
-                osc.frequency.value = freq;
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                
-                gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.2 + 0.3);
-                
-                osc.start(audioContext.currentTime + i * 0.2);
-                osc.stop(audioContext.currentTime + i * 0.2 + 0.3);
-                
-                // ★ SYNC WAVE PATTERN AND HIGHLIGHT CORRECT OCTAVE ★
-                setTimeout(() => {
-                    currentNote = note;
-                    highlightedOctave = octave; // Highlight the current octave!
-                    
-                    // Update dropdown to show current note
-                    const dropdown = document.getElementById('noteSelector');
-                    if (dropdown) dropdown.value = note;
-                    
-                    // Update note button highlighting
-                    document.querySelectorAll('.note-btn').forEach(btn => {
-                        btn.classList.toggle('active', btn.textContent === note);
-                    });
-                    
-                    // Update legend
-                    updateLegend();
-                    
-                    console.log(`🎵 ${note}${octave}: ${freq.toFixed(1)} Hz - WAVE ${octave} HIGHLIGHTED`);
-                }, i * 200);
+        }
+
+        // Show a note on screen without stopping sound (used by Play Scale)
+        function showNote(note) {
+            currentNote = note;
+            const dropdown = document.getElementById('noteSelector');
+            if (dropdown) dropdown.value = note;
+            document.querySelectorAll('.note-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === note);
             });
-            
-            // Restore original note after scale completes (13 notes now)
-            setTimeout(() => {
-                highlightedOctave = -1;
-                currentNote = originalNote;
-                
-                // Restore dropdown
-                const dropdown = document.getElementById('noteSelector');
-                if (dropdown) dropdown.value = originalNote;
-                
-                // Update button styling
-                document.querySelectorAll('.note-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.textContent === originalNote);
-                });
-                
-                // Restore legend
-                updateLegend();
-                
-                console.log(`✅ Scale complete - restored to ${originalNote}`);
-                console.log('🎵 ═══════════════════════════════════════');
-            }, 13 * 200 + 300);
+            updateLegend();
+            updateOctaveLabels();
         }
-        
-        function stopAllAudio() {
-            if (audioContext) {
-                audioContext.close();
-                audioContext = null;
-                highlightedOctave = -1; // Clear any highlights
-                console.log('🔇 Audio stopped - highlights cleared');
+
+        function restoreScaleNote() {
+            if (scaleOriginalNote !== null) {
+                showNote(scaleOriginalNote);
+                scaleOriginalNote = null;
             }
+            highlightedOctave = -1;
+        }
+
+        // Individual octave button: that octave's sound + that octave's wave
+        async function playIndividualOctave(octave) {
+            await initAudio();
+            silenceAll();
+            restoreScaleNote();
+            playSynced(getFrequency(currentNote, octave), octave, 0, 1.5, 0.3);
+        }
+
+        // Play Current: octave 4 of the selected note
+        async function playCurrentNote() {
+            await initAudio();
+            silenceAll();
+            restoreScaleNote();
+            playSynced(getFrequency(currentNote, 4), 4, 0, 1.0, 0.3);
+        }
+
+        // Play All: octaves 0-8 one after another.
+        // Each sounds for 0.5 s, then the Inter-Note Pause (silence), then the next.
+        async function playAllOctaves() {
+            await initAudio();
+            silenceAll();
+            restoreScaleNote();
+            const noteSec = 0.5;
+            const step = noteSec + octavePauseSec;
+            for (let i = 0; i <= 8; i++) {
+                playSynced(getFrequency(currentNote, i), i, i * step, noteSec, 0.2);
+            }
+        }
+
+        // Play Scale: 13 chromatic notes up from the selected note (octave 4),
+        // the wave picture changes to each note as it sounds.
+        async function playOctaveScale() {
+            await initAudio();
+            silenceAll();
+            if (scaleOriginalNote === null) scaleOriginalNote = currentNote;
+            const startIndex = notes.indexOf(scaleOriginalNote);
+            const step = 0.3;
+            for (let i = 0; i <= 12; i++) {
+                const note = notes[(startIndex + i) % 12];
+                const octave = 4 + Math.floor((startIndex + i) / 12);
+                playSynced(getFrequency(note, octave), octave, i * step, step, 0.2, () => showNote(note));
+            }
+            later(restoreScaleNote, 13 * step * 1000 + outputLatencyMs() + 50);
+        }
+
+        function stopAllAudio() {
+            silenceAll();
+            restoreScaleNote();
+            console.log('🔇 Audio stopped - highlights cleared');
         }
         
         // Initialize
