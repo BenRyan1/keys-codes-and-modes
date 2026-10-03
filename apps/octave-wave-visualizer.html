@@ -887,6 +887,26 @@
             return ((audioContext.outputLatency || 0) + (audioContext.baseLatency || 0)) * 1000;
         }
 
+        // Fuller tone (fundamental + overtones). Laptop speakers can't play
+        // 24-100 Hz, but the overtones let the ear hear the true pitch, so
+        // every octave is heard stepping up cleanly. Same pitch as the wave.
+        let richWave = null;
+        function getRichWave() {
+            if (!richWave) {
+                const n = 20, real = new Float32Array(n), imag = new Float32Array(n);
+                for (let k = 1; k < n; k++) imag[k] = 1 / Math.sqrt(k);
+                richWave = audioContext.createPeriodicWave(real, imag);
+            }
+            return richWave;
+        }
+        // Ears are most sensitive around 1-5 kHz: turn the top octaves down
+        // so all 9 octaves sound about equally loud.
+        function loudnessBalance(freq) {
+            if (freq >= 2000) return 0.5;
+            if (freq >= 1000) return 0.7;
+            return 1.0;
+        }
+
         function later(fn, ms) { syncTimers.push(setTimeout(fn, ms)); }
 
         // Stop every sound and every pending highlight
@@ -911,7 +931,9 @@
             const t0 = audioContext.currentTime + startSec;
             const osc = audioContext.createOscillator();
             const gain = audioContext.createGain();
+            osc.setPeriodicWave(getRichWave()); // overtones: low octaves audible on laptop speakers
             osc.frequency.value = freq;
+            volume *= loudnessBalance(freq);
             osc.connect(gain);
             gain.connect(audioContext.destination);
             gain.gain.setValueAtTime(0.0001, t0);
