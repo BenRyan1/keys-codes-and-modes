@@ -125,3 +125,6 @@
 /apps/login.html                /pricing  301
 /apps/dashboard-free.html       /pricing  301
 /apps/thank-you-password.html   /pricing  301
+
+# Short link for teachers (added 2026-10-05)
+/schools          /student-privacy   301
