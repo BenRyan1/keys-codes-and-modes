@@ -176,6 +176,7 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
         }
         .switch-link a:hover { color: var(--primary-gold); }
     </style>
+    <script src="/js/kcm-session.js"></script>
 </head>
 <body>
     <div class="bg-animation"></div>
@@ -466,6 +467,7 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
                     // older cached page still reads them.
                     if (data.token) {
                         localStorage.setItem('kcm_session_token', data.token);
+                        if (window.KCMSession) KCMSession.set(data.token);
                     }
                     localStorage.setItem('kcm_access', 'kcm_school_2026');
                     localStorage.setItem('kcm_access_granted', 'true');
@@ -538,6 +540,7 @@ function trackEvent(n,p){try{if(typeof gtag==='function'&&window._ccInstance&&wi
                 .then(function(data) {
                     if (data.ok && data.token) {
                         localStorage.setItem('kcm_session_token', data.token);
+                        if (window.KCMSession) KCMSession.set(data.token);
                         // Legacy keys kept only in case an older cached page
                         // still reads them — the token above is what
                         // actually gates access now.

@@ -374,7 +374,8 @@
   </style>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href="https://keyscodesandmodes.com/superintendent.html" />
-  </head>
+      <script src="/js/kcm-session.js"></script>
+</head>
 <body>
 
 <!-- NAV -->
@@ -633,8 +634,10 @@
     localStorage.setItem('kcm_admin_role', adminRole);
     if (verifyResult.token) {
       localStorage.setItem('kcm_session_token', verifyResult.token);
+      if (window.KCMSession) KCMSession.set(verifyResult.token);
     } else {
       localStorage.removeItem('kcm_session_token');
+      if (window.KCMSession) KCMSession.clear();
     }
 
     document.getElementById('formArea').style.display = 'none';

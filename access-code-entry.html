@@ -277,7 +277,8 @@
     </style>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href="https://keyscodesandmodes.com/access-code-entry.html" />
-  </head>
+      <script src="/js/kcm-session.js"></script>
+</head>
 <body>
     <div class="bg-animation"></div>
     
@@ -442,8 +443,10 @@
                 // it can't be forged from devtools the way the flags above can.
                 if (verifyResult.token) {
                     localStorage.setItem('kcm_session_token', verifyResult.token);
+                    if (window.KCMSession) KCMSession.set(verifyResult.token);
                 } else {
                     localStorage.removeItem('kcm_session_token');
+                    if (window.KCMSession) KCMSession.clear();
                 }
                 
                 // Send notification to Formspree
@@ -505,6 +508,7 @@
             localStorage.setItem('userTier', 'free');
             localStorage.setItem('accessLevel', 'pick_3');
             localStorage.removeItem('kcm_session_token');
+            if (window.KCMSession) KCMSession.clear();
             window.location.href = 'welcome-free-picker.html';
         }
     </script>

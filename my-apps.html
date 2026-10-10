@@ -497,6 +497,7 @@ Santa Barbara, California
         .app-card { animation: cardIn 0.4s ease both; }
     </style>
     <script src="/js/kcm-session.js"></script>
+    <script src="/js/kcm-session.js"></script>
 </head>
 <body>
     <div class="bg-mesh" aria-hidden="true"></div>
@@ -971,7 +972,10 @@ Santa Barbara, California
     ────────────────────────────────────────── */
     async function verifyPremiumAccess() {
         const token = localStorage.getItem('kcm_session_token');
-        if (!token) return { premium: false, tier: '' };
+        if (!token) {
+            if (window.KCMSession) KCMSession.clear();
+            return { premium: false, tier: '' };
+        }
 
         try {
             const res  = await fetch('/api/verify-session', {
@@ -981,8 +985,13 @@ Santa Barbara, California
             });
             const data = await res.json().catch(() => ({ ok: false, tier: null }));
             if (data.ok && data.tier) {
+                /* Verified: make sure the server-side app gate can see the
+                   same signed token (it reads a cookie, not localStorage). */
+                if (window.KCMSession) KCMSession.set(token);
                 return { premium: true, tier: data.tier };
             }
+            /* Server said the token is bad or expired: drop the cookie too. */
+            if (window.KCMSession) KCMSession.clear();
         } catch (e) {
             console.warn('Session verification failed — defaulting to free tier:', e);
         }
@@ -1006,6 +1015,19 @@ Santa Barbara, California
 
         /* ── PREMIUM / ACCESS-CODE USERS → show ALL apps ── */
         if (premium) {
+
+            /* The server-side gate sent them here (?locked=<id>) because their
+               cookie was missing. Now that it is set, send them back once. */
+            try {
+                const wanted = new URLSearchParams(window.location.search).get('locked');
+                const target = ALL_APPS.find(a => a.id === wanted);
+                const last   = Number(sessionStorage.getItem('kcm_bounce') || 0);
+                if (target && !/^https?:/.test(target.file) && Date.now() - last > 15000) {
+                    sessionStorage.setItem('kcm_bounce', String(Date.now()));
+                    window.location.replace('/' + target.file);
+                    return;
+                }
+            } catch (e) { /* storage blocked: just show the launcher */ }
 
             /* Badge showing their tier */
             const tierBadge = document.createElement('div');
@@ -1031,67 +1053,21 @@ Santa Barbara, California
             return;
         }
 
-        /* ── FREE USERS → show their 3 picked apps ── */
-        let selectedIds = [];
-        try {
-            selectedIds = JSON.parse(localStorage.getItem('freeApps') || '[]');
-        } catch(e) { selectedIds = []; }
-
-        /* No saved picks (all new users since 2026-09-30: the 3-pick offer was
-           replaced by the free section above). Invite them to the library. */
-        if (!selectedIds.length) {
-            container.innerHTML = `
-                <div class="state-panel" role="status">
-                    <h2>Unlock the Full Library</h2>
-                    <p>Your free apps are above. Members get all 24 interactive library apps: guitar, theory, rhythm, ear training, and visual tools.</p>
-                    <p style="margin-top:1rem;">
-                        <a href="/pricing">See membership plans →</a>
-                    </p>
-                    <p style="margin-top:0.75rem;">
-                        <a href="/access-code-entry.html">Have an access code? Enter it here →</a>
-                    </p>
-                </div>`;
-            return;
-        }
-
-        /* Match IDs to app database */
-        const userApps = ALL_APPS.filter(a => selectedIds.includes(a.id) && !FREE_IDS.has(a.id));
-
-        if (!userApps.length) {
-            container.innerHTML = `
-                <div class="state-panel" role="status">
-                    <h2>Unlock the Full Library</h2>
-                    <p>Your free apps are above. Members get all 24 interactive library apps: guitar, theory, rhythm, ear training, and visual tools.</p>
-                    <p style="margin-top:1rem;">
-                        <a href="/pricing">See membership plans →</a>
-                    </p>
-                    <p style="margin-top:0.75rem;">
-                        <a href="/access-code-entry.html">Have an access code? Enter it here →</a>
-                    </p>
-                </div>`;
-            return;
-        }
-
-        /* Build grid — free tier */
-        const freeNote = document.createElement('div');
-        freeNote.style.cssText = 'text-align:center;margin-bottom:1.5rem;';
-        freeNote.innerHTML = `<span style="background:rgba(0,128,128,0.15);border:1px solid #008080;color:#E8E8E8;padding:0.4rem 1.2rem;border-radius:25px;font-size:0.9rem;">
-            Your 3 saved picks (kept from your original signup) &nbsp;·&nbsp; <a href="/pricing.html" style="color:#F4D03F;font-weight:700;">Upgrade for all 24 →</a>
-        </span>`;
-        container.appendChild(freeNote);
-
-        const grid = document.createElement('div');
-        grid.className = 'apps-grid';
-        grid.setAttribute('role', 'list');
-        grid.setAttribute('aria-label', 'Your selected music theory apps');
-
-        userApps.forEach((app, i) => {
-            const card = buildCard(app, i);
-            card.setAttribute('role', 'listitem');
-            grid.appendChild(card);
-        });
-
-        container.appendChild(grid);
+        /* ── NOT SIGNED IN AS A MEMBER → invite to the library ──
+           The old "3 saved picks" came from an unsigned localStorage list, so
+           the server cannot trust it and it is no longer honored (2026-10-10).
+           Free apps are the "Free for Everyone" section above. */
+        container.innerHTML = `
+            <div class="state-panel" role="status">
+                <h2>Unlock the Full Library</h2>
+                <p>Your free apps are above. Members get all 24 interactive library apps: guitar, theory, rhythm, ear training, and visual tools.</p>
+                <p style="margin-top:1rem;">
+                    <a href="/pricing">See membership plans →</a>
+                </p>
+                <p style="margin-top:0.75rem;">
+                    <a href="/access-code-entry.html">Have an access code? Enter it here →</a>
+                </p>
+            </div>`;
     }
 
     /* ──────────────────────────────────────────
