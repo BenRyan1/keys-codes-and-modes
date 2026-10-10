@@ -451,31 +451,8 @@
                     if (window.KCMSession) KCMSession.clear();
                 }
                 
-                // Send notification to Formspree (tier only: the code itself is never sent)
-                const userEmail = localStorage.getItem('userEmail') || 'unknown';
-                const userName = localStorage.getItem('userName') || 'unknown';
-                
-                try {
-                    await fetch('https://formspree.io/f/mbdaljdv', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            _subject: 'Access Code Used - ' + codeData.tier,
-                            name: userName,
-                            email: userEmail,
-                            tier: codeData.tier,
-                            access: codeData.access,
-                            duration: codeData.duration,
-                            timestamp: new Date().toISOString()
-                        })
-                    });
-                } catch (error) {
-                    console.log('Notification failed:', error);
-                }
-                
+                // No third-party notification: the code and tier are verified by our own Worker only.
+
                 // Show success message
                 successMsg.textContent = `✅ ${codeData.tier} Access Activated! ${codeData.description}`;
                 successMsg.style.display = 'block';
