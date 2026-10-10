@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>document.documentElement.style.visibility='hidden';window.KCM_APP_ID="kcm-sound-observatory";</script>
+<script src="/js/kcm-app-gate.js"></script>
+<script>
+// Local file -> live site: the microphone needs https
+if (location.protocol === 'file:') { location.replace('https://keyscodesandmodes.com/apps/kcm-sound-observatory.html'); }
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<!-- Local file → live site: mic requires https://, redirect immediately -->
-<script>
-if (location.protocol === 'file:') {
-  location.replace('https://keyscodesandmodes.com/apps/kcm-sound-observatory.html');
-}
-</script>
 
 <!-- ── PRIMARY SEO ─────────────────────────────────────────────────── -->
 <title>Sound Observatory v29 — Real-Time Audio Visualizer | Keys, Codes &amp; Modes™</title>
@@ -71,7 +70,6 @@ if (location.protocol === 'file:') {
 </script>
 
 <!-- ── GOOGLE ANALYTICS 4 ─────────────────────────────────────────── -->
-<script>/* GA consent default: DENIED (student privacy, Oct 4 2026). No cookies, no ad signals. */window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'denied',personalization_storage:'denied',security_storage:'granted'});</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EGC5ZNZPF"></script>
 <script>
   window.dataLayer=window.dataLayer||[];
@@ -207,6 +205,15 @@ body::before{content:'';position:fixed;inset:0;
 }
 .btn-clear:hover{background:rgba(255,30,30,.18);border-color:rgba(255,60,60,.7);color:#ff6060;}
 .btn-clear:active{transform:scale(.96)}
+.btn-stop{
+  font-family:var(--font-display);font-size:9px;letter-spacing:.14em;font-weight:800;
+  padding:7px 18px;min-height:36px;min-width:0;border-radius:4px;cursor:pointer;
+  text-transform:uppercase;transition:all .18s;
+  border:1px solid rgba(255,70,70,.35);background:rgba(255,40,40,.06);color:rgba(255,110,110,.55);
+}
+.btn-stop.armed{background:#c4162a;border-color:#ff5a5a;color:#fff;box-shadow:0 0 14px rgba(255,50,50,.45);}
+.btn-stop.armed:hover{background:#e01b32;}
+.btn-stop:active{transform:scale(.95)}
 .btn-main.on{
   background:rgba(0,128,128,.15);border-color:var(--primary-teal);
   color:#00d9d9;animation:bb 1.3s ease-in-out infinite;
@@ -287,7 +294,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
   align-items:center;justify-content:center;
 }
 #vizGrid.fs-mode #card-neck.fs-active #neck-inner{
-  max-width:360px;width:min(360px,100%);overflow-y:auto;
+  max-width:640px;width:min(640px,100%);overflow-y:auto;
 }
 /* Keyboard fullscreen */
 #vizGrid.fs-mode #card-keyboard.fs-active #kb-inner{
@@ -295,17 +302,21 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
 }
 
 /* Neck card — DOM content fills card */
-#card-neck{overflow:hidden;display:flex;align-items:center;justify-content:center}
+#card-neck{overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start}
+#neck-controls,#neck-title{flex:0 0 auto}
 #neck-inner{
-  /* Hard cap: no wider than 192px (~2 inches at 96dpi) */
-  width:min(192px,100%);
-  max-width:192px;
-  height:100%;
+  /* Full card width so all 6 strings and every fret are visible; scrolls only for tall (12-fret) views */
+  flex:1 1 auto;
+  min-height:0;
+  width:100% !important;
+  max-width:none;
+  height:auto !important;
   overflow-y:auto;
   overflow-x:hidden;
-  padding:2px 0;
-  flex-shrink:0;
+  padding:2px 6px 6px;
 }
+#neck-inner .fb-table{table-layout:fixed;width:100%;max-width:640px;margin:0 auto}
+#neck-inner .fb-fnum-cell{width:26px}
 
 /* ─── RESPONSIVE ─────────────────────────────────────────────────────── */
 /* ─── RESPONSIVE ──────────────────────────────────────────────────────── */
@@ -463,6 +474,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
 }
 .fb-cell:hover{background:rgba(0,180,180,.22)}
 .fb-cell:active{background:rgba(244,208,63,.2)!important}
+.fb-cell:focus-visible, .fb-str-label:focus-visible{
+  outline:2px solid #F4D03F;outline-offset:-2px;z-index:3;
+}
 .fb-str-label{cursor:pointer}
 .fb-str-label:hover{color:var(--primary-gold)!important;text-shadow:0 0 12px var(--primary-gold)}
 #c-wheel{cursor:pointer}
@@ -485,24 +499,27 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
 .fb-str-label.fb-lit{color:inherit}
 .fb-dot{
   position:relative;z-index:2;
-  width:22px;height:22px;border-radius:50%;
+  width:min(28px,80%,calc(var(--fb-row,34px) - 6px));aspect-ratio:1;border-radius:50%;
   border:1.5px solid rgba(255,255,255,.3);
   display:flex;align-items:center;justify-content:center;
-  font-size:6px;font-weight:900;
+  font-size:10px;font-weight:900;line-height:1;
   font-family:'Space Mono',monospace;
   /* Visible at rest — shows KCM color identity always */
-  opacity:.42;filter:brightness(.75);
-  transform:scale(.7);transition:all .15s ease;
+  opacity:.62;filter:none;
+  transform:scale(.88);transition:all .15s ease;
   pointer-events:none;margin:auto;
 }
 .fb-cell.fb-on .fb-dot{
-  opacity:1;filter:none;transform:scale(1.12);
+  opacity:1;filter:none;transform:scale(1.18);
   border-color:#fff;border-width:2px;
+  animation:fbPulse 1.1s ease-in-out infinite;
   /* box-shadow set dynamically in JS with actual KCM note color */
 }
 .fb-cell.fb-off .fb-dot{
-  opacity:.32;filter:brightness(.65);transform:scale(.65);
+  opacity:.62;filter:none;transform:scale(.88);
 }
+@keyframes fbPulse{0%,100%{transform:scale(1.14)}50%{transform:scale(1.3)}}
+@media (prefers-reduced-motion:reduce){.fb-cell.fb-on .fb-dot{animation:none}}
 .fb-inlay{display:flex;gap:2px;justify-content:center}
 .fb-inlay-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.15)}
 #neck-controls{
@@ -511,8 +528,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 #neck-controls button{
-  font-family:'Space Mono',monospace;font-size:6.5px;letter-spacing:.05em;
-  padding:2px 5px;border-radius:2px;
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.05em;
+  padding:3px 7px;border-radius:2px;
   border:1px solid rgba(244,208,63,.32);
   background:rgba(0,0,0,.5);color:rgba(244,208,63,.6);
   cursor:pointer;text-transform:uppercase;
@@ -522,10 +539,19 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
   border-color:rgba(244,208,63,.8);
 }
 #neck-title{
-  font-family:'Cinzel',monospace;font-size:5px;letter-spacing:.1em;
+  font-family:'Cinzel',monospace;font-size:7px;letter-spacing:.1em;
   color:rgba(244,208,63,.4);text-align:center;
   padding:1px 2px;text-transform:uppercase;
 }
+#wf-modes{position:absolute;top:22px;right:6px;display:flex;gap:3px;z-index:5}
+#wf-modes button{
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.05em;
+  padding:3px 7px;border-radius:2px;
+  border:1px solid rgba(244,208,63,.32);
+  background:rgba(0,0,0,.55);color:rgba(244,208,63,.6);
+  cursor:pointer;text-transform:uppercase;
+}
+#wf-modes button.active{background:rgba(244,208,63,.17);color:rgba(244,208,63,1);border-color:rgba(244,208,63,.8)}
 </style>
 </head>
 <body>
@@ -559,7 +585,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
   <div class="ctrl-bar">
     <button class="btn-main idle" id="listenBtn"
       aria-label="Activate microphone for real-time audio visualization"
-      aria-pressed="false">▶ Activate</button>
+      aria-pressed="false" title="Activate microphone (Enter)">▶ Activate</button>
+    <button class="btn-stop" id="stopBtn" onclick="killAll()"
+      aria-label="Stop all sound and the microphone" title="STOP everything (Esc)">■ STOP</button>
     <div class="ctrl-group">GAIN
       <input type="range" id="gainSlider" min="1" max="8" step=".1" value="3"
         aria-label="Input gain">
@@ -574,7 +602,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;heigh
     <button class="btn-clear" id="clearBtn" onclick="clearManualNotes()"
       aria-label="Clear all held notes" title="Clear all held notes">✕ CLEAR</button>
     <span style="font-family:var(--font-mono);font-size:7px;color:rgba(232,232,232,.28);letter-spacing:.06em;">
-      Click wheel/keys/frets to HOLD notes · click again to release
+      Enter = activate · Esc = stop · Space = clear · Click wheel/staff/keys/frets · <span style="color:rgba(244,208,63,.45)">A S D F G H J K L ; ' \</span> = C C♯ D D♯ E F F♯ G G♯ A A♯ B · click again to release
     </span>
   </div>
 
@@ -694,7 +722,69 @@ function hexRgba(h,a){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),
 function hexRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)}}
 
 // ═══ SHARED STATE — single source of truth for all 8 displays ════════════════
-const S={detectedNotes:[],dominantNote:null,rms:0,t:0,activeNoteIndices:new Set()};
+const S={detectedNotes:[],dominantNote:null,rms:0,t:0,dt:1/60,activeNoteIndices:new Set()};
+let _staffG=null, _staffHover=null;     // staff geometry and the cursor position over it (used by drawStaff and the staff click handler)
+
+// ═══ 3D VIEW (oscilloscope, Lissajous, cymatics) ═════════════════════════════
+// Drag a panel to turn it. Double-click to start or stop the slow spin. The 3D chip switches 2D / 3D.
+const V3={
+  wave:{on:true, yaw:-0.55,pit:0.42,spin:true,idle:0,drag:false,label:'Oscilloscope'},
+  liss:{on:true, yaw: 0.6, pit:0.35,spin:true,idle:0,drag:false,label:'Lissajous'},
+  cym :{on:false,yaw: 0.5, pit:0.85,spin:true,idle:0,drag:false,label:'Cymatics'}
+};
+(function(){try{for(const k in V3){const s=localStorage.getItem('kcm_v3_'+k);if(s==='1')V3[k].on=true;else if(s==='0')V3[k].on=false}}catch(e){}})();
+const _P=[0,0,0];
+function _v3cam(st,cx,cy,F){
+  const cyw=Math.cos(st.yaw),syw=Math.sin(st.yaw),cp=Math.cos(st.pit),sp=Math.sin(st.pit);
+  return function(x,y,z){
+    const x1=x*cyw+z*syw, z1=-x*syw+z*cyw;
+    const y2=y*cp-z1*sp, z2=y*sp+z1*cp;
+    const k=F/(F+z2);
+    _P[0]=cx+x1*k;_P[1]=cy-y2*k;_P[2]=z2;return k;
+  };
+}
+function _v3step(st){
+  const dt=S.dt||1/60;
+  if(st.drag)return;
+  st.idle+=dt;
+  if(st.spin||st.idle>5){ st.yaw+=dt*0.38; }
+}
+function _v3axes(x,proj,ex,ey,ez){
+  x.lineWidth=0.7;
+  [[ -ex,0,0, ex,0,0,'255,90,90'],[0,-ey,0,0,ey,0,'110,255,140'],[0,0,-ez,0,0,ez,'110,160,255']].forEach(a=>{
+    proj(a[0],a[1],a[2]);const x0=_P[0],y0=_P[1];proj(a[3],a[4],a[5]);
+    x.strokeStyle=`rgba(${a[6]},.16)`;x.beginPath();x.moveTo(x0,y0);x.lineTo(_P[0],_P[1]);x.stroke();});
+}
+(function wire3D(){
+  const defs=[['wave','card-wave','c-wave'],['liss','card-lissajous','c-lissajous'],['cym','card-cymatics','c-cymatics']];
+  defs.forEach(([k,cardId,cvId])=>{
+    const st=V3[k];
+    function go(){
+      const card=document.getElementById(cardId),cv=document.getElementById(cvId);
+      if(!card||!cv){setTimeout(go,100);return}
+      const chip=document.createElement('button');chip.type='button';
+      chip.setAttribute('aria-label',st.label+' 3D view on or off');chip.title='3D view: drag to rotate, double-click to spin';
+      chip.style.cssText='position:absolute;top:24px;right:7px;z-index:11;min-width:0;min-height:0;width:34px;height:17px;line-height:15px;padding:0;border-radius:9px;font-family:"Space Mono",monospace;font-size:7px;letter-spacing:.08em;cursor:pointer;background:rgba(3,5,8,.6)';
+      const paint=()=>{chip.textContent=st.on?'3D':'2D';chip.style.color=st.on?'#F4D03F':'rgba(255,255,255,.5)';chip.style.border=st.on?'1px solid rgba(244,208,63,.6)':'1px solid rgba(255,255,255,.2)';cv.style.touchAction=st.on?'none':'';cv.style.cursor=st.on?'grab':(k==='staff'?'pointer':'')};
+      chip.onclick=e=>{e.stopPropagation();st.on=!st.on;try{localStorage.setItem('kcm_v3_'+k,st.on?'1':'0')}catch(_){}paint()};
+      card.appendChild(chip);paint();
+      let lx=0,ly=0;
+      cv.addEventListener('pointerdown',e=>{if(!st.on)return;st.drag=true;st.idle=0;lx=e.clientX;ly=e.clientY;try{cv.setPointerCapture(e.pointerId)}catch(_){}cv.style.cursor='grabbing'});
+      cv.addEventListener('pointermove',e=>{if(!st.on||!st.drag)return;st.yaw+=(e.clientX-lx)*0.01;st.pit=Math.max(-1.45,Math.min(1.45,st.pit+(e.clientY-ly)*0.01));lx=e.clientX;ly=e.clientY;st.idle=0});
+      const up=()=>{if(!st.drag)return;st.drag=false;st.idle=0;if(st.on)cv.style.cursor='grab'};
+      cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+      cv.addEventListener('dblclick',()=>{if(st.on){st.spin=!st.spin;st.idle=0}});
+    }
+    go();
+  });
+})();
+// One shared clock: every panel animates from real elapsed time, not an assumed 60 frames per second
+// (a 120 Hz display used to run everything twice as fast).
+function advanceClock(){
+  const n=performance.now();
+  const d=Math.min(0.05,Math.max(0,(n-(S._last||n))/1000));
+  S._last=n; S.dt=d>0?d:1/60; S.t+=S.dt;
+}
 
 // ─── MANUAL PLAY ENGINE ────────────────────────────────────────────────────
 // Single shared audio context for all interactive elements
@@ -703,6 +793,7 @@ const S={detectedNotes:[],dominantNote:null,rms:0,t:0,activeNoteIndices:new Set(
 // Audio plays on every press. All 8 displays sync immediately.
 let _interactCtx = null;
 let _manualNotes  = new Set();   // Set of active pitch classes (held on)
+let _manualOct    = {};          // pitch class -> octave it was touched at
 
 function _getCtx(){
   if(!_interactCtx || _interactCtx.state==='closed')
@@ -730,18 +821,56 @@ function _playAudio(pc, oct, dur){
   });
 }
 
+// Held notes sound for as long as they stay lit (click again or CLEAR to release).
+// Set to false to go back to the short 0.9s pluck per press.
+const SUSTAIN_HELD = true;
+let _sustain = {};   // pitch class -> {master, oscs}
+
+function _startSustain(pc, oct){
+  _stopSustain(pc, true);
+  const ctx  = _getCtx();
+  const freq = NOTE_FREQS[pc] * Math.pow(2, oct - 4);
+  const master = ctx.createGain();
+  master.gain.setValueAtTime(0, ctx.currentTime);
+  master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 0.02);
+  master.connect(ctx.destination);
+  const oscs = [[freq,0.6,'triangle'],[freq*2,0.18,'sine']].map(([f,g,t])=>{
+    const osc = ctx.createOscillator(), gn = ctx.createGain();
+    osc.type = t; osc.frequency.value = f; gn.gain.value = g;
+    osc.connect(gn); gn.connect(master); osc.start();
+    return osc;
+  });
+  _sustain[pc] = {master, oscs};
+}
+
+function _stopSustain(pc, instant){
+  const h = _sustain[pc]; if(!h) return;
+  delete _sustain[pc];
+  const ctx = _getCtx(), t = ctx.currentTime, rel = instant ? 0.01 : 0.15;
+  h.master.gain.cancelScheduledValues(t);
+  h.master.gain.setValueAtTime(h.master.gain.value, t);
+  h.master.gain.linearRampToValueAtTime(0, t + rel);
+  h.oscs.forEach(o=>{try{o.stop(t + rel + 0.02)}catch(e){}});
+}
+
 function playAndActivate(pc, oct, dur=0.9){
   pc  = ((pc%12)+12)%12;
   oct = oct||4;
 
-  // Always play the audio sound on every press
-  _playAudio(pc, oct, dur);
+  // Sound: sustained while held (default) or a short pluck on every press
+  if(SUSTAIN_HELD){
+    if(_manualNotes.has(pc)) _stopSustain(pc); else _startSustain(pc, oct);
+  } else {
+    _playAudio(pc, oct, dur);
+  }
 
   // TOGGLE: if note is already held on, turn it off — otherwise turn it on
   if(_manualNotes.has(pc)){
     _manualNotes.delete(pc);
+    delete _manualOct[pc];
   } else {
     _manualNotes.add(pc);
+    _manualOct[pc] = oct;
   }
 
   _syncManualToState();
@@ -750,29 +879,52 @@ function playAndActivate(pc, oct, dur=0.9){
 
 // Clear all held notes (e.g. when mic activates)
 function clearManualNotes(){
+  Object.keys(_sustain).forEach(k=>_stopSustain(+k));
   _manualNotes.clear();
+  _manualOct = {};
   _syncManualToState();
 }
+
+// KILL SWITCH: silence every tone now, clear held notes, stop the mic
+function killAll(){
+  Object.keys(_sustain).forEach(k=>_stopSustain(+k,true));
+  _manualNotes.clear();
+  _manualOct = {};
+  _syncManualToState();
+  try{ if(typeof isOn!=='undefined' && isOn) stop(); }catch(e){}
+  setTimeout(()=>{ try{ if(_interactCtx && _interactCtx.state==='running') _interactCtx.suspend(); }catch(e){} },60);
+  _stopArm();
+}
+function _stopArm(){
+  const b=document.getElementById('stopBtn'); if(!b) return;
+  let live=false;
+  try{ live = _manualNotes.size>0 || (typeof isOn!=='undefined' && isOn); }catch(e){}
+  b.classList.toggle('armed',live);
+}
+setInterval(_stopArm,250);
 
 function _syncManualToState(){
   // Build detectedNotes array from held manual notes + mic-detected notes
   const manualArr = [..._manualNotes].map(pc=>({
     noteIndex: pc,
     strength:  0.9,
-    freq:      0,
-    midi:      60 + pc,
+    freq:      NOTE_FREQS[pc] * Math.pow(2, (_manualOct[pc]||4) - 4),
+    midi:      12 * ((_manualOct[pc]||4) + 1) + pc,
     color:     NOTES[pc].color
   }));
 
-  // Combine: manual takes priority, mic-detected fills in others
+  // Combine: manual takes priority, mic-detected fills in others.
+  // Only count live mic notes when the mic is on; otherwise released notes
+  // (still sitting in S.detectedNotes) would stay lit forever.
+  const micNotes = isOn ? S.detectedNotes : [];
   const allPcs = new Set([
     ...manualArr.map(n=>n.noteIndex),
-    ...S.detectedNotes.map(n=>n.noteIndex)
+    ...micNotes.map(n=>n.noteIndex)
   ]);
   const merged = [];
   allPcs.forEach(pc=>{
     const man = manualArr.find(n=>n.noteIndex===pc);
-    const mic = S.detectedNotes.find(n=>n.noteIndex===pc);
+    const mic = micNotes.find(n=>n.noteIndex===pc);
     merged.push(man || mic);
   });
   merged.sort((a,b)=>b.strength-a.strength);
@@ -787,6 +939,7 @@ function _syncManualToState(){
   updateKeyboardDisplay();
   updateNeckDisplay();
   updateMidiStrip();
+  updatePills();
 
   // When mic is off, run the synthetic visual loop so ALL 8 screens animate
   if(!isOn){
@@ -806,40 +959,44 @@ let _synTdb   = null;
 let _synFdb   = null;
 const _SYN_FFT = 4096;
 const _SYN_SR  = 44100;
+const _SYN_MAXHZ = 8000;   // synthetic spectrum covers 0-8 kHz at 1 Hz per bin
 // NOTE_FREQS already defined from NOTES array above
+
+// The tone played in _startSustain is a triangle wave at f plus a sine at 2f (0.18/0.6 = 0.3 of it).
+// Its spectrum: fundamental, the 2f sine at -10.5 dB, and triangle odd harmonics falling as 1/n^2.
+const _TONE_PARTIALS = [[1,0],[2,-10.5],[3,-19.1],[5,-28],[7,-33.8],[9,-38.2]];
+const _tri = x => (2/Math.PI)*Math.asin(Math.sin(2*Math.PI*x));
 
 function _buildSyntheticBuffers(){
   if(!_synTdb) _synTdb = new Float32Array(_SYN_FFT);
-  if(!_synFdb) _synFdb = new Float32Array(_SYN_FFT / 2);
+  if(!_synFdb) _synFdb = new Float32Array(_SYN_MAXHZ + 1);   // 1 Hz per bin: sharp, true-to-pitch lines
 
   const notes = S.detectedNotes;
   const t     = S.t;
-  const amp   = notes.length > 0 ? 0.38 / Math.sqrt(notes.length) : 0;
+  const amp   = notes.length > 0 ? 0.22 / Math.sqrt(notes.length) : 0;
 
-  // Time-domain: sum of sines (guitar octave 3)
+  // Time domain: the real played waveform (peak of one note = amp), true to each note's own frequency
   for(let i = 0; i < _SYN_FFT; i++){
     let v = 0;
-    const ts = (t * _SYN_SR + i) / _SYN_SR;
+    const ts = t + i / _SYN_SR;
     notes.forEach(n => {
-      const f = NOTE_FREQS[n.noteIndex] * 0.5; // octave 3
-      v += Math.sin(2*Math.PI*f*ts) * amp;
-      v += Math.sin(2*Math.PI*f*2*ts) * amp * 0.28; // 2nd harmonic
+      const f = n.freq>0 ? n.freq : NOTE_FREQS[n.noteIndex];
+      v += amp * (_tri(f*ts) + 0.3*Math.sin(2*Math.PI*2*f*ts)) / 1.3;
     });
     _synTdb[i] = Math.max(-1, Math.min(1, v));
   }
 
-  // Frequency-domain: inject peaks at each note's bin
-  _synFdb.fill(-90);
+  // Frequency domain: each partial of the tone at its true frequency and relative level
+  _synFdb.fill(-110);
   notes.forEach(n => {
-    const f   = NOTE_FREQS[n.noteIndex] * 0.5;
-    const bin = Math.round(f / (_SYN_SR / _SYN_FFT));
-    const bin2= Math.round(f*2 / (_SYN_SR / _SYN_FFT));
-    if(bin>0 && bin<_synFdb.length)   _synFdb[bin]=-5;
-    if(bin2>0 && bin2<_synFdb.length) _synFdb[bin2]=-18;
-    for(let d=1;d<=4;d++){
-      if(bin-d>0) _synFdb[bin-d]=Math.max(_synFdb[bin-d],-5-d*9);
-      if(bin+d<_synFdb.length) _synFdb[bin+d]=Math.max(_synFdb[bin+d],-5-d*9);
-    }
+    const f0 = n.freq>0 ? n.freq : NOTE_FREQS[n.noteIndex];
+    _TONE_PARTIALS.forEach(([h,dB])=>{
+      const fc = f0*h, lvl = -30 + dB, sig = Math.max(1.2, fc*0.012);   // about one pixel wide on the log axis
+      for(let j=Math.max(1,Math.floor(fc-3*sig)); j<=Math.min(_synFdb.length-1,Math.ceil(fc+3*sig)); j++){
+        const z=(j-fc)/sig;
+        _synFdb[j] = Math.max(_synFdb[j], lvl - 12*z*z);
+      }
+    });
   });
 
   tdb = _synTdb;
@@ -849,12 +1006,12 @@ function _buildSyntheticBuffers(){
 function _synLoop(){
   if(isOn){ _stopSyntheticLoop(); return; } // mic took over
   _synRaf = requestAnimationFrame(_synLoop);
-  S.t += 1/60;
+  advanceClock();
   S.rms = _manualNotes.size > 0 ? 0.55 : 0;
 
   if(_manualNotes.size > 0){
     _buildSyntheticBuffers();
-    const binHz = _SYN_SR / _SYN_FFT;
+    const binHz = 1;   // synthetic spectrum is stored at 1 Hz per bin
     const gain  = parseFloat(gainEl.value);
     drawWheel();
     drawWave(gain);
@@ -976,7 +1133,7 @@ async function start(){
   setMicUI('waiting');
   try{
     if(micStream) micStream.getTracks().forEach(t=>t.stop());
-    micStream = await navigator.mediaDevices.getUserMedia({audio:true});
+    micStream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
     audioCtx  = new AudioContext();
     analyser  = audioCtx.createAnalyser();
     analyser.fftSize = FFT;
@@ -1176,41 +1333,57 @@ function updateMidiStrip(){
 }
 
 function loop(){
-  if(!isOn)return;raf=requestAnimationFrame(loop);S.t+=1/60;
+  if(!isOn)return;raf=requestAnimationFrame(loop);advanceClock();
   analyser.getFloatTimeDomainData(tdb);analyser.getFloatFrequencyData(fdb);
   const gain=parseFloat(gainEl.value),binHz=audioCtx.sampleRate/FFT;
   // RMS
   let sq=0;for(let i=0;i<tdb.length;i++)sq+=tdb[i]**2;S.rms=Math.min(1,Math.sqrt(sq/tdb.length)*gain*3);
-  // ── NOISE FLOOR BASELINE ────────────────────────────────────────────────────
-  // Measure average spectral energy (silence baseline)
-  // Only fire a note if its peak is well above the floor AND above RMS threshold
-  let specSum=0,specCount=0;
-  for(let i=2;i<fdb.length-2;i++){if(fdb[i]>-120){specSum+=Math.pow(10,fdb[i]/10);specCount++;}}
-  const specFloorDB=specCount>0?10*Math.log10(specSum/specCount):-90;
-  // Dynamic threshold: floor + 18 dB headroom, minimum -62 dB
-  const PEAK_THRESH=Math.max(-62, specFloorDB+18);
+  // ── NOISE FLOOR (median of the spectrum, so a strong tone cannot raise its own threshold) ──
+  const _lo=Math.max(3,Math.floor(60/binHz)),_hi=Math.min(fdb.length-3,Math.ceil(5200/binHz));
+  const _band=Array.prototype.slice.call(fdb,_lo,_hi).sort((x,y)=>x-y);
+  const specFloorDB=_band.length?_band[_band.length>>1]:-90;
+  // Threshold: 20 dB above the median floor, never below -70 dB
+  const PEAK_THRESH=Math.max(-70, specFloorDB+20);
   // Silence gate: if overall RMS too low, emit nothing
   const SILENCE_GATE=0.012; // below this RMS = silence
   if(S.rms<SILENCE_GATE){
     // Hard-decay smoothed strengths toward zero quickly on silence
-    if(S._smooth) for(let i=0;i<12;i++) S._smooth[i]*=0.5;
+    if(S._smooth) for(let i=0;i<12;i++) S._smooth[i]*=Math.pow(0.5,S.dt*60);
     S.detectedNotes=[];S.dominantNote=null;S.activeNoteIndices=new Set();
   } else {
-    // Peak detect — only peaks clearly above noise floor
+    // Peak detect: local maxima above threshold, frequency refined by parabolic interpolation
     const nE=new Array(12).fill(0),nM=new Array(12).fill(0),nFq=new Array(12).fill(0);
+    const pk=[];
     for(let i=3;i<fdb.length-3;i++){
-      const freq=i*binHz;if(freq<60||freq>5200)continue;
       const db=fdb[i];if(db<PEAK_THRESH)continue;
-      // True local peak (check 3 neighbors each side)
-      if(db>fdb[i-1]&&db>fdb[i-2]&&db>fdb[i+1]&&db>fdb[i+2]){
-        const mi=Math.round(freqToMidi(freq)),ni=((mi%12)+12)%12;
-        const str=Math.max(0,(db-PEAK_THRESH)/40); // normalize above floor
-        if(str>nE[ni]){nE[ni]=str;nM[ni]=mi;nFq[ni]=freq}
+      if(db>fdb[i-1]&&db>fdb[i-2]&&db>=fdb[i+1]&&db>=fdb[i+2]){
+        const a0=fdb[i-1],b0=fdb[i],c0=fdb[i+1],den=a0-2*b0+c0;
+        const off=den<0?Math.max(-.5,Math.min(.5,.5*(a0-c0)/den)):0;
+        const freq=(i+off)*binHz;if(freq<60||freq>5200)continue;
+        pk.push({f:freq,db:db});
       }
+    }
+    pk.sort((x,y)=>y.db-x.db);
+    const top=pk.length?pk[0].db:0, acc=[];
+    for(const q of pk){
+      if(q.db<top-35)continue;               // ignore skirts far below the loudest peak
+      // Harmonic rejection: a peak at k x (a louder accepted lower peak), k=2..8, is an overtone not a note
+      let isHarm=false;
+      for(const a of acc){
+        if(a.f>=q.f)continue;
+        const k=Math.round(q.f/a.f);
+        if(k>=2&&k<=8&&Math.abs(q.f/(a.f*k)-1)<0.025&&q.db<a.db-2){isHarm=true;break}
+      }
+      if(isHarm)continue;
+      acc.push(q);
+      const mi=Math.round(freqToMidi(q.f)),ni=((mi%12)+12)%12;
+      const str=Math.min(1,Math.max(0,(q.db-PEAK_THRESH)/40));
+      if(str>nE[ni]){nE[ni]=str;nM[ni]=mi;nFq[ni]=q.f}
     }
     // Smoothed note strengths (temporal averaging to stop jumping)
     if(!S._smooth)S._smooth=new Array(12).fill(0);
-    for(let i=0;i<12;i++) S._smooth[i]=S._smooth[i]*0.65+nE[i]*0.35;
+    const _k=1-Math.exp(-S.dt/0.0387); // same response as 0.35 per frame at 60 fps
+    for(let i=0;i<12;i++) S._smooth[i]+=(nE[i]-S._smooth[i])*_k;
     // Only notes with smoothed strength above 0.08 count
     S.detectedNotes=S._smooth.map((s,i)=>({noteIndex:i,strength:s,freq:nFq[i],midi:nM[i],color:NOTES[i].color}))
       .filter(n=>n.strength>0.08).sort((a,b)=>b.strength-a.strength).slice(0,6);
@@ -1243,6 +1416,36 @@ function updatePills(){
 }
 
 // ═══ 1. CHROMATIC WHEEL ══════════════════════════════════════════════════════
+// ═══ EVERY NOTE, SEPARATELY ═══════════════════════════════════════════════════
+// The scope, Lissajous and wheel each need every sounding note's own wave, not just the loudest. One sine per detected
+// note is fitted to the live signal at the same time (least squares), which gives each note its true loudness and phase.
+// Component of note k at buffer sample t:  a*cos(2*pi*f*t/sr) + b*sin(2*pi*f*t/sr)
+let _nw={t:-1,list:[],sr:44100};
+function _noteWaves(){
+  if(_nw.t===S.t) return _nw;
+  _nw.t=S.t; _nw.list=[];
+  if(!tdb||!(isOn||_manualNotes.size>0)) return _nw;
+  const sr=(isOn&&audioCtx)?audioCtx.sampleRate:_SYN_SR; _nw.sr=sr;
+  const notes=S.detectedNotes.filter(n=>n.strength>0.04).slice(0,4), K=notes.length;
+  if(!K) return _nw;
+  const N=Math.min(tdb.length,2048), M=2*K;
+  const fr=notes.map(n=>n.freq>0?n.freq:NOTE_FREQS[n.noteIndex]);
+  const B=[];
+  for(let k=0;k<K;k++){const c=new Float32Array(N),sn=new Float32Array(N),w=2*Math.PI*fr[k]/sr;for(let i=0;i<N;i++){c[i]=Math.cos(w*i);sn[i]=Math.sin(w*i)}B.push(c,sn)}
+  const A=[],y=new Float64Array(M);
+  for(let i=0;i<M;i++){
+    A.push(new Float64Array(M));const bi=B[i];let sy=0;for(let t=0;t<N;t++)sy+=bi[t]*tdb[t];y[i]=sy;
+    for(let j=0;j<=i;j++){const bj=B[j];let s2=0;for(let t=0;t<N;t++)s2+=bi[t]*bj[t];A[i][j]=s2;A[j][i]=s2}
+  }
+  for(let i=0;i<M;i++)A[i][i]+=1e-3*N;                      // tiny ridge: close notes (F and F#) stay solvable
+  for(let i=0;i<M;i++){const pv=A[i][i];for(let r=i+1;r<M;r++){const f=A[r][i]/pv;if(f===0)continue;for(let c=i;c<M;c++)A[r][c]-=f*A[i][c];y[r]-=f*y[i]}}
+  const xs=new Float64Array(M);
+  for(let i=M-1;i>=0;i--){let sum=y[i];for(let c=i+1;c<M;c++)sum-=A[i][c]*xs[c];xs[i]=sum/A[i][i]}
+  for(let k=0;k<K;k++){const a=xs[2*k],b=xs[2*k+1],ni=notes[k].noteIndex;
+    _nw.list.push({ni:ni,f:fr[k],a:a,b:b,amp:Math.hypot(a,b),color:NOTES[ni].color,rgb:noteRgb(ni)})}
+  return _nw;
+}
+
 function drawWheel(){
   const c=CV.wheel;resize(c);const x=CX.wheel,W=c.width,H=c.height,cx=W/2,cy=H/2,R=Math.min(W,H)*.43;
   x.fillStyle='#030508';x.fillRect(0,0,W,H);
@@ -1263,7 +1466,9 @@ function drawWheel(){
     x.beginPath();x.moveTo(cx,cy);x.arc(cx,cy,R,a0,a1);x.closePath();
     x.strokeStyle=isActive?'rgba(255,255,255,.7)':'rgba(255,255,255,.2)';x.lineWidth=isActive?2:.8;x.stroke();
     if(isActive){
-      const pulse=Math.max(0.1,.85+.15*Math.sin(S.t*8+i)),dotR=R+Math.max(1,9*pulse);
+      const dn_=S.detectedNotes.find(n=>n.noteIndex===i), fq_=dn_&&dn_.freq>0?dn_.freq:NOTE_FREQS[i];
+      const oct_=Math.max(-3,Math.min(3,Math.log2(fq_/NOTE_FREQS[i]))), marg_=Math.min(W,H)*0.065;   // higher octave = dot sits further out
+      const pulse=Math.max(0.1,.85+.15*Math.sin(S.t*8+i)),dotR=R+Math.max(1,marg_*(0.25+0.55*(oct_+3)/6)+marg_*0.2*pulse);
       x.beginPath();x.arc(cx+dotR*Math.cos(am),cy+dotR*Math.sin(am),Math.max(.5,3*pulse),0,Math.PI*2);
       x.fillStyle=note.color;x.shadowColor=note.color;x.shadowBlur=9;x.fill();x.shadowBlur=0;
     }
@@ -1280,6 +1485,31 @@ function drawWheel(){
   const cg=x.createRadialGradient(cx,cy,0,cx,cy,R*.38);cg.addColorStop(0,'#0A0718');cg.addColorStop(1,'#030508');
   x.fillStyle=cg;x.fill();x.strokeStyle='rgba(244,208,63,.25)';x.lineWidth=1;x.stroke();
 
+  // The shape of what is held: a line from each sounding note to the next, fading between their colours
+  {
+    const act=[...S.activeNoteIndices].sort((p,q)=>p-q);
+    if(act.length>=1){
+      // distance from the centre = the note's octave (low notes near the middle, high notes toward the rim)
+      const P=act.map(i=>{const am=(i/12)*Math.PI*2-Math.PI/2+Math.PI/12;
+        const dn_=S.detectedNotes.find(n=>n.noteIndex===i), fq_=dn_&&dn_.freq>0?dn_.freq:NOTE_FREQS[i];
+        const rr=R*(0.42+0.5*Math.max(0,Math.min(1,Math.log2(fq_/65.4)/5)));
+        return {i:i,x:cx+rr*Math.cos(am),y:cy+rr*Math.sin(am),ax:cx+R*.38*Math.cos(am),ay:cy+R*.38*Math.sin(am),
+        s:(dn_||{strength:0.6}).strength}});
+      // a spoke from the centre disc to each note, as long as its octave is high
+      P.forEach(p=>{x.beginPath();x.moveTo(p.ax,p.ay);x.lineTo(p.x,p.y);x.strokeStyle='rgba(3,5,8,.85)';x.lineWidth=6+2*Math.min(1,p.s);x.stroke();      // dark edge, so the spoke shows against its own lit wedge
+        x.beginPath();x.moveTo(p.ax,p.ay);x.lineTo(p.x,p.y);x.strokeStyle=NOTES[p.i].color;x.lineWidth=2+2*Math.min(1,p.s);x.globalAlpha=0.95;x.shadowColor=NOTES[p.i].color;x.shadowBlur=6;x.stroke();x.shadowBlur=0;x.globalAlpha=1});
+      const E=act.length<2?0:(act.length===2?1:act.length);
+      for(let e=0;e<E;e++){
+        const p=P[e],q=P[(e+1)%P.length];
+        const g=x.createLinearGradient(p.x,p.y,q.x,q.y);g.addColorStop(0,NOTES[p.i].color);g.addColorStop(1,NOTES[q.i].color);
+        x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);
+        x.strokeStyle=g;x.lineWidth=1.5+1.8*Math.min(1,(p.s+q.s)/2);x.globalAlpha=0.9;x.shadowColor=NOTES[p.i].color;x.shadowBlur=6;x.stroke();x.shadowBlur=0;x.globalAlpha=1;
+      }
+      P.forEach(p=>{x.beginPath();x.arc(p.x,p.y,3.5+3*Math.min(1,p.s),0,Math.PI*2);x.fillStyle='rgba(3,5,8,.9)';x.fill();x.beginPath();x.arc(p.x,p.y,2+3*Math.min(1,p.s),0,Math.PI*2);x.fillStyle=NOTES[p.i].color;x.fill()});
+    }
+  }
+
+
   // 12-o'clock tick (rotated with wheel)
   x.beginPath();x.moveTo(cx,cy-R-1);x.lineTo(cx,cy-R-11);x.strokeStyle='rgba(244,208,63,.5)';x.lineWidth=1.5;x.stroke();
 
@@ -1288,11 +1518,26 @@ function drawWheel(){
 
   // Center labels — drawn after restore so they are upright
   x.font="700 9px 'Cinzel'";x.fillStyle='rgba(244,208,63,.75)';x.textAlign='center';x.textBaseline='middle';x.fillText('KCM™',cx,cy-6);
-  if(S.dominantNote){const dn=NOTES[S.dominantNote.noteIndex];x.font="12px 'Space Mono'";x.fillStyle=dn.color;x.fillText(dn.name,cx,cy+9)}
+  {
+    const act=S.detectedNotes.filter(n=>n.strength>0.04).slice(0,4);
+    if(act.length){
+      const fs_=act.length>2?9:12; x.font=`bold ${fs_}px 'Space Mono'`;x.textAlign='left';
+      const gap=fs_*0.5, wd=act.map(n=>x.measureText(NOTES[n.noteIndex].name).width), tot=wd.reduce((p,q)=>p+q,0)+gap*(act.length-1);
+      let px=cx-tot/2; act.forEach((n,k)=>{x.fillStyle=NOTES[n.noteIndex].color;x.fillText(NOTES[n.noteIndex].name,px,cy+9);px+=wd[k]+gap});
+      if(R*.38>=34){x.font="7px 'Space Mono'";x.textAlign='center';x.fillStyle=NOTES[act[0].noteIndex].color;
+        x.fillText(`${(act[0].freq>0?act[0].freq:NOTE_FREQS[act[0].noteIndex]).toFixed(0)} Hz`,cx,cy+22)}
+      x.textAlign='center';
+    }
+  }
 }
 
 // ═══ 2. OSCILLOSCOPE ═════════════════════════════════════════════════════════
+// Oscilloscope time scale: show a fixed slice of time so pitch is visible.
+// Low notes show a few waves, high notes show many (e.g. 98 Hz ~ 2, 311 Hz ~ 6, 1 kHz ~ 21 in 20 ms).
+const WAVE_MS = 20;
+
 function drawWave(gain){
+  if(V3.wave.on){drawWave3D(gain);return;}
   const c=CV.wave;resize(c);const x=CX.wave,W=c.width,H=c.height;
   x.fillStyle='rgba(3,5,8,.3)';x.fillRect(0,0,W,H);
   // Allow rendering with synthetic buffers when manual notes are held
@@ -1303,18 +1548,192 @@ function drawWave(gain){
   for(let i=1;i<4;i++){x.beginPath();x.moveTo(0,H*i/4);x.lineTo(W,H*i/4);x.stroke()}
   x.beginPath();x.moveTo(0,midY);x.lineTo(W,midY);x.strokeStyle='rgba(255,255,255,.07)';x.stroke();
   const bc=S.dominantNote?S.dominantNote.color:NOTES[IDLE_NOTE].color;
+  // Fixed time window, started at a rising zero-crossing so the wave holds still
+  const _sr=(isOn&&audioCtx)?audioCtx.sampleRate:_SYN_SR;
+  const _win=Math.min(tdb.length-2,Math.round(_sr*WAVE_MS/1000));
+  let _t0=0;const _maxStart=Math.max(1,tdb.length-_win-1);
+  for(let i=1;i<_maxStart;i++){if(tdb[i-1]<0&&tdb[i]>=0){_t0=i;break}}
+  // every sounding note's own wave, in its own colour, underneath the full sound
+  const nw=_noteWaves();
+  let mixC=null;
+  if(nw.list.length){
+    let mr=0,mg=0,mb=0,mw=0;
+    nw.list.forEach(o=>{
+      const w=2*Math.PI*o.f/nw.sr,cc=o.rgb;
+      x.beginPath();
+      for(let i=0;i<W;i++){const bi=_t0+Math.floor(i*_win/W),yy=midY-(o.a*Math.cos(w*bi)+o.b*Math.sin(w*bi))*scaleY;i===0?x.moveTo(i,yy):x.lineTo(i,yy)}
+      x.strokeStyle=`rgba(${cc.r},${cc.g},${cc.b},.8)`;x.lineWidth=1.1;x.shadowColor=o.color;x.shadowBlur=4;x.stroke();x.shadowBlur=0;
+      const a3=o.amp*o.amp*o.amp;mr+=a3*cc.r;mg+=a3*cc.g;mb+=a3*cc.b;mw+=a3;
+    });
+    if(mw>0)mixC=`rgb(${Math.round(mr/mw+(255-mr/mw)*0.15)},${Math.round(mg/mw+(255-mg/mw)*0.15)},${Math.round(mb/mw+(255-mb/mw)*0.15)})`;
+  }
   x.beginPath();
-  for(let i=0;i<W;i++){const bi=Math.min(Math.floor(i*tdb.length/W),tdb.length-1);i===0?x.moveTo(i,midY-tdb[bi]*scaleY):x.lineTo(i,midY-tdb[bi]*scaleY)}
-  x.strokeStyle=bc;x.lineWidth=1.3;x.shadowColor=bc;x.shadowBlur=5+S.rms*14;x.stroke();x.shadowBlur=0;
+  for(let i=0;i<W;i++){const bi=Math.min(_t0+Math.floor(i*_win/W),tdb.length-1);i===0?x.moveTo(i,midY-tdb[bi]*scaleY):x.lineTo(i,midY-tdb[bi]*scaleY)}
+  const mc=mixC||bc;
+  x.strokeStyle=mc;x.lineWidth=1.6;x.shadowColor=mc;x.shadowBlur=5+S.rms*14;x.stroke();x.shadowBlur=0;
   if(S.dominantNote){
     const _hz=S.dominantNote.freq>0?S.dominantNote.freq.toFixed(1):NOTE_FREQS[S.dominantNote.noteIndex].toFixed(1);
-    x.font="8px 'Space Mono'";x.fillStyle=S.dominantNote.color;x.textAlign='right';x.fillText(`${_hz} Hz`,W-6,H-7);
+    const _cyc=(parseFloat(_hz)*WAVE_MS/1000).toFixed(1);
+    x.font="8px 'Space Mono'";x.textAlign='right';
+    let _rx=W-6;
+    (nw.list.length?nw.list:[{ni:S.dominantNote.noteIndex,f:parseFloat(_hz),color:S.dominantNote.color}]).slice().reverse().forEach(o=>{
+      const t_=`${NOTES[o.ni].name} ${o.f.toFixed(0)}Hz`;x.fillStyle=o.color;x.fillText(t_,_rx,H-7);_rx-=x.measureText(t_).width+8});
+    x.textAlign='left';x.fillStyle='rgba(255,255,255,.35)';x.fillText(`${WAVE_MS} ms window · ~${_cyc} waves`,6,H-7);
   }
+}
+
+// ── 3D OSCILLOSCOPE: every note is its own ribbon, lined up in depth, with the full sound in front ─────────────────────
+function drawWave3D(gain){
+  const c=CV.wave;resize(c);const x=CX.wave,W=c.width,H=c.height,st=V3.wave;
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  _v3step(st);
+  const F=Math.max(W,H)*1.5, proj=_v3cam(st,W/2,H*0.53,F);
+  const Wd=W*0.36, sY=H*0.30*gain, hasSig=tdb&&(isOn||_manualNotes.size>0);
+  const nw=hasSig?_noteWaves():{list:[]}, K=nw.list.length, L=K+1, D=Math.min(W,H)*0.20;
+  // floor frame, so the turning is easy to read
+  const zs=(L-1)/2*D+D*0.7, fy=-H*0.27;
+  x.lineWidth=0.7;x.strokeStyle='rgba(255,255,255,.09)';
+  const q=[[-Wd,fy,-zs],[Wd,fy,-zs],[Wd,fy,zs],[-Wd,fy,zs]];
+  x.beginPath();q.forEach((a,i)=>{proj(a[0],a[1],a[2]);i?x.lineTo(_P[0],_P[1]):x.moveTo(_P[0],_P[1])});x.closePath();x.stroke();
+  for(let i=1;i<4;i++){const xx=-Wd+2*Wd*i/4;proj(xx,fy,-zs);const a=_P[0],b=_P[1];proj(xx,fy,zs);x.beginPath();x.moveTo(a,b);x.lineTo(_P[0],_P[1]);x.stroke()}
+  if(!hasSig) return;
+  const _sr=(isOn&&audioCtx)?audioCtx.sampleRate:_SYN_SR;
+  const _win=Math.min(tdb.length-2,Math.round(_sr*WAVE_MS/1000));
+  let _t0=0;const _maxStart=Math.max(1,tdb.length-_win-1);
+  for(let i=1;i<_maxStart;i++){if(tdb[i-1]<0&&tdb[i]>=0){_t0=i;break}}
+  const NP=Math.max(60,Math.min(180,Math.round(W/3))), lanes=[];
+  let mr=0,mg=0,mb=0,mw=0;
+  nw.list.forEach((o,k)=>{
+    const w=2*Math.PI*o.f/nw.sr, ys=new Float32Array(NP);
+    for(let i=0;i<NP;i++){const bi=_t0+Math.floor(i*_win/NP);ys[i]=(o.a*Math.cos(w*bi)+o.b*Math.sin(w*bi))*sY}
+    lanes.push({ys:ys,z:(k-(L-1)/2)*D,rgb:o.rgb,col:o.color,main:false});
+    const a3=o.amp*o.amp*o.amp;mr+=a3*o.rgb.r;mg+=a3*o.rgb.g;mb+=a3*o.rgb.b;mw+=a3;
+  });
+  const ym=new Float32Array(NP);
+  for(let i=0;i<NP;i++){const bi=Math.min(_t0+Math.floor(i*_win/NP),tdb.length-1);ym[i]=tdb[bi]*sY}
+  let mixRgb;
+  if(mw>0)mixRgb={r:Math.round(mr/mw+(255-mr/mw)*.15),g:Math.round(mg/mw+(255-mg/mw)*.15),b:Math.round(mb/mw+(255-mb/mw)*.15)};
+  else{const dn=S.dominantNote?S.dominantNote.noteIndex:IDLE_NOTE;mixRgb=noteRgb(dn)}
+  lanes.push({ys:ym,z:(K-(L-1)/2)*D,rgb:mixRgb,col:`rgb(${mixRgb.r},${mixRgb.g},${mixRgb.b})`,main:true});
+  // far ribbons first
+  lanes.forEach(l=>{proj(0,0,l.z);l.d=_P[2]});
+  lanes.sort((a,b)=>b.d-a.d);
+  const clampY=H*0.46;
+  lanes.forEach(l=>{
+    const cc=l.rgb;
+    const pts=new Float32Array(NP*2),bs=new Float32Array(NP*2);
+    for(let i=0;i<NP;i++){
+      const xx=-Wd+2*Wd*i/(NP-1), yy=Math.max(-clampY,Math.min(clampY,l.ys[i]));
+      proj(xx,yy,l.z);pts[2*i]=_P[0];pts[2*i+1]=_P[1];
+      proj(xx,0,l.z);bs[2*i]=_P[0];bs[2*i+1]=_P[1];
+    }
+    // curtain under the wave, so the ribbon has body
+    x.strokeStyle=`rgba(${cc.r},${cc.g},${cc.b},${l.main?.20:.13})`;x.lineWidth=1;x.beginPath();
+    for(let i=0;i<NP;i+=2){x.moveTo(bs[2*i],bs[2*i+1]);x.lineTo(pts[2*i],pts[2*i+1])}x.stroke();
+    // baseline
+    x.strokeStyle='rgba(255,255,255,.10)';x.lineWidth=.6;x.beginPath();x.moveTo(bs[0],bs[1]);x.lineTo(bs[2*NP-2],bs[2*NP-1]);x.stroke();
+    // the wave
+    x.beginPath();for(let i=0;i<NP;i++)i?x.lineTo(pts[2*i],pts[2*i+1]):x.moveTo(pts[0],pts[1]);
+    x.strokeStyle=l.main?l.col:`rgba(${cc.r},${cc.g},${cc.b},.92)`;x.lineWidth=l.main?2:1.4;
+    x.shadowColor=l.col;x.shadowBlur=l.main?6+S.rms*14:4;x.stroke();x.shadowBlur=0;
+  });
+  x.font="8px 'Space Mono'";x.textBaseline='alphabetic';x.textAlign='right';
+  let rx=W-6;
+  nw.list.slice().reverse().forEach(o=>{const t=`${NOTES[o.ni].name} ${o.f.toFixed(0)}Hz`;x.fillStyle=o.color;x.fillText(t,rx,H-7);rx-=x.measureText(t).width+8});
+  x.textAlign='left';x.fillStyle='rgba(255,255,255,.35)';x.fillText(`${WAVE_MS} ms · each note on its own ribbon · drag to turn`,6,H-7);
+}
+
+// ── 3D LISSAJOUS: signal now, 5 ms later and 10 ms later make x, y and z ───────────────────────────────────────────────
+function drawLiss3D(x,W,H,buf,lag,_sr,c1,c2){
+  const st=V3.liss;
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  _v3step(st);
+  const R=Math.min(W,H)*0.36, proj=_v3cam(st,W/2,H/2,Math.min(W,H)*2.2);
+  const span=Math.max(2,Math.min(2048,buf.length-2*lag-1));
+  let pk=0.0001;
+  for(let i=0;i<span;i++){const a=Math.abs(buf[i]),b=Math.abs(buf[i+lag]),d=Math.abs(buf[i+2*lag]);if(a>pk)pk=a;if(b>pk)pk=b;if(d>pk)pk=d}
+  lissMax=Math.max(pk,lissMax*Math.pow(0.94,S.dt*60));
+  const scale=R/lissMax;
+  _v3axes(x,proj,R,R,R);
+  // faint ring in the x-y plane
+  x.beginPath();for(let a=0;a<=48;a++){const t=a/48*Math.PI*2;proj(Math.cos(t)*R,Math.sin(t)*R,0);a?x.lineTo(_P[0],_P[1]):x.moveTo(_P[0],_P[1])}
+  x.strokeStyle='rgba(255,255,255,.07)';x.lineWidth=.7;x.stroke();
+  const nw=_noteWaves(),comps=nw.list,K=comps.length,step=Math.max(1,Math.floor(span/520));
+  comps.forEach(o=>{
+    const w=2*Math.PI*o.f/nw.sr,cc=o.rgb;x.beginPath();
+    for(let i=0;i<span;i+=step){
+      const f=t=>(o.a*Math.cos(w*t)+o.b*Math.sin(w*t))*scale;
+      proj(f(i),f(i+lag),f(i+2*lag));i?x.lineTo(_P[0],_P[1]):x.moveTo(_P[0],_P[1]);
+    }
+    x.strokeStyle=`rgba(${cc.r},${cc.g},${cc.b},.5)`;x.lineWidth=1;x.stroke();
+  });
+  const r1=hexRgb(c1),r2=hexRgb(c2);
+  let px0=0,py0=0,pk0=1;
+  for(let i=0;i<span;i+=step){
+    const k=proj(buf[i]*scale,buf[i+lag]*scale,buf[i+2*lag]*scale),X=_P[0],Y=_P[1];
+    if(i>0){
+      let cr,cg,cb;
+      if(K){let sr_=0,sg=0,sb=0,sw=0;
+        for(let q=0;q<K;q++){const o=comps[q],w=2*Math.PI*o.f/nw.sr,v0=Math.abs(o.a*Math.cos(w*i)+o.b*Math.sin(w*i))+1e-4,v=v0*v0*v0;sw+=v;sr_+=v*o.rgb.r;sg+=v*o.rgb.g;sb+=v*o.rgb.b}
+        cr=sr_/sw;cg=sg/sw;cb=sb/sw;cr=Math.round(cr+(255-cr)*.12);cg=Math.round(cg+(255-cg)*.12);cb=Math.round(cb+(255-cb)*.12);
+      }else{const f=i/span;cr=Math.round(r1.r+(r2.r-r1.r)*f);cg=Math.round(r1.g+(r2.g-r1.g)*f);cb=Math.round(r1.b+(r2.b-r1.b)*f)}
+      x.strokeStyle=`rgba(${cr},${cg},${cb},${Math.min(1,0.55+0.4*k)})`;x.lineWidth=0.9+1.1*k;
+      x.beginPath();x.moveTo(px0,py0);x.lineTo(X,Y);x.stroke();
+    }
+    px0=X;py0=Y;
+  }
+  x.font="8px 'Space Mono'";x.textAlign='left';x.textBaseline='alphabetic';x.fillStyle='rgba(255,255,255,.35)';
+  x.fillText(`x, y, z = signal now, +${(1000*lag/_sr).toFixed(1)} ms, +${(2000*lag/_sr).toFixed(1)} ms · drag to turn`,6,H-7);
+}
+
+// ── 3D CYMATICS: the plate (or the water) as a surface that rises and falls with the sound ──────────────────────────────
+function _cym3D(x,W,H,vs,w,h,side,isDisk,sumW){
+  const st=V3.cym; _v3step(st);
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  const G=isDisk?38:30, half=Math.min(W,H)*0.34, F=Math.min(W,H)*2.6, proj=_v3cam(st,W/2,H*0.52,F);
+  const amp=half*(0.28+Math.min(1,S.rms*1.8)*0.30), NV=vs.length;
+  const X=new Float32Array((G+1)*(G+1)*3), HV=new Float32Array((G+1)*(G+1)), OK=new Uint8Array((G+1)*(G+1)), CI=new Uint8Array((G+1)*(G+1));
+  for(let j=0;j<=G;j++)for(let i=0;i<=G;i++){
+    const u=i/G,v=j/G,idx=j*(G+1)+i;
+    const px=Math.round(w/2+(u-0.5)*side),py=Math.round(h/2+(v-0.5)*side);
+    let hh=0,ok=NV>0&&px>=0&&px<w&&py>=0&&py<h,best=0,bi=12;
+    if(isDisk){const dx=u-0.5,dy=v-0.5;if(dx*dx+dy*dy>0.25)ok=false}
+    if(ok)for(let k=0;k<NV;k++){const f=vs[k].fld[py*w+px];if(f!==f){ok=false;break}
+      hh+=vs[k].w*f*vs[k].cs;const sc=vs[k].w*(f<0?-f:f);if(sc>=best){best=sc;bi=vs[k].ni}}
+    HV[idx]=ok?Math.max(-1.4,Math.min(1.4,hh)):0;OK[idx]=ok||(NV===0&&(!isDisk||((u-.5)*(u-.5)+(v-.5)*(v-.5))<=0.25))?1:0;CI[idx]=bi;
+    proj((u-0.5)*2*half,HV[idx]*amp,(v-0.5)*2*half);
+    X[idx*3]=_P[0];X[idx*3+1]=_P[1];X[idx*3+2]=_P[2];
+  }
+  const cells=[];
+  for(let j=0;j<G;j++)for(let i=0;i<G;i++){
+    const a=j*(G+1)+i,b=a+1,c=a+G+1,d=c+1;
+    if(!(OK[a]&&OK[b]&&OK[c]&&OK[d]))continue;
+    cells.push(j*G+i,(X[a*3+2]+X[b*3+2]+X[c*3+2]+X[d*3+2]));
+  }
+  const nC=cells.length/2, ord=new Array(nC);for(let k=0;k<nC;k++)ord[k]=k;
+  ord.sort((p,q)=>cells[2*q+1]-cells[2*p+1]);     // far cells first
+  const lw=Math.max(0.6,Math.min(1.1,W/420));
+  for(let o=0;o<nC;o++){
+    const ci=cells[2*ord[o]],i=ci%G,j=(ci/G)|0,a=j*(G+1)+i,b=a+1,c=a+G+1,d=c+1;
+    const hv=(HV[a]+HV[b]+HV[c]+HV[d])/4, ah=Math.min(1,Math.abs(hv));
+    let rgb;
+    if(NV){rgb=noteRgb(CI[a])}else rgb={r:140,g:160,b:190};
+    const lit=0.10+0.45*ah+(hv>0?0.12:0);
+    x.beginPath();x.moveTo(X[a*3],X[a*3+1]);x.lineTo(X[b*3],X[b*3+1]);x.lineTo(X[d*3],X[d*3+1]);x.lineTo(X[c*3],X[c*3+1]);x.closePath();
+    x.fillStyle=`rgb(${Math.round(4+rgb.r*lit)},${Math.round(6+rgb.g*lit)},${Math.round(10+rgb.b*lit)})`;x.fill();
+    const edge=NV?(0.25+0.6*ah):0.18;
+    x.strokeStyle=`rgba(${Math.min(255,rgb.r+40)},${Math.min(255,rgb.g+40)},${Math.min(255,rgb.b+40)},${edge})`;x.lineWidth=lw;x.stroke();
+  }
+  x.font="8px 'Space Mono'";x.textAlign='left';x.textBaseline='alphabetic';x.fillStyle='rgba(255,255,255,.35)';
+  x.fillText(NV?'surface height = the sound · drag to turn':'silent · drag to turn',6,H-7);
+  if(NV){x.textBaseline='top';x.textAlign='left';x.shadowColor='rgba(0,0,0,.95)';x.shadowBlur=4;x.font="8px 'Space Mono'";x.fillStyle=hexRgba(NOTES[vs[0].ni].color,.92);
+    x.fillText(vs.filter(v=>v.w>0.15).map(v=>`${NOTES[v.ni].name} ${v.f.toFixed(0)}Hz`).join('  '),8,26);x.shadowBlur=0}
 }
 
 // ═══ 3. LISSAJOUS ════════════════════════════════════════════════════════════
 // Lissajous state
 let lissMax=0.001;
+const LISS_DELAY_MS=5;
 
 function drawLissajous(){
   const c=CV.lissajous; resize(c);
@@ -1346,23 +1765,31 @@ function drawLissajous(){
 
   // ── ACTIVE: trail fade then draw ─────────────────────────────────────────
   // High opacity fade (0.55) so trails clear within ~5 frames — no lingering static
-  x.fillStyle='rgba(3,5,8,0.55)'; x.fillRect(0,0,W,H);
+  if(!V3.liss.on){x.fillStyle='rgba(3,5,8,0.55)'; x.fillRect(0,0,W,H);}
 
   if(!tdb){ return; }
-  const buf=tdb, half=Math.floor(buf.length/2);
+  // Delay-coordinate phase portrait: x = signal(t), y = signal(t + T/4), T = period of the strongest note.
+  // A pure sine traces a circle; overtones and other notes bend it into the figure that is really in the sound.
+  const buf=tdb;
+  const _sr=(isOn&&audioCtx)?audioCtx.sampleRate:_SYN_SR;
+  if(V3.liss.on){drawLiss3D(x,W,H,buf,Math.max(1,Math.round(_sr*LISS_DELAY_MS/1000)),_sr,S.dominantNote?S.dominantNote.color:NOTES[IDLE_NOTE].color,S.detectedNotes[1]?.color||(S.dominantNote?S.dominantNote.color:NOTES[IDLE_NOTE].color));return;}
+  const _f0=S.dominantNote?(S.dominantNote.freq>0?S.dominantNote.freq:NOTE_FREQS[S.dominantNote.noteIndex]):NOTE_FREQS[IDLE_NOTE];
+  // Delay-coordinate figure with a FIXED delay of 5 ms: a note of frequency f is shifted by 5 ms * f cycles, so every pitch
+  // (and every octave of it) opens the ellipse to a different shape, between a straight line and a circle. Chords combine.
+  const lag=Math.max(1,Math.round(_sr*LISS_DELAY_MS/1000));
+  const span=Math.max(2,Math.min(2048,buf.length-lag-1));
   const c1=S.dominantNote?S.dominantNote.color:NOTES[IDLE_NOTE].color;
   const c2=S.detectedNotes[1]?.color||c1;
-
-  // Auto-normalize: peak amplitude → scale figure to fill R
   let peakThisFrame=0.0001;
-  for(let i=0;i<half;i++){
-    const ax=Math.abs(buf[i]), ay=Math.abs(buf[i+half]||0);
+  for(let i=0;i<span;i++){
+    const ax=Math.abs(buf[i]), ay=Math.abs(buf[i+lag]);
     if(ax>peakThisFrame) peakThisFrame=ax;
     if(ay>peakThisFrame) peakThisFrame=ay;
   }
-  // Decay slowly so figure doesn't collapse instantly on softer notes
-  lissMax = Math.max(peakThisFrame, lissMax*0.94);
+  lissMax = Math.max(peakThisFrame, lissMax*Math.pow(0.94,S.dt*60));
   const scale = R / lissMax;
+  x.font="8px 'Space Mono'";x.textAlign='left';x.textBaseline='alphabetic';x.fillStyle='rgba(255,255,255,.35)';
+  x.fillText(`x = signal · y = signal + ${(1000*lag/_sr).toFixed(1)} ms (shape set by pitch)`,6,H-7);
 
   // Faint axes
   x.strokeStyle='rgba(255,255,255,.05)'; x.lineWidth=0.5;
@@ -1372,15 +1799,34 @@ function drawLissajous(){
   x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2);
   x.strokeStyle='rgba(255,255,255,.05)'; x.stroke();
 
-  // Draw Lissajous — gradient between the two strongest detected notes
+  // Each sounding note draws its own phase portrait (thin, its own colour and frequency); the full sound is drawn on top,
+  // coloured at every point by whichever notes are driving it there.
+  const nw=_noteWaves(), comps=nw.list, K=comps.length;
+  const step=Math.max(1,Math.floor(span/600));
+  comps.forEach(o=>{
+    const w=2*Math.PI*o.f/nw.sr, cc=o.rgb;
+    x.beginPath();
+    for(let i=0;i<span;i+=step){
+      const xv=(o.a*Math.cos(w*i)+o.b*Math.sin(w*i))*scale, yv=(o.a*Math.cos(w*(i+lag))+o.b*Math.sin(w*(i+lag)))*scale;
+      i===0?x.moveTo(cx+xv,cy+yv):x.lineTo(cx+xv,cy+yv);
+    }
+    x.strokeStyle=`rgba(${cc.r},${cc.g},${cc.b},.55)`;x.lineWidth=1;x.stroke();
+  });
   const r1=hexRgb(c1), r2=hexRgb(c2);
-  const step=Math.max(1,Math.floor(half/600));
-  for(let i=0;i<half-step;i+=step){
-    const xv =buf[i       ]*scale, yv =buf[i+half      ]*scale;
-    const xv2=buf[i+step  ]*scale, yv2=buf[i+step+half ]*scale;
-    const f=i/half;
-    x.strokeStyle=`rgba(${Math.round(r1.r+(r2.r-r1.r)*f)},${Math.round(r1.g+(r2.g-r1.g)*f)},${Math.round(r1.b+(r2.b-r1.b)*f)},0.78)`;
-    x.lineWidth=1.3;
+  for(let i=0;i<span-step;i+=step){
+    const xv =buf[i       ]*scale, yv =buf[i+lag      ]*scale;
+    const xv2=buf[i+step  ]*scale, yv2=buf[i+step+lag ]*scale;
+    let cr,cg,cb;
+    if(K){
+      let sr_=0,sg=0,sb=0,sw=0;
+      for(let k=0;k<K;k++){const o=comps[k],w=2*Math.PI*o.f/nw.sr,v0=Math.abs(o.a*Math.cos(w*i)+o.b*Math.sin(w*i))+1e-4,v=v0*v0*v0;sw+=v;sr_+=v*o.rgb.r;sg+=v*o.rgb.g;sb+=v*o.rgb.b}
+      cr=sr_/sw;cg=sg/sw;cb=sb/sw;
+      cr=Math.round(cr+(255-cr)*0.12);cg=Math.round(cg+(255-cg)*0.12);cb=Math.round(cb+(255-cb)*0.12);   // a little lighter than the thin loops
+    }else{
+      const f=i/span;cr=Math.round(r1.r+(r2.r-r1.r)*f);cg=Math.round(r1.g+(r2.g-r1.g)*f);cb=Math.round(r1.b+(r2.b-r1.b)*f);
+    }
+    x.strokeStyle=`rgba(${cr},${cg},${cb},0.82)`;
+    x.lineWidth=1.4;
     x.beginPath(); x.moveTo(cx+xv,cy+yv); x.lineTo(cx+xv2,cy+yv2); x.stroke();
   }
 }
@@ -1389,7 +1835,7 @@ function drawLissajous(){
 const CHLADNI=[[2,1],[3,1],[3,2],[4,1],[4,2],[4,3],[5,1],[5,2],[5,3],[5,4],[6,1],[6,2]];
 
 // Cymatics zoom — 0.5 = whole pattern visible, 1 = natural fill, 3 = deep zoom
-let cymaZoom = 1.0;
+let cymaZoom = 0.76;
 
 // Inject zoom slider into cymatics card
 (function injectCymaSlider(){
@@ -1398,7 +1844,7 @@ let cymaZoom = 1.0;
     const card = document.getElementById('card-cymatics');
     if(!card){ setTimeout(tryInject,100); return; }
     const wrap = document.createElement('div');
-    wrap.style.cssText = 'position:absolute;bottom:22px;left:50%;transform:translateX(-50%);' +
+    wrap.style.cssText = 'position:absolute;bottom:6px;left:8px;opacity:.85;' +
       'z-index:10;display:flex;align-items:center;gap:5px;' +
       'background:rgba(3,5,8,.75);padding:3px 9px;border-radius:20px;' +
       'border:1px solid rgba(255,255,255,.1);pointer-events:all';
@@ -1407,18 +1853,18 @@ let cymaZoom = 1.0;
       'color:rgba(244,208,63,.7);letter-spacing:.1em';
     lbl.textContent = '−';
     const sl = document.createElement('input');
-    sl.type='range'; sl.min='0.5'; sl.max='3.0'; sl.step='0.05'; sl.value='1.0';
+    sl.type='range'; sl.min='0.3'; sl.max='3.0'; sl.step='0.05'; sl.value='0.76';
     sl.title = 'Cymatics zoom';
-    sl.style.cssText = 'width:72px;height:3px;cursor:pointer;accent-color:#C9963A';
+    sl.style.cssText = 'width:54px;height:3px;cursor:pointer;accent-color:#C9963A';
     const lbl2 = document.createElement('span');
     lbl2.style.cssText = lbl.style.cssText; lbl2.textContent = '+';
     const val = document.createElement('span');
     val.style.cssText = 'font-family:"Space Mono",monospace;font-size:7px;' +
       'color:rgba(255,255,255,.45);min-width:26px;text-align:right';
-    val.textContent = '1.0×';
+    val.textContent = '0.76×';
     sl.oninput = e => {
       cymaZoom = parseFloat(e.target.value);
-      val.textContent = cymaZoom.toFixed(1) + '×';
+      val.textContent = cymaZoom.toFixed(2).replace(/0$/,'') + '×';
     };
     wrap.appendChild(lbl); wrap.appendChild(sl);
     wrap.appendChild(lbl2); wrap.appendChild(val);
@@ -1427,80 +1873,498 @@ let cymaZoom = 1.0;
   tryInject();
 })();
 
+// Chladni plate modes. A plate mode (m,n) vibrates at roughly f ∝ m²+n², so a higher pitch picks a mode
+// with more nodal lines (one octave up doubles m²+n²). Sand collects where the plate stands still:
+//   φ(x,y) = cos(mπx)cos(nπy) − cos(nπx)cos(mπy) = 0   (free square plate, classic approximation)
+// The nodal lines of a standing wave do not move; only the plate's amplitude changes.
+const CHL_F0 = 4;   // Hz per unit of m²+n² (a display scale: guitar range ~80 to 1000 Hz spans modes N=20 to 250)
+// Ladder of true plate modes, one per N = m²+n², sorted. Between two rungs the figure morphs smoothly,
+// so every semitone looks different (a pure mode only exists on a rung; the morph is a display choice).
+const _CHL_LADDER = (()=>{const m=new Map();for(let a=2;a<=14;a++)for(let b=1;b<a;b++){const N=a*a+b*b;if(!m.has(N))m.set(N,{m:a,n:b,N})}
+  return [...m.values()].sort((x,y)=>x.N-y.N)})();
+function chladniModeFor(freq){
+  const L=_CHL_LADDER,t=Math.max(L[0].N,Math.min(L[L.length-1].N,freq/CHL_F0));
+  let i=0;while(i<L.length-2&&L[i+1].N<t)i++;
+  const lo=L[i],hi=L[i+1],w=(t-lo.N)/(hi.N-lo.N);
+  const q=v=>Math.round(v*20)/20;
+  return {m:q(lo.m+(hi.m-lo.m)*w), n:q(lo.n+(hi.n-lo.n)*w), N:t};
+}
+// Cymatics: two classic images, one set of physics. Every sounding note is a "voice" with its own vibration mode.
+//  PLATE (default): a square metal plate with sand. Fine grains are shaken about where the plate moves and stay where it is still,
+//   so they pile up on the nodal lines of each note, in that note's colour. Sound stops: the sand is shaken loose and spreads out.
+//  WATER: a round dish with true circular modes (Bessel functions, antinode at the wall). Lit like a liquid surface, with the
+//   live waveform rippling out from the centre, tinted by each note's colour.
+// Pitch picks the mode (higher = finer pattern, every pitch class and octave has its own figure). Loudness drives how hard the
+// sand is shaken and how bright and tall the water is.
+const _cym={voices:new Map(),Hb:null,Fb:null,R:null,Th:null,Sf:null,Ow:null,Cr:null,Cg:null,Cb:null,img:null,off:null,octx:null,w:0,h:0,rkey:'',mode:'plate',bes:new Map(),kmap:new Map()};
+try{const m0=localStorage.getItem('kcm_cyma_mode');if(m0==='water'||m0==='plate'||m0==='both')_cym.mode=m0}catch(e){}
+const _sand={N:0,U:null,V:null,C:null};
+// place grain i at random on the plate (a square), or inside the dish (a circle)
+function _sandSpawn(i,disk){
+  if(disk){const r=Math.sqrt(Math.random())*0.5,a=Math.random()*6.283185307;_sand.U[i]=0.5+r*Math.cos(a);_sand.V[i]=0.5+r*Math.sin(a)}
+  else{_sand.U[i]=Math.random();_sand.V[i]=Math.random()}
+}
+
+// PLATE / WATER switch on the panel
+(function injectCymaMode(){
+  function tryInject(){
+    const card=document.getElementById('card-cymatics');
+    if(!card){setTimeout(tryInject,100);return}
+    const wrap=document.createElement('div');
+    wrap.style.cssText='position:absolute;top:50%;right:5px;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;gap:0;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.16);background:rgba(3,5,8,.55)';
+    const btns={};
+    function paint(){for(const k in btns){const on=_cym.mode===k;btns[k].style.background=on?'rgba(244,208,63,.22)':'transparent';btns[k].style.color=on?'#F4D03F':'rgba(255,255,255,.45)'}}
+    [['plate','PLATE'],['water','WATER'],['both','BOTH']].forEach(([k,t])=>{
+      const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label','Cymatics '+t.toLowerCase());
+      b.style.cssText='font-family:"Space Mono",monospace;font-size:6px;letter-spacing:.08em;padding:0;border:0;cursor:pointer;background:transparent;min-width:0;min-height:0;width:38px;height:22px;line-height:22px;'+(wrap.children.length?'border-top:1px solid rgba(255,255,255,.12);':'');
+      b.onclick=()=>{_cym.mode=k;try{localStorage.setItem('kcm_cyma_mode',k)}catch(e){}paint();if(typeof drawCymatics==='function')drawCymatics()};
+      btns[k]=b;wrap.appendChild(b)});
+    paint();card.appendChild(wrap);
+  }
+  tryInject();
+})();
+
+// ── PLATE modes: free square plate, phi = cos(m pi x)cos(n pi y) - cos(n pi x)cos(m pi y).
+// Detail grows by the same amount every octave, and each pitch class has its own mix of m and n and its own offset.
+function _cymMode(f){
+  const r=Math.max(2.2,Math.min(12.5,2.8+2.2*Math.log2(Math.max(20,f)/82.4))), N=r*r;
+  const pc=((12*Math.log2(f/261.63))%12+12)%12, th=2*Math.PI*pc/12;
+  const a=(65+10*Math.sin(th))*Math.PI/180;
+  const q=v=>Math.round(v*20)/20;
+  return {m:q(r*Math.sin(a)), n:q(r*Math.cos(a)), N:N, sx:Math.round(0.2*Math.cos(th)*20)/20, sy:Math.round(0.2*Math.sin(th)*20)/20};
+}
+function _cymField(v,mode,w,h,zoom){
+  const am=new Float32Array(w),an=new Float32Array(w),bm=new Float32Array(h),bn=new Float32Array(h);
+  const side=Math.min(w,h)*1.3*zoom;                      // the plate is a square, whatever shape the panel is
+  for(let px=0;px<w;px++){const nx=(px-w/2)/side+0.5, gx=nx+mode.sx;
+    if(nx<0||nx>1){am[px]=NaN;an[px]=NaN}else{am[px]=Math.cos(mode.m*Math.PI*gx);an[px]=Math.cos(mode.n*Math.PI*gx)}}
+  for(let py=0;py<h;py++){const ny=(py-h/2)/side+0.5, gy=ny+mode.sy;
+    if(ny<0||ny>1){bm[py]=NaN;bn[py]=NaN}else{bm[py]=Math.cos(mode.m*Math.PI*gy);bn[py]=Math.cos(mode.n*Math.PI*gy)}}
+  const f=(v.fld&&v.fld.length===w*h)?v.fld:new Float32Array(w*h);
+  for(let py=0;py<h;py++)for(let px=0;px<w;px++)f[py*w+px]=am[px]*bn[py]-an[px]*bm[py];
+  return f;
+}
+
+// ── WATER modes: circular dish, h = J_m(k r) cos(m theta + theta0). J_m is the Bessel function; k is chosen so the wave
+// has an antinode at the wall (J_m'(k) = 0), as a free water surface does. m (lobes around) comes from the pitch class,
+// the number of rings from the octave. Fine tuning (cents) turns the pattern a little, so you can see a note go flat or sharp.
+function _besJ(m,x){const N=160;let s=0;for(let i=0;i<N;i++){const t=(i+0.5)*Math.PI/N;s+=Math.cos(m*t-x*Math.sin(t))}return s/N}
+function _besJp(m,x){return 0.5*(_besJ(m-1,x)-_besJ(m+1,x))}
+function _besNeu(m,n){
+  const b=(n+m/2-0.75)*Math.PI;let x=b-(4*m*m+3)/(8*b);if(!(x>m))x=Math.max(m+0.5,b);
+  for(let it=0;it<12;it++){const j=_besJ(m,x),dj=_besJp(m,x),d2=-dj/x-(1-m*m/(x*x))*j;if(Math.abs(d2)<1e-9)break;
+    const dx=dj/d2;x-=Math.max(-0.6,Math.min(0.6,dx));if(Math.abs(dx)<1e-5)break}
+  return x;
+}
+function _besProf(m,k){
+  const key=m+'_'+k.toFixed(3);let p=_cym.bes.get(key);if(p)return p;
+  p=new Float32Array(257);let mx=1e-9;
+  for(let i=0;i<=256;i++){const v=_besJ(m,k*i/256);p[i]=v;const a=v<0?-v:v;if(a>mx)mx=a}
+  for(let i=0;i<=256;i++)p[i]/=mx;
+  _cym.bes.set(key,p);if(_cym.bes.size>200)_cym.bes.delete(_cym.bes.keys().next().value);
+  return p;
+}
+function _cymDish(f){
+  const pcf=((12*Math.log2(f/261.63))%12+12)%12, pr=Math.round(pcf), m=1+(pr%12);
+  const n=Math.max(1,Math.min(6,Math.round(1+1.1*Math.log2(Math.max(40,f)/82.4))));
+  const key=m*10+n;let k=_cym.kmap.get(key);if(k===undefined){k=_besNeu(m,n);_cym.kmap.set(key,k)}
+  return {m:m,n:n,k:k,th:(pcf-pr)*Math.PI/m};
+}
+function _cymFieldDish(v,md,w,h){
+  const f=(v.fld&&v.fld.length===w*h)?v.fld:new Float32Array(w*h), R=_cym.R, Th=_cym.Th, pr=_besProf(md.m,md.k), m=md.m, th=md.th;
+  for(let p=0;p<w*h;p++){
+    const r=R[p]*2; if(r>1){f[p]=NaN;continue}
+    const fi=r*256,i0=fi|0,fr=fi-i0,j=i0>255?256:i0+1;
+    f[p]=(pr[i0]+(pr[j]-pr[i0])*fr)*Math.cos(m*Th[p]+th);
+  }
+  return f;
+}
+
 function drawCymatics(){
   const c=CV.cymatics; resize(c);
   const x=CX.cymatics, W=c.width, H=c.height;
-  x.fillStyle='#030810'; x.fillRect(0,0,W,H);
-  const ni=S.dominantNote?S.dominantNote.noteIndex:IDLE_NOTE;
-  const [m,n]=CHLADNI[ni%CHLADNI.length];
-  const note=NOTES[ni], col=note.color;
-  const rgb=hexRgb(col), ph=S.t*.3;
-  const zoom=cymaZoom; // 1.0 = whole design fills panel; >1 = zoom into centre
+  if(!W||!H) return;
+  const zoom=cymaZoom, dt=S.dt||1/60, mode=_cym.mode, isDisk=mode!=='plate';
+  // the pattern is computed at a capped size (sharp grains are drawn at full size on top of it)
+  const sc=Math.min(1,250/Math.max(W,H)), w=Math.max(8,Math.round(W*sc)), h=Math.max(8,Math.round(H*sc));
+  if(!_cym.off){_cym.off=document.createElement('canvas');_cym.octx=_cym.off.getContext('2d')}
+  if(_cym.w!==w||_cym.h!==h){
+    _cym.off.width=w;_cym.off.height=h;_cym.w=w;_cym.h=h;
+    const n=w*h;
+    _cym.Hb=new Float32Array(n);_cym.Fb=new Float32Array(n);_cym.R=new Float32Array(n);_cym.Th=new Float32Array(n);
+    _cym.Sf=new Float32Array(n);_cym.Ow=new Uint8Array(n);_cym.Cr=new Float32Array(n);_cym.Cg=new Float32Array(n);_cym.Cb=new Float32Array(n);
+    _cym.img=_cym.octx.createImageData(w,h);_cym.voices.clear();_cym.rkey='';
+  }
+  if(_cym.rkey!==w+'x'+h+'z'+zoom){                       // distance from the plate centre and angle, per pixel
+    const side=Math.min(w,h)*1.3*zoom;
+    for(let py=0;py<h;py++){const dy=(py-h/2)/side;for(let px=0;px<w;px++){const dx=(px-w/2)/side,p=py*w+px;_cym.R[p]=Math.sqrt(dx*dx+dy*dy);_cym.Th[p]=Math.atan2(dy,dx)}}
+    _cym.rkey=w+'x'+h+'z'+zoom;
+  }
+  // 1. who is sounding: up to 4 strongest notes, each weighted by its loudness relative to the loudest
+  const tgt=new Map(); let maxS=0;
+  S.detectedNotes.slice().sort((a,b)=>b.strength-a.strength).slice(0,4).forEach(n=>{
+    if(n.strength>0.04){tgt.set(n.noteIndex,{f:n.freq>0?n.freq:NOTE_FREQS[n.noteIndex],s:n.strength});maxS=Math.max(maxS,n.strength)}});
+  const kf=1-Math.exp(-dt*8);                              // crossfade speed (about 0.12 s)
+  tgt.forEach((o,ni)=>{
+    let v=_cym.voices.get(ni); if(!v){v={ni:ni,w:0,ph:0,key:'',fld:null,f:o.f,m:0,n:0,kk:6};_cym.voices.set(ni,v)}
+    v.f=o.f; v.t=o.s/maxS;
+  });
+  _cym.voices.forEach((v,ni)=>{
+    if(!tgt.has(ni)) v.t=0;
+    v.w+=(v.t-v.w)*kf;
+    if(v.t===0&&v.w<0.01) _cym.voices.delete(ni);
+  });
+  const vs=[..._cym.voices.values()].sort((a,b)=>b.w-a.w);
+  const side=Math.min(w,h)*1.3*zoom, sideF=Math.min(W,H)*1.3*zoom;
+  const Ns=Math.round(Math.max(3500,Math.min(16000,sideF*sideF*0.45)));
+  if(mode!=='water'&&(!_sand.U||_sand.N!==Ns)){                  // sand, spread evenly over the plate
+    _sand.N=Ns;_sand.U=new Float32Array(Ns);_sand.V=new Float32Array(Ns);_sand.C=new Uint8Array(Ns).fill(12);
+    for(let i=0;i<Ns;i++)_sandSpawn(i,isDisk);
+  }
+  const fs=Math.max(7,Math.min(9,W*0.028));
+  const label=txt=>{
+    if(!txt) return;
+    const f2=Math.max(6,Math.min(fs,(W-16)/(txt.length*0.62)));       // shrink to fit the panel width
+    x.font=`${f2}px 'Space Mono'`;x.textAlign='left';x.textBaseline='top';
+    x.shadowColor='rgba(0,0,0,.95)';x.shadowBlur=4;
+    x.fillStyle=hexRgba(NOTES[vs[0].ni].color,.92);
+    x.fillText(txt,8,26);
+    x.shadowBlur=0;
+  };
+  const SAND_REST='rgba(214,204,184,';
+  const drawSand=(alpha)=>{
+    const U=_sand.U,V=_sand.V,C=_sand.C,N=_sand.N, x0=W/2-sideF/2, y0=H/2-sideF/2, sz=Math.max(1,sideF/170);
+    // sort the grains by colour in one pass, then draw each colour as one batch
+    const cnt=_sand.cnt||(_sand.cnt=new Int32Array(14));cnt.fill(0);
+    for(let i=0;i<N;i++)cnt[C[i]+1]++;
+    for(let ci=1;ci<14;ci++)cnt[ci]+=cnt[ci-1];
+    const ord=(_sand.ord&&_sand.ord.length===N)?_sand.ord:(_sand.ord=new Int32Array(N)), pos=_sand.pos||(_sand.pos=new Int32Array(14));
+    for(let ci=0;ci<13;ci++)pos[ci]=cnt[ci];
+    for(let i=0;i<N;i++)ord[pos[C[i]]++]=i;
+    x.globalCompositeOperation='lighter';
+    for(let ci=0;ci<=12;ci++){
+      const s0=cnt[ci],s1=cnt[ci+1]; if(s1<=s0)continue;
+      if(ci<12){const k=noteRgb(ci);x.fillStyle=`rgba(${Math.round(k.r+(255-k.r)*0.3)},${Math.round(k.g+(255-k.g)*0.3)},${Math.round(k.b+(255-k.b)*0.3)},${0.62*alpha})`}
+      else x.fillStyle=SAND_REST+(0.5*alpha)+')';
+      x.beginPath();
+      for(let j=s0;j<s1;j++){const i=ord[j];x.rect(x0+U[i]*sideF,y0+V[i]*sideF,sz,sz)}
+      x.fill();
+    }
+    x.globalCompositeOperation='source-over';
+  };
+  const drawPlate=()=>{
+    const x0=W/2-sideF/2, y0=H/2-sideF/2;
+    x.fillStyle='#030508';x.fillRect(0,0,W,H);
+    const g=x.createLinearGradient(x0,y0,x0+sideF,y0+sideF);g.addColorStop(0,'#0d121b');g.addColorStop(1,'#06090f');
+    x.fillStyle=g;x.fillRect(x0,y0,sideF,sideF);
+    x.strokeStyle='rgba(160,175,200,.22)';x.lineWidth=1;x.strokeRect(x0+.5,y0+.5,sideF-1,sideF-1);
+  };
+  if(!vs.length){                       // nothing is being played: silence. An empty plate (or dish), nothing else.
+    if(mode!=='water'){for(let i=0;i<_sand.N;i++){_sandSpawn(i,isDisk);_sand.C[i]=12}}     // the sand is spread evenly again, ready for the next sound
+    if(V3.cym.on){_cym3D(x,W,H,[],w,h,side,isDisk,0)}
+    else if(mode==='plate'){drawPlate()}
+    else{
+      x.fillStyle='#030508';x.fillRect(0,0,W,H);
+      x.beginPath();x.arc(W/2,H/2,sideF/2,0,Math.PI*2);x.strokeStyle='rgba(160,200,255,.14)';x.lineWidth=1;x.stroke();
+    }
+    return;
+  }
+  // 2. each voice: its figure (rebuilt only when its mode moves) and its swing in time
+  let sumW=0, kAvg=0;
+  vs.forEach(v=>{
+    let key;
+    if(mode!=='plate'){
+      const md=_cymDish(v.f);key='W'+w+'x'+h+'z'+zoom+'m'+md.m+'_'+md.n+'t'+md.th.toFixed(2);
+      if(v.key!==key){v.fld=_cymFieldDish(v,md,w,h);v.key=key}
+      v.m=md.m;v.n=md.k;v.kk=2*md.k/Math.PI;
+    }else{
+      const md=_cymMode(v.f);key='P'+w+'x'+h+'z'+zoom+'m'+md.m.toFixed(2)+'_'+md.n.toFixed(2)+'s'+md.sx.toFixed(2)+'_'+md.sy.toFixed(2);
+      if(v.key!==key){v.fld=_cymField(v,md,w,h,zoom);v.key=key}
+      v.m=md.m;v.n=md.n;v.kk=md.m+md.n;
+    }
+    const vf=Math.min(9,1.5+v.f/120);                      // slowed so the eye can follow it (real pitch is hundreds of Hz)
+    v.ph=(v.ph+2*Math.PI*vf*dt)%(2*Math.PI);
+    v.cs=Math.cos(v.ph);
+    sumW+=v.w; kAvg+=v.w*v.kk;
+  });
+  kAvg=kAvg/Math.max(0.001,sumW);
+  const dom=vs[0], NV=vs.length, n=w*h;
+  if(V3.cym.on){_cym3D(x,W,H,vs,w,h,side,isDisk,sumW);return;}
 
-  // At zoom=1: nx runs exactly [0,1] → complete Chladni pattern, edge to edge
-  // At zoom=0.7: nx runs [-0.21, 1.21] → pattern smaller, black border visible
-  // At zoom=2: nx runs [0.25, 0.75] → zoomed into centre quadrant
-  // The pattern domain is [0,1]×[0,1] for both axes — the equation produces
-  // the full standing-wave geometry across this range.
-
-  for(let py=0;py<H;py++){
-    for(let px=0;px<W;px++){
-      // Map pixel to [0,1] pattern space, scaled by zoom around centre
-      const nx = (px/W - 0.5)/zoom + 0.5;
-      const ny = (py/H - 0.5)/zoom + 0.5;
-      // Outside [0,1]: black border (only when zoom<1)
-      if(nx<0||nx>1||ny<0||ny>1){ continue; }
-      // Full Chladni equation: v=0 = nodal line (sand collects here)
-      // Using full [0,1] domain so the COMPLETE pattern is always visible
-      const v = Math.sin(m*Math.PI*nx + ph) * Math.sin(n*Math.PI*ny)
-              - Math.sin(n*Math.PI*nx)       * Math.sin(m*Math.PI*ny + ph);
-      const absV = Math.abs(v);
-      if(absV < 0.12){
-        // Nodal line — sharp bright glow
-        const sharpness = 1 - absV/0.12;
-        const alpha = Math.pow(sharpness, 1.4) * (0.85 + S.rms*0.15);
-        x.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
-        x.fillRect(px,py,1,1);
-      } else {
-        // Antinode region — subtle background glow driven by audio
-        const it = Math.pow(Math.max(0,1-absV), 4) * S.rms * 1.2;
-        if(it>0.015){ x.fillStyle=hexRgba(col,it*0.2); x.fillRect(px,py,1,1); }
+  if(mode!=='water'){
+    // 3. where the plate is moving least, for each grain: the smallest |phi| of any sounding note (a fading note holds less sand)
+    const Sf=_cym.Sf, Ow=_cym.Ow;
+    for(let p=0;p<n;p++){
+      let s=1e9,own=0,out=false;
+      for(let k=0;k<NV;k++){const f=vs[k].fld[p];if(f!==f){out=true;break}const a=(f<0?-f:f)+(1-vs[k].w)*0.7;if(a<s){s=a;own=k}}
+      Sf[p]=out?NaN:s;Ow[p]=own;
+    }
+    // 4. shake the sand: each grain tries a hop; it hops far where the plate moves a lot and barely at all on a nodal line, and it
+    // keeps a hop that lands somewhere stiller (or, now and then, somewhere not stiller: louder sound shakes harder).
+    const U=_sand.U,V=_sand.V,C=_sand.C,N=_sand.N;
+    const T=(1.1+1.0*S.rms)/side*Math.PI*0.5*kAvg;          // shaking energy, scaled so a line is about 1 to 2 px wide
+    let rs=_sand.rs||2463534242;const rnd=()=>{rs^=rs<<13;rs^=rs>>>17;rs^=rs<<5;return (rs>>>0)*2.3283064365386963e-10};   // fast random numbers for the grains
+    for(let i=0;i<N;i++){
+      let u=U[i],v=V[i],gp=0;
+      for(let a=0;a<3;a++){
+        gp=((h/2+(v-0.5)*side)|0)*w+((w/2+(u-0.5)*side)|0);
+        const s0=Sf[gp];
+        if(s0!==s0){if(isDisk){const rr=Math.sqrt(rnd())*0.5,aa=6.283185307*rnd();u=0.5+rr*Math.cos(aa);v=0.5+rr*Math.sin(aa)}else{u=rnd();v=rnd()}continue}
+        const st=0.004+0.12*(s0>1?1:s0);
+        const nu=u+(rnd()-0.5)*2*st, nv=v+(rnd()-0.5)*2*st;
+        if(nu<0.004||nu>0.996||nv<0.004||nv>0.996) continue;
+        const s1=Sf[((h/2+(nv-0.5)*side)|0)*w+((w/2+(nu-0.5)*side)|0)];
+        if(s1!==s1) continue;
+        if(s1<=s0||rnd()<Math.exp(-(s1-s0)/T)){u=nu;v=nv}
       }
+      U[i]=u;V[i]=v;
+      const o=Ow[((h/2+(v-0.5)*side)|0)*w+((w/2+(u-0.5)*side)|0)];
+      C[i]=o<NV?vs[o].ni:12;
+    }
+    _sand.rs=rs;
+    if(mode==='plate'){
+      drawPlate();drawSand(Math.min(1,sumW*1.4));
+      label(vs.filter(v=>v.w>0.15).map(v=>`${NOTES[v.ni].name} ${v.f.toFixed(0)}Hz→(${v.m.toFixed(1)},${v.n.toFixed(1)})`).join('  '));
+      return;
     }
   }
-  // Mode info at bottom (never overlaps card-lbl at top)
-  const fs=Math.max(7,Math.min(9,W*0.028));
-  x.font=`${fs}px 'Space Mono'`;
-  x.textAlign='center'; x.textBaseline='bottom';
-  x.fillStyle='rgba(0,0,0,.55)'; x.fillRect(W/2-58,H-fs-7,116,fs+5);
-  x.fillStyle=hexRgba(col,.85);
-  x.fillText(`MODE (${m},${n}) · ${note.name} · zoom ${zoom.toFixed(1)}×`,W/2,H-3);
+
+  // ── WATER ──
+  const norm=1/Math.max(1,sumW*0.75);
+  const amp=Math.min(1,0.35+S.rms*1.5), edge=0.75+S.rms*0.25;
+  // The same live wave the oscilloscope draws, laid around the centre as rings: whatever the scope shows, the water shows too.
+  let wv=null;
+  if(tdb&&(isOn||_manualNotes.size>0)){
+    const sr=(isOn&&audioCtx)?audioCtx.sampleRate:_SYN_SR;
+    const win=Math.max(64,Math.min(tdb.length-2,Math.round(sr*WAVE_MS/1000),Math.round(sr*3/Math.max(60,dom.f))));
+    let t0=0;const mx=Math.max(1,tdb.length-win-1);
+    for(let i=1;i<mx;i++){if(tdb[i-1]<0&&tdb[i]>=0){t0=i;break}}
+    wv=_cym.wv||(_cym.wv=new Float32Array(128));
+    let pk=0;
+    for(let i=0;i<128;i++){const v=tdb[Math.min(t0+Math.floor(i*win/128),tdb.length-1)];wv[i]=v;const av=v<0?-v:v;if(av>pk)pk=av}
+    _cym.pk=Math.max(pk,(_cym.pk||0.05)*Math.pow(0.5,dt/1.5));
+    const inv=1/Math.max(0.03,_cym.pk);
+    for(let i=0;i<128;i++)wv[i]*=inv;
+  }
+  const wAmp=wv?(0.22+S.rms*0.5):0;
+  const dimW=mode==='both'?0.55:1;                     // under the sand the water is held back a little so the grains stand out
+  if(wv){let sd=0,sa=0;for(let i=0;i<127;i++){sd+=Math.abs(wv[i+1]-wv[i]);sa+=Math.abs(wv[i])}
+    const tn=Math.max(0,Math.min(1,(sd/Math.max(0.01,sa)-0.10)/0.25));
+    _cym.tim=(_cym.tim||0)+(tn-(_cym.tim||0))*(1-Math.exp(-dt*6))}
+  const tim=_cym.tim||0;
+  const thr=Math.max(0.10,Math.min(0.30,1.8*Math.PI*kAvg/(zoom*w)*0.8))*(1-0.25*tim);
+  vs.forEach(v=>{const c=noteRgb(v.ni);v.cr=c.r;v.cg=c.g;v.cb=c.b});
+  const Hb=_cym.Hb, Fb=_cym.Fb, R=_cym.R, Cr=_cym.Cr, Cg=_cym.Cg, Cb=_cym.Cb;
+  for(let p=0;p<n;p++){
+    let hh=0, foam=0, out=false, cw=0, cr=0, cg=0, cb=0;
+    for(let k=0;k<NV;k++){
+      const v=vs[k], f=v.fld[p];
+      if(f!==f){out=true;break}                            // outside the dish
+      hh+=v.w*f*v.cs;
+      const af=f<0?-f:f;
+      let fm=0;
+      if(af<thr){const tt=1-af/thr;fm=v.w*tt*Math.sqrt(tt);foam+=fm}
+      const w1=v.w*(0.3+af)+fm*3, wt=w1*w1*w1;     // cubed: the strongest voice here owns the colour, hues stay distinct
+      cw+=wt;cr+=wt*v.cr;cg+=wt*v.cg;cb+=wt*v.cb;
+    }
+    if(out){Hb[p]=NaN;Fb[p]=0;continue}
+    const r=R[p];
+    let wring=0;
+    if(wv){let wi=r*142;if(wi>126.99)wi=126.99;const i0=wi|0,fr=wi-i0;wring=(wv[i0]+(wv[i0+1]-wv[i0])*fr)*wAmp/(1+1.2*r)}
+    Hb[p]=hh*norm+wring;
+    Fb[p]=foam>1?1:foam;
+    if(cw>1e-9){const ic=1/(cw*255);Cr[p]=cr*ic;Cg[p]=cg*ic;Cb[p]=cb*ic}else{Cr[p]=1;Cg[p]=1;Cb[p]=1}
+  }
+  const shade=amp*(w/(Math.PI*Math.max(2,kAvg)))*0.8*(1+0.8*tim);
+  const d=_cym.img.data;
+  for(let py=0,p=0,q=0;py<h;py++){
+    for(let px=0;px<w;px++,p++,q+=4){
+      const hc=Hb[p];
+      if(hc!==hc){d[q]=3;d[q+1]=5;d[q+2]=8;d[q+3]=255;continue}
+      let hl=px>0?Hb[p-1]:hc, hr=px<w-1?Hb[p+1]:hc, hu=py>0?Hb[p-w]:hc, hd=py<h-1?Hb[p+w]:hc;
+      if(hl!==hl)hl=hc; if(hr!==hr)hr=hc; if(hu!==hu)hu=hc; if(hd!==hd)hd=hc;
+      const g=((hr-hl)*0.62+(hd-hu)*0.78)*shade;
+      let sh=0.5+g*0.5; sh=sh<0?0:(sh>1?1:sh);
+      const rr2=R[p]*2;
+      const body=(0.03+0.30*sh+(hc>0?0.10*hc*amp:0))*1.5*(1-0.25*rr2*rr2);        // darker toward the wall, like a deep dish
+      let gl=0; if(g>0.25){const s2=Math.min(1,(g-0.25)*1.3);gl=s2*s2*0.45*amp*(0.6+0.8*tim)}
+      const fo=Fb[p]*edge*0.85;
+      let rim=0; if(rr2>0.94){rim=(rr2-0.94)/0.06;rim=rim*rim*0.55}                 // the bright meniscus at the glass wall
+      const tr=Cr[p], tg=Cg[p], tb=Cb[p];
+      let r_=tr*body+fo*(0.8*tr+0.2)+gl*(0.4+0.6*tr)+rim*(0.5+0.5*tr), g_=tg*body+fo*(0.8*tg+0.2)+gl*(0.4+0.6*tg)+rim*(0.5+0.5*tg), b_=tb*body+fo*(0.8*tb+0.2)+gl*(0.4+0.6*tb)+rim*(0.5+0.5*tb);
+      r_*=dimW;g_*=dimW;b_*=dimW;
+      d[q]=(r_>1?255:r_*255)|0; d[q+1]=(g_>1?255:g_*255)|0; d[q+2]=(b_>1?255:b_*255)|0; d[q+3]=255;
+    }
+  }
+  _cym.octx.putImageData(_cym.img,0,0);
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high';
+  x.drawImage(_cym.off,0,0,W,H);
+  if(mode==='both')drawSand(Math.min(1,sumW*1.4));
+  label(vs.filter(v=>v.w>0.15).map(v=>`${NOTES[v.ni].name} ${v.f.toFixed(0)}Hz→m${v.m}·k${v.n.toFixed(1)}`).join('  '));
 }
+
 
 // ═══ 5. SPECTRAL WATERFALL ═══════════════════════════════════════════════════
 const wfOS=document.createElement('canvas');wfOS.width=1;wfOS.height=1;const wfC=wfOS.getContext('2d');
 let wfRows=[];const MAX_WF=180;
+
+// Four views of the same spectrum. Every view reads the same data (touched notes or the live mic).
+var wfMode = 'spectrum';
+let wfStr = [], wfPc = [], wfChr = [];     // per-frame strength, pitch class, and 12-note chroma history
+const MAX_CHR = 240;
+const WF_TOP = 44;   // top strip reserved for the view buttons
+function noteRgb(i){ return (noteRgb.c || (noteRgb.c = NOTES.map(n=>hexRgb(n.color))))[i]; }
+
 function drawWaterfall(binHz,gain){
   const c=CV.waterfall;resize(c);const x=CX.waterfall,W=c.width,H=c.height;
   // Allow synthetic rendering when manual notes are held
   if(!isOn && _manualNotes.size===0){x.fillStyle='#030508';x.fillRect(0,0,W,H);return}
   if(!fdb) return;
-  const minF=55,maxF=4000,row=new Uint8ClampedArray(W*4);
+  const minF=55,maxF=4000,row=new Uint8ClampedArray(W*4),strRow=new Float32Array(W),pcRow=new Uint8Array(W),chr=new Float32Array(12);
   for(let px=0;px<W;px++){
     const freq=minF*Math.pow(maxF/minF,px/W),bin=Math.round(freq/binHz);
     const str=Math.max(0,Math.min(1,(fdb[Math.min(bin,fdb.length-1)]+100)/100*gain*.55));
+    const ni=((Math.round(freqToMidi(freq))%12)+12)%12;
+    strRow[px]=str;pcRow[px]=ni;
     if(str<0.02){row[px*4]=3;row[px*4+1]=5;row[px*4+2]=8;row[px*4+3]=255;continue}
-    const ni=((Math.round(freqToMidi(freq))%12)+12)%12,rgb=hexRgb(NOTES[ni].color);
+    const rgb=noteRgb(ni);
     row[px*4]=Math.round(rgb.r*str);row[px*4+1]=Math.round(rgb.g*str);row[px*4+2]=Math.round(rgb.b*str);row[px*4+3]=255;
   }
-  wfRows.push(row);if(wfRows.length>MAX_WF)wfRows.shift();
+  S.detectedNotes.forEach(n=>{chr[n.noteIndex]=Math.max(chr[n.noteIndex],Math.min(1,n.strength*1.5))});
+  if(wfRows.length&&wfRows[0].length!==W*4){wfRows=[];wfStr=[];wfPc=[]} // canvas was resized: old rows no longer fit
+  wfRows.push(row);wfStr.push(strRow);wfPc.push(pcRow);
+  if(wfRows.length>MAX_WF){wfRows.shift();wfStr.shift();wfPc.shift()}
+  wfChr.push(chr);if(wfChr.length>MAX_CHR)wfChr.shift();
+  if(wfMode==='ridge')_wfRidge(x,W,H);
+  else if(wfMode==='chroma')_wfChroma(x,W,H);
+  else if(wfMode==='overtones')_wfOvertones(x,W,H,binHz,gain);
+  else _wfSpectrum(x,W,H,minF,maxF);
+}
+
+// 1. SPECTRUM: frequency (log axis) across, time down, newest on top. Color = note, brightness = loudness.
+function _wfSpectrum(x,W,H,minF,maxF){
   x.fillStyle='#030508';x.fillRect(0,0,W,H);
   if(wfOS.width!==W)wfOS.width=W;wfOS.height=1;
-  const rh=Math.max(1,H/MAX_WF);
-  wfRows.forEach((r,i)=>{wfC.putImageData(new ImageData(r,W,1),0,0);x.drawImage(wfOS,0,(wfRows.length-1-i)*rh,W,rh+1)});
+  const rh=Math.max(1,(H-WF_TOP)/MAX_WF);
+  wfRows.forEach((r,i)=>{wfC.putImageData(new ImageData(r,W,1),0,0);x.drawImage(wfOS,0,WF_TOP+(wfRows.length-1-i)*rh,W,rh+1)});
   x.font="7px 'Space Mono'";x.fillStyle='rgba(255,255,255,.22)';x.textAlign='center';
   [110,220,440,880,1760,3520].forEach(f=>{if(f>=minF&&f<=maxF){const px=W*Math.log(f/minF)/Math.log(maxF/minF);x.fillText(f>=1000?`${f/1000}k`:`${f}`,px,H-4)}});
 }
+
+// 2. 3D RIDGELINE: the same spectra as mountain ranges. Newest in front, history receding behind it.
+function _wfRidge(x,W,H){
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  const n=wfStr.length; if(n<2) return;
+  const N=Math.min(n,44), stepRows=(n-1)/(N-1);
+  const amp=(H-WF_TOP)*0.30, top=WF_TOP+amp*0.75, bot=H*0.93;
+  x.lineJoin='round'; x.lineWidth=1.2;
+  for(let k=0;k<N;k++){                       // k=0 oldest (back) ... k=N-1 newest (front)
+    const idx=Math.round(k*stepRows), d=1-k/(N-1);   // d=1 at the back, 0 at the front
+    const sRow=wfStr[idx], pRow=wfPc[idx];
+    const base=top+(1-d)*(bot-top), sc=1-0.07*d, A=amp*(1-0.25*d), al=1-0.5*d;
+    const X=px=>W/2+(px-W/2)*sc;
+    // dark fill hides the rows behind it
+    x.beginPath(); x.moveTo(X(0),base);
+    for(let px=0;px<W;px+=2) x.lineTo(X(px),base-sRow[px]*A);
+    x.lineTo(X(W-1),base); x.closePath(); x.fillStyle='#030508'; x.fill();
+    // ridge line, colored by the note under it
+    let key=-2,prevX=X(0),prevY=base;
+    for(let px=0;px<W;px+=2){
+      const xx=X(px), yy=base-sRow[px]*A, kk=sRow[px]<0.06?-1:pRow[px];
+      if(kk!==key){
+        if(key!==-2) x.stroke();
+        x.beginPath(); x.moveTo(prevX,prevY);
+        if(kk===-1) x.strokeStyle=`rgba(110,125,150,${0.3*al})`;
+        else { const c=noteRgb(kk); x.strokeStyle=`rgba(${c.r},${c.g},${c.b},${al})`; }
+        key=kk;
+      }
+      x.lineTo(xx,yy); prevX=xx; prevY=yy;
+    }
+    x.stroke();
+  }
+  x.font="7px 'Space Mono'";x.fillStyle='rgba(255,255,255,.28)';x.textAlign='left';
+  x.fillText('newest in front · older behind',6,H-5);
+}
+
+// 3. CHROMA: the 12 notes as rows in the KCM colors, time scrolling left. Shows the notes the app hears (same data as the wheel, keys and staff); overtones live in the Overtones view.
+function _wfChroma(x,W,H){
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  const padL=24,padR=6,padT=WF_TOP,padB=14,plotW=W-padL-padR,plotH=H-padT-padB,rh=plotH/12,cw=plotW/MAX_CHR;
+  const n=wfChr.length;
+  for(let i=0;i<n;i++){
+    const col=wfChr[i], X=padL+plotW-(n-i)*cw;
+    for(let pc=0;pc<12;pc++){
+      const v=col[pc]; if(v<0.05) continue;
+      const c=noteRgb(pc);
+      x.fillStyle=`rgba(${c.r},${c.g},${c.b},${Math.min(1,v)})`;
+      x.fillRect(X,padT+plotH-(pc+1)*rh+1,cw+0.6,rh-1);
+    }
+  }
+  x.font=`${Math.max(7,Math.min(10,rh*0.7))}px 'Space Mono'`;x.textAlign='right';x.textBaseline='middle';
+  for(let pc=0;pc<12;pc++){ x.fillStyle=NOTES[pc].color; x.fillText(NOTES[pc].name,padL-4,padT+plotH-(pc+0.5)*rh); }
+  x.textBaseline='alphabetic';x.textAlign='right';x.fillStyle='rgba(255,255,255,.28)';x.font="7px 'Space Mono'";
+  x.fillText('time →',W-padR,H-4);
+}
+
+// 4. OVERTONES: the harmonic series of the strongest note, 1x to 12x its frequency.
+// Each bar is the energy found at n x f0; labels give the nearest note and how many cents the overtone sits from it.
+function _wfOvertones(x,W,H,binHz,gain){
+  x.fillStyle='#030508';x.fillRect(0,0,W,H);
+  const dn=S.dominantNote;
+  let f0=0;
+  if(dn){ f0=dn.freq>0?dn.freq:NOTE_FREQS[dn.noteIndex]; }
+  else {
+    // The app has not named a note, so use the loudest spectral peak (refined between bins) as the base tone
+    const k0=Math.max(2,Math.floor(60/binHz)), k1=Math.min(fdb.length-2,Math.ceil(2000/binHz));
+    let m=-999,mk=0; for(let k=k0;k<=k1;k++){ if(fdb[k]>m){m=fdb[k];mk=k} }
+    if(m>-70){ const a=fdb[mk-1],b=fdb[mk],c=fdb[mk+1],den=a-2*b+c; const d=den!==0?0.5*(a-c)/den:0; f0=(mk+Math.max(-0.5,Math.min(0.5,d)))*binHz; }
+  }
+  if(!(f0>0)){ x.font="9px 'Space Mono'";x.fillStyle='rgba(255,255,255,.2)';x.textAlign='center';x.fillText('play a note…',W/2,H/2); return; }
+  const f0pc=((Math.round(freqToMidi(f0))%12)+12)%12;
+  const N=12,padL=8,padR=8,padT=WF_TOP+18,padB=50,bw=(W-padL-padR)/N,plotH=H-padT-padB,maxHz=binHz*(fdb.length-1);
+  const fs=Math.max(6,Math.min(9,bw*0.3));
+  for(let n=1;n<=N;n++){
+    const f=n*f0, X=padL+(n-1)*bw;
+    let str=0;
+    if(f<maxHz){
+      const half=Math.max(1,Math.round(f*0.02/binHz)), b=Math.round(f/binHz); let m=-200;
+      for(let j=b-half;j<=b+half;j++){ if(j>0&&j<fdb.length&&fdb[j]>m) m=fdb[j]; }
+      str=Math.max(0,Math.min(1,(m+100)/100*gain*.55));
+    }
+    const midi=freqToMidi(f), nm=Math.round(midi), pc=((nm%12)+12)%12, cents=Math.round((midi-nm)*100), col=NOTES[pc].color;
+    const h=str*plotH;
+    x.save(); x.shadowColor=col; x.shadowBlur=str>0.1?10:0;
+    x.fillStyle=hexRgba(col,0.25+0.75*str); x.fillRect(X+bw*0.16,padT+plotH-h,bw*0.68,Math.max(1,h)); x.restore();
+    x.textAlign='center';x.font=`${fs}px 'Space Mono'`;
+    x.fillStyle='rgba(255,255,255,.55)'; x.fillText(`${n}×`,X+bw/2,padT+plotH+fs+3);
+    x.fillStyle=col; x.fillText(NOTES[pc].name,X+bw/2,padT+plotH+fs*2+5);
+    x.fillStyle='rgba(255,255,255,.4)'; x.fillText(`${cents>0?'+':''}${cents}¢`,X+bw/2,padT+plotH+fs*3+7);
+  }
+  x.textAlign='left';x.font="8px 'Space Mono'";x.fillStyle=NOTES[f0pc].color;
+  x.fillText(`harmonics of ${NOTES[f0pc].name} · ${f0.toFixed(1)} Hz`,8,padT-10);
+}
+
+// View switcher for the waterfall card
+(function(){
+  const card=document.getElementById('card-waterfall'); if(!card) return;
+  const modes=[['spectrum','Spectrum','FREQ vs TIME'],['ridge','3D','DEPTH · FREQ vs TIME'],['chroma','Chroma','NOTES vs TIME'],['overtones','Overtones','HARMONIC SERIES']];
+  const bar=document.createElement('div'); bar.id='wf-modes';
+  const sub=card.querySelector('.card-lbl-sub');
+  modes.forEach(([id,label,subtxt])=>{
+    const b=document.createElement('button'); b.textContent=label; b.dataset.mode=id;
+    b.setAttribute('aria-pressed',id===wfMode?'true':'false'); if(id===wfMode) b.classList.add('active');
+    const go=e=>{
+      e.stopPropagation();
+      wfMode=id; bar.querySelectorAll('button').forEach(x=>{const on=x.dataset.mode===id;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on?'true':'false')});
+      if(sub) sub.textContent=subtxt;
+      if(fdb && (isOn||_manualNotes.size>0)) drawWaterfall(isOn&&audioCtx?audioCtx.sampleRate/FFT:1, parseFloat(gainEl.value));
+    };
+    b.addEventListener('click',go); b.addEventListener('dblclick',e=>e.stopPropagation());
+    bar.appendChild(b);
+  });
+  card.appendChild(bar);
+})();
 
 // ═══ 6. PARTICLE FIELD ═══════════════════════════════════════════════════════
 // ═══ 6. PIANO KEYBOARD — DOM, KCM colors, interactive, synced ═══════════════
@@ -1565,17 +2429,18 @@ function buildKeyboard(){
         `cursor:pointer;box-sizing:border-box;`+
         `transition:background .1s,box-shadow .1s;z-index:1;`;
       // Note name at bottom
+      // KCM color band at the base of the white key, tall enough that the note name sits in the middle of the colour
+      const fsz=Math.max(6,wkW*0.28), SWH=Math.round(fsz*2.7);
+      const sw=document.createElement('div');
+      sw.className='kb-swatch';
+      sw.style.cssText=`position:absolute;bottom:0;left:0;right:0;height:${SWH}px;border-radius:0 0 3px 3px;background:${NOTES[pc].color};opacity:.92;pointer-events:none;`;
+      k.appendChild(sw);
       const nl=document.createElement('span');
-      nl.style.cssText=`position:absolute;bottom:3px;width:100%;text-align:center;`+
-        `font-size:${Math.max(6,wkW*0.28)}px;font-weight:700;color:#555;`+
+      nl.style.cssText=`position:absolute;bottom:0;left:0;width:100%;height:${SWH}px;line-height:${SWH}px;text-align:center;`+
+        `font-size:${fsz}px;font-weight:700;color:${NOTES[pc].tc};`+
         `font-family:'Space Mono',monospace;pointer-events:none;`;
       nl.textContent=wi===0?NOTES[pc].name+oct:NOTES[pc].name;
       k.appendChild(nl);
-      // KCM color swatch at base of white key (always visible)
-      const sw=document.createElement('div');
-      sw.className='kb-swatch';
-      sw.style.cssText=`position:absolute;bottom:0;left:0;right:0;height:6px;border-radius:0 0 3px 3px;background:${NOTES[pc].color};opacity:.7;pointer-events:none;`;
-      k.appendChild(sw);
       k.addEventListener('click',()=>{
         kbPlayNote(pc,oct);
         k.style.transform='scaleY(0.97)';k.style.transformOrigin='top';
@@ -1598,7 +2463,7 @@ function buildKeyboard(){
       k.style.cssText=
         `position:absolute;left:${leftPx}px;top:0;`+
         `width:${bkW}px;height:${bkH}px;`+
-        `background:linear-gradient(180deg,#222,#000);`+
+        `background:#050505;`+
         `border:1px solid #000;border-radius:0 0 3px 3px;`+
         `cursor:pointer;box-sizing:border-box;`+
         `transition:background .1s,box-shadow .1s;z-index:3;`+
@@ -1628,11 +2493,14 @@ function buildKeyboard(){
 
 // Called every frame — lights keys that match S.activeNoteIndices
 function updateKeyboardDisplay(){
+  // The exact key that is sounding (pitch AND octave) lights fully; the same note in another octave only tints.
+  const exact=new Set(S.detectedNotes.map(n=>n.midi));
   // White keys
   document.querySelectorAll('.kb-white').forEach(k=>{
     const pc=parseInt(k.dataset.pc);
     const note=NOTES[pc];
-    const active=S.activeNoteIndices.has(pc);
+    const active=exact.has(12*(parseInt(k.dataset.oct)+1)+pc);
+    const tint=!active && S.activeNoteIndices.has(pc);
     if(active){
       k.style.background=note.color;
       k.style.boxShadow=`0 0 18px ${note.color}, 0 0 8px ${note.color}, inset 0 2px 6px rgba(0,0,0,.2)`;
@@ -1642,15 +2510,24 @@ function updateKeyboardDisplay(){
       if(nl){nl.style.color=note.tc;nl.style.textShadow='none';}
       const sw=k.querySelector('.kb-swatch');
       if(sw) sw.style.opacity='0';
+    } else if(tint){
+      k.style.background=`linear-gradient(to bottom,${hexRgba(note.color,.42)},#ddd)`;
+      k.style.boxShadow='';
+      k.style.borderColor=hexRgba(note.color,.7);
+      k.style.borderWidth='1px';
+      const nl=k.querySelector('span');
+      if(nl){nl.style.color=note.tc;nl.style.textShadow='none';}
+      const sw=k.querySelector('.kb-swatch');
+      if(sw){sw.style.background=note.color;sw.style.opacity='.92';}
     } else {
       k.style.background='linear-gradient(to bottom,#f5f5f5,#ddd)';
       k.style.boxShadow='';
       k.style.borderColor='#555';
       k.style.borderWidth='1px';
       const nl=k.querySelector('span');
-      if(nl){nl.style.color='#444';nl.style.textShadow='none';}
+      if(nl){nl.style.color=note.tc;nl.style.textShadow='none';}
       const sw=k.querySelector('.kb-swatch');
-      if(sw){sw.style.background=note.color;sw.style.opacity='.7';}
+      if(sw){sw.style.background=note.color;sw.style.opacity='.92';}
     }
   });
   // Black keys
@@ -1658,14 +2535,18 @@ function updateKeyboardDisplay(){
     const pc=parseInt(k.dataset.pc);
     const note=NOTES[pc];
     const rgb=hexRgb(note.color);
-    const active=S.activeNoteIndices.has(pc);
+    const active=exact.has(12*(parseInt(k.dataset.oct)+1)+pc);
+    const tint=!active && S.activeNoteIndices.has(pc);
     if(active){
       k.style.background=note.color;
       k.style.boxShadow=`0 0 22px ${note.color}, 0 0 10px ${note.color}`;
       k.style.borderColor=note.color;
+    } else if(tint){
+      k.style.background='#050505';
+      k.style.boxShadow='0 3px 6px rgba(0,0,0,.6)';
+      k.style.borderColor=note.color;
     } else {
-      // Subtle KCM color tint always visible on black keys
-      k.style.background=`linear-gradient(180deg,rgba(${rgb.r},${rgb.g},${rgb.b},0.28),#111)`;
+      k.style.background='#050505';
       k.style.boxShadow='0 3px 6px rgba(0,0,0,.6)';
       k.style.borderColor='#000';
     }
@@ -1715,6 +2596,7 @@ function drawStaff(){
   const ls = Math.max(7, Math.min(H * 0.082, 20));  // line spacing
 
   const spToY = sp => staffCY - (sp - 6) * (ls / 2);
+  _staffG={W:W,H:H,staffCY:staffCY,ls:ls,staffLeft:marginL*0.52,staffRight:W-marginR};
 
   const line1Y = spToY(2);   // E4
   const line5Y = spToY(10);  // F5
@@ -1735,12 +2617,26 @@ function drawStaff(){
   // Treble clef
   drawClef(x, staffLeft - ls*0.12, staffCY, ls);
 
+  // Ghost note under the cursor: shows exactly which note a click will play (Shift = sharp, Alt = flat)
+  if(_staffHover){
+    const pk=_staffPick(_staffHover.x,_staffHover.y,_staffHover.shift,_staffHover.alt);
+    if(pk){
+      const gx=Math.max(staffLeft+ls*2.2,Math.min(staffRight-ls,_staffHover.x)), gy=spToY(pk.sp), gr=Math.max(4,ls*0.44), col=NOTES[pk.pc].color;
+      x.strokeStyle=hexRgba(col,0.5);x.lineWidth=1.1;
+      if(pk.sp<=1)for(let l=0;l>=pk.sp;l-=2){const ly=spToY(l);x.beginPath();x.moveTo(gx-gr*1.8,ly);x.lineTo(gx+gr*1.8,ly);x.stroke()}
+      if(pk.sp>=11)for(let l=12;l<=pk.sp;l+=2){const ly=spToY(l);x.beginPath();x.moveTo(gx-gr*1.8,ly);x.lineTo(gx+gr*1.8,ly);x.stroke()}
+      x.beginPath();x.ellipse(gx,gy,gr,gr*0.68,-0.2,0,Math.PI*2);x.fillStyle=hexRgba(col,0.45);x.fill();x.strokeStyle=hexRgba(col,0.9);x.stroke();
+      x.font=`bold ${Math.max(6,Math.min(11,ls*0.52))}px 'Space Mono'`;x.fillStyle=hexRgba(col,0.95);x.textAlign='center';x.textBaseline='top';
+      x.fillText(NOTES[pk.pc].name+pk.oct,gx,gy+gr*2.1);
+    }
+  }
+
   // ── Notes ────────────────────────────────────────────────────────────────
   const notes = S.detectedNotes.slice(0,6);
   if(notes.length===0){
     x.font=`${Math.max(8,ls*0.6)}px 'Space Mono'`;
-    x.fillStyle='rgba(255,255,255,.13)'; x.textAlign='center'; x.textBaseline='middle';
-    x.fillText('play or sing…', W/2, H*0.82);
+    x.fillStyle='rgba(255,255,255,.32)'; x.textAlign='center'; x.textBaseline='middle';
+    x.fillText('click the staff, a key or a fret, or sing…', W/2, H*0.9);
     return;
   }
 
@@ -1829,6 +2725,35 @@ function drawClef(x,cx,cy,ls){
 }
 
 
+// ── STAFF AS A SOUND SOURCE ────────────────────────────────────────────────
+// Click a line or a space and that note plays and is held (click it again to release), exactly like the keys and the frets.
+// Shift-click = sharp, Alt/Option-click = flat. The note comes from where you click: its height on the staff gives the
+// letter and the octave (middle C sits on the first ledger line below the staff).
+const _DIA_SEMI=[0,2,4,5,7,9,11];                 // C D E F G A B as semitones above C
+function _staffPick(px,py,shift,alt){
+  const g=_staffG; if(!g) return null;
+  const sp=Math.max(-6,Math.min(16,Math.round(6+(g.staffCY-py)/(g.ls/2))));    // diatonic step, 0 = middle C
+  const oct=4+Math.floor(sp/7), dia=((sp%7)+7)%7;
+  let midi=12*(oct+1)+_DIA_SEMI[dia]+(shift?1:(alt?-1:0));
+  if(midi<24||midi>108) return null;
+  return {sp:sp,midi:midi,pc:((midi%12)+12)%12,oct:Math.floor(midi/12)-1};
+}
+(function wireStaffClicks(){
+  const c=CV.staff; if(!c) return;
+  c.style.cursor='pointer'; c.setAttribute('aria-label','Staff: click a line or space to play that note (Shift = sharp, Alt = flat)');
+  const pos=e=>{const r=c.getBoundingClientRect();return {x:(e.clientX-r.left)*(c.width/Math.max(1,r.width)),y:(e.clientY-r.top)*(c.height/Math.max(1,r.height))}};
+  c.addEventListener('pointermove',e=>{const p=pos(e);_staffHover={x:p.x,y:p.y,shift:e.shiftKey,alt:e.altKey};drawStaff()});
+  c.addEventListener('pointerleave',()=>{_staffHover=null;drawStaff()});
+  c.addEventListener('click',e=>{
+    const p=pos(e),pk=_staffPick(p.x,p.y,e.shiftKey,e.altKey); if(!pk) return;
+    // a pitch class holds one octave at a time: clicking the same note in another octave moves it there
+    if(SUSTAIN_HELD&&_manualNotes.has(pk.pc)&&_manualOct[pk.pc]!==pk.oct){
+      _stopSustain(pk.pc,true);_startSustain(pk.pc,pk.oct);_manualOct[pk.pc]=pk.oct;_syncManualToState();
+    }else playAndActivate(pk.pc,pk.oct,1.0);
+    _staffHover={x:p.x,y:p.y,shift:e.shiftKey,alt:e.altKey};
+  });
+})();
+
 // ═══ 8. VERTICAL GUITAR NECK ════════════════════════════════════════════════
 // Orientation: low E (string 0) at bottom, high e (string 5) at top
 // Strings run left-to-right (horizontal); frets run 0(left)→12(right)
@@ -1846,6 +2771,15 @@ let neckFretCount  = 5;   // 4 | 5 | 12
 let neckFretHeight = 34;  // px per fret row: 26=4fret 34=5fret 46=12fret
 // Preset map: fret count → row height
 const FRET_PRESETS = {4: 26, 5: 34, 12: 46};
+var _neckLastH = 0, _neckRz = null;
+// Rebuild the neck when the card is resized so every fret still fits without scrolling
+window.addEventListener('resize', ()=>{
+  clearTimeout(_neckRz);
+  _neckRz = setTimeout(()=>{
+    const c = document.getElementById('neck-inner');
+    if(c && Math.abs(c.clientHeight - _neckLastH) > 8){ buildNeckTable(); updateNeckDisplay(); }
+  }, 200);
+});
 
 function buildNeckUI() {
   const card = document.getElementById('card-neck');
@@ -1887,6 +2821,15 @@ function buildNeckTable() {
   const container = document.getElementById('neck-inner');
   if (!container) return;
   container.innerHTML = '';
+  // 4- and 5-fret views shrink their rows to fit the card (never taller than the preset); 12 frets scrolls.
+  _neckLastH = container.clientHeight;
+  if (neckFretCount < 12 && _neckLastH > 80) {
+    // header ~22px + nut row + fret rows share the height; rows grow to fill roomy cards (max 46px)
+    neckFretHeight = Math.max(20, Math.min(46, Math.floor((_neckLastH - 40) / (neckFretCount + 1))));
+  } else if (neckFretCount >= 12) {
+    neckFretHeight = 34;   // 12 frets: fixed rows, the card scrolls
+  }
+  container.style.setProperty('--fb-row', neckFretHeight + 'px');
 
   // Standard tuning E A D G B e — index 0=low E (top row), 5=high e (bottom)
   const tuning  = [4,  9,  2,  7, 11,  4];  // pitch class
@@ -1904,22 +2847,33 @@ function buildNeckTable() {
   const nF = neckFretCount;
   const markerFrets = nF===12?[3,5,7,9,12]:nF===5?[3,5]:[3];
 
-  const table = document.createElement('div');
+  // Real semantic <table> — enables native screen-reader table navigation
+  // and keyboard focus traversal (see wireNeckKeyboardNav below), per the
+  // KCM Guitar Fretboard Standard: frets = rows, strings = columns.
+  const table = document.createElement('table');
   table.className = 'fb-table';
+  table.setAttribute('aria-label', 'Guitar fretboard note positions — frets as rows, strings as columns');
 
   // ── Header row: corner + string name labels ──
-  const hdr = document.createElement('div');
+  const thead = document.createElement('thead');
+  const hdr = document.createElement('tr');
   hdr.className = 'fb-row';
-  const corner = document.createElement('div');
+  const corner = document.createElement('th');
   corner.className = 'fb-fnum-cell';
+  corner.scope = 'col';
   corner.style.cssText = 'font-size:.5rem;color:rgba(244,208,63,.3);border-bottom:1px solid rgba(255,255,255,.08)';
   corner.textContent = 'fret';
   hdr.appendChild(corner);
   for (let s = 0; s < 6; s++) {
-    const lbl = document.createElement('div');
+    const lbl = document.createElement('th');
     lbl.className = 'fb-str-label';
+    lbl.scope = 'col';
     lbl.id = `neck-str-${s}`;
     lbl.dataset.ni = tuning[s];
+    lbl.dataset.s  = s;
+    lbl.tabIndex = 0;
+    lbl.setAttribute('role', 'button');
+    lbl.setAttribute('aria-label', `${names[s]} open string — press Enter to play`);
     lbl.textContent = names[s];
     lbl.title = `${names[s]} open string`;
     lbl.style.cursor = 'pointer';
@@ -1928,25 +2882,33 @@ function buildNeckTable() {
     lbl.addEventListener('touchstart', e=>{e.preventDefault();playAndActivate(tuning[_strS], Math.floor(openMid[_strS]/12)-1, 1.0);}, {passive:false});
     hdr.appendChild(lbl);
   }
-  table.appendChild(hdr);
+  thead.appendChild(hdr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
 
   // ── Nut row (fret 0) ──
-  const nutRow = document.createElement('div');
+  const nutRow = document.createElement('tr');
   nutRow.className = 'fb-row nut-row';
-  const nutFnum = document.createElement('div');
+  const nutFnum = document.createElement('th');
   nutFnum.className = 'fb-fnum-cell';
+  nutFnum.scope = 'row';
   nutFnum.style.cssText = 'height:8px;font-size:.55rem';
   nutFnum.textContent = '0';
   nutRow.appendChild(nutFnum);
   for (let s = 0; s < 6; s++) {
     const pc = tuning[s];
-    const cell = document.createElement('div');
+    const cell = document.createElement('td');
     cell.className = 'fb-cell fb-off';
     cell.style.height = neckFretHeight + 'px';
     cell.style.cursor = 'pointer';
+    cell.tabIndex = 0;
+    cell.setAttribute('role', 'button');
+    cell.setAttribute('aria-label', `Open ${names[s]} string, ${NOTES[pc].name} — press Enter to play`);
     cell.dataset.note = pc;
     cell.dataset.s = s;
     cell.dataset.f = 0;
+    cell.dataset.midi = openMid[s];
     const _nutS = s;
     cell.addEventListener('click', ()=>playAndActivate(tuning[_nutS], Math.floor(openMid[_nutS]/12)-1, 1.0));
     cell.addEventListener('touchstart', e=>{e.preventDefault();playAndActivate(tuning[_nutS], Math.floor(openMid[_nutS]/12)-1, 1.0);}, {passive:false});
@@ -1961,16 +2923,17 @@ function buildNeckTable() {
     cell.appendChild(dot);
     nutRow.appendChild(cell);
   }
-  table.appendChild(nutRow);
+  tbody.appendChild(nutRow);
 
   // ── Fret rows 1..nF ──
   for (let f = 1; f <= nF; f++) {
-    const row = document.createElement('div');
+    const row = document.createElement('tr');
     row.className = 'fb-row';
     row.dataset.fret = f;
 
-    const fnumCell = document.createElement('div');
+    const fnumCell = document.createElement('th');
     fnumCell.className = 'fb-fnum-cell';
+    fnumCell.scope = 'row';
     if (markerFrets.includes(f)) {
       const inlay = document.createElement('div');
       inlay.className = 'fb-inlay';
@@ -1985,12 +2948,17 @@ function buildNeckTable() {
 
     for (let s = 0; s < 6; s++) {
       const pc  = (tuning[s] + f) % 12;
-      const cell = document.createElement('div');
+      const cell = document.createElement('td');
       cell.className = 'fb-cell fb-off';
       cell.style.cursor = 'pointer';
+      cell.tabIndex = 0;
+      cell.setAttribute('role', 'button');
+      cell.setAttribute('aria-label', `${names[s]} string, fret ${f}, ${NOTES[pc].name} — press Enter to play`);
       cell.dataset.note = pc;
       cell.dataset.s = s;
       cell.dataset.f = f;
+      cell.dataset.midi = openMid[s] + f;
+      cell.style.height = neckFretHeight + 'px';
       const _fretMidi = openMid[s] + f;
       const _fretOct  = Math.floor(_fretMidi/12) - 1;
       cell.addEventListener('click', ()=>playAndActivate(pc, _fretOct, 1.0));
@@ -2008,25 +2976,68 @@ function buildNeckTable() {
       cell.appendChild(dot);
       row.appendChild(cell);
     }
-    table.appendChild(row);
+    tbody.appendChild(row);
   }
+  table.appendChild(tbody);
   container.appendChild(table);
+  if (!container._kcmNeckNavWired) {
+    wireNeckKeyboardNav(container);
+    container._kcmNeckNavWired = true;
+  }
   updateNeckDisplay();
 }
 
+// Keyboard navigation across the fretboard table (G-9): arrow keys move focus
+// string-to-string and fret-to-fret; Enter/Space plays the focused position.
+function neckCellAt(s, f) {
+  if (f < 0) return document.getElementById(`neck-str-${s}`);
+  return document.querySelector(`.fb-cell[data-s="${s}"][data-f="${f}"]`);
+}
+
+function wireNeckKeyboardNav(container) {
+  container.addEventListener('keydown', e => {
+    const el = e.target;
+    const isStrHeader = el.classList && el.classList.contains('fb-str-label');
+    const isCell      = el.classList && el.classList.contains('fb-cell');
+    if (!isStrHeader && !isCell) return;
+
+    const s = parseInt(el.dataset.s, 10);
+    const f = isStrHeader ? -1 : parseInt(el.dataset.f, 10);
+    if (isNaN(s)) return;
+
+    let target = null;
+    if (e.key === 'ArrowRight')      target = neckCellAt(Math.min(5, s+1), f);
+    else if (e.key === 'ArrowLeft')  target = neckCellAt(Math.max(0, s-1), f);
+    else if (e.key === 'ArrowDown')  target = neckCellAt(s, Math.min(neckFretCount, f+1));
+    else if (e.key === 'ArrowUp')    target = neckCellAt(s, Math.max(-1, f-1));
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); return; }
+    else return;
+
+    if (target) { e.preventDefault(); target.focus(); }
+  });
+}
+
 // Called every frame from loop() — synced to shared STATE
+const NECK_OPEN_MID = [40, 45, 50, 55, 59, 64];   // MIDI of the open strings
 function updateNeckDisplay() {
+  // The exact fret that is sounding (pitch AND octave) glows fully; the same note elsewhere only tints.
+  const exact = new Set(S.detectedNotes.map(n=>n.midi));
   // Update all fret cells — full KCM color glow when active
   document.querySelectorAll('.fb-cell').forEach(cell => {
     const ni = parseInt(cell.dataset.note);
     if (isNaN(ni)) return;
-    const isActive = S.activeNoteIndices.has(ni);
+    const isActive = exact.has(parseInt(cell.dataset.midi));
+    const isTint = !isActive && S.activeNoteIndices.has(ni);
     const note = NOTES[ni];
     const dot  = cell.querySelector('.fb-dot');
     if (isActive) {
       cell.classList.add('fb-on'); cell.classList.remove('fb-off');
       const str = S.detectedNotes.find(n=>n.noteIndex===ni)?.strength || 0.9;
+      // Illuminate the cell itself via CSS background-color (G-9), in addition
+      // to the dot glow below.
+      cell.style.backgroundColor = hexRgba(note.color, 0.16 + str*0.14);
       if (dot) {
+        dot.style.opacity = '';
         // KCM color glow — full saturation, no white wash
         const glow  = Math.round(10 + str * 18);
         const glow2 = Math.round(4  + str * 10);
@@ -2035,9 +3046,21 @@ function updateNeckDisplay() {
         dot.style.background  = note.color;
         dot.style.color        = note.tc;
       }
+    } else if (isTint) {
+      cell.classList.remove('fb-on'); cell.classList.add('fb-off');
+      cell.style.backgroundColor = hexRgba(note.color, 0.10);
+      if (dot) {
+        dot.style.opacity = '1';
+        dot.style.boxShadow  = '';
+        dot.style.borderColor = note.color;
+        dot.style.background  = note.color;
+        dot.style.color        = note.tc;
+      }
     } else {
       cell.classList.remove('fb-on'); cell.classList.add('fb-off');
+      cell.style.backgroundColor = '';
       if (dot) {
+        dot.style.opacity = '';
         dot.style.boxShadow  = '';
         dot.style.borderColor = 'rgba(255,255,255,.3)';
         dot.style.background  = note.color;    // keep KCM color always
@@ -2050,7 +3073,7 @@ function updateNeckDisplay() {
     const lbl = document.getElementById(`neck-str-${s}`);
     if (!lbl) continue;
     const ni = parseInt(lbl.dataset.ni);
-    const isActive = S.activeNoteIndices.has(ni);
+    const isActive = exact.has(NECK_OPEN_MID[s]);
     const col = NOTES[ni].color;
     if (isActive) {
       lbl.classList.add('fb-lit');
@@ -2184,21 +3207,85 @@ function idle(){
   // If manual notes are held, the synthetic loop handles everything
   if(_manualNotes.size > 0) return;
   requestAnimationFrame(idle);
-  S.t+=1/60;
+  advanceClock();
   // On idle (no mic, no manual notes): animate cymatics and wheel only
   drawCymatics();
   drawWheel();
   // Update keyboard on idle too
   updateKeyboardDisplay();
   // Clear staff on idle
-  const cs=CV.staff;if(cs){resize(cs);const xs=CX.staff;xs.fillStyle='#080C14';xs.fillRect(0,0,cs.width,cs.height);}
+  drawStaff();
   updateNeckDisplay();
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COMPUTER KEYBOARD → CHROMATIC NOTE TRIGGER
+// Two rows mapped to 12 chromatic pitch classes (C=0 … B=11)
+// Row 1: A S D F G H J K L ; ' \   →  C  C♯ D  D♯ E  F  F♯ G  G♯ A  A♯ B
+// Row 2: Q W E R T Y U I O P [ ]   →  same 12, one octave higher (oct 5)
+// SPACE = clear all held notes
+// ESC   = clear all held notes
+// Hold-toggle: first press lights the note; second press extinguishes it.
+// ═══════════════════════════════════════════════════════════════════════════
+(function wireComputerKeyboard(){
+
+  // Lower row → oct 4, upper row → oct 5
+  const ROW_LOW  = { KeyA:0, KeyS:1, KeyD:2, KeyF:3, KeyG:4, KeyH:5,
+                     KeyJ:6, KeyK:7, KeyL:8, Semicolon:9, Quote:10, Backslash:11 };
+  const ROW_HIGH = { KeyQ:0, KeyW:1, KeyE:2, KeyR:3, KeyT:4, KeyY:5,
+                     KeyU:6, KeyI:7, KeyO:8, KeyP:9, BracketLeft:10, BracketRight:11 };
+
+  // Keys currently held down (physical key) — prevents repeat-fire on hold
+  const _keysDown = new Set();
+
+  window.addEventListener('keydown', e => {
+    // Don't intercept when typing in an input / textarea
+    if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)) return;
+
+    // Clear all notes
+    if(e.code==='Escape'){ e.preventDefault(); killAll(); return; }
+    if(e.code==='Space'){ e.preventDefault(); clearManualNotes(); return; }
+    if(e.code==='Enter' || e.code==='NumpadEnter'){
+      const t=e.target, tg=t&&t.tagName;
+      if(tg==='BUTTON'||tg==='A'||tg==='SELECT') return;
+      e.preventDefault();
+      try{ if(!isOn) document.getElementById('listenBtn').click(); }catch(_){}
+      return;
+    }
+
+    // Prevent repeat-fire while key is physically held
+    if(_keysDown.has(e.code)) return;
+    _keysDown.add(e.code);
+
+    let pc = -1, oct = 4;
+    if(ROW_LOW[e.code]  !== undefined){ pc = ROW_LOW[e.code];  oct = 4; }
+    if(ROW_HIGH[e.code] !== undefined){ pc = ROW_HIGH[e.code]; oct = 5; }
+    if(pc < 0) return;
+
+    e.preventDefault();
+    playAndActivate(pc, oct, 1.2);
+
+    // Brief visual flash on the chromatic wheel
+    const wc = document.getElementById('c-wheel');
+    if(wc){ wc.style.filter='brightness(1.25)'; setTimeout(()=>{ wc.style.filter=''; },100); }
+  });
+
+  window.addEventListener('keyup', e => {
+    _keysDown.delete(e.code);
+  });
+
+})();
+
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 buildNeckUI();
 setTimeout(buildKeyboard, 80);
 idle();
+
+// Auto-warn on file:// protocol — mic won't work without action
+if(location.protocol === 'file:'){
+  setTimeout(()=> showMicModal('filescheme'), 800);
+}
 
 // Resize all canvases on window resize, rebuild neck table
 window.addEventListener('resize',()=>{
