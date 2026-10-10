@@ -25,6 +25,11 @@
   Cache-Control: public, max-age=86400
   X-Content-Type-Options: nosniff
 
+# ── Site scripts: always revalidate (added 2026-10-10). Pages' default is a 4-hour
+# browser cache, which kept a broken session script alive in browsers after a fix.
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 # ── Assets (long cache) ────────────────────────────────────
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
