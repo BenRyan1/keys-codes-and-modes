@@ -434,7 +434,9 @@
                 localStorage.setItem('userTier', codeData.tier.toLowerCase());
                 localStorage.setItem('accessLevel', codeData.access);
                 localStorage.setItem('accessDuration', codeData.duration);
-                localStorage.setItem('accessCode', code);
+                // The raw code is never kept in the browser (it is a secret). Clear any
+                // copy an earlier version of this page saved.
+                localStorage.removeItem('accessCode');
                 if (codeData.badge) localStorage.setItem('founderBadge', 'true');
                 if (codeData.vip) localStorage.setItem('vipAccess', 'true');
 
@@ -449,7 +451,7 @@
                     if (window.KCMSession) KCMSession.clear();
                 }
                 
-                // Send notification to Formspree
+                // Send notification to Formspree (tier only: the code itself is never sent)
                 const userEmail = localStorage.getItem('userEmail') || 'unknown';
                 const userName = localStorage.getItem('userName') || 'unknown';
                 
@@ -464,7 +466,6 @@
                             _subject: 'Access Code Used - ' + codeData.tier,
                             name: userName,
                             email: userEmail,
-                            accessCode: code,
                             tier: codeData.tier,
                             access: codeData.access,
                             duration: codeData.duration,

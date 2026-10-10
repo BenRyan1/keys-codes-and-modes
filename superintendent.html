@@ -627,7 +627,7 @@
     localStorage.setItem('accessLevel', 'all_apps');
     localStorage.setItem('userName', firstName);
     localStorage.setItem('userEmail', email);
-    localStorage.setItem('kcm_access_code', code);
+    localStorage.removeItem('kcm_access_code'); // never keep the raw code in the browser
     localStorage.setItem('kcm_tier', 'premium');
     localStorage.setItem('kcm_superintendent', 'true');
     localStorage.setItem('kcm_district', district);
