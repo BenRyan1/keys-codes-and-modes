@@ -6,12 +6,12 @@
    js/kcm-app-gate.js stays as a second layer.)
 
    Verification, in order of preference:
-     1. env.KCM_WORKER  - a Service Binding to the snowy-rain-84a5 Worker;
-        calls its existing /api/verify-session. No secret needed here.
-     2. env.SESSION_SECRET - same HMAC secret as the Worker, verified locally.
-     3. Neither configured - serves the page as before (today's behavior)
-        and adds the header  X-KCM-Gate: unconfigured  so you can see it.
-   If a verifier IS configured, any failure denies the paid app.
+     env.KCM_WORKER is a Service Binding to the snowy-rain-84a5 Worker; its
+     existing /api/verify-session is the single authority on tokens (so token
+     format changes in the Worker never need a change here).
+     No binding configured - serves the page as before (today's behavior)
+     and adds the header  X-KCM-Gate: unconfigured  so you can see it.
+   With the binding present, any failure denies the paid app.
 
    Rules:
      - Non-HTML files in /apps (js, images) are always served.
@@ -83,13 +83,6 @@ export const LEGACY = {
 
 export const COOKIE_NAME = 'kcm_session';
 
-function b64url(buf) {
-  let bin = '';
-  const bytes = new Uint8Array(buf);
-  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
 export function readCookie(header, name) {
   if (!header) return '';
   for (const part of header.split(';')) {
@@ -100,24 +93,6 @@ export function readCookie(header, name) {
     }
   }
   return '';
-}
-
-// Same token format and checks as the Worker's verifySessionToken.
-export async function verifyLocal(secret, token, now = Date.now()) {
-  if (typeof token !== 'string' || !secret) return null;
-  const parts = token.split('.');
-  if (parts.length !== 3) return null;
-  const [tier, expStr, sig] = parts;
-  const exp = Number(expStr);
-  if (!tier || !Number.isFinite(exp) || now > exp) return null;
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
-  const mac = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(`${tier}.${expStr}`));
-  const want = b64url(mac);
-  if (want.length !== sig.length) return null;
-  let diff = 0;
-  for (let i = 0; i < want.length; i++) diff |= want.charCodeAt(i) ^ sig.charCodeAt(i);
-  return diff === 0 ? tier : null;
 }
 
 async function verifyViaWorker(binding, token) {
@@ -175,8 +150,6 @@ export async function onRequest(context) {
 
   if (env && env.KCM_WORKER && typeof env.KCM_WORKER.fetch === 'function') {
     tier = token ? await verifyViaWorker(env.KCM_WORKER, token) : null;
-  } else if (env && env.SESSION_SECRET) {
-    tier = token ? await verifyLocal(env.SESSION_SECRET, token) : null;
   } else {
     configured = false;
   }

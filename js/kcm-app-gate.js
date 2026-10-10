@@ -72,12 +72,27 @@
             if (data.ok && data.tier) {
                 // Keep the server-side gate's cookie in step with the token.
                 try {
-                    var exp = Number(String(token).split('.')[1]);
-                    var secs = Math.floor((exp - Date.now()) / 1000);
-                    if (secs > 0 && !/(^|; )kcm_session=/.test(document.cookie)) {
-                        document.cookie = 'kcm_session=' + encodeURIComponent(token) +
-                            '; Path=/; Max-Age=' + secs + '; SameSite=Lax' +
-                            (location.protocol === 'https:' ? '; Secure' : '');
+                    if (!/(^|; )kcm_session=/.test(document.cookie)) {
+                        // Token may be base64url({tier,exp}).sig or tier.expMs.sig; the
+                        // server is the authority, so a 30-day cookie is just a convenience.
+                        var secs = 30 * 24 * 60 * 60;
+                        try {
+                            var tp = String(token).split('.');
+                            var ms = 0;
+                            if (tp.length === 3 && isFinite(Number(tp[1]))) ms = Number(tp[1]);
+                            else if (tp.length === 2) {
+                                var b = tp[0].replace(/-/g, '+').replace(/_/g, '/');
+                                while (b.length % 4) b += '=';
+                                var e = Number(JSON.parse(atob(b)).exp);
+                                if (isFinite(e) && e > 0) ms = e > 1e12 ? e : e * 1000;
+                            }
+                            if (ms) secs = Math.min(secs, Math.floor((ms - Date.now()) / 1000));
+                        } catch (err) {}
+                        if (secs > 0) {
+                            document.cookie = 'kcm_session=' + encodeURIComponent(token) +
+                                '; Path=/; Max-Age=' + secs + '; SameSite=Lax' +
+                                (location.protocol === 'https:' ? '; Secure' : '');
+                        }
                     }
                 } catch (e) {}
                 reveal();

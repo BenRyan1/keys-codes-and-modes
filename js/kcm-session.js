@@ -8,10 +8,25 @@
     'use strict';
     var NAME = 'kcm_session';
 
+    var FALLBACK_MS = 30 * 24 * 60 * 60 * 1000; // cookie lifetime if expiry can't be read
+
+    // Two token shapes exist: the live Worker issues  base64url({"tier","exp"}).signature
+    // (exp in seconds or ms); older ones were  tier.expiresAtMs.signature.
+    // The cookie's lifetime is only a convenience: the server (Worker) is the
+    // authority on whether a token is still valid.
     function expiryOf(token) {
         var p = String(token || '').split('.');
-        var exp = Number(p[1]);
-        return p.length === 3 && isFinite(exp) ? exp : 0;
+        try {
+            if (p.length === 3 && isFinite(Number(p[1]))) return Number(p[1]);
+            if (p.length === 2) {
+                var b = p[0].replace(/-/g, '+').replace(/_/g, '/');
+                while (b.length % 4) b += '=';
+                var j = JSON.parse(atob(b));
+                var e = Number(j.exp);
+                if (isFinite(e) && e > 0) return e > 1e12 ? e : e * 1000;
+            }
+        } catch (err) { /* fall through */ }
+        return p.length >= 2 && p[p.length - 1] ? Date.now() + FALLBACK_MS : 0;
     }
 
     function set(token) {
