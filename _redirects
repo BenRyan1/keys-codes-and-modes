@@ -24,6 +24,14 @@
 /offerings.html          /my-apps            301
 /offerings               /my-apps            301
 
+# ── 2026-10-11: root-level duplicates of PAID apps were served with no login
+# (found in a gate test). Send them to the gated copies in /apps/, where the
+# server-side gate decides. Files are kept, nothing deleted.
+/kcm-cymatics-visualizer.html       /apps/kcm-cymatics-visualizer       301
+/kcm-cymatics-visualizer            /apps/kcm-cymatics-visualizer       301
+/octave-wave-visualizer-3d.html     /apps/octave-wave-visualizer-3d     301
+/octave-wave-visualizer-3d          /apps/octave-wave-visualizer-3d     301
+
 # ── music-theory-pro.html retired from root and /mtp/ 2026-08-26: it was an
 # ungated duplicate of the real, gated app at /apps/music-theory-pro.html
 # (this copy was actually the newer build — its feature set was merged INTO
