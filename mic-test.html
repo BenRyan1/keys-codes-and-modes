@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>KCM Mic Test</title>
+<style>
+body{font-family:-apple-system,system-ui,sans-serif;margin:0;padding:16px;background:#111;color:#eee;line-height:1.4}
+h1{font-size:1.2rem;margin:0 0 8px}h2{font-size:1rem;margin:20px 0 6px}
+.row{padding:8px 10px;margin:4px 0;border-radius:8px;background:#1d1d1d;font-size:.9rem}
+.ok{border-left:5px solid #3c3}.bad{border-left:5px solid #e44}.warn{border-left:5px solid #ea3}
+button{font-size:1rem;padding:12px 16px;border-radius:10px;border:0;background:#4a7;color:#fff;margin:6px 0}
+iframe{width:100%;height:520px;border:1px solid #444;border-radius:10px;background:#000}
+pre{white-space:pre-wrap;background:#1d1d1d;padding:10px;border-radius:8px;font-size:.8rem}
+</style></head><body>
+<h1>KCM Mic Test (phone)</h1>
+<p>Run the three steps in order. Screenshot the results box at the bottom and send it to Claude.</p>
+
+<h2>Step 1: Page checks</h2>
+<div id="checks"></div>
+
+<h2>Step 2: Mic on this page (baseline)</h2>
+<button id="b1">Allow mic on this page</button>
+<div id="r1"></div>
+
+<h2>Step 3: Mic inside Music Theory Pro (the real test)</h2>
+<p>Load the frame, use its microphone / listen button, and allow the mic when asked. Play or sing a note. Do the colors respond?</p>
+<button id="load">Load Music Theory Pro</button>
+<div id="frameWrap"></div>
+<div class="row">After trying, tap one:
+<button id="y">It worked</button> <button id="n">It did not work</button></div>
+
+<h2>Results</h2>
+<pre id="out"></pre>
+<script>
+var out=document.getElementById('out'),log=[];
+function add(l){log.push(l);out.textContent=log.join('\n')}
+function row(id,cls,t){var d=document.createElement('div');d.className='row '+cls;d.textContent=t;document.getElementById(id).appendChild(d)}
+var MTP='https://mtp.keyscodesandmodes.com';
+add('Time: '+new Date().toISOString());
+add('UA: '+navigator.userAgent);
+add('Secure context: '+window.isSecureContext);
+(function(){
+ row('checks',window.isSecureContext?'ok':'bad','Secure (https): '+window.isSecureContext);
+ var gum=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+ row('checks',gum?'ok':'bad','getUserMedia available: '+gum);
+ var pp=document.permissionsPolicy||document.featurePolicy;
+ if(pp&&pp.allowsFeature){
+  var a=pp.allowsFeature('microphone'),b=pp.allowsFeature('microphone',MTP);
+  row('checks',a?'ok':'bad','Mic allowed on this page: '+a);
+  row('checks',b?'ok':'bad','Mic delegable to Music Theory Pro frame: '+b);
+  add('PermissionsPolicy self='+a+' mtp='+b);
+ } else {row('checks','warn','This browser cannot report Permissions-Policy (Safari). Step 3 is the real test.');add('PermissionsPolicy: not reportable')}
+})();
+document.getElementById('b1').onclick=function(){
+ if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){row('r1','bad','No getUserMedia');add('Step2: no API');return}
+ navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+  row('r1','ok','Mic works on this page.');add('Step2: OK');s.getTracks().forEach(function(t){t.stop()})
+ }).catch(function(e){row('r1','bad','Mic failed: '+e.name+' '+e.message);add('Step2: FAIL '+e.name)})
+};
+document.getElementById('load').onclick=function(){
+ var f=document.createElement('iframe');f.src=MTP+'/mtp-tool.html';
+ f.allow='autoplay; midi; microphone';f.title='Music Theory Pro';
+ document.getElementById('frameWrap').appendChild(f);add('Step3: frame loaded');this.style.display='none'
+};
+document.getElementById('y').onclick=function(){add('Step3 result: WORKED')};
+document.getElementById('n').onclick=function(){add('Step3 result: DID NOT WORK')};
+</script></body></html>
