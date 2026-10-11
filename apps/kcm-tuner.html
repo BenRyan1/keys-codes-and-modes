@@ -1448,7 +1448,7 @@ const TUNINGS = {
     openE:       { label:'Open E',        desc:'Slide Favorite',      strings:[{n:'E2',m:40},{n:'B2',m:47},{n:'E3',m:52},{n:'G#3',m:56},{n:'B3',m:59},{n:'E4',m:64}] },
     openA:       { label:'Open A',        desc:'Country/Blues',       strings:[{n:'E2',m:40},{n:'A2',m:45},{n:'E3',m:52},{n:'A3',m:57},{n:'C#4',m:61},{n:'E4',m:64}] },
     dadgad:      { label:'DADGAD',        desc:'Celtic / Folk',       strings:[{n:'D2',m:38},{n:'A2',m:45},{n:'D3',m:50},{n:'G3',m:55},{n:'A3',m:57},{n:'D4',m:62}] },
-    halfStep:    { label:'Half Down',     desc:'Eb Standard',         strings:[{n:'Eb2',m:39},{n:'Ab2',m:44},{n:'Db3',m:49},{n:'Gb3',m:54},{n:'Bb3',m:58},{n:'Eb4',m:63}] },
+    halfStep:    { label:'Half Down',     desc:'E♭ Standard',         strings:[{n:'Eb2',m:39},{n:'Ab2',m:44},{n:'Db3',m:49},{n:'Gb3',m:54},{n:'Bb3',m:58},{n:'Eb4',m:63}] },
     fullStep:    { label:'Full Step Down',desc:'D Standard',          strings:[{n:'D2',m:38},{n:'G2',m:43},{n:'C3',m:48},{n:'F3',m:53},{n:'A3',m:57},{n:'D4',m:62}] },
     doubleDropD: { label:'Double Drop D', desc:'Double Drop D',       strings:[{n:'D2',m:38},{n:'A2',m:45},{n:'D3',m:50},{n:'G3',m:55},{n:'B3',m:59},{n:'D4',m:62}] },
     openC:       { label:'Open C',        desc:'CGCGCE',              strings:[{n:'C2',m:36},{n:'G2',m:43},{n:'C3',m:48},{n:'G3',m:55},{n:'C4',m:60},{n:'E4',m:64}] },
@@ -1463,7 +1463,7 @@ const TUNINGS = {
     dropD:     { label:'Drop D Bass', desc:'Drop D',            strings:[{n:'D1',m:26},{n:'A1',m:33},{n:'D2',m:38},{n:'G2',m:43}] },
     dropC:     { label:'Drop C Bass', desc:'Heavy Drop',        strings:[{n:'C1',m:24},{n:'G1',m:31},{n:'C2',m:36},{n:'F2',m:41}] },
     dropB:     { label:'Drop B Bass', desc:'Metal Drop',        strings:[{n:'B0',m:23},{n:'F#1',m:30},{n:'B1',m:35},{n:'E2',m:40}] },
-    halfStep:  { label:'Half Down',   desc:'Eb Standard',       strings:[{n:'Eb1',m:27},{n:'Ab1',m:32},{n:'Db2',m:37},{n:'Gb2',m:42}] },
+    halfStep:  { label:'Half Down',   desc:'E♭ Standard',       strings:[{n:'Eb1',m:27},{n:'Ab1',m:32},{n:'Db2',m:37},{n:'Gb2',m:42}] },
     fullStep:  { label:'Full Down',   desc:'D Standard',        strings:[{n:'D1',m:26},{n:'G1',m:31},{n:'C2',m:36},{n:'F2',m:41}] },
     openG:     { label:'Open G Bass', desc:'Open G',            strings:[{n:'D1',m:26},{n:'G1',m:31},{n:'D2',m:38},{n:'G2',m:43}] },
     custom:    { label:'Custom',      desc:'Your custom tuning', strings:[{n:'E1',m:28},{n:'A1',m:33},{n:'D2',m:38},{n:'G2',m:43}] },
@@ -1498,8 +1498,8 @@ const TUNINGS = {
 };
 
 const TUNING_DESCS = {
-  guitar: { standard:'Rock Standard', dropD:'Power Chords ✦', dropC:'Heavy / Metal', openG:'Stones / Slide', openD:'Delta Blues', openE:'Slide Favorite', openA:'Country/Blues', dadgad:'Celtic / Folk', halfStep:'Eb Standard', fullStep:'D Standard', doubleDropD:'Double Drop D', openC:'CGCGCE', standard7:'Extended Range', standard12:'Octave/Unison Pairs', custom:'Custom Tuning' },
-  bass:   { standard:'Classic Bass', standard5:'5-String', standard6:'6-String Bass', dropD:'Drop D', dropC:'Heavy Drop', dropB:'Metal Drop', halfStep:'Eb Standard', fullStep:'D Standard', openG:'Open G', custom:'Custom Tuning' },
+  guitar: { standard:'Rock Standard', dropD:'Power Chords ✦', dropC:'Heavy / Metal', openG:'Stones / Slide', openD:'Delta Blues', openE:'Slide Favorite', openA:'Country/Blues', dadgad:'Celtic / Folk', halfStep:'E♭ Standard', fullStep:'D Standard', doubleDropD:'Double Drop D', openC:'CGCGCE', standard7:'Extended Range', standard12:'Octave/Unison Pairs', custom:'Custom Tuning' },
+  bass:   { standard:'Classic Bass', standard5:'5-String', standard6:'6-String Bass', dropD:'Drop D', dropC:'Heavy Drop', dropB:'Metal Drop', halfStep:'E♭ Standard', fullStep:'D Standard', openG:'Open G', custom:'Custom Tuning' },
   ukulele:{ standard:'My Dog Has Fleas 🐶', tenor:'Low G Tenor', baritone:'Like Guitar', openC:'Open C Chord', slack:'Hawaiian Style', openG:'Open G', openD:'Open D', custom:'Custom Tuning' },
   banjo:  { openG:'Standard Bluegrass', doubleC:'Old-Time / Clawhammer', sawmill:'Modal / Mountain Minor', openD5:'Open D', tenor:'Jazz / Irish (CGDA)', irishTenor:'Octave Mandolin (GDAE)', plectrum:'Plectrum Banjo (CGBD)', custom:'Custom Tuning' },
   mandolin:{ standard:'Bluegrass / Classical', crossAEAE:'Old-Time Cross', crossGDGD:'Old-Time Cross', openD:'Slide / Open', custom:'Custom Tuning' }
@@ -1626,7 +1626,7 @@ function renderStrings(instrument) {
         <div class="note-badge" style="background:${color};color:${textColor}">${noteName}</div>
       </div>
       <div class="string-info">
-        <div class="note-full">${s.n}</div>
+        <div class="note-full">${s.n.replace(/(?<=[A-G])b/,"♭")}</div>
         <div class="note-freq">${freq.toFixed(2)} Hz</div>
       </div>
       <div class="string-gauge">
