@@ -611,11 +611,77 @@
             <p>Most music theory is designed to be read. KCM is designed to be <strong>seen</strong>. Every note has a color. Every key has a position on the wheel. Every chord relationship becomes visible, instantly and permanently. This is the 12-Color Chromatic Spectrum™: developed over decades, live today in 25+ interactive apps. Free to start, no download required.</p>
             <p style="font-family:'Georgia',serif;font-style:italic;font-size:1.1rem;color:var(--primary-gold);margin-top:1rem;margin-bottom:1.5rem;">"From confused player → to musician who finally understands what they're hearing."</p>
             <div class="hero-cta">
-                <a href="/signup.html" class="btn-primary">Start Free: Get the KCM Console</a>
-                <a href="/free-tuner-landing.html" class="btn-tuner">🎸 Free Instrument Tuner</a>
-                <a href="/pricing.html" class="btn-secondary">View Membership Options</a>
+                <a href="#try" class="btn-primary">See a song in color: 10 seconds</a>
+                <a href="/signup.html" class="btn-secondary">Get the free KCM Console</a>
             </div>
         </section>
+
+        <!-- ===== TRY IT: the "aha" section (preview) ===== -->
+        <style>
+          .try { max-width: 1200px; margin: 0 auto 4rem; padding: 0 1.25rem; }
+          .try h2 { font-family: var(--font-display); color: var(--primary-gold); text-align: center; font-size: clamp(1.5rem,3.4vw,2.3rem); margin-bottom: .5rem; }
+          .try .sub { text-align: center; color: #ccc; max-width: 760px; margin: 0 auto 2rem; font-size: 1.1rem; line-height: 1.6; }
+          .try-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.5rem; align-items: stretch; }
+          @media (max-width: 860px) { .try-grid { grid-template-columns: 1fr; } }
+          .try-card { background: rgba(255,255,255,.05); border: 2px solid rgba(0,128,128,.45); border-radius: 18px; padding: 1.25rem; display: flex; flex-direction: column; }
+          .try-card.main { border-color: var(--primary-gold); }
+          .try-card h3 { color: #fff; font-size: 1.25rem; margin-bottom: .35rem; }
+          .try-card .step { color: var(--primary-gold); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem; }
+          .try-card p { color: #ccc; font-size: 1rem; line-height: 1.55; margin-bottom: 1rem; }
+          .try-stage { flex: 1; min-height: 340px; border-radius: 12px; background: #0a0a15; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+          .try-stage iframe { width: 100%; height: 520px; border: 0; background: #0a0a15; }
+          .try-go { background: linear-gradient(135deg, var(--primary-gold), #e6c62f); color: var(--dark-bg); border: 0; padding: 1rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; }
+          .try-go:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+          .try-note { color: #aaa; font-size: .85rem; margin-top: .75rem; text-align: center; }
+          .try-after { text-align: center; margin-top: 2rem; }
+        </style>
+        <section class="try" id="try" aria-labelledby="try-h">
+          <h2 id="try-h">Try it now. No signup.</h2>
+          <p class="sub">Drop in any song and watch its notes appear in color. Or play your own instrument and watch the wheel light up.</p>
+          <div class="try-grid">
+            <div class="try-card main">
+              <span class="step">1 &middot; The Decoder</span>
+              <h3>Drop in any song. See what it is made of.</h3>
+              <p>Choose "Try a MIDI example" inside, or drop in your own .mid or MusicXML file. Every note gets its color, and the key and mode are named for you.</p>
+              <div class="try-stage" id="stage-decoder">
+                <button class="try-go" type="button" data-src="https://console.keyscodesandmodes.com/the-decoder.html" data-title="The Decoder" data-target="stage-decoder">Open the Decoder</button>
+              </div>
+              <p class="try-note">Your file stays in your browser. Nothing is uploaded.</p>
+            </div>
+            <div class="try-card">
+              <span class="step">2 &middot; Your instrument</span>
+              <h3>Play a note. Watch the wheel.</h3>
+              <p>Tap the button, allow your microphone, then sing, hum or play. The notes light up in color as you go.</p>
+              <div class="try-stage" id="stage-mic">
+                <button class="try-go" type="button" data-src="https://mtp.keyscodesandmodes.com/mtp-tool.html?view=sing" data-title="Music Theory Pro" data-target="stage-mic" data-mic="1">🎤 Sing or play a note</button>
+              </div>
+              <p class="try-note">Microphone sound is analyzed in your browser only. Nothing is recorded or sent.</p>
+            </div>
+          </div>
+          <div class="try-after">
+            <a href="/signup.html" class="btn-primary">Keep going: get the free KCM Console</a>
+          </div>
+        </section>
+        <script>
+          (function () {
+            document.querySelectorAll('.try-go').forEach(function (b) {
+              b.addEventListener('click', function () {
+                if (b.getAttribute('data-mic') && window.matchMedia('(max-width: 700px)').matches) {
+                  window.open(b.getAttribute('data-src'), '_blank', 'noopener');
+                  return;
+                }
+                var f = document.createElement('iframe');
+                f.src = b.getAttribute('data-src');
+                f.title = b.getAttribute('data-title');
+                f.setAttribute('allow', 'autoplay; midi' + (b.getAttribute('data-mic') ? '; microphone' : ''));
+                var stage = document.getElementById(b.getAttribute('data-target'));
+                stage.innerHTML = '';
+                stage.appendChild(f);
+              });
+            });
+          })();
+        </script>
+        <!-- ===== end TRY IT ===== -->
         
         <section class="features-section">
             <div class="section-header">
