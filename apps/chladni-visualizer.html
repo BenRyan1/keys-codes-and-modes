@@ -1519,6 +1519,14 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>/* KCM: friendly message if the browser cannot start 3D graphics (WebGL) */
+(function(){var R=window.THREE&&THREE.WebGLRenderer;if(!R)return;
+function show(c){try{if(document.getElementById('kcm-webgl-msg'))return;var d=document.createElement('div');d.id='kcm-webgl-msg';
+d.setAttribute('role','alert');d.style.cssText='box-sizing:border-box;max-width:560px;margin:2rem auto;padding:1.25rem 1.5rem;border:2px solid #F4D03F;border-radius:14px;background:#12122a;color:#eee;font:1rem/1.5 system-ui,sans-serif;text-align:center';
+d.innerHTML='<strong style="color:#F4D03F;font-size:1.15rem">Your browser could not start 3D graphics.</strong><br>Close a few other tabs and reload this page, or open it in Safari or another browser. If it still does not load, turn on graphics acceleration in your browser settings.';
+var cv=c||document.querySelector('canvas');if(cv&&cv.parentNode){cv.style.display='none';cv.parentNode.insertBefore(d,cv)}else{document.body.insertBefore(d,document.body.firstChild)}}catch(e){}}
+function W(o){try{return new R(o)}catch(e){show(o&&o.canvas);throw e}}
+W.prototype=R.prototype;THREE.WebGLRenderer=W})();</script>
     <script>
 // ============================================
 // CONFIGURATION & STATE
