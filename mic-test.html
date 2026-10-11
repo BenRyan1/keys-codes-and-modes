@@ -29,6 +29,11 @@ pre{white-space:pre-wrap;background:#1d1d1d;padding:10px;border-radius:8px;font-
 <div class="row">After trying, tap one:
 <button id="y">It worked</button> <button id="n">It did not work</button></div>
 
+<h2>Step 4: Mic probe inside a frame (isolates the cause)</h2>
+<p>Tap Load probe, then tap the green button inside it and allow the mic.</p>
+<button id="lp">Load probe</button>
+<div id="pw"></div>
+<div id="r4"></div>
 <h2>Results</h2>
 <pre id="out"></pre>
 <script>
@@ -62,6 +67,15 @@ document.getElementById('load').onclick=function(){
  f.allow='autoplay; midi; microphone';f.title='Music Theory Pro';
  document.getElementById('frameWrap').appendChild(f);add('Step3: frame loaded');this.style.display='none'
 };
+document.getElementById('lp').onclick=function(){
+ var f=document.createElement('iframe');f.src=MTP+'/mic-probe.html';f.style.height='140px';
+ f.allow='autoplay; midi; microphone';f.title='Mic probe';
+ document.getElementById('pw').appendChild(f);add('Step4: probe loaded');this.style.display='none'
+};
+window.addEventListener('message',function(e){
+ if(e.origin!==MTP||!e.data||!e.data.kcmProbe)return;
+ row('r4',e.data.ok?'ok':'bad',e.data.msg);add('Step4: '+(e.data.ok?'OK ':'FAIL ')+e.data.msg)
+});
 document.getElementById('y').onclick=function(){add('Step3 result: WORKED')};
 document.getElementById('n').onclick=function(){add('Step3 result: DID NOT WORK')};
 </script></body></html>
