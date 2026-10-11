@@ -652,9 +652,9 @@
             <div class="try-card">
               <span class="step">2 &middot; Your instrument</span>
               <h3>Play a note. Watch the wheel.</h3>
-              <p>Sing or play. The chord, scale and key light up as you go.</p>
+              <p>Tap the button, allow your microphone, then sing, hum or play. The notes light up in color as you go.</p>
               <div class="try-stage" id="stage-mic">
-                <button class="try-go" type="button" data-src="https://mtp.keyscodesandmodes.com/mtp-tool.html" data-title="Music Theory Pro" data-target="stage-mic" data-mic="1">Open Music Theory Pro</button>
+                <button class="try-go" type="button" data-src="https://mtp.keyscodesandmodes.com/mtp-tool.html?view=sing" data-title="Music Theory Pro" data-target="stage-mic" data-mic="1">🎤 Sing or play a note</button>
               </div>
               <p class="try-note">Microphone sound is analyzed in your browser only. Nothing is recorded or sent.</p>
             </div>
@@ -667,6 +667,10 @@
           (function () {
             document.querySelectorAll('.try-go').forEach(function (b) {
               b.addEventListener('click', function () {
+                if (b.getAttribute('data-mic') && window.matchMedia('(max-width: 700px)').matches) {
+                  window.open(b.getAttribute('data-src'), '_blank', 'noopener');
+                  return;
+                }
                 var f = document.createElement('iframe');
                 f.src = b.getAttribute('data-src');
                 f.title = b.getAttribute('data-title');
