@@ -1519,14 +1519,94 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>/* KCM: friendly message if the browser cannot start 3D graphics (WebGL) */
-(function(){var R=window.THREE&&THREE.WebGLRenderer;if(!R)return;
-function show(c){try{if(document.getElementById('kcm-webgl-msg'))return;var d=document.createElement('div');d.id='kcm-webgl-msg';
-d.setAttribute('role','alert');d.style.cssText='box-sizing:border-box;max-width:560px;margin:2rem auto;padding:1.25rem 1.5rem;border:2px solid #F4D03F;border-radius:14px;background:#12122a;color:#eee;font:1rem/1.5 system-ui,sans-serif;text-align:center';
-d.innerHTML='<strong style="color:#F4D03F;font-size:1.15rem">Your browser could not start 3D graphics.</strong><br>Close a few other tabs and reload this page, or open it in Safari or another browser. If it still does not load, turn on graphics acceleration in your browser settings.';
-var cv=c||document.querySelector('canvas');if(cv&&cv.parentNode){cv.style.display='none';cv.parentNode.insertBefore(d,cv)}else{document.body.insertBefore(d,document.body.firstChild)}}catch(e){}}
-function W(o){try{return new R(o)}catch(e){show(o&&o.canvas);throw e}}
-W.prototype=R.prototype;THREE.WebGLRenderer=W})();</script>
+<script>/* KCM: if the browser cannot start WebGL, draw the same scene with a built-in 2D renderer so the visualizer still works. */
+(function(){
+  var R=window.THREE&&THREE.WebGLRenderer; if(!R) return;
+  function note(cv){
+    try{
+      if(document.getElementById('kcm-webgl-msg')) return;
+      var d=document.createElement('div'); d.id='kcm-webgl-msg'; d.setAttribute('role','status');
+      d.style.cssText='position:absolute;left:12px;bottom:10px;z-index:5;max-width:80%;padding:.35rem .7rem;border-radius:8px;background:rgba(18,18,42,.85);border:1px solid #F4D03F;color:#F4D03F;font:.75rem/1.3 system-ui,sans-serif;pointer-events:none';
+      d.textContent='Compatibility mode: 3D graphics are unavailable in this browser, so a simpler view is shown.';
+      var p=cv&&cv.parentNode; if(p){ if(getComputedStyle(p).position==='static') p.style.position='relative'; p.appendChild(d); } else document.body.appendChild(d);
+    }catch(e){}
+  }
+  function hex(c,a){ var r=Math.round(c.r*255),g=Math.round(c.g*255),b=Math.round(c.b*255); return 'rgba('+r+','+g+','+b+','+a+')'; }
+  function Soft(o){
+    o=o||{}; var cv=o.canvas||document.createElement('canvas'); var ctx=cv.getContext('2d');
+    if(!ctx) throw new Error('No 2D context');
+    var self=this; self.domElement=cv; self.ctx=ctx; self.pr=1; self.w=cv.clientWidth||300; self.h=cv.clientHeight||150;
+    self.clear=new THREE.Color(0x000000); self.clearAlpha=o.alpha?0:1;
+    self.shadowMap={enabled:false,type:0}; self.info={render:{calls:0,triangles:0,points:0,lines:0},memory:{geometries:0,textures:0}};
+    self.capabilities={isWebGL2:false}; self.extensions={get:function(){return null}}; self.autoClear=true;
+    self.mvp=new THREE.Matrix4(); self.tmp=new THREE.Vector4(); self.col=new THREE.Color();
+    note(cv);
+    return new Proxy(self,{get:function(t,k){ if(k in t) return t[k]; if(typeof k==='symbol') return undefined; return function(){}; },set:function(t,k,v){t[k]=v;return true;}});
+  }
+  Soft.prototype.setPixelRatio=function(r){ this.pr=Math.min(r||1,1.5); };
+  Soft.prototype.getPixelRatio=function(){ return this.pr; };
+  Soft.prototype.setClearColor=function(c,a){ this.clear.set(c); if(a!==undefined) this.clearAlpha=a; };
+  Soft.prototype.setClearAlpha=function(a){ this.clearAlpha=a; };
+  Soft.prototype.setSize=function(w,h,upd){ this.w=w; this.h=h; var cv=this.domElement; cv.width=Math.max(1,Math.floor(w*this.pr)); cv.height=Math.max(1,Math.floor(h*this.pr)); if(upd!==false){ cv.style.width=w+'px'; cv.style.height=h+'px'; } };
+  Soft.prototype.getSize=function(t){ t=t||new THREE.Vector2(); return t.set(this.w,this.h); };
+  Soft.prototype.getContext=function(){ return null; };
+  Soft.prototype.dispose=function(){};
+  Soft.prototype.render=function(scene,camera){
+    var ctx=this.ctx,cv=this.domElement,W=cv.width,H=cv.height; if(!W||!H) return;
+    scene.updateMatrixWorld(); if(!camera.parent) camera.updateMatrixWorld();
+    camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
+    var vp=new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
+    ctx.setTransform(1,0,0,1,0,0);
+    if(this.clearAlpha>0){ ctx.fillStyle=hex(this.clear,this.clearAlpha); ctx.fillRect(0,0,W,H); } else ctx.clearRect(0,0,W,H);
+    var fogD=(scene.fog&&scene.fog.density)||0, self=this, v=this.tmp, mvp=this.mvp, col=this.col;
+    ctx.lineWidth=Math.max(1,this.pr);
+    function proj(arr,i,out){ v.set(arr[i*3],arr[i*3+1],arr[i*3+2],1).applyMatrix4(mvp); if(v.w<=0.05) return false; out.x=(v.x/v.w*0.5+0.5)*W; out.y=(1-(v.y/v.w*0.5+0.5))*H; out.d=v.w; return true; }
+    function fade(d,a){ return fogD? a*Math.exp(-Math.pow(fogD*d,2)) : a; }
+    var A={x:0,y:0,d:0},B={x:0,y:0,d:0},C={x:0,y:0,d:0};
+    scene.traverse(function(o){
+      if(o.visible===false||!o.geometry||!o.geometry.attributes||!o.geometry.attributes.position) return;
+      var g=o.geometry,pos=g.attributes.position.array,cat=g.attributes.color,carr=cat&&cat.array,idx=g.index&&g.index.array,m=o.material||{};
+      if(Array.isArray(m)) m=m[0]||{};
+      var op=(m.opacity===undefined?1:m.opacity);
+      mvp.multiplyMatrices(vp,o.matrixWorld);
+      var base=(m.color&&m.color.isColor)?m.color:col.set(0xffffff), useV=!!(m.vertexColors&&carr);
+      function cs(i,d,a){ if(useV){ col.setRGB(carr[i*3],carr[i*3+1],carr[i*3+2]); return hex(col,fade(d,a)); } return hex(base,fade(d,a)); }
+      var n=idx?idx.length:g.attributes.position.count;
+      if(o.isPoints){
+        var s=Math.max(1,(m.size||1.5)*self.pr*0.8);
+        for(var i=0;i<g.attributes.position.count;i++){ if(!proj(pos,i,A)) continue; ctx.fillStyle=cs(i,A.d,op); ctx.fillRect(A.x,A.y,s,s); }
+      } else if(o.isLineSegments||o.isLine){
+        var seg=!!o.isLineSegments&&!o.isLineLoop;
+        for(var k=0;k+1<n;k+=(seg?2:1)){
+          var a=idx?idx[k]:k,b=idx?idx[k+1]:k+1;
+          if(!proj(pos,a,A)||!proj(pos,b,B)) continue;
+          ctx.strokeStyle=cs(a,(A.d+B.d)/2,op); ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+        }
+      } else if(o.isMesh){
+        for(var t=0;t+2<n;t+=3){
+          var p=idx?idx[t]:t,q=idx?idx[t+1]:t+1,r=idx?idx[t+2]:t+2;
+          if(!proj(pos,p,A)||!proj(pos,q,B)||!proj(pos,r,C)) continue;
+          ctx.strokeStyle=cs(p,(A.d+B.d+C.d)/3,op*0.45); ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.lineTo(C.x,C.y); ctx.closePath(); ctx.stroke();
+        }
+      }
+    });
+  };
+  function W(o){
+    try{ return new R(o); }
+    catch(e){
+      try{ return new Soft(o); }
+      catch(e2){
+        try{ var d=document.createElement('div'); d.id='kcm-webgl-msg'; d.setAttribute('role','alert');
+          d.style.cssText='box-sizing:border-box;max-width:560px;margin:2rem auto;padding:1.25rem 1.5rem;border:2px solid #F4D03F;border-radius:14px;background:#12122a;color:#eee;font:1rem/1.5 system-ui,sans-serif;text-align:center';
+          d.innerHTML='<strong style="color:#F4D03F;font-size:1.15rem">Your browser could not start 3D graphics.</strong><br>Close a few other tabs and reload this page, or open it in Safari or another browser.';
+          var cv=(o&&o.canvas)||document.querySelector('canvas'); if(cv&&cv.parentNode){ cv.style.display='none'; cv.parentNode.insertBefore(d,cv);} }catch(e3){}
+        throw e;
+      }
+    }
+  }
+  W.prototype=R.prototype; THREE.WebGLRenderer=W;
+})();
+</script>
     <script>
 // ============================================
 // CONFIGURATION & STATE
