@@ -730,6 +730,7 @@ For licensing: ben@keyscodesandmodes.com
     }
 
   </style>
+<script src="/js/kcm-ref.js"></script>
 </head>
 <body>
 
@@ -1132,7 +1133,7 @@ For licensing: ben@keyscodesandmodes.com
     fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
+      body: JSON.stringify({ email: email, ref: (window.KCMRef && KCMRef.get()) || undefined })
     })
     .then(function(res) { return res.json(); })
     .then(function(data) {
