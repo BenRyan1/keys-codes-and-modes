@@ -3,6 +3,12 @@
 window.KCM_HELP = {
   version: 'cu-draft-1',
   ids: {
+    earTrainingToggle: { n: 'Ear training mode', t: 'Switches on a listening game. You hear two notes and work out the distance between them.' },
+    listenButton: { n: 'Listen', t: 'Plays the sound again.' },
+    flipButton: { n: 'Flip interval', t: 'Plays the same two notes upside down, to show the inversion.' },
+    startGameBtn: { n: 'Start game', t: 'Begins the listening quiz.' },
+    nextQuestionBtn: { n: 'Next', t: 'Goes to the next question.' },
+    exitGameBtn: { n: 'Exit game', t: 'Leaves the quiz and goes back to the wheel.' },
     'cu-session-title': { n: 'Session title', t: 'Type a name for this session. It becomes the file name when you save.' },
     'cu-gcis-save': { n: 'Save .gcis', t: 'Saves this session to a .gcis file on your device so you can open it again later.' },
     'cu-gcis-load': { n: 'Load .gcis', t: 'Opens a .gcis session file you saved before and puts everything back.' },
@@ -51,6 +57,8 @@ window.KCM_HELP = {
     recExportBtn: { n: 'Export .gcis', t: 'Saves the recording as a .gcis file. It turns on after a recording.' }
   },
   rules: [
+    { sel: '.cookie-btn.cookie-accept', n: 'Accept', t: 'Closes the notice.' },
+    { sel: '.cookie-btn.cookie-reject', n: 'Reject', t: 'Closes the notice and keeps optional cookies off.' },
     { sel: 'button', x: '^\\+ Add Layer$', n: 'Add layer', t: 'Adds another rhythm layer. Each layer is its own instrument with its own pattern.' },
     { sel: 'button', x: '^\\uD83D\\uDDD1 CLEAR ALL$|CLEAR ALL', n: 'Clear all', t: 'Empties every rhythm layer.' },
     { sel: 'button', x: '^\\u25A0 Stop$|^Stop$', n: 'Stop', t: 'Stops the rhythm and moves the sweep back to the start.' },
