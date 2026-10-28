@@ -35,6 +35,8 @@ Santa Barbara, California | All Rights Reserved
 </style>
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <script src="js/kcm-midi-recorder.js"></script>
+<script src="js/kcm-help-text-mtp.js"></script>
+<script src="js/kcm-help-mode.js"></script>
 <script>
 window.addEventListener('load', function() {
   // Guard: ad-blockers commonly block cookieconsent-style scripts by name,
@@ -2531,6 +2533,7 @@ button:focus-visible, [role="button"]:focus-visible { box-shadow: 0 0 0 3px var(
     <p>Interactive Music Learning · Chromatic Circle · Piano · Guitar · Ear Training · MIDI Support</p>
     <button id="startAudio" aria-label="Start audio engine">🔊 Press Here First — To Start Audio Engine</button>
     <p style="font-size:0.72rem; color:rgba(232,232,232,0.55); margin-top:0.5rem; font-family:var(--font-body);">👆 Click this first to enable sound</p>
+    <div id="kcmHelpMount" style="text-align:center; margin-top:0.9rem;"></div>
 </div>
 
 <!-- ============================================================
@@ -5517,11 +5520,13 @@ const _pianoKeysActive = new Set(); // prevent repeat-fire on held keys
             }
 
             _currentSFInst  = instrument;
-            _samplesReady   = loaded > 0;
+            // Count samples already cached too, so re-selecting a loaded instrument is not reported as a failure
+            const _haveCount = _MIDI_NOTES_TO_LOAD.filter(m => _sampleCache[`${instrument}:${m}`]).length;
+            _samplesReady   = _haveCount > 0;
             _samplesLoading = false;
             _updateInstrumentStatus(
                 _samplesReady
-                    ? `✅ ${instrument.charAt(0).toUpperCase()+instrument.slice(1)} ready — ${loaded} samples loaded`
+                    ? `✅ ${instrument.charAt(0).toUpperCase()+instrument.slice(1)} ready — ${_haveCount} samples loaded`
                     : `⚠️ Samples failed — shaped synth active`,
                 _samplesReady ? '#27ae60' : '#F4D03F'
             );
